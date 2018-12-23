@@ -1,0 +1,47 @@
+{
+  "name": "dockest",
+  "version": "0.0.1",
+  "description": "Docker + Jest",
+  "main": "built/index.js",
+  "author": "Erik Engervall",
+  "email": "erik.engervall@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf ./built",
+    "build": "npm run clean && tsc",
+    "build:watch": "npm run clean && tsc --watch",
+    
+    "test": "node ./example/integration",
+
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down --volumes --rmi local",
+    "seq": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:undo:all && sequelize db:seed:all",
+    "jest": "jest ./built/example",
+    "jest:watch": "jest ./built/example --watch --detectOpenHandles"
+  },
+  "bin": {
+    "dockest": "./run.sh"
+  },
+  "dependencies": {
+    "execa": "^1.0.0",
+    "exit": "^0.1.2",
+    "rimraf": "^2.6.2"
+
+  },
+  "devDependencies": {
+    "@types/execa": "^0.9.0",
+    "@types/exit": "^0.1.30",
+    "@types/jest": "^23.3.9",
+    "@types/sequelize": "^4.27.32",
+    "kafkajs": "^1.4.6",
+    "pg": "^7.7.1",
+    "pg-hstore": "^2.3.2",
+    "prettier": "^1.15.3",
+    "sequelize": "^4.41.2",
+    "sequelize-cli": "^5.3.0",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.1.6"
+  }
+}

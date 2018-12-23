@@ -1,0 +1,42 @@
+version: '2'
+services:
+  postgres1:
+    image: postgres:9.6.3
+    labels:
+      - "dockest.project=postgres1"
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: erik
+      POSTGRES_PASSWORD: secretpw
+      POSTGRES_DB: dab
+    # volumes:
+    #   - postgresVolume1:/var/lib/postgresql/data
+
+  # kafka1:
+  #   labels:
+  #     - "dockest.project=kafka1"
+  #   image: alexsuch/kafka:0.11.0.0
+  #   container_name: kafka
+  #   hostname: localhost
+  #   environment:
+  #     - MODE=ZOOKEEPER_AND_KAFKA
+  #   ports:
+  #     - "9092:9092"
+  #     - "2181:2181"
+  #   volumes:
+  #     - kafkaVolume1
+
+  # redis1:
+  #   image: redis:4
+  #   labels:
+  #     - "dockest.project=redis1"
+  #   ports:
+  #     - "6379:6379"
+    # volumes:
+    #   - redisVolume1
+
+# volumes:
+#   postgresVolume1:
+#   kafkaVolume1:
+#   redisVolume1:
