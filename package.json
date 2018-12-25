@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.0.2",
+  "version": "0.0.21",
   "description": "Docker + Jest",
   "main": "built/index.js",
   "author": "Erik Engervall",
@@ -19,14 +19,10 @@
     "jest": "jest ./built/example",
     "jest:watch": "jest ./built/example --watch --detectOpenHandles"
   },
-  "bin": {
-    "dockest": "./run.sh"
-  },
   "dependencies": {
     "execa": "^1.0.0",
     "exit": "^0.1.2",
     "rimraf": "^2.6.2"
-
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
