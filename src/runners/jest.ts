@@ -15,7 +15,7 @@ const jestRunner = async (resources: IResources): Promise<void> => {
     teardown: { tearAll },
   } = Execs
   const jestOptions = Config.getConfig().jest
-  const jest = jestOptions.jest
+  const jest = jestOptions.lib
 
   try {
     const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
