@@ -4,10 +4,16 @@ import kafkaRunner from './kafka'
 import postgresRunner from './postgres'
 import redisRunner from './redis'
 
-const Runner = (resources: IResources) => {
+export type all = () => Promise<void>
+
+export interface IRunner {
+  all: all;
+}
+
+const Runner = (resources: IResources): IRunner => {
   const { Config, Logger } = resources
 
-  const all = async (): Promise<void> => {
+  const all: all = async () => {
     Logger.loading('Integration test initiated')
 
     const config = Config.getConfig()
