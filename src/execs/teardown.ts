@@ -7,8 +7,8 @@ import DockestConfig, {
 } from '../DockestConfig'
 import DockestLogger from '../DockestLogger'
 
-type stopContainerById = (containerId: string) => Promise<void>
-type removeContainerById = (containerId: string) => Promise<void>
+type stopContainerById = (containerId: string, progress: string) => Promise<void>
+type removeContainerById = (containerId: string, progress: string) => Promise<void>
 type dockerComposeDown = () => Promise<void>
 type tearAll = (containerId?: string) => Promise<void>
 
@@ -20,16 +20,16 @@ export interface ITeardown {
 }
 
 const createTeardown = (Config: DockestConfig, Logger: DockestLogger): ITeardown => {
-  const stopContainerById: stopContainerById = async containerId => {
+  const stopContainerById: stopContainerById = async (containerId, progress) => {
     await execa.shell(`docker stop ${containerId}`)
 
-    Logger.stop(`Container with id <${containerId}> stopped`)
+    Logger.stop(`Container #${progress} with id <${containerId}> stopped`)
   }
 
-  const removeContainerById: removeContainerById = async containerId => {
+  const removeContainerById: removeContainerById = async (containerId, progress) => {
     await execa.shell(`docker rm ${containerId} --volumes`)
 
-    Logger.stop(`Container with id <${containerId}> removed`)
+    Logger.stop(`Container #${progress} with id <${containerId}> removed`)
   }
 
   const dockerComposeDown: dockerComposeDown = async () => {
@@ -48,13 +48,15 @@ const createTeardown = (Config: DockestConfig, Logger: DockestLogger): ITeardown
       ...Config.getConfig().postgres.map((p: IPostgresConfig$Int) => p.$.containerId),
     ]
 
-    for (let i = 0; containerIds.length > 0; i++) {
+    const containerIdsLen = containerIds.length
+    for (let i = 0; containerIdsLen > i; i++) {
       const containerId = containerIds[i]
+      const progress = `${i}/${containerIds.length}`
 
       if (containerId) {
-        await stopContainerById(containerId)
-        await removeContainerById(containerId)
-        // await dockerComposeDown() // Causes issues with exit
+        await stopContainerById(containerId, progress)
+        await removeContainerById(containerId, progress)
+        // await dockerComposeDown(progress) // TODO: Read up on this
       }
     }
 

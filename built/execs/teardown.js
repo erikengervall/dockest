@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const createTeardown = (Config, Logger) => {
-    const stopContainerById = async (containerId) => {
+    const stopContainerById = async (containerId, progress) => {
         await execa_1.default.shell(`docker stop ${containerId}`);
-        Logger.stop(`Container with id <${containerId}> stopped`);
+        Logger.stop(`Container #${progress} with id <${containerId}> stopped`);
     };
-    const removeContainerById = async (containerId) => {
+    const removeContainerById = async (containerId, progress) => {
         await execa_1.default.shell(`docker rm ${containerId} --volumes`);
-        Logger.stop(`Container with id <${containerId}> removed`);
+        Logger.stop(`Container #${progress} with id <${containerId}> removed`);
     };
     const dockerComposeDown = async () => {
         const timeout = 10;
@@ -25,12 +25,14 @@ const createTeardown = (Config, Logger) => {
             ...Config.getConfig().redis.map((r) => r.$.containerId),
             ...Config.getConfig().postgres.map((p) => p.$.containerId),
         ];
-        for (let i = 0; containerIds.length > 0; i++) {
+        const containerIdsLen = containerIds.length;
+        for (let i = 0; containerIdsLen > i; i++) {
             const containerId = containerIds[i];
+            const progress = `${i}/${containerIds.length}`;
             if (containerId) {
-                await stopContainerById(containerId);
-                await removeContainerById(containerId);
-                // await dockerComposeDown() // Causes issues with exit
+                await stopContainerById(containerId, progress);
+                await removeContainerById(containerId, progress);
+                // await dockerComposeDown(progress) // TODO: Read up on this
             }
         }
         Logger.success('Teardown successful');
