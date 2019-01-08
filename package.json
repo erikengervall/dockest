@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.0.21",
+  "version": "0.0.3",
   "description": "Docker + Jest",
   "main": "built/index.js",
   "author": "Erik Engervall",
