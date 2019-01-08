@@ -10,11 +10,11 @@ const postGresRunner = async (postgresConfig, resources) => {
     const { postgres: { startPostgresContainer, checkPostgresConnection, checkPostgresResponsiveness, postgresMigration, postgresSeed, }, helpers: { getContainerId, customCmd }, teardown: { tearAll }, } = Execs;
     let containerId;
     containerId = await getContainerId(postgresConfig);
-    postgresConfig.$.containerId = containerId;
+    postgresConfig.$containerId = containerId;
     if (!containerId || containerId.length === 0) {
         await startPostgresContainer(postgresConfig);
         containerId = await getContainerId(postgresConfig);
-        postgresConfig.$.containerId = containerId;
+        postgresConfig.$containerId = containerId;
     }
     else {
         Logger.error('Unexpected container found, releasing resources and re-running');

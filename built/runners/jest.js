@@ -9,7 +9,7 @@ const jestRunner = async (resources) => {
     const { Config, Logger, Execs } = resources;
     const { teardown: { tearAll }, } = Execs;
     const jestOptions = Config.getConfig().jest;
-    const jest = jestOptions.jest;
+    const jest = jestOptions.lib;
     try {
         const jestResult = await jest.runCLI(jestOptions, jestOptions.projects);
         if (!jestResult.results.success) {

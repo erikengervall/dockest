@@ -21,19 +21,17 @@ const createTeardown = (Config, Logger) => {
     const tearAll = async () => {
         Logger.loading('Teardown started');
         const containerIds = [
-            ...Config.getConfig().kafka.map((k) => k.$.containerId),
-            ...Config.getConfig().redis.map((r) => r.$.containerId),
-            ...Config.getConfig().postgres.map((p) => p.$.containerId),
+            ...Config.getConfig().kafka.reduce((acc, k) => (k.$containerId ? acc.concat(k.$containerId) : acc), []),
+            ...Config.getConfig().redis.reduce((acc, r) => (r.$containerId ? acc.concat(r.$containerId) : acc), []),
+            ...Config.getConfig().postgres.reduce((acc, p) => p.$containerId ? acc.concat(p.$containerId) : acc, []),
         ];
         const containerIdsLen = containerIds.length;
         for (let i = 0; containerIdsLen > i; i++) {
+            const progress = `${i}/${containerIdsLen}`;
             const containerId = containerIds[i];
-            const progress = `${i}/${containerIds.length}`;
-            if (containerId) {
-                await stopContainerById(containerId, progress);
-                await removeContainerById(containerId, progress);
-                // await dockerComposeDown(progress) // TODO: Read up on this
-            }
+            await stopContainerById(containerId, progress);
+            await removeContainerById(containerId, progress);
+            // await dockerComposeDown(progress) // TODO: Read up on this
         }
         Logger.success('Teardown successful');
     };
