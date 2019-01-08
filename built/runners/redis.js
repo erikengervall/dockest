@@ -4,7 +4,7 @@ const kafkaRunner = async (redisConfig, resources) => {
     // const {
     //   Execs: { redis },
     // } = resources
-    // @TODO: Implement Redis integration tests
+    // TODO: Implement Redis integration tests
     if (true || redisConfig || resources) {
         return;
     }

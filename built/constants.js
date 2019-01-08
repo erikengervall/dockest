@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const EMOJIS = {
+const ICONS = {
     LOADING: '⏳',
     SUCCESS: '✅',
     FAILED: '🔥',
@@ -9,4 +9,4 @@ const EMOJIS = {
     WARNING: '⚠️',
     INFO: 'ℹ️',
 };
-exports.EMOJIS = EMOJIS;
+exports.ICONS = ICONS;

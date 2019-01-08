@@ -8,19 +8,19 @@ class DockestLogger {
             console.info(`${message}`, data || '');
         };
         this.loading = (message, data) => {
-            console.info(`${constants_1.EMOJIS.LOADING} ${message}`, data || '');
+            console.info(`${constants_1.ICONS.LOADING} ${message}`, data || '');
         };
         this.stop = (message, data) => {
-            console.info(`${constants_1.EMOJIS.STOPPED} ${message}`, data || '');
+            console.info(`${constants_1.ICONS.STOPPED} ${message}`, data || '');
         };
         this.success = (message, data) => {
-            console.info(`${constants_1.EMOJIS.SUCCESS} ${message}`, data || '', '\n');
+            console.info(`${constants_1.ICONS.SUCCESS} ${message}`, data || '', '\n');
         };
         this.failed = (message, data) => {
-            console.error(`${constants_1.EMOJIS.FAILED} ${message}`, data || '', '\n');
+            console.error(`${constants_1.ICONS.FAILED} ${message}`, data || '', '\n');
         };
         this.error = (message, data) => {
-            console.error(`${constants_1.EMOJIS.ERROR} ${message}`, data || '', '\n');
+            console.error(`${constants_1.ICONS.ERROR} ${message}`, data || '', '\n');
         };
         const config = Config.getConfig();
         this.verbose = !!config.dockest.verbose;
