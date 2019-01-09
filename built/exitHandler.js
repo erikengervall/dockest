@@ -11,7 +11,8 @@ const setupExitHandler = async (resources) => {
         Logger.info('Exithandler invoced', errorPayload);
         const config = Config.getConfig();
         if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
-            config.dockest.exitHandler();
+            const err = errorPayload.error || new Error('Failed to extract error');
+            config.dockest.exitHandler(err);
         }
         await tearAll();
         Logger.info('Exit with payload');
