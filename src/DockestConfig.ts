@@ -57,7 +57,7 @@ export interface IConfig {
   jest: IJestConfig;
   dockest: {
     verbose?: boolean,
-    exitHandler?: () => void,
+    exitHandler?: (err?: Error) => void,
     dockerComposeFile?: string,
   };
   postgres: IPostgresConfig[];
@@ -113,22 +113,19 @@ export class DockestConfig {
   }
 
   validatePostgresConfigs = (postgresConfigs: IPostgresConfig[]): void =>
-    postgresConfigs.forEach(postgresConfig => {
-      const { label, seeder, service, host, db, port, password, username } = postgresConfig
+    postgresConfigs.forEach(({ label, seeder, service, host, db, port, password, username }) => {
       const requiredFields = { label, seeder, service, host, db, port, password, username }
       this.validateRequiredFields('postgres', requiredFields)
     })
 
   validateRedisConfigs = (redisConfigs: IRedisConfig[]): void =>
-    redisConfigs.forEach(redisConfig => {
-      const { label, port } = redisConfig
+    redisConfigs.forEach(({ label, port }) => {
       const requiredFields = { label, port }
       this.validateRequiredFields('redis', requiredFields)
     })
 
   validateKafkaConfigs = (kafkaConfigs: IKafkaConfig[]): void =>
-    kafkaConfigs.forEach(kafkaConfig => {
-      const { label, topic, port } = kafkaConfig
+    kafkaConfigs.forEach(({ label, topic, port }) => {
       const requiredFields = { label, topic, port }
       this.validateRequiredFields('kafka', requiredFields)
     })
