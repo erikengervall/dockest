@@ -39,7 +39,7 @@ class DockestConfig {
             const { lib } = jestConfig;
             const requiredFields = { lib };
             this.validateRequiredFields('jest', requiredFields);
-            if (typeof lib.runCLI === 'function') {
+            if (typeof lib.runCLI !== 'function') {
                 throw new ConfigurationError_1.default(`Invalid jest configuration, jest is missing runCLI method`);
             }
         };
