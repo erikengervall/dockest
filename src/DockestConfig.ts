@@ -1,5 +1,3 @@
-import fs from 'fs'
-
 import ConfigurationError from './error/ConfigurationError'
 
 export interface IPostgresConfig {
@@ -17,9 +15,7 @@ export interface IPostgresConfig {
   username: string;
 }
 export interface IPostgresConfig$Int extends IPostgresConfig {
-  $: {
-    containerId: string,
-  };
+  $containerId?: string;
 }
 
 export interface IRedisConfig {
@@ -28,9 +24,7 @@ export interface IRedisConfig {
   port: number;
 }
 export interface IRedisConfig$Int extends IRedisConfig {
-  $: {
-    containerId: string,
-  };
+  $containerId?: string;
 }
 
 export interface IKafkaConfig {
@@ -40,23 +34,30 @@ export interface IKafkaConfig {
   port: number;
 }
 export interface IKafkaConfig$Int extends IKafkaConfig {
-  $: {
-    containerId: string,
+  $containerId?: string;
+}
+
+export interface IJestConfig {
+  lib: {
+    SearchSource: any,
+    TestScheduler: any,
+    TestWatcher: any,
+    getVersion: any,
+    run: any,
+    runCLI: any,
   };
+  silent?: boolean;
+  verbose?: boolean;
+  forceExit?: boolean;
+  watchAll?: boolean;
+  projects: string[];
 }
 
 export interface IConfig {
-  jest: {
-    jest: any,
-    silent?: boolean,
-    verbose?: boolean,
-    forceExit?: boolean,
-    watchAll?: boolean,
-    projects: string[],
-  };
+  jest: IJestConfig;
   dockest: {
     verbose?: boolean,
-    exitHandler?: () => void,
+    exitHandler?: (err?: Error) => void,
     dockerComposeFile?: string,
   };
   postgres: IPostgresConfig[];
@@ -69,66 +70,97 @@ export interface IConfig$Int extends IConfig {
   kafka: IKafkaConfig$Int[];
 }
 
-type validateConfig = (config: IConfig) => void
-
 const DEFAULT_CONFIG = {
   jest: {
     projects: ['.'],
-    $: {},
   },
   dockest: {
     verbose: false,
-    $: {},
   },
-  postgres: [{ $: {} }],
-  redis: [{ $: {} }],
-  kafka: [{ $: {} }],
-}
-
-const validateConfig: validateConfig = config => {
-  if (!config.postgres && !config.kafka) {
-    throw new ConfigurationError('Missing something to dockerize')
-  }
-
-  if (!config.postgres) {
-    config.postgres = []
-  }
-  if (!config.redis) {
-    config.redis = []
-  }
-  if (!config.kafka) {
-    config.kafka = []
-  }
+  postgres: [],
+  redis: [],
+  kafka: [],
 }
 
 export class DockestConfig {
   config: IConfig$Int
 
   constructor(userConfig?: IConfig) {
-    const cwd = process.cwd()
-    let configRc
-
-    if (userConfig) {
-      configRc = userConfig
-    } else if (fs.existsSync(`${cwd}/.dockestrc.js`)) {
-      configRc = require(`${cwd}/.dockestrc.js`)
-    } else {
-      throw new ConfigurationError('Could not find ".dockestrc.js"')
-    }
-
-    if (configRc && typeof configRc === 'object') {
+    if (userConfig && typeof userConfig === 'object') {
       this.config = {
         ...DEFAULT_CONFIG,
-        ...configRc,
+        ...userConfig,
       }
-      this.config.postgres.map(p => (p.$ = { containerId: '' }))
-      this.config.redis.map(r => (r.$ = { containerId: '' }))
-      this.config.kafka.map(k => (k.$ = { containerId: '' }))
     } else {
-      throw new ConfigurationError('Something went wrong when attempting to parse ".dockestrc.js"')
+      throw new ConfigurationError('Missing configuration or configuration not an object')
     }
 
-    validateConfig(this.config)
+    this.validateUserConfig(this.config)
+  }
+
+  validateRequiredFields = (origin: string, requiredFields: any): void => {
+    const missingFields = Object.keys(requiredFields).reduce(
+      (acc: boolean[], requiredField: any) =>
+        !!requiredFields[requiredField] ? acc : acc.concat(requiredField),
+      []
+    )
+
+    if (missingFields.length !== 0) {
+      throw new ConfigurationError(
+        `Invalid ${origin} configuration, missing required fields: [${missingFields.join(', ')}]`
+      )
+    }
+  }
+
+  validatePostgresConfigs = (postgresConfigs: IPostgresConfig[]): void =>
+    postgresConfigs.forEach(({ label, seeder, service, host, db, port, password, username }) => {
+      const requiredFields = { label, seeder, service, host, db, port, password, username }
+      this.validateRequiredFields('postgres', requiredFields)
+    })
+
+  validateRedisConfigs = (redisConfigs: IRedisConfig[]): void =>
+    redisConfigs.forEach(({ label, port }) => {
+      const requiredFields = { label, port }
+      this.validateRequiredFields('redis', requiredFields)
+    })
+
+  validateKafkaConfigs = (kafkaConfigs: IKafkaConfig[]): void =>
+    kafkaConfigs.forEach(({ label, topic, port }) => {
+      const requiredFields = { label, topic, port }
+      this.validateRequiredFields('kafka', requiredFields)
+    })
+
+  validateJestConfig = (jestConfig: IJestConfig): void => {
+    const { lib } = jestConfig
+    const requiredFields = { lib }
+    this.validateRequiredFields('jest', requiredFields)
+
+    if (typeof lib.runCLI === 'function') {
+      throw new ConfigurationError(`Invalid jest configuration, jest is missing runCLI method`)
+    }
+  }
+
+  validateUserConfig = (config: IConfig): void => {
+    const { postgres, kafka, redis, jest } = config
+
+    if (!postgres && !kafka && !redis && !jest) {
+      throw new ConfigurationError('Missing something to dockerize')
+    }
+
+    this.validatePostgresConfigs(postgres)
+    this.validateRedisConfigs(redis)
+    this.validateKafkaConfigs(kafka)
+    this.validateJestConfig(jest)
+
+    if (!postgres) {
+      config.postgres = []
+    }
+    if (!redis) {
+      config.redis = []
+    }
+    if (!kafka) {
+      config.kafka = []
+    }
   }
 
   getConfig(): IConfig$Int {

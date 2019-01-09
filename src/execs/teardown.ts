@@ -43,21 +43,29 @@ const createTeardown = (Config: DockestConfig, Logger: DockestLogger): ITeardown
     Logger.loading('Teardown started')
 
     const containerIds: string[] = [
-      ...Config.getConfig().kafka.map((k: IKafkaConfig$Int) => k.$.containerId),
-      ...Config.getConfig().redis.map((r: IRedisConfig$Int) => r.$.containerId),
-      ...Config.getConfig().postgres.map((p: IPostgresConfig$Int) => p.$.containerId),
+      ...Config.getConfig().kafka.reduce(
+        (acc: string[], k: IKafkaConfig$Int) => (k.$containerId ? acc.concat(k.$containerId) : acc),
+        []
+      ),
+      ...Config.getConfig().redis.reduce(
+        (acc: string[], r: IRedisConfig$Int) => (r.$containerId ? acc.concat(r.$containerId) : acc),
+        []
+      ),
+      ...Config.getConfig().postgres.reduce(
+        (acc: string[], p: IPostgresConfig$Int) =>
+          p.$containerId ? acc.concat(p.$containerId) : acc,
+        []
+      ),
     ]
 
     const containerIdsLen = containerIds.length
     for (let i = 0; containerIdsLen > i; i++) {
+      const progress = `${i}/${containerIdsLen}`
       const containerId = containerIds[i]
-      const progress = `${i}/${containerIds.length}`
 
-      if (containerId) {
-        await stopContainerById(containerId, progress)
-        await removeContainerById(containerId, progress)
-        // await dockerComposeDown(progress) // TODO: Read up on this
-      }
+      await stopContainerById(containerId, progress)
+      await removeContainerById(containerId, progress)
+      // await dockerComposeDown(progress) // TODO: Read up on this
     }
 
     Logger.success('Teardown successful')

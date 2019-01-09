@@ -3,6 +3,7 @@ import { IPostgresConfig$Int } from '../DockestConfig'
 import DockestError from '../error/DockestError'
 
 let attempts = 3
+
 const postGresRunner = async (
   postgresConfig: IPostgresConfig$Int,
   resources: IResources
@@ -22,13 +23,13 @@ const postGresRunner = async (
   let containerId
 
   containerId = await getContainerId(postgresConfig)
-  postgresConfig.$.containerId = containerId
+  postgresConfig.$containerId = containerId
 
   if (!containerId || containerId.length === 0) {
     await startPostgresContainer(postgresConfig)
 
     containerId = await getContainerId(postgresConfig)
-    postgresConfig.$.containerId = containerId
+    postgresConfig.$containerId = containerId
   } else {
     Logger.error('Unexpected container found, releasing resources and re-running')
 

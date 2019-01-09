@@ -11,7 +11,7 @@ const setupExitHandler = async (resources: IResources): Promise<void> => {
   const exitHandler = async (errorPayload: {
     code?: number,
     signal?: any,
-    error?: object,
+    error?: Error,
     reason?: any,
     p?: any,
   }): Promise<void> => {
@@ -19,7 +19,8 @@ const setupExitHandler = async (resources: IResources): Promise<void> => {
     const config = Config.getConfig()
 
     if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
-      config.dockest.exitHandler()
+      const err = errorPayload.error || new Error('Failed to extract error')
+      config.dockest.exitHandler(err)
     }
 
     await tearAll()
