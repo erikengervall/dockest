@@ -11,6 +11,8 @@
     "build": "npm run clean && tsc",
     "build:watch": "npm run clean && tsc --watch",
     
+    "install-all": "yarn && cd example && yarn",
+
     "test": "node ./example/integration",
 
     "docker:up": "docker-compose up",
