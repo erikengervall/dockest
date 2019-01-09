@@ -2,7 +2,7 @@ const { default: Dockest } = require('../built')
 
 const config = {
   jest: {
-    jest: require('jest'),
+    lib: require('jest'),
     silent: false, // true
     verbose: false, // false
     forceExit: true, // false
