@@ -10,6 +10,8 @@ const createPostgres = (Logger) => {
     const startPostgresContainer = async (postgresConfig) => {
         Logger.loading('Starting postgres container');
         const dockerComposeFile = ''; // `-f ${Config.getConfig().dockest.dockerComposeFile}` || ''
+        const { stdout } = await execa_1.default(`echo "***"`);
+        console.log('stdout :)', stdout);
         await execa_1.default.shell(`docker-compose run -d ${dockerComposeFile} --label ${postgresConfig.label} -p ${postgresConfig.port}:5432 ${postgresConfig.service}`);
         Logger.success('Postgres container started successfully');
     };
