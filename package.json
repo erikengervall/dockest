@@ -13,7 +13,7 @@
     
     "install-all": "yarn && cd example && yarn",
 
-    "test": "node ./example/integration",
+    "test": "cd example && yarn test",
 
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down --volumes --rmi local",
