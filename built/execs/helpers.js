@@ -10,13 +10,10 @@ const createHelpers = (Logger) => {
         const containerId = stdout.replace(/\r?\n|\r/g, '');
         return containerId;
     };
-    const runCustomCommand = async (cmd) => {
-        Logger.loading(`Running custom command: ${cmd}`);
-        const { stdout } = await execa_1.default.shell(cmd);
-        Logger.success(`Successfully ran custom command with result:`, {
-            result: stdout,
-        });
-        return stdout;
+    const runCustomCommand = async (command) => {
+        Logger.loading(`Running custom command: ${command}`);
+        const { stdout: result = '' } = await execa_1.default.shell(command);
+        Logger.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
     };
     return {
         getContainerId,

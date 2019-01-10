@@ -3,7 +3,7 @@ import { IPostgresConfig$Int } from '../DockestConfig'
 import { DockestLogger } from '../DockestLogger'
 
 type getContainerId = (postgresConfig: IPostgresConfig$Int) => Promise<string>
-type runCustomCommand = (cmd: string) => Promise<string>
+type runCustomCommand = (command: string) => Promise<void>
 
 export interface IHelpers {
   getContainerId: getContainerId;
@@ -20,16 +20,16 @@ const createHelpers = (Logger: DockestLogger): IHelpers => {
     return containerId
   }
 
-  const runCustomCommand: runCustomCommand = async cmd => {
-    Logger.loading(`Running custom command: ${cmd}`)
+  const runCustomCommand: runCustomCommand = async command => {
+    Logger.loading(`Running custom command: ${command}`)
 
-    const { stdout } = await execa.shell(cmd)
+    const { stdout: result = '' } = await execa.shell(command)
 
-    Logger.success(`Successfully ran custom command with result:`, {
-      result: stdout,
-    })
-
-    return stdout
+    Logger.success(
+      `Successfully ran custom command: ${
+        typeof result === 'object' ? JSON.stringify(result) : result
+      }`
+    )
   }
 
   return {
