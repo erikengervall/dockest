@@ -1,28 +1,28 @@
-const config = require('../../.dockestrc')
+const env = require('../../env')
 
 const postgresConfig = {
   development: {
-    username: config.postgres[0].username,
-    password: config.postgres[0].password,
-    database: config.postgres[0].db,
-    host: config.postgres[0].host,
-    port: config.postgres[0].port,
+    username: env.postgres1.username,
+    password: env.postgres1.password,
+    database: env.postgres1.db,
+    host: env.postgres1.host,
+    port: env.postgres1.port,
     dialect: 'postgres',
   },
   test: {
-    username: config.postgres[0].username,
-    password: config.postgres[0].password,
-    database: config.postgres[0].db,
-    host: config.postgres[0].host,
-    port: config.postgres[0].port,
+    username: env.postgres1.username,
+    password: env.postgres1.password,
+    database: env.postgres1.db,
+    host: env.postgres1.host,
+    port: env.postgres1.port,
     dialect: 'postgres',
   },
   production: {
-    username: config.postgres[0].username,
-    password: config.postgres[0].password,
-    database: config.postgres[0].db,
-    host: config.postgres[0].host,
-    port: config.postgres[0].port,
+    username: env.postgres1.username,
+    password: env.postgres1.password,
+    database: env.postgres1.db,
+    host: env.postgres1.host,
+    port: env.postgres1.port,
     dialect: 'postgres',
   },
 }

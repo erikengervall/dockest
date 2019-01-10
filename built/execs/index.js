@@ -10,7 +10,7 @@ const redis_1 = __importDefault(require("./redis"));
 const teardown_1 = __importDefault(require("./teardown"));
 class DockestExecs {
     constructor(Config, Logger) {
-        this.postgres = postgres_1.default(Logger);
+        this.postgres = postgres_1.default(Config, Logger);
         this.redis = redis_1.default(Logger);
         this.kafka = kafka_1.default(Logger);
         this.teardown = teardown_1.default(Config, Logger);

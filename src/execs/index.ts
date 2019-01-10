@@ -14,7 +14,7 @@ export class DockestExecs {
   helpers: IHelpers
 
   constructor(Config: DockestConfig, Logger: DockestLogger) {
-    this.postgres = createPostgres(Logger)
+    this.postgres = createPostgres(Config, Logger)
     this.redis = createRedis(Logger)
     this.kafka = createKafka(Logger)
     this.teardown = createTeardown(Config, Logger)

@@ -2,9 +2,8 @@ import ConfigurationError from './error/ConfigurationError'
 
 export interface IPostgresConfig {
   label: string; // Used for getting containerId using --filter
-  seeder: string; // Filename of seeder (sequelize specific)
   service: string; // dockest-compose service name
-  cmds?: string[]; // Migrations, Seeders
+  commands?: string[]; // Run custom scripts (migrate/seed)
   connectionTimeout?: number;
   responsivenessTimeout?: number;
   // Connection
@@ -58,7 +57,7 @@ export interface IConfig {
   dockest: {
     verbose?: boolean,
     exitHandler?: (err?: Error) => void,
-    dockerComposeFile?: string,
+    dockerComposeFilePath?: string,
   };
   postgres: IPostgresConfig[];
   redis: IRedisConfig[];
@@ -113,8 +112,8 @@ export class DockestConfig {
   }
 
   validatePostgresConfigs = (postgresConfigs: IPostgresConfig[]): void =>
-    postgresConfigs.forEach(({ label, seeder, service, host, db, port, password, username }) => {
-      const requiredFields = { label, seeder, service, host, db, port, password, username }
+    postgresConfigs.forEach(({ label, service, host, db, port, password, username }) => {
+      const requiredFields = { label, service, host, db, port, password, username }
       this.validateRequiredFields('postgres', requiredFields)
     })
 

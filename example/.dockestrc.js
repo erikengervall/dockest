@@ -1,3 +1,5 @@
+const env = require('./env')
+
 module.exports = {
   jest: {
     lib: require('jest'),
@@ -9,7 +11,6 @@ module.exports = {
   },
   postgres: [
     {
-      seeder: '20181130152743-demo-user',
       connectionTimeout: 15,
       responsivenessTimeout: 15,
       label: 'dockest.project=postgres1',
@@ -19,6 +20,12 @@ module.exports = {
       host: 'localhost',
       port: 5434,
       service: 'postgres1',
+      commands: [
+        'sequelize db:migrate:undo:all',
+        'sequelize db:migrate',
+        'sequelize db:seed:undo:all',
+        'sequelize db:seed --seed 20181130152743-demo-user',
+      ],
     },
   ],
   dockest: {
@@ -26,6 +33,6 @@ module.exports = {
     exitHandler: error => {
       console.log('error', error)
     },
-    dockerComposeFile: 'docker-compose-test.yml',
+    dockerComposeFilePath: './docker-compose-integration.yml',
   },
 }

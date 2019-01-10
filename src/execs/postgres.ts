@@ -1,6 +1,6 @@
 import execa from 'execa'
 
-import { IPostgresConfig$Int } from '../DockestConfig'
+import DockestConfig, { IPostgresConfig$Int } from '../DockestConfig'
 import DockestLogger from '../DockestLogger'
 import DockestError from '../error/DockestError'
 import { sleep } from './utils'
@@ -11,24 +11,24 @@ type checkPostgresResponsiveness = (
   containerId: string,
   postgresConfig: IPostgresConfig$Int
 ) => Promise<void>
-type postgresMigration = (postgresConfig: IPostgresConfig$Int) => Promise<void>
-type postgresSeed = (postgresConfig: IPostgresConfig$Int) => Promise<void>
 
 export interface IPostgres {
   startPostgresContainer: startPostgresContainer;
   checkPostgresConnection: checkPostgresConnection;
   checkPostgresResponsiveness: checkPostgresResponsiveness;
-  postgresMigration: postgresMigration;
-  postgresSeed: postgresSeed;
 }
 
-const createPostgres = (Logger: DockestLogger): IPostgres => {
+const createPostgres = (Config: DockestConfig, Logger: DockestLogger): IPostgres => {
+  const config = Config.getConfig()
+
   const startPostgresContainer: startPostgresContainer = async postgresConfig => {
     Logger.loading('Starting postgres container')
 
-    const dockerComposeFile = ' ' // `-f ${Config.getConfig().dockest.dockerComposeFile}` || ''
+    const dockerComposeFilePath = config.dockest.dockerComposeFilePath
+      ? `--file ${config.dockest.dockerComposeFilePath}`
+      : ''
     await execa.shell(
-      `docker-compose run --detach --no-deps${dockerComposeFile}--label ${
+      `docker-compose ${dockerComposeFilePath} run --detach --no-deps --label ${
         postgresConfig.label
       } --publish ${postgresConfig.port}:5432 ${postgresConfig.service}`
     )
@@ -97,27 +97,10 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
     await recurse(timeout)
   }
 
-  const postgresMigration: postgresMigration = async () => {
-    Logger.loading(`Applying database migrations`)
-    const { stdout: result } = await execa.shell(`sequelize db:migrate`)
-    Logger.success('Database migrations successfully executed', { result })
-  }
-
-  const postgresSeed: postgresSeed = async postgresConfig => {
-    const { seeder } = postgresConfig
-    Logger.loading('Applying database seeder')
-    const { stdout: result } = await execa.shell(
-      `sequelize db:seed:undo:all && sequelize db:seed --seed ${seeder}`
-    )
-    Logger.success('Database successfully seeded', { result })
-  }
-
   return {
     startPostgresContainer,
     checkPostgresConnection,
     checkPostgresResponsiveness,
-    postgresMigration,
-    postgresSeed,
   }
 }
 

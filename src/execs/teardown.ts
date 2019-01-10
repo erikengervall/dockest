@@ -20,6 +20,8 @@ export interface ITeardown {
 }
 
 const createTeardown = (Config: DockestConfig, Logger: DockestLogger): ITeardown => {
+  const config = Config.getConfig()
+
   const stopContainerById: stopContainerById = async (containerId, progress) => {
     await execa.shell(`docker stop ${containerId}`)
 
@@ -43,15 +45,15 @@ const createTeardown = (Config: DockestConfig, Logger: DockestLogger): ITeardown
     Logger.loading('Teardown started')
 
     const containerIds: string[] = [
-      ...Config.getConfig().kafka.reduce(
+      ...config.kafka.reduce(
         (acc: string[], k: IKafkaConfig$Int) => (k.$containerId ? acc.concat(k.$containerId) : acc),
         []
       ),
-      ...Config.getConfig().redis.reduce(
+      ...config.redis.reduce(
         (acc: string[], r: IRedisConfig$Int) => (r.$containerId ? acc.concat(r.$containerId) : acc),
         []
       ),
-      ...Config.getConfig().postgres.reduce(
+      ...config.postgres.reduce(
         (acc: string[], p: IPostgresConfig$Int) =>
           p.$containerId ? acc.concat(p.$containerId) : acc,
         []

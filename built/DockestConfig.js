@@ -23,8 +23,8 @@ class DockestConfig {
                 throw new ConfigurationError_1.default(`Invalid ${origin} configuration, missing required fields: [${missingFields.join(', ')}]`);
             }
         };
-        this.validatePostgresConfigs = (postgresConfigs) => postgresConfigs.forEach(({ label, seeder, service, host, db, port, password, username }) => {
-            const requiredFields = { label, seeder, service, host, db, port, password, username };
+        this.validatePostgresConfigs = (postgresConfigs) => postgresConfigs.forEach(({ label, service, host, db, port, password, username }) => {
+            const requiredFields = { label, service, host, db, port, password, username };
             this.validateRequiredFields('postgres', requiredFields);
         });
         this.validateRedisConfigs = (redisConfigs) => redisConfigs.forEach(({ label, port }) => {
