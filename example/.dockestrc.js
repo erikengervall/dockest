@@ -1,3 +1,5 @@
+const env = require('./env')
+
 module.exports = {
   jest: {
     lib: require('jest'),
@@ -19,6 +21,12 @@ module.exports = {
       host: 'localhost',
       port: 5434,
       service: 'postgres1',
+      commands: [
+        'sequelize db:migrate:undo:all',
+        'sequelize db:migrate',
+        'sequelize db:seed:undo:all',
+        'sequelize db:seed --seed 20181130152743-demo-user',
+      ],
     },
   ],
   dockest: {
