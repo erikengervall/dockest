@@ -16,12 +16,10 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
 
-  # download everything up front
-  - pwd
-  - cd example && docker-compose pull
-  - pwd
-  - cd example && docker-compose build
-  - pwd
+  # pull & build example images
+  - cd example
+  - docker-compose pull
+  - docker-compose build
 
   - echo "** before_install done ***"
 install:
