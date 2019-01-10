@@ -12,7 +12,6 @@ const postGresRunner = async (
   const {
     postgres: {
       startPostgresContainer,
-      checkPostgresConnection,
       checkPostgresResponsiveness,
       postgresMigration,
       postgresSeed,
