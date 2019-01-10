@@ -27,7 +27,11 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
     Logger.loading('Starting postgres container')
 
     const dockerComposeFile = ' ' // `-f ${Config.getConfig().dockest.dockerComposeFile}` || ''
-    await execa.shell(`docker-compose run --detach ${postgresConfig.service}`)
+    await execa.shell(
+      `docker-compose run --detach --no-deps${dockerComposeFile}--label ${
+        postgresConfig.label
+      } --publish ${postgresConfig.port}:5432 ${postgresConfig.service}`
+    )
 
     Logger.success('Postgres container started successfully')
   }
