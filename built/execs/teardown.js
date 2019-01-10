@@ -16,7 +16,7 @@ const createTeardown = (Config, Logger) => {
     const dockerComposeDown = async () => {
         const timeout = 10;
         await execa_1.default.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`);
-        Logger.stop('docker-compose down ran successfully');
+        Logger.stop('docker-compose: success');
     };
     const tearAll = async () => {
         Logger.loading('Teardown started');
@@ -27,12 +27,12 @@ const createTeardown = (Config, Logger) => {
         ];
         const containerIdsLen = containerIds.length;
         for (let i = 0; containerIdsLen > i; i++) {
-            const progress = `${i}/${containerIdsLen}`;
+            const progress = `${i + 1}/${containerIdsLen}`;
             const containerId = containerIds[i];
             await stopContainerById(containerId, progress);
             await removeContainerById(containerId, progress);
-            // await dockerComposeDown(progress) // TODO: Read up on this
         }
+        await dockerComposeDown(); // TODO: Read up on this
         Logger.success('Teardown successful');
     };
     return {
