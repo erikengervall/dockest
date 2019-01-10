@@ -23,7 +23,11 @@ const createPostgres = (Logger) => {
             }
             try {
                 const { stdout: dockerps } = await execa_1.default.shell(`docker ps`);
-                console.log('dockerps', dockerps);
+                console.log('\n\ndockerps', dockerps);
+                const { stdout: whereami } = await execa_1.default.shell(`pwd`);
+                console.log('whereami', whereami);
+                const { stdout: whatsaroundme } = await execa_1.default.shell(`ls -la`);
+                console.log('whatsaroundme', whatsaroundme);
                 const { stdout: echo } = await execa_1.default.shell(`echo > /dev/tcp/${host}/${port}`);
                 console.log('echo', echo);
                 Logger.success('Database connection established');

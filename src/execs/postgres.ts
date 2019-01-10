@@ -50,7 +50,11 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
 
       try {
         const { stdout: dockerps } = await execa.shell(`docker ps`)
-        console.log('dockerps', dockerps)
+        console.log('\n\ndockerps', dockerps)
+        const { stdout: whereami } = await execa.shell(`pwd`)
+        console.log('whereami', whereami)
+        const { stdout: whatsaroundme } = await execa.shell(`ls -la`)
+        console.log('whatsaroundme', whatsaroundme)
         const { stdout: echo } = await execa.shell(`echo > /dev/tcp/${host}/${port}`)
         console.log('echo', echo)
 
