@@ -2,7 +2,7 @@ const main = require('./app')
 const { seedUser, seedBanana } = require('./fixture')
 
 describe('main', () => {
-  it('should construct an object with key:value as first and second function arguments', async () => {
+  it('should construct an object with key:value as first and second function arguments AND fetch stuff from resources', async () => {
     const key = 'thisIsAKey'
     const value = 'thisIsAValue'
 
