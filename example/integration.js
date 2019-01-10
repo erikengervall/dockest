@@ -12,8 +12,8 @@ const config = {
   postgres: [
     {
       seeder: '20181130152743-demo-user',
-      connectionTimeout: 15,
-      responsivenessTimeout: 15,
+      connectionTimeout: 60,
+      responsivenessTimeout: 60,
       label: 'dockest.project=postgres1',
       username: 'erik',
       password: 'secretpw',
