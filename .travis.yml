@@ -6,6 +6,8 @@ addons:
     packages:
       - docker-ce
 before_install:
+  - docker --version
+  - docker-compose --version
   - echo "👋🏼"
 install:
   - yarn install-all
