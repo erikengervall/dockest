@@ -1,17 +1,30 @@
 version: '2'
 services:
-  postgres1:
+  postgres1sequelize:
     image: postgres:9.6.3
     labels:
-      - "dockest.project=postgres1"
+      - "dockest.project=postgres1sequelize"
     ports:
       - "5434:5432"
     environment:
-      POSTGRES_USER: erik
-      POSTGRES_PASSWORD: secretpw
-      POSTGRES_DB: dab
-    # volumes:
-    #   - postgresVolume1:/var/lib/postgresql/data
+      POSTGRES_USER: ramda
+      POSTGRES_PASSWORD: is
+      POSTGRES_DB: nobueno
+    volumes:
+      - postgres1Volume:/var/lib/postgresql/data
+
+  postgres2knex:
+    image: postgres:9.6.3
+    labels:
+      - "dockest.project=postgres2knex"
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: ramda
+      POSTGRES_PASSWORD: is
+      POSTGRES_DB: nobueno
+    volumes:
+      - postgres2Volume:/var/lib/postgresql/data
 
   # kafka1:
   #   labels:
@@ -36,7 +49,8 @@ services:
     # volumes:
     #   - redisVolume1
 
-# volumes:
-#   postgresVolume1:
+volumes:
+  postgres1Volume:
+  postgres2Volume:
 #   kafkaVolume1:
 #   redisVolume1:
