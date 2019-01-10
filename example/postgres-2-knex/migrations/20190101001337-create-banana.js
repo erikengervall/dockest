@@ -3,6 +3,7 @@ exports.up = knex =>
     table.increments('id').primary()
     table.string('size')
     table.string('maturity')
+    table.timestamps(true, true)
   })
 
 exports.down = knex => knex.schema.dropTableIfExists('bananas')

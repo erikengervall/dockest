@@ -1,8 +1,8 @@
 const path = require('path')
 
 module.exports = {
-  'config': path.resolve('./postgres1/config', 'postgresConfig.js'),
-  'models-path': path.resolve('./postgres1', 'models'),
-  'seeders-path': path.resolve('./postgres1', 'seeders'),
-  'migrations-path': path.resolve('./postgres1', 'migrations')
+  'config': path.resolve('./postgres-1-sequelize/config', 'postgresConfig.js'),
+  'models-path': path.resolve('./postgres-1-sequelize', 'models'),
+  'seeders-path': path.resolve('./postgres-1-sequelize', 'seeders'),
+  'migrations-path': path.resolve('./postgres-1-sequelize', 'migrations')
 }

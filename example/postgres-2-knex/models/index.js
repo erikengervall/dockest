@@ -1,10 +1,8 @@
-const Sequelize = require('sequelize')
+const Knex = require('knex')
 
-const knexConfig = require('../config/knexConfig.js')
+const knexConfig = require('../../knexfile.js')
 
-const config = knexConfig
-
-const knex = require('knex')({
+const knex = Knex({
   client: knexConfig.client,
   connection: {
     host: knexConfig.connection.host,

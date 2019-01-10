@@ -9,8 +9,8 @@ const seedUser = {
 const seedBanana = {
   size: 'medium',
   maturity: 'quite bueno',
-  createdAt: new Date('2019-02-01T13:37:00.000Z'),
-  updatedAt: new Date('2019-02-02T13:37:00.000Z'),
+  created_at: new Date('2019-02-01T13:37:00.000Z'),
+  updated_at: new Date('2019-02-02T13:37:00.000Z'),
 }
 
 module.exports = {

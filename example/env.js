@@ -1,20 +1,20 @@
 module.exports = {
-  postgres1: {
-    label: 'dockest.project=postgres1',
+  postgres1sequelize: {
+    label: 'dockest.project=postgres1sequelize',
     username: 'ramda',
     password: 'is',
-    db: 'nobueno',
+    database: 'nobueno',
     host: 'localhost',
     port: 5434,
-    service: 'postgres1',
+    service: 'postgres1sequelize',
   },
-  knex1: {
-    label: 'dockest.project=postgres2',
+  postgres2knex: {
+    label: 'dockest.project=postgres2knex',
     username: 'ramda',
     password: 'is',
-    db: 'nobueno',
+    database: 'nobueno',
     host: 'localhost',
     port: 5435,
-    service: 'postgres2',
+    service: 'postgres2knex',
   },
 }
