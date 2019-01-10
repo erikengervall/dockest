@@ -10,14 +10,18 @@ before_install:
   - docker --version
 
   - docker-compose --version
+  # thanks https://github.com/Accenture/adop-docker-compose/blob/master/.travis.yml
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
 
   # download everything up front
-  - docker-compose pull
-  - docker-compose build
+  - pwd
+  - cd example && docker-compose pull
+  - pwd
+  - cd example && docker-compose build
+  - pwd
 
   - echo "** before_install done ***"
 install:
