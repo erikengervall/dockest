@@ -1,6 +1,4 @@
-const { default: Dockest } = require('../built')
-
-const config = {
+module.exports = {
   jest: {
     lib: require('jest'),
     silent: false, // true
@@ -12,8 +10,8 @@ const config = {
   postgres: [
     {
       seeder: '20181130152743-demo-user',
-      connectionTimeout: 60,
-      responsivenessTimeout: 60,
+      connectionTimeout: 15,
+      responsivenessTimeout: 15,
       label: 'dockest.project=postgres1',
       username: 'erik',
       password: 'secretpw',
@@ -31,5 +29,3 @@ const config = {
     dockerComposeFile: 'docker-compose-test.yml',
   },
 }
-
-Dockest(config)

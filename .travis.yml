@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+ - "node"
+addons:
+  apt:
+    packages:
+      - docker-ce
+before_install:
+  # Print relevant versions
+  - docker --version
+  - docker-compose --version
+
+  # thanks https://github.com/Accenture/adop-docker-compose/blob/master/.travis.yml
+  # upgrading docker-compose to match my development version
+  - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
+
+  # pull & build example images
+  - cd example
+  - docker-compose pull
+  - docker-compose build
+  - cd ../
+
+  - echo "** before_install done ***"
+install:
+  - yarn install-all

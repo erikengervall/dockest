@@ -7,7 +7,7 @@ const DockestError_1 = __importDefault(require("../error/DockestError"));
 let attempts = 3;
 const postGresRunner = async (postgresConfig, resources) => {
     const { Logger, Execs } = resources;
-    const { postgres: { startPostgresContainer, checkPostgresConnection, checkPostgresResponsiveness, postgresMigration, postgresSeed, }, helpers: { getContainerId, customCmd }, teardown: { tearAll }, } = Execs;
+    const { postgres: { startPostgresContainer, checkPostgresResponsiveness, postgresMigration, postgresSeed, }, helpers: { getContainerId, customCmd }, teardown: { tearAll }, } = Execs;
     let containerId;
     containerId = await getContainerId(postgresConfig);
     postgresConfig.$containerId = containerId;
@@ -26,7 +26,6 @@ const postGresRunner = async (postgresConfig, resources) => {
         await postGresRunner(postgresConfig, resources);
         return;
     }
-    await checkPostgresConnection(postgresConfig);
     await checkPostgresResponsiveness(containerId, postgresConfig);
     Logger.loading('Running Sequelize scripts');
     const cmds = postgresConfig.cmds;

@@ -26,16 +26,17 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
   const startPostgresContainer: startPostgresContainer = async postgresConfig => {
     Logger.loading('Starting postgres container')
 
-    const dockerComposeFile = '' // `-f ${Config.getConfig().dockest.dockerComposeFile}` || ''
+    const dockerComposeFile = ' ' // `-f ${Config.getConfig().dockest.dockerComposeFile}` || ''
     await execa.shell(
-      `docker-compose run -d ${dockerComposeFile} --label ${postgresConfig.label} -p ${
-        postgresConfig.port
-      }:5432 ${postgresConfig.service}`
+      `docker-compose run --detach --no-deps${dockerComposeFile}--label ${
+        postgresConfig.label
+      } --publish ${postgresConfig.port}:5432 ${postgresConfig.service}`
     )
 
     Logger.success('Postgres container started successfully')
   }
 
+  // Deprecated
   const checkPostgresConnection: checkPostgresConnection = async postgresConfig => {
     Logger.loading('Attempting to establish database connection')
 
