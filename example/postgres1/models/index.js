@@ -5,18 +5,11 @@ const postgresConfig = require('../config/postgresConfig.js')
 const config = postgresConfig.test
 const db = {}
 
-const sequelize = new Sequelize({
-  ...config,
-  operatorsAliases: false,
-})
+const sequelize = new Sequelize({ ...config, operatorsAliases: false })
 
 const UserModel = sequelize.define(
   'User',
-  {
-    firstName: Sequelize.STRING,
-    lastName: Sequelize.STRING,
-    email: Sequelize.STRING,
-  },
+  { firstName: Sequelize.STRING, lastName: Sequelize.STRING, email: Sequelize.STRING },
   {}
 )
 

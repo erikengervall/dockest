@@ -1,8 +1,8 @@
 const path = require('path')
 
 module.exports = {
-  'config': path.resolve('./postgres/config', 'postgresConfig.js'),
-  'models-path': path.resolve('./postgres', 'models'),
-  'seeders-path': path.resolve('./postgres', 'seeders'),
-  'migrations-path': path.resolve('./postgres', 'migrations')
+  'config': path.resolve('./postgres1/config', 'postgresConfig.js'),
+  'models-path': path.resolve('./postgres1', 'models'),
+  'seeders-path': path.resolve('./postgres1', 'seeders'),
+  'migrations-path': path.resolve('./postgres1', 'migrations')
 }

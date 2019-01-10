@@ -1,5 +1,5 @@
-const main = require('./function')
-const { seedUser } = require('./fixture')
+const main = require('./app')
+const { seedUser, seedBanana } = require('./fixture')
 
 describe('main', () => {
   it('should construct an object with key:value as first and second function arguments', async () => {
@@ -11,7 +11,8 @@ describe('main', () => {
     expect(result).toEqual(
       expect.objectContaining({
         [key]: value,
-        firstEntry: expect.objectContaining(seedUser),
+        firstPostgres1Entry: expect.objectContaining(seedUser),
+        firstPostgres2Entry: expect.objectContaining(seedBanana),
       })
     )
   })
