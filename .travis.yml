@@ -15,6 +15,10 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
 
+  # download everything up front
+  - docker-compose pull
+  - docker-compose build
+
   - echo "** before_install done ***"
 install:
   - yarn install-all
