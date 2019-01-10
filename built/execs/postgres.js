@@ -22,9 +22,9 @@ const createPostgres = (Logger) => {
                 throw new DockestError_1.default('Database connection timed out');
             }
             try {
-                const { stdoud: dockerps } = await execa_1.default.shell(`docker ps`);
+                const { stdout: dockerps } = await execa_1.default.shell(`docker ps`);
                 console.log('dockerps', dockerps);
-                const { stdoud: echo } = await execa_1.default.shell(`echo > /dev/tcp/${host}/${port}`);
+                const { stdout: echo } = await execa_1.default.shell(`echo > /dev/tcp/${host}/${port}`);
                 console.log('echo', echo);
                 Logger.success('Database connection established');
             }

@@ -49,9 +49,9 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
       }
 
       try {
-        const { stdoud: dockerps } = await execa.shell(`docker ps`)
+        const { stdout: dockerps } = await execa.shell(`docker ps`)
         console.log('dockerps', dockerps)
-        const { stdoud: echo } = await execa.shell(`echo > /dev/tcp/${host}/${port}`)
+        const { stdout: echo } = await execa.shell(`echo > /dev/tcp/${host}/${port}`)
         console.log('echo', echo)
 
         Logger.success('Database connection established')
