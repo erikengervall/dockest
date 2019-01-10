@@ -4,6 +4,7 @@ node_js:
 services:
   - docker
 before_install:
+  - docker-compose --version
   - curl -o- -L https://yarnpkg.com/install.sh | bash # yarn
   - export PATH=$HOME/.yarn/bin:$PATH # yarn
 install:
