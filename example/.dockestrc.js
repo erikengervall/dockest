@@ -11,7 +11,6 @@ module.exports = {
   },
   postgres: [
     {
-      seeder: '20181130152743-demo-user',
       connectionTimeout: 15,
       responsivenessTimeout: 15,
       label: 'dockest.project=postgres1',
@@ -34,6 +33,6 @@ module.exports = {
     exitHandler: error => {
       console.log('error', error)
     },
-    dockerComposeFile: 'docker-compose-test.yml',
+    dockerComposeFilePath: './docker-compose-integration.yml',
   },
 }

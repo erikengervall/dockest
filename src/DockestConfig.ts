@@ -57,7 +57,7 @@ export interface IConfig {
   dockest: {
     verbose?: boolean,
     exitHandler?: (err?: Error) => void,
-    dockerComposeFile?: string,
+    dockerComposeFilePath?: string,
   };
   postgres: IPostgresConfig[];
   redis: IRedisConfig[];

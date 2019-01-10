@@ -6,11 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const DockestError_1 = __importDefault(require("../error/DockestError"));
 const utils_1 = require("./utils");
-const createPostgres = (Logger) => {
+const createPostgres = (Config, Logger) => {
+    const config = Config.getConfig();
     const startPostgresContainer = async (postgresConfig) => {
         Logger.loading('Starting postgres container');
-        const dockerComposeFile = ' '; // `-f ${Config.getConfig().dockest.dockerComposeFile}` || ''
-        await execa_1.default.shell(`docker-compose run --detach --no-deps${dockerComposeFile}--label ${postgresConfig.label} --publish ${postgresConfig.port}:5432 ${postgresConfig.service}`);
+        const dockerComposeFilePath = config.dockest.dockerComposeFilePath
+            ? `--file ${config.dockest.dockerComposeFilePath}`
+            : '';
+        await execa_1.default.shell(`docker-compose ${dockerComposeFilePath} run --detach --no-deps --label ${postgresConfig.label} --publish ${postgresConfig.port}:5432 ${postgresConfig.service}`);
         Logger.success('Postgres container started successfully');
     };
     // Deprecated
@@ -54,23 +57,10 @@ const createPostgres = (Logger) => {
         };
         await recurse(timeout);
     };
-    const postgresMigration = async () => {
-        Logger.loading(`Applying database migrations`);
-        const { stdout: result } = await execa_1.default.shell(`sequelize db:migrate`);
-        Logger.success('Database migrations successfully executed', { result });
-    };
-    const postgresSeed = async (postgresConfig) => {
-        const { seeder } = postgresConfig;
-        Logger.loading('Applying database seeder');
-        const { stdout: result } = await execa_1.default.shell(`sequelize db:seed:undo:all && sequelize db:seed --seed ${seeder}`);
-        Logger.success('Database successfully seeded', { result });
-    };
     return {
         startPostgresContainer,
         checkPostgresConnection,
         checkPostgresResponsiveness,
-        postgresMigration,
-        postgresSeed,
     };
 };
 exports.default = createPostgres;
