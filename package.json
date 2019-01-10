@@ -10,11 +10,8 @@
     "clean": "rimraf ./built",
     "build": "npm run clean && tsc",
     "build:watch": "npm run clean && tsc --watch",
-    
     "install-all": "yarn && cd example && yarn",
-
     "test": "cd example && yarn test",
-
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down --volumes --rmi local",
     "seq": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:undo:all && sequelize db:seed:all",
@@ -22,6 +19,7 @@
     "jest:watch": "jest ./built/example --watch --detectOpenHandles"
   },
   "dependencies": {
+    "deepmerge": "^3.0.0",
     "execa": "^1.0.0",
     "exit": "^0.1.2"
   },

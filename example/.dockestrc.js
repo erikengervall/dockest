@@ -1,25 +1,20 @@
-const env = require('./env')
+const { postgres1 } = require('./env')
 
 module.exports = {
   jest: {
     lib: require('jest'),
-    silent: false, // true
-    verbose: false, // false
-    forceExit: true, // false
-    watchAll: false, // ?
-    projects: ['.'], // null
   },
   postgres: [
     {
+      label: postgres1.label,
+      username: postgres1.username,
+      password: postgres1.password,
+      db: postgres1.db,
+      host: postgres1.host,
+      port: postgres1.port,
+      service: postgres1.service,
       connectionTimeout: 15,
       responsivenessTimeout: 15,
-      label: 'dockest.project=postgres1',
-      username: 'erik',
-      password: 'secretpw',
-      db: 'dab',
-      host: 'localhost',
-      port: 5434,
-      service: 'postgres1',
       commands: [
         'sequelize db:migrate:undo:all',
         'sequelize db:migrate',

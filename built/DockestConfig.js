@@ -3,6 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const deepmerge_1 = __importDefault(require("deepmerge"));
+const fs_1 = __importDefault(require("fs"));
 const ConfigurationError_1 = __importDefault(require("./error/ConfigurationError"));
 const DEFAULT_CONFIG = {
     jest: {
@@ -62,11 +64,21 @@ class DockestConfig {
                 config.kafka = [];
             }
         };
+        const dockestRcFilePath = `${process.cwd()}/.dockestrc.js`;
         if (userConfig && typeof userConfig === 'object') {
-            this.config = Object.assign({}, DEFAULT_CONFIG, userConfig);
+            this.config = userConfig;
+        }
+        else if (fs_1.default.existsSync(dockestRcFilePath)) {
+            this.config = require(dockestRcFilePath);
         }
         else {
-            throw new ConfigurationError_1.default('Missing configuration or configuration not an object');
+            throw new ConfigurationError_1.default('Could not find ".dockestrc.js"');
+        }
+        if (this.config && typeof this.config === 'object') {
+            this.config = deepmerge_1.default(DEFAULT_CONFIG, this.config);
+        }
+        else {
+            throw new ConfigurationError_1.default('Configuration step failed');
         }
         this.validateUserConfig(this.config);
     }

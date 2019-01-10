@@ -1,3 +1,6 @@
+import merge from 'deepmerge'
+import fs from 'fs'
+
 import ConfigurationError from './error/ConfigurationError'
 
 export interface IPostgresConfig {
@@ -85,13 +88,20 @@ export class DockestConfig {
   config: IConfig$Int
 
   constructor(userConfig?: IConfig) {
+    const dockestRcFilePath = `${process.cwd()}/.dockestrc.js`
+
     if (userConfig && typeof userConfig === 'object') {
-      this.config = {
-        ...DEFAULT_CONFIG,
-        ...userConfig,
-      }
+      this.config = userConfig
+    } else if (fs.existsSync(dockestRcFilePath)) {
+      this.config = require(dockestRcFilePath)
     } else {
-      throw new ConfigurationError('Missing configuration or configuration not an object')
+      throw new ConfigurationError('Could not find ".dockestrc.js"')
+    }
+
+    if (this.config && typeof this.config === 'object') {
+      this.config = merge(DEFAULT_CONFIG, this.config)
+    } else {
+      throw new ConfigurationError('Configuration step failed')
     }
 
     this.validateUserConfig(this.config)
