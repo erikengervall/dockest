@@ -10,13 +10,8 @@ const postGresRunner = async (
 ): Promise<void> => {
   const { Logger, Execs } = resources
   const {
-    postgres: {
-      startPostgresContainer,
-      checkPostgresResponsiveness,
-      postgresMigration,
-      postgresSeed,
-    },
-    helpers: { getContainerId, customCmd },
+    postgres: { startPostgresContainer, checkPostgresResponsiveness },
+    helpers: { getContainerId, runCustomCommand },
     teardown: { tearAll },
   } = Execs
   let containerId
@@ -48,14 +43,9 @@ const postGresRunner = async (
 
   Logger.loading('Running Sequelize scripts')
 
-  const cmds = postgresConfig.cmds
-  if (cmds && cmds.length > 0) {
-    for (const cmd of cmds) {
-      await customCmd(cmd)
-    }
-  } else {
-    await postgresMigration(postgresConfig)
-    await postgresSeed(postgresConfig)
+  const commands = postgresConfig.commands || []
+  for (const cmd of commands) {
+    await runCustomCommand(cmd)
   }
 }
 

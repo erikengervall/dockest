@@ -97,27 +97,10 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
     await recurse(timeout)
   }
 
-  const postgresMigration: postgresMigration = async () => {
-    Logger.loading(`Applying database migrations`)
-    const { stdout: result } = await execa.shell(`sequelize db:migrate`)
-    Logger.success('Database migrations successfully executed', { result })
-  }
-
-  const postgresSeed: postgresSeed = async postgresConfig => {
-    const { seeder } = postgresConfig
-    Logger.loading('Applying database seeder')
-    const { stdout: result } = await execa.shell(
-      `sequelize db:seed:undo:all && sequelize db:seed --seed ${seeder}`
-    )
-    Logger.success('Database successfully seeded', { result })
-  }
-
   return {
     startPostgresContainer,
     checkPostgresConnection,
     checkPostgresResponsiveness,
-    postgresMigration,
-    postgresSeed,
   }
 }
 
