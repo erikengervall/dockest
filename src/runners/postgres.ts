@@ -45,7 +45,6 @@ const postGresRunner = async (
     return
   }
 
-  // await checkPostgresConnection(postgresConfig)
   await checkPostgresResponsiveness(containerId, postgresConfig)
 
   Logger.loading('Running Sequelize scripts')

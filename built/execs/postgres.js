@@ -13,6 +13,7 @@ const createPostgres = (Logger) => {
         await execa_1.default.shell(`docker-compose run --detach --no-deps${dockerComposeFile}--label ${postgresConfig.label} --publish ${postgresConfig.port}:5432 ${postgresConfig.service}`);
         Logger.success('Postgres container started successfully');
     };
+    // Deprecated
     const checkPostgresConnection = async (postgresConfig) => {
         Logger.loading('Attempting to establish database connection');
         const { connectionTimeout: timeout = 3, host, port } = postgresConfig;
@@ -22,14 +23,7 @@ const createPostgres = (Logger) => {
                 throw new DockestError_1.default('Database connection timed out');
             }
             try {
-                const { stdout: dockerps } = await execa_1.default.shell(`docker ps`);
-                console.log('\n\ndockerps', dockerps);
-                const { stdout: whereami } = await execa_1.default.shell(`pwd`);
-                console.log('whereami', whereami);
-                const { stdout: whatsaroundme } = await execa_1.default.shell(`ls -la`);
-                console.log('whatsaroundme', whatsaroundme);
-                const { stdout: echo } = await execa_1.default.shell(`echo > /dev/tcp/${host}/${port}`);
-                console.log('echo', echo);
+                await execa_1.default.shell(`echo > /dev/tcp/${host}/${port}`);
                 Logger.success('Database connection established');
             }
             catch (error) {

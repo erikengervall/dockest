@@ -36,6 +36,7 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
     Logger.success('Postgres container started successfully')
   }
 
+  // Deprecated
   const checkPostgresConnection: checkPostgresConnection = async postgresConfig => {
     Logger.loading('Attempting to establish database connection')
 
@@ -49,14 +50,7 @@ const createPostgres = (Logger: DockestLogger): IPostgres => {
       }
 
       try {
-        const { stdout: dockerps } = await execa.shell(`docker ps`)
-        console.log('\n\ndockerps', dockerps)
-        const { stdout: whereami } = await execa.shell(`pwd`)
-        console.log('whereami', whereami)
-        const { stdout: whatsaroundme } = await execa.shell(`ls -la`)
-        console.log('whatsaroundme', whatsaroundme)
-        const { stdout: echo } = await execa.shell(`echo > /dev/tcp/${host}/${port}`)
-        console.log('echo', echo)
+        await execa.shell(`echo > /dev/tcp/${host}/${port}`)
 
         Logger.success('Database connection established')
       } catch (error) {
