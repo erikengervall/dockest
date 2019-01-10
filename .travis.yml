@@ -1,7 +1,11 @@
 language: node_js
 node_js:
  - "node"
+addons:
+  apt:
+    packages:
+      - docker-ce
 before_install:
-  - echo ":wave:"
+  - echo "👋🏼"
 install:
   - yarn install-all
