@@ -20,6 +20,7 @@ before_install:
   - cd example
   - docker-compose pull
   - docker-compose build
+  - cd ../
 
   - echo "** before_install done ***"
 install:
