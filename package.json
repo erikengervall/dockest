@@ -28,7 +28,6 @@
     "@types/exit": "^0.1.30",
     "@types/jest": "^23.3.9",
     "@types/sequelize": "^4.27.32",
-    "kafkajs": "^1.4.6",
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
     "prettier": "^1.15.3",

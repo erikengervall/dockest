@@ -1,10 +1,6 @@
 import execa from 'execa'
 
-import DockestConfig, {
-  IKafkaConfig$Int,
-  IPostgresConfig$Int,
-  IRedisConfig$Int,
-} from '../DockestConfig'
+import DockestConfig, { IPostgresConfig$Int } from '../DockestConfig'
 import DockestLogger from '../DockestLogger'
 
 type stopContainerById = (containerId: string, progress: string) => Promise<void>
@@ -45,14 +41,6 @@ const createTeardown = (Config: DockestConfig, Logger: DockestLogger): ITeardown
     Logger.loading('Teardown started')
 
     const containerIds: string[] = [
-      ...config.kafka.reduce(
-        (acc: string[], k: IKafkaConfig$Int) => (k.$containerId ? acc.concat(k.$containerId) : acc),
-        []
-      ),
-      ...config.redis.reduce(
-        (acc: string[], r: IRedisConfig$Int) => (r.$containerId ? acc.concat(r.$containerId) : acc),
-        []
-      ),
       ...config.postgres.reduce(
         (acc: string[], p: IPostgresConfig$Int) =>
           p.$containerId ? acc.concat(p.$containerId) : acc,

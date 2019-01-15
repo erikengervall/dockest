@@ -20,25 +20,6 @@ export interface IPostgresConfig$Int extends IPostgresConfig {
   $containerId?: string;
 }
 
-export interface IRedisConfig {
-  connectionTimeout?: number;
-  label: string;
-  port: number;
-}
-export interface IRedisConfig$Int extends IRedisConfig {
-  $containerId?: string;
-}
-
-export interface IKafkaConfig {
-  connectionTimeout?: number;
-  label: string;
-  topic: string;
-  port: number;
-}
-export interface IKafkaConfig$Int extends IKafkaConfig {
-  $containerId?: string;
-}
-
 export interface IJestConfig {
   lib: {
     SearchSource: any,
@@ -63,13 +44,9 @@ export interface IConfig {
     dockerComposeFilePath?: string,
   };
   postgres: IPostgresConfig[];
-  redis: IRedisConfig[];
-  kafka: IKafkaConfig[];
 }
 export interface IConfig$Int extends IConfig {
   postgres: IPostgresConfig$Int[];
-  redis: IRedisConfig$Int[];
-  kafka: IKafkaConfig$Int[];
 }
 
 const DEFAULT_CONFIG = {
@@ -80,8 +57,6 @@ const DEFAULT_CONFIG = {
     verbose: false,
   },
   postgres: [],
-  redis: [],
-  kafka: [],
 }
 
 export class DockestConfig {
@@ -127,18 +102,6 @@ export class DockestConfig {
       this.validateRequiredFields('postgres', requiredFields)
     })
 
-  validateRedisConfigs = (redisConfigs: IRedisConfig[]): void =>
-    redisConfigs.forEach(({ label, port }) => {
-      const requiredFields = { label, port }
-      this.validateRequiredFields('redis', requiredFields)
-    })
-
-  validateKafkaConfigs = (kafkaConfigs: IKafkaConfig[]): void =>
-    kafkaConfigs.forEach(({ label, topic, port }) => {
-      const requiredFields = { label, topic, port }
-      this.validateRequiredFields('kafka', requiredFields)
-    })
-
   validateJestConfig = (jestConfig: IJestConfig): void => {
     const { lib } = jestConfig
     const requiredFields = { lib }
@@ -150,25 +113,17 @@ export class DockestConfig {
   }
 
   validateUserConfig = (config: IConfig): void => {
-    const { postgres, kafka, redis, jest } = config
+    const { postgres, jest } = config
 
-    if (!postgres && !kafka && !redis && !jest) {
+    if (!postgres && !jest) {
       throw new ConfigurationError('Missing something to dockerize')
     }
 
     this.validatePostgresConfigs(postgres)
-    this.validateRedisConfigs(redis)
-    this.validateKafkaConfigs(kafka)
     this.validateJestConfig(jest)
 
     if (!postgres) {
       config.postgres = []
-    }
-    if (!redis) {
-      config.redis = []
-    }
-    if (!kafka) {
-      config.kafka = []
     }
   }
 

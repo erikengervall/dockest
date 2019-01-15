@@ -14,8 +14,6 @@ const DEFAULT_CONFIG = {
         verbose: false,
     },
     postgres: [],
-    redis: [],
-    kafka: [],
 };
 class DockestConfig {
     constructor(userConfig) {
@@ -29,14 +27,6 @@ class DockestConfig {
             const requiredFields = { label, service, host, db, port, password, username };
             this.validateRequiredFields('postgres', requiredFields);
         });
-        this.validateRedisConfigs = (redisConfigs) => redisConfigs.forEach(({ label, port }) => {
-            const requiredFields = { label, port };
-            this.validateRequiredFields('redis', requiredFields);
-        });
-        this.validateKafkaConfigs = (kafkaConfigs) => kafkaConfigs.forEach(({ label, topic, port }) => {
-            const requiredFields = { label, topic, port };
-            this.validateRequiredFields('kafka', requiredFields);
-        });
         this.validateJestConfig = (jestConfig) => {
             const { lib } = jestConfig;
             const requiredFields = { lib };
@@ -46,22 +36,14 @@ class DockestConfig {
             }
         };
         this.validateUserConfig = (config) => {
-            const { postgres, kafka, redis, jest } = config;
-            if (!postgres && !kafka && !redis && !jest) {
+            const { postgres, jest } = config;
+            if (!postgres && !jest) {
                 throw new ConfigurationError_1.default('Missing something to dockerize');
             }
             this.validatePostgresConfigs(postgres);
-            this.validateRedisConfigs(redis);
-            this.validateKafkaConfigs(kafka);
             this.validateJestConfig(jest);
             if (!postgres) {
                 config.postgres = [];
-            }
-            if (!redis) {
-                config.redis = [];
-            }
-            if (!kafka) {
-                config.kafka = [];
             }
         };
         const dockestRcFilePath = `${process.cwd()}/.dockestrc.js`;

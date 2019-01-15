@@ -22,8 +22,6 @@ const createTeardown = (Config, Logger) => {
     const tearAll = async () => {
         Logger.loading('Teardown started');
         const containerIds = [
-            ...config.kafka.reduce((acc, k) => (k.$containerId ? acc.concat(k.$containerId) : acc), []),
-            ...config.redis.reduce((acc, r) => (r.$containerId ? acc.concat(r.$containerId) : acc), []),
             ...config.postgres.reduce((acc, p) => p.$containerId ? acc.concat(p.$containerId) : acc, []),
         ];
         const containerIdsLen = containerIds.length;
