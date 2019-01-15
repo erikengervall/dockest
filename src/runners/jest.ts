@@ -1,20 +1,18 @@
-// const jest = require('jest') // tslint:disable-line
 import exit from 'exit'
-
-import { IResources } from '../index'
+import DockestConfig from '../DockestConfig'
+import DockestLogger from '../DockestLogger'
+import { tearAll } from '../execs/teardown'
 
 interface IJestResult {
   results: {
-    success: true,
-  };
+    success: true
+  }
 }
 
-const jestRunner = async (resources: IResources): Promise<void> => {
-  const { Config, Logger, Execs } = resources
-  const {
-    teardown: { tearAll },
-  } = Execs
-  const jestOptions = Config.getConfig().jest
+const jestRunner = async (): Promise<void> => {
+  const config = new DockestConfig().getConfig()
+  const Logger = new DockestLogger()
+  const jestOptions = config.jest
   const jest = jestOptions.lib
 
   try {

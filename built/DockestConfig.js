@@ -13,7 +13,7 @@ const DEFAULT_CONFIG = {
     dockest: {
         verbose: false,
     },
-    postgres: [],
+    runners: [],
 };
 class DockestConfig {
     constructor(userConfig) {
@@ -23,10 +23,6 @@ class DockestConfig {
                 throw new ConfigurationError_1.default(`Invalid ${origin} configuration, missing required fields: [${missingFields.join(', ')}]`);
             }
         };
-        this.validatePostgresConfigs = (postgresConfigs) => postgresConfigs.forEach(({ label, service, host, db, port, password, username }) => {
-            const requiredFields = { label, service, host, db, port, password, username };
-            this.validateRequiredFields('postgres', requiredFields);
-        });
         this.validateJestConfig = (jestConfig) => {
             const { lib } = jestConfig;
             const requiredFields = { lib };
@@ -36,36 +32,36 @@ class DockestConfig {
             }
         };
         this.validateUserConfig = (config) => {
-            const { postgres, jest } = config;
-            if (!postgres && !jest) {
+            const { runners, jest } = config;
+            if (!runners && !jest) {
                 throw new ConfigurationError_1.default('Missing something to dockerize');
             }
-            this.validatePostgresConfigs(postgres);
             this.validateJestConfig(jest);
-            if (!postgres) {
-                config.postgres = [];
-            }
         };
+        if (DockestConfig.instance) {
+            return DockestConfig.instance;
+        }
         const dockestRcFilePath = `${process.cwd()}/.dockestrc.js`;
         if (userConfig && typeof userConfig === 'object') {
-            this.config = userConfig;
+            DockestConfig.config = userConfig;
         }
         else if (fs_1.default.existsSync(dockestRcFilePath)) {
-            this.config = require(dockestRcFilePath);
+            DockestConfig.config = require(dockestRcFilePath);
         }
         else {
             throw new ConfigurationError_1.default('Could not find ".dockestrc.js"');
         }
-        if (this.config && typeof this.config === 'object') {
-            this.config = deepmerge_1.default(DEFAULT_CONFIG, this.config);
+        if (DockestConfig.config && typeof DockestConfig.config === 'object') {
+            DockestConfig.config = deepmerge_1.default(DEFAULT_CONFIG, DockestConfig.config);
         }
         else {
             throw new ConfigurationError_1.default('Configuration step failed');
         }
-        this.validateUserConfig(this.config);
+        this.validateUserConfig(DockestConfig.config);
+        DockestConfig.instance = this;
     }
     getConfig() {
-        return this.config;
+        return DockestConfig.config;
     }
 }
 exports.DockestConfig = DockestConfig;

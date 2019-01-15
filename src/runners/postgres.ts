@@ -1,52 +1,46 @@
-import { IResources } from '..'
-import { IPostgresConfig$Int } from '../DockestConfig'
-import DockestError from '../error/DockestError'
+import { getContainerId } from '../execs/helpers'
+import { checkPostgresResponsiveness, startPostgresContainer } from '../execs/postgres'
+import { tearSingle } from '../execs/teardown'
 
-let attempts = 3
+export interface IPostgresRunnerConfig {
+  label: string // Used for getting containerId using --filter
+  service: string // dockest-compose service name
+  commands?: string[] // Run custom scripts (migrate/seed)
+  connectionTimeout?: number
+  responsivenessTimeout?: number
+  // Connection
+  host: string
+  db: string
+  port: number
+  password: string
+  username: string
+}
 
-const postGresRunner = async (
-  postgresConfig: IPostgresConfig$Int,
-  resources: IResources
-): Promise<void> => {
-  const { Logger, Execs } = resources
-  const {
-    postgres: { startPostgresContainer, checkPostgresResponsiveness },
-    helpers: { getContainerId, runCustomCommand },
-    teardown: { tearAll },
-  } = Execs
-  let containerId
+export class PostgresRunner {
+  public $containerId?: string
+  public config: IPostgresRunnerConfig
 
-  containerId = await getContainerId(postgresConfig)
-  postgresConfig.$containerId = containerId
-
-  if (!containerId || containerId.length === 0) {
-    await startPostgresContainer(postgresConfig)
-
-    containerId = await getContainerId(postgresConfig)
-    postgresConfig.$containerId = containerId
-  } else {
-    Logger.error('Unexpected container found, releasing resources and re-running')
-
-    await tearAll(containerId)
-
-    if (attempts <= 0) {
-      throw new DockestError('Postgres rerun attempts exhausted')
-    }
-
-    attempts--
-    await postGresRunner(postgresConfig, resources)
-
-    return
+  constructor(config: IPostgresRunnerConfig) {
+    this.config = config
   }
 
-  await checkPostgresResponsiveness(containerId, postgresConfig)
+  public async setup() {
+    const containerId = await startPostgresContainer(this.config)
+    this.$containerId = containerId
 
-  Logger.loading('Running Sequelize scripts')
+    await checkPostgresResponsiveness(containerId, this.config)
+  }
 
-  const commands = postgresConfig.commands || []
-  for (const cmd of commands) {
-    await runCustomCommand(cmd)
+  public async teardown() {
+    tearSingle(this.$containerId)
+  }
+
+  public async getHelpers() {
+    return {
+      clear: () => true,
+      loadData: () => true,
+    }
   }
 }
 
-export default postGresRunner
+export default PostgresRunner

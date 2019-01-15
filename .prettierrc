@@ -1,7 +1,7 @@
 {
   "printWidth": 100,
   "max-len": "off",
-  "parser": "babylon",
+  "parser": "typescript",
   "semi": false,
   "singleQuote": true,
   "trailingComma": "es5"

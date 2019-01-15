@@ -4,18 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const exit_1 = __importDefault(require("exit"));
-const setupExitHandler = async (resources) => {
-    const { Config, Logger, Execs } = resources;
-    const { teardown: { tearAll }, } = Execs;
+const DockestConfig_1 = __importDefault(require("./DockestConfig"));
+const DockestLogger_1 = __importDefault(require("./DockestLogger"));
+const teardown_1 = require("./execs/teardown");
+const setupExitHandler = async () => {
+    const config = new DockestConfig_1.default().getConfig();
+    const logger = new DockestLogger_1.default();
     const exitHandler = async (errorPayload) => {
-        Logger.info('Exithandler invoced', errorPayload);
-        const config = Config.getConfig();
+        logger.info('Exithandler invoced', errorPayload);
         if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
             const err = errorPayload.error || new Error('Failed to extract error');
             config.dockest.exitHandler(err);
         }
-        await tearAll();
-        Logger.info('Exit with payload');
+        await teardown_1.tearAll();
+        logger.info('Exit with payload');
         exit_1.default(errorPayload.code || 1);
     };
     // so the program will not close instantly

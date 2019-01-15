@@ -37,6 +37,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "typescript-estree": "^18.1.0"
   }
 }

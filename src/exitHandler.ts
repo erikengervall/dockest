@@ -1,22 +1,21 @@
 import exit from 'exit'
 
-import { IResources } from '.'
+import DockestConfig from './DockestConfig'
+import DockestLogger from './DockestLogger'
+import { tearAll } from './execs/teardown'
 
-const setupExitHandler = async (resources: IResources): Promise<void> => {
-  const { Config, Logger, Execs } = resources
-  const {
-    teardown: { tearAll },
-  } = Execs
+const setupExitHandler = async (): Promise<void> => {
+  const config = new DockestConfig().getConfig()
+  const logger = new DockestLogger()
 
   const exitHandler = async (errorPayload: {
-    code?: number,
-    signal?: any,
-    error?: Error,
-    reason?: any,
-    p?: any,
+    code?: number
+    signal?: any
+    error?: Error
+    reason?: any
+    p?: any
   }): Promise<void> => {
-    Logger.info('Exithandler invoced', errorPayload)
-    const config = Config.getConfig()
+    logger.info('Exithandler invoced', errorPayload)
 
     if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
       const err = errorPayload.error || new Error('Failed to extract error')
@@ -25,7 +24,7 @@ const setupExitHandler = async (resources: IResources): Promise<void> => {
 
     await tearAll()
 
-    Logger.info('Exit with payload')
+    logger.info('Exit with payload')
 
     exit(errorPayload.code || 1)
   }

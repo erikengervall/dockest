@@ -1,34 +1,22 @@
-import { IResources } from '../'
+import DockestConfig from '../DockestConfig'
+import DockestLogger from '../DockestLogger'
 import jestRunner from './jest'
-import postgresRunner from './postgres'
 
-export type all = () => Promise<void>
+export type run = () => Promise<void>
 
-export interface IRunner {
-  all: all;
-}
+const config = new DockestConfig().getConfig()
+const logger = new DockestLogger()
 
-const Runner = (resources: IResources): IRunner => {
-  const { Config, Logger } = resources
+export const run: run = async () => {
+  logger.loading('Integration test initiated')
 
-  const all: all = async () => {
-    Logger.loading('Integration test initiated')
+  const { runners } = config
 
-    const config = Config.getConfig()
-    const { postgres: postgresConfigs } = config
-
-    for (const postgresConfig of postgresConfigs) {
-      await postgresRunner(postgresConfig, resources)
-    }
-
-    Logger.success('Dependencies up and running, ready for Jest unit tests')
-
-    await jestRunner(resources)
+  for (const runner of runners) {
+    await runner.setup()
   }
 
-  return {
-    all,
-  }
-}
+  logger.success('Dependencies up and running, ready for Jest unit tests')
 
-export default Runner
+  await jestRunner()
+}

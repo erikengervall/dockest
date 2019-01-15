@@ -1,36 +1,25 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const DockestError_1 = __importDefault(require("../error/DockestError"));
-let attempts = 3;
-const postGresRunner = async (postgresConfig, resources) => {
-    const { Logger, Execs } = resources;
-    const { postgres: { startPostgresContainer, checkPostgresResponsiveness }, helpers: { getContainerId, runCustomCommand }, teardown: { tearAll }, } = Execs;
-    let containerId;
-    containerId = await getContainerId(postgresConfig);
-    postgresConfig.$containerId = containerId;
-    if (!containerId || containerId.length === 0) {
-        await startPostgresContainer(postgresConfig);
-        containerId = await getContainerId(postgresConfig);
-        postgresConfig.$containerId = containerId;
+const postgres_1 = require("../execs/postgres");
+const teardown_1 = require("../execs/teardown");
+class PostgresRunner {
+    constructor(config) {
+        this.config = config;
     }
-    else {
-        Logger.error('Unexpected container found, releasing resources and re-running');
-        await tearAll(containerId);
-        if (attempts <= 0) {
-            throw new DockestError_1.default('Postgres rerun attempts exhausted');
-        }
-        attempts--;
-        await postGresRunner(postgresConfig, resources);
-        return;
+    async setup() {
+        const containerId = await postgres_1.startPostgresContainer(this.config);
+        this.$containerId = containerId;
+        await postgres_1.checkPostgresResponsiveness(containerId, this.config);
     }
-    await checkPostgresResponsiveness(containerId, postgresConfig);
-    Logger.loading('Running Sequelize scripts');
-    const commands = postgresConfig.commands || [];
-    for (const cmd of commands) {
-        await runCustomCommand(cmd);
+    async teardown() {
+        teardown_1.tearSingle(this.$containerId);
     }
-};
-exports.default = postGresRunner;
+    async getHelpers() {
+        return {
+            clear: () => true,
+            loadData: () => true,
+        };
+    }
+}
+exports.PostgresRunner = PostgresRunner;
+exports.default = PostgresRunner;

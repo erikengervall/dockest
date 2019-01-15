@@ -4,20 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
-const createHelpers = (Logger) => {
-    const getContainerId = async (postgresConfig) => {
-        const { stdout } = await execa_1.default.shell(`docker ps --filter "status=running" --filter "label=${postgresConfig.label}" --no-trunc -q`);
-        const containerId = stdout.replace(/\r?\n|\r/g, '');
-        return containerId;
-    };
-    const runCustomCommand = async (command) => {
-        Logger.loading(`Running custom command: ${command}`);
-        const { stdout: result = '' } = await execa_1.default.shell(command);
-        Logger.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
-    };
-    return {
-        getContainerId,
-        runCustomCommand,
-    };
+const DockestLogger_1 = __importDefault(require("../DockestLogger"));
+const logger = new DockestLogger_1.default();
+const getContainerId = async ({ label }) => {
+    const { stdout } = await execa_1.default.shell(`docker ps --filter "status=running" --filter "label=${label}" --no-trunc -q`);
+    const containerId = stdout.replace(/\r?\n|\r/g, '');
+    return containerId;
 };
-exports.default = createHelpers;
+exports.runCustomCommand = async (command) => {
+    logger.loading(`Running custom command: ${command}`);
+    const { stdout: result = '' } = await execa_1.default.shell(command);
+    logger.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
+};

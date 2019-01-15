@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./constants");
 class DockestLogger {
-    constructor(Config) {
+    constructor() {
         this.info = (message, data) => {
             console.info(`${message}`, data || '');
         };
@@ -22,8 +22,10 @@ class DockestLogger {
         this.error = (message, data) => {
             console.error(`${constants_1.ICONS.ERROR} ${message}`, data || '', '\n');
         };
-        const config = Config.getConfig();
-        this.verbose = !!config.dockest.verbose;
+        if (DockestLogger.instance) {
+            return DockestLogger.instance;
+        }
+        DockestLogger.instance = this;
     }
 }
 exports.DockestLogger = DockestLogger;

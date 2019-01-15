@@ -2,51 +2,32 @@ import merge from 'deepmerge'
 import fs from 'fs'
 
 import ConfigurationError from './error/ConfigurationError'
-
-export interface IPostgresConfig {
-  label: string; // Used for getting containerId using --filter
-  service: string; // dockest-compose service name
-  commands?: string[]; // Run custom scripts (migrate/seed)
-  connectionTimeout?: number;
-  responsivenessTimeout?: number;
-  // Connection
-  host: string;
-  db: string;
-  port: number;
-  password: string;
-  username: string;
-}
-export interface IPostgresConfig$Int extends IPostgresConfig {
-  $containerId?: string;
-}
+import IPostgresRunner from './runners/postgres'
 
 export interface IJestConfig {
   lib: {
-    SearchSource: any,
-    TestScheduler: any,
-    TestWatcher: any,
-    getVersion: any,
-    run: any,
-    runCLI: any,
-  };
-  silent?: boolean;
-  verbose?: boolean;
-  forceExit?: boolean;
-  watchAll?: boolean;
-  projects: string[];
+    SearchSource: any
+    TestScheduler: any
+    TestWatcher: any
+    getVersion: any
+    run: any
+    runCLI: any
+  }
+  silent?: boolean
+  verbose?: boolean
+  forceExit?: boolean
+  watchAll?: boolean
+  projects: string[]
 }
 
 export interface IConfig {
-  jest: IJestConfig;
+  jest: IJestConfig
   dockest: {
-    verbose?: boolean,
-    exitHandler?: (err?: Error) => void,
-    dockerComposeFilePath?: string,
-  };
-  postgres: IPostgresConfig[];
-}
-export interface IConfig$Int extends IConfig {
-  postgres: IPostgresConfig$Int[];
+    verbose?: boolean
+    exitHandler?: (err?: Error) => void
+    dockerComposeFilePath?: string
+  }
+  runners: IPostgresRunner[]
 }
 
 const DEFAULT_CONFIG = {
@@ -56,30 +37,36 @@ const DEFAULT_CONFIG = {
   dockest: {
     verbose: false,
   },
-  postgres: [],
+  runners: [],
 }
 
 export class DockestConfig {
-  config: IConfig$Int
+  private static instance: DockestConfig
+  private static config: IConfig
 
   constructor(userConfig?: IConfig) {
+    if (DockestConfig.instance) {
+      return DockestConfig.instance
+    }
+
     const dockestRcFilePath = `${process.cwd()}/.dockestrc.js`
 
     if (userConfig && typeof userConfig === 'object') {
-      this.config = userConfig
+      DockestConfig.config = userConfig
     } else if (fs.existsSync(dockestRcFilePath)) {
-      this.config = require(dockestRcFilePath)
+      DockestConfig.config = require(dockestRcFilePath)
     } else {
       throw new ConfigurationError('Could not find ".dockestrc.js"')
     }
 
-    if (this.config && typeof this.config === 'object') {
-      this.config = merge(DEFAULT_CONFIG, this.config)
+    if (DockestConfig.config && typeof DockestConfig.config === 'object') {
+      DockestConfig.config = merge(DEFAULT_CONFIG, DockestConfig.config)
     } else {
       throw new ConfigurationError('Configuration step failed')
     }
 
-    this.validateUserConfig(this.config)
+    this.validateUserConfig(DockestConfig.config)
+    DockestConfig.instance = this
   }
 
   validateRequiredFields = (origin: string, requiredFields: any): void => {
@@ -96,12 +83,6 @@ export class DockestConfig {
     }
   }
 
-  validatePostgresConfigs = (postgresConfigs: IPostgresConfig[]): void =>
-    postgresConfigs.forEach(({ label, service, host, db, port, password, username }) => {
-      const requiredFields = { label, service, host, db, port, password, username }
-      this.validateRequiredFields('postgres', requiredFields)
-    })
-
   validateJestConfig = (jestConfig: IJestConfig): void => {
     const { lib } = jestConfig
     const requiredFields = { lib }
@@ -113,22 +94,17 @@ export class DockestConfig {
   }
 
   validateUserConfig = (config: IConfig): void => {
-    const { postgres, jest } = config
+    const { runners, jest } = config
 
-    if (!postgres && !jest) {
+    if (!runners && !jest) {
       throw new ConfigurationError('Missing something to dockerize')
     }
 
-    this.validatePostgresConfigs(postgres)
     this.validateJestConfig(jest)
-
-    if (!postgres) {
-      config.postgres = []
-    }
   }
 
-  getConfig(): IConfig$Int {
-    return this.config
+  getConfig(): IConfig {
+    return DockestConfig.config
   }
 }
 

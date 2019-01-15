@@ -1,16 +1,18 @@
 // tslint:disable:no-console
 
 import { ICONS } from './constants'
-import DockestConfig from './DockestConfig'
 
 type logMethod = (message: string, data?: object) => void
 
 export class DockestLogger {
-  verbose: boolean
+  private static instance: DockestLogger
 
-  constructor(Config: DockestConfig) {
-    const config = Config.getConfig()
-    this.verbose = !!config.dockest.verbose
+  constructor() {
+    if (DockestLogger.instance) {
+      return DockestLogger.instance
+    }
+
+    DockestLogger.instance = this
   }
 
   info: logMethod = (message, data) => {
