@@ -17,4 +17,8 @@ module.exports = {
     port: 5435,
     service: 'postgres2knex',
   },
+  redis1ioredis: {
+    host: 'localhost',
+    port: 6379,
+  },
 }

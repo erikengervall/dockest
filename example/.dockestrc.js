@@ -35,6 +35,10 @@ const knex = {
   ],
 }
 
+const ioredis = {
+  host: 1,
+}
+
 module.exports = {
   jest: {
     lib: require('jest'),
