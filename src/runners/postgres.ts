@@ -1,4 +1,3 @@
-import { getContainerId } from '../execs/helpers'
 import { checkPostgresResponsiveness, startPostgresContainer } from '../execs/postgres'
 import { tearSingle } from '../execs/teardown'
 
