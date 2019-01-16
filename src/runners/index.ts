@@ -20,3 +20,14 @@ export const run: run = async () => {
 
   await jestRunner()
 }
+
+interface IHelpers {
+  clear: () => boolean
+  loadData: () => boolean
+}
+
+export interface IRunner {
+  setup: () => Promise<void>
+  teardown: () => Promise<void>
+  getHelpers: () => Promise<IHelpers>
+}

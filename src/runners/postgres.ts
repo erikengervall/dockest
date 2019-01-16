@@ -1,5 +1,6 @@
 import { checkPostgresResponsiveness, startPostgresContainer } from '../execs/postgres'
 import { tearSingle } from '../execs/teardown'
+import { IRunner } from './index'
 
 export interface IPostgresRunnerConfig {
   label: string // Used for getting containerId using --filter
@@ -15,7 +16,7 @@ export interface IPostgresRunnerConfig {
   username: string
 }
 
-export class PostgresRunner {
+export class PostgresRunner implements IRunner {
   public $containerId?: string
   public config: IPostgresRunnerConfig
 
