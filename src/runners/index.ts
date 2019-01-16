@@ -7,7 +7,7 @@ export type run = () => Promise<void>
 const config = new DockestConfig().getConfig()
 const logger = new DockestLogger()
 
-export const run: run = async () => {
+const run: run = async () => {
   logger.loading('Integration test initiated')
 
   const { runners } = config
@@ -20,6 +20,8 @@ export const run: run = async () => {
 
   await jestRunner()
 }
+
+export default run
 
 interface IHelpers {
   clear: () => boolean

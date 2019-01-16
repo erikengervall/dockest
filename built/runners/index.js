@@ -8,7 +8,7 @@ const DockestLogger_1 = __importDefault(require("../DockestLogger"));
 const jest_1 = __importDefault(require("./jest"));
 const config = new DockestConfig_1.default().getConfig();
 const logger = new DockestLogger_1.default();
-exports.run = async () => {
+const run = async () => {
     logger.loading('Integration test initiated');
     const { runners } = config;
     for (const runner of runners) {
@@ -17,3 +17,4 @@ exports.run = async () => {
     logger.success('Dependencies up and running, ready for Jest unit tests');
     await jest_1.default();
 };
+exports.default = run;

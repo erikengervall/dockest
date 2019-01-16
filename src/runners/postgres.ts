@@ -17,7 +17,7 @@ export interface IPostgresRunnerConfig {
 }
 
 export class PostgresRunner implements IRunner {
-  public $containerId?: string
+  public containerId?: string
   public config: IPostgresRunnerConfig
 
   constructor(config: IPostgresRunnerConfig) {
@@ -26,13 +26,13 @@ export class PostgresRunner implements IRunner {
 
   public async setup() {
     const containerId = await startPostgresContainer(this.config)
-    this.$containerId = containerId
+    this.containerId = containerId
 
     await checkPostgresResponsiveness(containerId, this.config)
   }
 
   public async teardown() {
-    tearSingle(this.$containerId)
+    tearSingle(this.containerId)
   }
 
   public async getHelpers() {

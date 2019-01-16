@@ -8,11 +8,11 @@ class PostgresRunner {
     }
     async setup() {
         const containerId = await postgres_1.startPostgresContainer(this.config);
-        this.$containerId = containerId;
+        this.containerId = containerId;
         await postgres_1.checkPostgresResponsiveness(containerId, this.config);
     }
     async teardown() {
-        teardown_1.tearSingle(this.$containerId);
+        teardown_1.tearSingle(this.containerId);
     }
     async getHelpers() {
         return {

@@ -54,7 +54,7 @@ export const tearAll: tearAll = async () => {
   const containerIds: string[] = [
     ...config.runners.reduce(
       (acc: string[], postgresRunner: PostgresRunner) =>
-        postgresRunner.$containerId ? acc.concat(postgresRunner.$containerId) : acc,
+        postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc,
       []
     ),
   ]

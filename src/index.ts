@@ -3,7 +3,7 @@ import DockestConfig, { IConfig } from './DockestConfig'
 import DockestLogger from './DockestLogger'
 import { tearAll } from './execs/teardown'
 import setupExitHandler from './exitHandler'
-import { run } from './runners'
+import run from './runners'
 import PostgresRunner from './runners/postgres'
 
 const dockest = async (userConfig?: IConfig): Promise<void> => {

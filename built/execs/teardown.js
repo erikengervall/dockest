@@ -35,7 +35,7 @@ exports.tearSingle = async (containerId, progress = '1') => {
 exports.tearAll = async () => {
     logger.loading('Teardown started');
     const containerIds = [
-        ...config.runners.reduce((acc, postgresRunner) => postgresRunner.$containerId ? acc.concat(postgresRunner.$containerId) : acc, []),
+        ...config.runners.reduce((acc, postgresRunner) => postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc, []),
     ];
     const containerIdsLen = containerIds.length;
     for (let i = 0; containerIdsLen > i; i++) {
