@@ -4,6 +4,15 @@ import jestRunner from './jest'
 
 export type run = () => Promise<void>
 
+export interface IRunner {
+  setup: () => Promise<void>
+  teardown: () => Promise<void>
+  getHelpers: () => Promise<{
+    clear: () => boolean
+    loadData: () => boolean
+  }>
+}
+
 const config = new DockestConfig().getConfig()
 const logger = new DockestLogger()
 
@@ -22,14 +31,3 @@ const run: run = async () => {
 }
 
 export default run
-
-interface IHelpers {
-  clear: () => boolean
-  loadData: () => boolean
-}
-
-export interface IRunner {
-  setup: () => Promise<void>
-  teardown: () => Promise<void>
-  getHelpers: () => Promise<IHelpers>
-}

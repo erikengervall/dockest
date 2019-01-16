@@ -5,35 +5,29 @@ import DockestLogger from '../DockestLogger'
 import DockestError from '../error/DockestError'
 import PostgresRunner from '../runners/postgres'
 
-type stopContainerById = (containerId: string, progress: string) => Promise<void>
-type removeContainerById = (containerId: string, progress: string) => Promise<void>
-type dockerComposeDown = () => Promise<void>
-type tearAll = (containerId?: string) => Promise<void>
-type tearSingle = (containerId?: string) => Promise<void>
-
 const config = new DockestConfig().getConfig()
 const logger = new DockestLogger()
 
-export const stopContainerById: stopContainerById = async (containerId, progress) => {
+const stopContainerById = async (containerId: string, progress: string): Promise<void> => {
   await execa.shell(`docker stop ${containerId}`)
 
   logger.stop(`Container #${progress} with id <${containerId}> stopped`)
 }
 
-export const removeContainerById: removeContainerById = async (containerId, progress) => {
+const removeContainerById = async (containerId: string, progress: string): Promise<void> => {
   await execa.shell(`docker rm ${containerId} --volumes`)
 
   logger.stop(`Container #${progress} with id <${containerId}> removed`)
 }
 
-export const dockerComposeDown: dockerComposeDown = async () => {
+const dockerComposeDown = async (): Promise<void> => {
   const timeout = 15
   await execa.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`)
 
   logger.stop('docker-compose: success')
 }
 
-export const tearSingle: tearSingle = async (containerId, progress = '1') => {
+const tearSingle = async (containerId?: string, progress: string = '1'): Promise<void> => {
   if (!containerId) {
     throw new DockestError(`tearSingle: No containerId`)
   }
@@ -48,7 +42,7 @@ export const tearSingle: tearSingle = async (containerId, progress = '1') => {
   logger.success('Teardown successful')
 }
 
-export const tearAll: tearAll = async () => {
+const tearAll = async (): Promise<void> => {
   logger.loading('Teardown started')
 
   const containerIds: string[] = [
@@ -72,3 +66,5 @@ export const tearAll: tearAll = async () => {
 
   logger.success('Teardown successful')
 }
+
+export { stopContainerById, removeContainerById, dockerComposeDown, tearSingle, tearAll }

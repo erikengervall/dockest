@@ -4,26 +4,15 @@ import DockestConfig from '../DockestConfig'
 import DockestLogger from '../DockestLogger'
 import DockestError from '../error/DockestError'
 import { IPostgresRunnerConfig } from '../runners/postgres'
-import { sleep } from './utils'
-
-type startPostgresContainer = (postgresConfig: IPostgresRunnerConfig) => Promise<string>
-type checkPostgresConnection = (postgresConfig: IPostgresRunnerConfig) => Promise<void>
-type checkPostgresResponsiveness = (
-  containerId: string,
-  postgresConfig: IPostgresRunnerConfig
-) => Promise<void>
-
-export interface IPostgres {
-  startPostgresContainer: startPostgresContainer
-  checkPostgresConnection: checkPostgresConnection
-  checkPostgresResponsiveness: checkPostgresResponsiveness
-}
+import { acquireConnection, sleep } from './utils'
 
 const config = new DockestConfig().getConfig()
 const logger = new DockestLogger()
 
-export const startPostgresContainer: startPostgresContainer = async ({ label, port, service }) => {
+const startContainer = async (runnerConfig: IPostgresRunnerConfig): Promise<string> => {
   logger.loading('Starting postgres container')
+
+  const { label, port, service } = runnerConfig
 
   const dockerComposeFilePath = config.dockest.dockerComposeFilePath
     ? `--file ${config.dockest.dockerComposeFilePath}`
@@ -37,47 +26,46 @@ export const startPostgresContainer: startPostgresContainer = async ({ label, po
   return containerId
 }
 
-// Deprecated
-const checkPostgresConnection: checkPostgresConnection = async ({
-  connectionTimeout: timeout = 3,
-  host,
-  port,
-}) => {
+const checkConnection = async (runnerConfig: IPostgresRunnerConfig): Promise<void> => {
   logger.loading('Attempting to establish database connection')
 
-  const recurse = async (timeout: number) => {
-    logger.info(`Establishing database connection (Timing out in: ${timeout}s)`)
+  const { connectionTimeout = 3, host, port } = runnerConfig
 
-    if (timeout <= 0) {
+  const recurse = async (connectionTimeout: number) => {
+    logger.info(`Establishing database connection (Timing out in: ${connectionTimeout}s)`)
+
+    if (connectionTimeout <= 0) {
       throw new DockestError('Database connection timed out')
     }
 
     try {
-      await execa.shell(`echo > /dev/tcp/${host}/${port}`)
+      await acquireConnection(host, port)
 
       logger.success('Database connection established')
     } catch (error) {
-      timeout--
+      connectionTimeout--
 
       await sleep(1000)
-      await recurse(timeout)
+      await recurse(connectionTimeout)
     }
   }
 
-  await recurse(timeout)
+  await recurse(connectionTimeout)
 }
 
-export const checkPostgresResponsiveness: checkPostgresResponsiveness = async (
-  containerId,
-  { responsivenessTimeout: timeout = 10, host, username, db }
-) => {
+const checkResponsiveness = async (
+  containerId: string,
+  runnerConfig: IPostgresRunnerConfig
+): Promise<void> => {
   logger.loading('Attempting to establish database responsiveness')
 
-  type Recurse = (timeout: number) => Promise<void>
-  const recurse: Recurse = async timeout => {
-    logger.info(`Establishing database responsiveness (Timing out in: ${timeout}s)`)
+  const { responsivenessTimeout = 10, host, username, db } = runnerConfig
 
-    if (timeout <= 0) {
+  type Recurse = (responsivenessTimeout: number) => Promise<void>
+  const recurse: Recurse = async responsivenessTimeout => {
+    logger.info(`Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`)
+
+    if (responsivenessTimeout <= 0) {
       throw new DockestError('Database responsiveness timed out')
     }
 
@@ -88,12 +76,14 @@ export const checkPostgresResponsiveness: checkPostgresResponsiveness = async (
 
       logger.success('Database responsiveness established')
     } catch (error) {
-      timeout--
+      responsivenessTimeout--
 
       await sleep(1000)
-      await recurse(timeout)
+      await recurse(responsivenessTimeout)
     }
   }
 
-  await recurse(timeout)
+  await recurse(responsivenessTimeout)
 }
+
+export { startContainer, checkConnection, checkResponsiveness }

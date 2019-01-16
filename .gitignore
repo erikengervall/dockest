@@ -22,5 +22,5 @@ trash
 # Dockest dev
 #
 dockest
-src/manual-test.ts
-built/manual-test.js
+src/dockest
+built/dockest

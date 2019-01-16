@@ -7,9 +7,10 @@ class PostgresRunner {
         this.config = config;
     }
     async setup() {
-        const containerId = await postgres_1.startPostgresContainer(this.config);
+        const containerId = await postgres_1.startContainer(this.config);
         this.containerId = containerId;
-        await postgres_1.checkPostgresResponsiveness(containerId, this.config);
+        await postgres_1.checkConnection(this.config);
+        await postgres_1.checkResponsiveness(containerId, this.config);
     }
     async teardown() {
         teardown_1.tearSingle(this.containerId);

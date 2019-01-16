@@ -10,8 +10,9 @@ const DockestError_1 = __importDefault(require("../error/DockestError"));
 const utils_1 = require("./utils");
 const config = new DockestConfig_1.default().getConfig();
 const logger = new DockestLogger_1.default();
-exports.startPostgresContainer = async ({ label, port, service }) => {
+const startContainer = async (runnerConfig) => {
     logger.loading('Starting postgres container');
+    const { label, port, service } = runnerConfig;
     const dockerComposeFilePath = config.dockest.dockerComposeFilePath
         ? `--file ${config.dockest.dockerComposeFilePath}`
         : '';
@@ -19,31 +20,34 @@ exports.startPostgresContainer = async ({ label, port, service }) => {
     logger.success('Postgres container started successfully');
     return containerId;
 };
-// Deprecated
-const checkPostgresConnection = async ({ connectionTimeout: timeout = 3, host, port, }) => {
+exports.startContainer = startContainer;
+const checkConnection = async (runnerConfig) => {
     logger.loading('Attempting to establish database connection');
-    const recurse = async (timeout) => {
-        logger.info(`Establishing database connection (Timing out in: ${timeout}s)`);
-        if (timeout <= 0) {
+    const { connectionTimeout = 3, host, port } = runnerConfig;
+    const recurse = async (connectionTimeout) => {
+        logger.info(`Establishing database connection (Timing out in: ${connectionTimeout}s)`);
+        if (connectionTimeout <= 0) {
             throw new DockestError_1.default('Database connection timed out');
         }
         try {
-            await execa_1.default.shell(`echo > /dev/tcp/${host}/${port}`);
+            await utils_1.acquireConnection(host, port);
             logger.success('Database connection established');
         }
         catch (error) {
-            timeout--;
+            connectionTimeout--;
             await utils_1.sleep(1000);
-            await recurse(timeout);
+            await recurse(connectionTimeout);
         }
     };
-    await recurse(timeout);
+    await recurse(connectionTimeout);
 };
-exports.checkPostgresResponsiveness = async (containerId, { responsivenessTimeout: timeout = 10, host, username, db }) => {
+exports.checkConnection = checkConnection;
+const checkResponsiveness = async (containerId, runnerConfig) => {
     logger.loading('Attempting to establish database responsiveness');
-    const recurse = async (timeout) => {
-        logger.info(`Establishing database responsiveness (Timing out in: ${timeout}s)`);
-        if (timeout <= 0) {
+    const { responsivenessTimeout = 10, host, username, db } = runnerConfig;
+    const recurse = async (responsivenessTimeout) => {
+        logger.info(`Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`);
+        if (responsivenessTimeout <= 0) {
             throw new DockestError_1.default('Database responsiveness timed out');
         }
         try {
@@ -51,10 +55,11 @@ exports.checkPostgresResponsiveness = async (containerId, { responsivenessTimeou
             logger.success('Database responsiveness established');
         }
         catch (error) {
-            timeout--;
+            responsivenessTimeout--;
             await utils_1.sleep(1000);
-            await recurse(timeout);
+            await recurse(responsivenessTimeout);
         }
     };
-    await recurse(timeout);
+    await recurse(responsivenessTimeout);
 };
+exports.checkResponsiveness = checkResponsiveness;

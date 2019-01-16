@@ -4,9 +4,7 @@ import DockestLogger from '../DockestLogger'
 import { tearAll } from '../execs/teardown'
 
 interface IJestResult {
-  results: {
-    success: true
-  }
+  results: { success: true }
 }
 
 const jestRunner = async (): Promise<void> => {

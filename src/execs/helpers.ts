@@ -1,27 +1,21 @@
 import execa from 'execa'
 import DockestLogger from '../DockestLogger'
-import { IPostgresRunnerConfig } from '../runners/postgres'
-
-type getContainerId = (postgresConfig: IPostgresRunnerConfig) => Promise<string>
-type runCustomCommand = (command: string) => Promise<void>
-
-export interface IHelpers {
-  getContainerId: getContainerId
-  runCustomCommand: runCustomCommand
-}
+// import { IPostgresRunnerConfig } from '../runners/postgres'
 
 const logger = new DockestLogger()
 
-const getContainerId: getContainerId = async ({ label }) => {
-  const { stdout } = await execa.shell(
-    `docker ps --filter "status=running" --filter "label=${label}" --no-trunc -q`
-  )
-  const containerId = stdout.replace(/\r?\n|\r/g, '')
+// Deprecated
+// const getContainerId = async (runnerConfig: IPostgresRunnerConfig): Promise<string> => {
+//   const { label } = runnerConfig
+//   const { stdout } = await execa.shell(
+//     `docker ps --filter "status=running" --filter "label=${label}" --no-trunc -q`
+//   )
+//   const containerId = stdout.replace(/\r?\n|\r/g, '')
 
-  return containerId
-}
+//   return containerId
+// }
 
-export const runCustomCommand: runCustomCommand = async command => {
+const runCustomCommand = async (command: string): Promise<void> => {
   logger.loading(`Running custom command: ${command}`)
 
   const { stdout: result = '' } = await execa.shell(command)
@@ -32,3 +26,5 @@ export const runCustomCommand: runCustomCommand = async command => {
     }`
   )
 }
+
+export { runCustomCommand }

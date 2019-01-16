@@ -1,4 +1,4 @@
-import { checkPostgresResponsiveness, startPostgresContainer } from '../execs/postgres'
+import { checkConnection, checkResponsiveness, startContainer } from '../execs/postgres'
 import { tearSingle } from '../execs/teardown'
 import { IRunner } from './index'
 
@@ -25,10 +25,11 @@ export class PostgresRunner implements IRunner {
   }
 
   public async setup() {
-    const containerId = await startPostgresContainer(this.config)
+    const containerId = await startContainer(this.config)
     this.containerId = containerId
 
-    await checkPostgresResponsiveness(containerId, this.config)
+    await checkConnection(this.config)
+    await checkResponsiveness(containerId, this.config)
   }
 
   public async teardown() {
