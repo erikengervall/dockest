@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DockestConfig_1 = __importDefault(require("./DockestConfig"));
 const DockestLogger_1 = __importDefault(require("./DockestLogger"));
 const teardown_1 = __importDefault(require("./execs/utils/teardown"));
+const index_1 = __importDefault(require("./index"));
 const setupExitHandler = async () => {
-    const config = new DockestConfig_1.default().getConfig();
+    const config = index_1.default.config;
     const logger = new DockestLogger_1.default();
     const exitHandler = async (errorPayload) => {
         logger.info('Exithandler invoced', errorPayload);

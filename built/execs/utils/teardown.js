@@ -4,10 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
-const DockestConfig_1 = __importDefault(require("../../DockestConfig"));
 const DockestLogger_1 = __importDefault(require("../../DockestLogger"));
 const DockestError_1 = __importDefault(require("../../errors/DockestError"));
-const config = new DockestConfig_1.default().getConfig();
+const index_1 = __importDefault(require("../../index"));
 const logger = new DockestLogger_1.default();
 class Teardown {
     constructor() {
@@ -23,6 +22,7 @@ class Teardown {
         };
         this.tearAll = async () => {
             logger.loading('Teardown started');
+            const config = index_1.default.config;
             const containerIds = [
                 ...config.runners.reduce((acc, postgresRunner) => postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc, []),
             ];

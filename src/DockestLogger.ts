@@ -4,15 +4,15 @@ import { ICONS } from './constants'
 
 type logMethod = (message: string, data?: object) => void
 
-export class DockestLogger {
-  private static instance: DockestLogger
+export class Logger {
+  private static instance: Logger
 
   constructor() {
-    if (DockestLogger.instance) {
-      return DockestLogger.instance
+    if (Logger.instance) {
+      return Logger.instance
     }
 
-    DockestLogger.instance = this
+    Logger.instance = this
   }
 
   info: logMethod = (message, data) => {
@@ -40,4 +40,4 @@ export class DockestLogger {
   }
 }
 
-export default DockestLogger
+export default Logger

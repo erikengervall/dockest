@@ -1,29 +1,50 @@
-import DockestConfig, { IConfig } from './DockestConfig'
-import DockestLogger from './DockestLogger'
+import Logger from './DockestLogger'
 import Teardown from './execs/utils/teardown'
 import setupExitHandler from './exitHandler'
-import run from './runners'
-import PostgresRunner from './runners/postgres'
+import run, { PostgresRunner } from './runners'
+import { IJestConfig } from './runners/jest'
+import { validateInputFields } from './utils'
 
-const dockest = async (userConfig?: IConfig): Promise<void> => {
-  new DockestConfig(userConfig) // tslint:disable-line
-  const logger = new DockestLogger()
-  const teardown = new Teardown()
+interface IDockest {
+  verbose?: boolean
+  exitHandler?: (err?: Error) => void
+  dockerComposeFilePath?: string
+}
 
-  setupExitHandler()
+interface IDockestConfig {
+  dockest: IDockest
+  jest: IJestConfig
+  runners: PostgresRunner[]
+}
 
-  try {
-    await run()
-  } catch (error) {
-    logger.error('Unexpected error', error)
+class Dockest {
+  public static config: IDockestConfig
 
-    await teardown.tearAll()
+  constructor(userConfig: IDockestConfig) {
+    const { dockest, jest } = userConfig
+    const requiredProps = { dockest, jest, runners }
+    validateInputFields('Dockest', requiredProps)
 
-    process.exit(1)
+    Dockest.config = userConfig
+  }
+
+  public run = async () => {
+    const logger = new Logger()
+    const teardown = new Teardown()
+
+    setupExitHandler()
+
+    try {
+      await run()
+    } catch (error) {
+      logger.error('Unexpected error', error)
+
+      await teardown.tearAll()
+
+      process.exit(1)
+    }
   }
 }
 
-export const runners = {
-  PostgresRunner,
-}
-export default dockest
+export const runners = { PostgresRunner }
+export default Dockest

@@ -1,10 +1,10 @@
-import DockestConfig from './DockestConfig'
-import DockestLogger from './DockestLogger'
+import Logger from './DockestLogger'
 import Teardown from './execs/utils/teardown'
+import Dockest from './index'
 
 const setupExitHandler = async (): Promise<void> => {
-  const config = new DockestConfig().getConfig()
-  const logger = new DockestLogger()
+  const config = Dockest.config
+  const logger = new Logger()
 
   const exitHandler = async (errorPayload: {
     code?: number

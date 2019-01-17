@@ -1,18 +1,20 @@
+import ConfigurationError from '../errors/ConfigurationError'
 import PostgresExec from '../execs/postgresExecs'
-import { IRunner } from './index'
+import Dockest from '../index'
+import { validateInputFields } from '../utils'
+import { IRunner } from './types'
 
 export interface IPostgresRunnerConfig {
   label: string // Used for getting containerId using --filter
   service: string // dockest-compose service name
-  commands?: string[] // Run custom scripts (migrate/seed)
-  connectionTimeout?: number
-  responsivenessTimeout?: number
-  // Connection
   host: string
   db: string
   port: number
   password: string
   username: string
+  commands?: string[] // Run custom scripts (migrate/seed)
+  connectionTimeout?: number
+  responsivenessTimeout?: number
 }
 
 export class PostgresRunner implements IRunner {
@@ -21,12 +23,14 @@ export class PostgresRunner implements IRunner {
   public postgresExec: PostgresExec
 
   constructor(config: IPostgresRunnerConfig) {
+    this.validatePostgresConfig(config)
     this.config = config
     this.postgresExec = new PostgresExec()
   }
 
   public setup = async () => {
-    const containerId = await this.postgresExec.start(this.config)
+    const composeFile = Dockest.config.dockest.dockerComposeFilePath
+    const containerId = await this.postgresExec.start(this.config, composeFile)
     this.containerId = containerId
 
     await this.postgresExec.checkConnection(this.config)
@@ -39,6 +43,16 @@ export class PostgresRunner implements IRunner {
     clear: () => true,
     loadData: () => true,
   })
+
+  private validatePostgresConfig = (config: IPostgresRunnerConfig): void => {
+    const { label, service, host, db, port, password, username } = config
+    const requiredProps = { label, service, host, db, port, password, username }
+    validateInputFields('postgres', requiredProps)
+
+    if (!config) {
+      throw new ConfigurationError('Missing configuration for Postgres runner')
+    }
+  }
 }
 
 export default PostgresRunner

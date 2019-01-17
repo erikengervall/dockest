@@ -1,10 +1,10 @@
 import execa from 'execa'
 import net from 'net'
 
-import DockestLogger from '../../DockestLogger'
+import Logger from '../../DockestLogger'
 import { IPostgresRunnerConfig } from '../../runners/postgres'
 
-const logger = new DockestLogger()
+const logger = new Logger()
 
 const sleep = (ms: number = 1000): Promise<number> =>
   new Promise(resolve => setTimeout(resolve, ms))

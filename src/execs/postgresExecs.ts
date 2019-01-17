@@ -1,15 +1,13 @@
 import execa from 'execa'
 
-import DockestConfig from '../DockestConfig'
-import DockestLogger from '../DockestLogger'
+import Logger from '../DockestLogger'
 import DockestError from '../errors/DockestError'
 import { IPostgresRunnerConfig } from '../runners/postgres'
-import { IBaseExecs } from './index'
+import { IBaseExecs } from './types'
 import Teardown from './utils/teardown'
 import { acquireConnection, sleep } from './utils/utils'
 
-const config = new DockestConfig().getConfig()
-const logger = new DockestLogger()
+const logger = new Logger()
 
 class PostgresExec implements IBaseExecs {
   private static instance: PostgresExec
@@ -20,16 +18,14 @@ class PostgresExec implements IBaseExecs {
     }
   }
 
-  start = async (runnerConfig: IPostgresRunnerConfig) => {
+  start = async (runnerConfig: IPostgresRunnerConfig, dockerComposeFilePath?: string) => {
     logger.loading('Starting postgres container')
 
     const { label, port, service } = runnerConfig
 
-    const dockerComposeFilePath = config.dockest.dockerComposeFilePath
-      ? `--file ${config.dockest.dockerComposeFilePath}`
-      : ''
+    const file = dockerComposeFilePath ? `--file ${dockerComposeFilePath}` : ''
     const { stdout: containerId } = await execa.shell(
-      `docker-compose ${dockerComposeFilePath} run --detach --no-deps --label ${label} --publish ${port}:5432 ${service}`
+      `docker-compose ${file} run --detach --no-deps --label ${label} --publish ${port}:5432 ${service}`
     )
 
     logger.success('Postgres container started successfully')

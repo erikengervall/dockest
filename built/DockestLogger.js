@@ -2,7 +2,7 @@
 // tslint:disable:no-console
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./constants");
-class DockestLogger {
+class Logger {
     constructor() {
         this.info = (message, data) => {
             console.info(`${message}`, data || '');
@@ -22,11 +22,11 @@ class DockestLogger {
         this.error = (message, data) => {
             console.error(`${constants_1.ICONS.ERROR} ${message}`, data || '', '\n');
         };
-        if (DockestLogger.instance) {
-            return DockestLogger.instance;
+        if (Logger.instance) {
+            return Logger.instance;
         }
-        DockestLogger.instance = this;
+        Logger.instance = this;
     }
 }
-exports.DockestLogger = DockestLogger;
-exports.default = DockestLogger;
+exports.Logger = Logger;
+exports.default = Logger;

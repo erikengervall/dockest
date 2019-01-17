@@ -1,38 +1,77 @@
-import DockestConfig from '../DockestConfig'
-import DockestLogger from '../DockestLogger'
+import Logger from '../DockestLogger'
+import ConfigurationError from '../errors/ConfigurationError'
 
 interface IJestResult {
   results: { success: true }
 }
 
-const jestRunner = async (): Promise<{ success: boolean }> => {
-  const config = new DockestConfig().getConfig()
-  const Logger = new DockestLogger()
-  const jestOptions = config.jest
-  const jest = jestOptions.lib
-  let success = false
+interface IJestLib {
+  SearchSource: any
+  TestScheduler: any
+  TestWatcher: any
+  getVersion: any
+  run: any
+  runCLI: any
+}
 
-  try {
-    const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
+export interface IJestConfig {
+  lib: IJestLib
+  silent?: boolean
+  verbose?: boolean
+  forceExit?: boolean
+  watchAll?: boolean
+  projects: string[]
+}
 
-    if (!jestResult.results.success) {
-      Logger.failed(`${jestRunner.name}: Integration test failed`)
+class JestRunner {
+  public static config: IJestConfig
+  private static instance: JestRunner
 
-      success = false
-    } else {
-      Logger.success(`${jestRunner.name}: Integration tests passed successfully`)
-
-      success = true
+  constructor(config: IJestConfig) {
+    if (JestRunner.instance) {
+      return JestRunner.instance
     }
-  } catch (error) {
-    Logger.error(`${jestRunner.name}: Encountered Jest error`, error)
 
-    success = false
+    this.validateJestConfig(config)
+    JestRunner.config = config
   }
 
-  return {
-    success,
+  public run = async () => {
+    const logger = new Logger()
+    const jestOptions = JestRunner.config
+    const jest = JestRunner.config.lib
+    let success = false
+
+    logger.success(`Dependencies up and running, running Jest`)
+
+    try {
+      const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
+
+      if (!jestResult.results.success) {
+        logger.failed(`Integration test failed`)
+
+        success = false
+      } else {
+        logger.success(`Integration tests passed successfully`)
+
+        success = true
+      }
+    } catch (error) {
+      logger.error(`Encountered Jest error`, error)
+
+      success = false
+    }
+
+    return {
+      success,
+    }
+  }
+
+  private validateJestConfig = (config: IJestConfig) => {
+    if (!config) {
+      throw new ConfigurationError('jest config missing')
+    }
   }
 }
 
-export default jestRunner
+export default JestRunner

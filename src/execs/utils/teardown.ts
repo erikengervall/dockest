@@ -1,12 +1,11 @@
 import execa from 'execa'
 
-import DockestConfig from '../../DockestConfig'
-import DockestLogger from '../../DockestLogger'
+import Logger from '../../DockestLogger'
 import DockestError from '../../errors/DockestError'
+import Dockest from '../../index'
 import PostgresRunner from '../../runners/postgres'
 
-const config = new DockestConfig().getConfig()
-const logger = new DockestLogger()
+const logger = new Logger()
 
 class Teardown {
   private static instance: Teardown
@@ -34,6 +33,8 @@ class Teardown {
 
   public tearAll = async (): Promise<void> => {
     logger.loading('Teardown started')
+
+    const config = Dockest.config
 
     const containerIds: string[] = [
       ...config.runners.reduce(

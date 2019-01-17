@@ -3,23 +3,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DockestConfig_1 = __importDefault(require("../DockestConfig"));
+const __1 = __importDefault(require("../"));
 const DockestLogger_1 = __importDefault(require("../DockestLogger"));
 const jest_1 = __importDefault(require("./jest"));
-const config = new DockestConfig_1.default().getConfig();
+const postgres_1 = __importDefault(require("./postgres"));
+exports.PostgresRunner = postgres_1.default;
+const { values } = Object;
 const logger = new DockestLogger_1.default();
 const run = async () => {
     logger.loading('Integration test initiated');
-    const { runners } = config;
+    const { runners } = __1.default.config;
     // setup runners
-    for (const runner of runners) {
+    for (const runner of values(runners)) {
         await runner.setup();
     }
-    logger.success('Dependencies up and running, ready for Jest unit tests');
     // evaluate jest result
-    const result = await jest_1.default();
+    const jestRunner = new jest_1.default(__1.default.config.jest);
+    const result = await jestRunner.run();
     // teardown runners
-    for (const runner of runners) {
+    for (const runner of values(runners)) {
         await runner.teardown();
     }
     result.success ? process.exit(0) : process.exit(1);
