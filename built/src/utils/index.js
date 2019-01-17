@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const net_1 = __importDefault(require("net"));
 const ConfigurationError_1 = __importDefault(require("../errors/ConfigurationError"));
-const logger_1 = __importDefault(require("./logger"));
+const logger_1 = __importDefault(require("../logger"));
 const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 exports.sleep = sleep;
 const acquireConnection = (host = 'localhost', port) => new Promise((resolve, reject) => {

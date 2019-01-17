@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const ConfigurationError_1 = __importDefault(require("../../errors/ConfigurationError"));
 const index_1 = __importDefault(require("../../index"));
-const runnerUtils_1 = require("../../utils/runnerUtils");
+const utils_1 = require("../../utils");
 const execs_1 = __importDefault(require("./execs"));
 class PostgresRunner {
     constructor(config) {
@@ -23,7 +23,7 @@ class PostgresRunner {
         this.validatePostgresConfig = (config) => {
             const { service, host, db, port, password, username } = config;
             const requiredProps = { service, host, db, port, password, username };
-            runnerUtils_1.validateInputFields('postgres', requiredProps);
+            utils_1.validateInputFields('postgres', requiredProps);
             if (!config) {
                 throw new ConfigurationError_1.default('Missing configuration for Postgres runner');
             }

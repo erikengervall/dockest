@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ConfigurationError_1 = __importDefault(require("../errors/ConfigurationError"));
-const logger_1 = __importDefault(require("../utils/logger"));
+const logger_1 = __importDefault(require("../logger"));
 const DEFAULT_CONFIG = {
     projects: ['.'],
 };

@@ -1,5 +1,5 @@
 import Dockest from './index'
-import logger from './logger'
+import logger from './utils/logger'
 import { tearAll } from './utils/teardown'
 
 interface IErrorPayload {

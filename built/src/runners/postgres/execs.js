@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const DockestError_1 = __importDefault(require("../../errors/DockestError"));
-const execUtils_1 = require("../../utils/execUtils");
-const logger_1 = __importDefault(require("../../utils/logger"));
+const logger_1 = __importDefault(require("../../logger"));
+const utils_1 = require("../../utils");
 const teardown_1 = require("../../utils/teardown");
 class PostgresExec {
     constructor() {
@@ -39,7 +39,7 @@ class PostgresExec {
                 }
                 catch (error) {
                     responsivenessTimeout--;
-                    await execUtils_1.sleep(1000);
+                    await utils_1.sleep(1000);
                     await recurse(responsivenessTimeout);
                 }
             };
@@ -54,12 +54,12 @@ class PostgresExec {
                     throw new DockestError_1.default(`Database connection timed out`);
                 }
                 try {
-                    await execUtils_1.acquireConnection(host, port);
+                    await utils_1.acquireConnection(host, port);
                     logger_1.default.success('Database connection established');
                 }
                 catch (error) {
                     connectionTimeout--;
-                    await execUtils_1.sleep(1000);
+                    await utils_1.sleep(1000);
                     await recurse(connectionTimeout);
                 }
             };

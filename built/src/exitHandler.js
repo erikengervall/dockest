@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
-const logger_1 = __importDefault(require("./utils/logger"));
+const logger_1 = __importDefault(require("./logger"));
 const teardown_1 = require("./utils/teardown");
 const setupExitHandler = async () => {
     const config = index_1.default.config;

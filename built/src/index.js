@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const exitHandler_1 = __importDefault(require("./exitHandler"));
+const logger_1 = __importDefault(require("./logger"));
 const runners_1 = require("./runners");
-const jest_1 = __importDefault(require("./utils/jest"));
-const logger_1 = __importDefault(require("./utils/logger"));
-const runnerUtils_1 = require("./utils/runnerUtils");
+const utils_1 = require("./utils");
+const jest_1 = __importDefault(require("./jest"));
 const { values } = Object;
 class Dockest {
     constructor(userConfig) {
@@ -30,7 +30,7 @@ class Dockest {
         };
         const { dockest, jest } = userConfig;
         const requiredProps = { dockest, jest, runners: exports.runners };
-        runnerUtils_1.validateInputFields('Dockest', requiredProps);
+        utils_1.validateInputFields('Dockest', requiredProps);
         Dockest.config = userConfig;
     }
 }

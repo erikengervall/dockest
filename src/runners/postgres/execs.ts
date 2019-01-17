@@ -1,8 +1,8 @@
 import execa from 'execa'
 
 import DockestError from '../../errors/DockestError'
-import logger from '../../logger'
-import { acquireConnection, sleep } from '../../utils'
+import { acquireConnection, sleep } from '../../utils/execUtils'
+import logger from '../../utils/logger'
 import { tearSingle } from '../../utils/teardown'
 import { IExec } from '../types'
 import { IPostgresRunnerConfig } from './index'

@@ -2,8 +2,8 @@ import execa from 'execa'
 
 import DockestError from '../errors/DockestError'
 import Dockest from '../index'
-import logger from '../logger'
 import PostgresRunner from '../runners/postgres'
+import logger from './logger'
 
 const { values } = Object
 
@@ -56,12 +56,4 @@ const removeContainerById = async (containerId: string, progress: string): Promi
   logger.loading(`Container #${progress} with id <${containerId}> removed`)
 }
 
-// Deprecated
-const dockerComposeDown = async (): Promise<void> => {
-  const timeout = 15
-  await execa.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`)
-
-  logger.success('docker-compose: success')
-}
-
-export { tearSingle, tearAll, dockerComposeDown }
+export { tearSingle, tearAll }

@@ -1,7 +1,7 @@
 "use strict";
 // tslint:disable:no-console
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./constants");
+const constants_1 = require("../constants");
 const logger = {
     info: (message, data = '') => console.info(`${message}`, data),
     loading: (message, data = '') => console.info(`${constants_1.ICONS.LOADING} ${message}`, data),

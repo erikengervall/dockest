@@ -1,6 +1,6 @@
 import ConfigurationError from '../../errors/ConfigurationError'
 import Dockest from '../../index'
-import { validateInputFields } from '../../utils'
+import { validateInputFields } from '../../utils/runnerUtils'
 import { IRunner } from '../types'
 import PostgresExec from './execs'
 

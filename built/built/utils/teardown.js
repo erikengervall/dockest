@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const DockestError_1 = __importDefault(require("../errors/DockestError"));
 const index_1 = __importDefault(require("../index"));
-const logger_1 = __importDefault(require("./logger"));
+const logger_1 = __importDefault(require("../logger"));
 const { values } = Object;
 const tearSingle = async (containerId, progress = '1') => {
     if (!containerId) {

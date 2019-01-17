@@ -1,5 +1,5 @@
 import ConfigurationError from '../errors/ConfigurationError'
-import logger from '../logger'
+import logger from './logger'
 
 interface IJestResult {
   results: { success: true }
