@@ -19,8 +19,8 @@ class PostgresExec {
             return containerId;
         };
         this.checkHealth = async (containerId, runnerConfig) => {
-            // await this.checkResponsiveness(containerId, runnerConfig)
-            await this.checkConnection(runnerConfig);
+            await this.checkResponsiveness(containerId, runnerConfig);
+            // await this.checkConnectio/n(runnerConfig)
         };
         this.teardown = async (containerId) => {
             await teardown_1.tearSingle(containerId);

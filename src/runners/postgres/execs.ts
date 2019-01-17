@@ -34,8 +34,8 @@ class PostgresExec implements IExec {
   }
 
   public checkHealth = async (containerId: string, runnerConfig: IPostgresRunnerConfig) => {
-    // await this.checkResponsiveness(containerId, runnerConfig)
-    await this.checkConnection(runnerConfig)
+    await this.checkResponsiveness(containerId, runnerConfig)
+    // await this.checkConnectio/n(runnerConfig)
   }
 
   public teardown = async (containerId?: string) => {
