@@ -2,11 +2,10 @@ import execa from 'execa'
 
 import DockestError from '../../errors/DockestError'
 import Dockest from '../../index'
-import Logger from '../../logger'
+import logger from '../../logger'
 import PostgresRunner from '../../runners/postgres'
 
 const { values } = Object
-const logger = new Logger()
 
 const tearSingle = async (containerId?: string, progress: string = '1'): Promise<void> => {
   if (!containerId) {

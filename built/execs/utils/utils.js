@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const net_1 = __importDefault(require("net"));
 const logger_1 = __importDefault(require("../../logger"));
-const logger = new logger_1.default();
 const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 exports.sleep = sleep;
 const acquireConnection = (host = 'localhost', port) => new Promise((resolve, reject) => {
@@ -27,9 +26,9 @@ const acquireConnection = (host = 'localhost', port) => new Promise((resolve, re
 });
 exports.acquireConnection = acquireConnection;
 const runCustomCommand = async (command) => {
-    logger.loading(`Running custom command: ${command}`);
+    logger_1.default.loading(`Running custom command: ${command}`);
     const { stdout: result = '' } = await execa_1.default.shell(command);
-    logger.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
+    logger_1.default.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
 };
 exports.runCustomCommand = runCustomCommand;
 // Deprecated

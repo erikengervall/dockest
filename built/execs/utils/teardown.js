@@ -8,19 +8,18 @@ const DockestError_1 = __importDefault(require("../../errors/DockestError"));
 const index_1 = __importDefault(require("../../index"));
 const logger_1 = __importDefault(require("../../logger"));
 const { values } = Object;
-const logger = new logger_1.default();
 const tearSingle = async (containerId, progress = '1') => {
     if (!containerId) {
         throw new DockestError_1.default(`No containerId`);
     }
-    logger.loading('Teardown started');
+    logger_1.default.loading('Teardown started');
     await stopContainerById(containerId, progress);
     await removeContainerById(containerId, progress);
-    logger.success('Teardown successful');
+    logger_1.default.success('Teardown successful');
 };
 exports.tearSingle = tearSingle;
 const tearAll = async () => {
-    logger.loading('Teardown started');
+    logger_1.default.loading('Teardown started');
     const config = index_1.default.config;
     const containerIds = [
         ...values(config.runners).reduce((acc, postgresRunner) => postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc, []),
@@ -31,21 +30,21 @@ const tearAll = async () => {
         await stopContainerById(containerId, progress);
         await removeContainerById(containerId, progress);
     }
-    logger.success('Teardown successful');
+    logger_1.default.success('Teardown successful');
 };
 exports.tearAll = tearAll;
 const stopContainerById = async (containerId, progress) => {
     await execa_1.default.shell(`docker stop ${containerId}`);
-    logger.success(`Container #${progress} with id <${containerId}> stopped`);
+    logger_1.default.success(`Container #${progress} with id <${containerId}> stopped`);
 };
 const removeContainerById = async (containerId, progress) => {
     await execa_1.default.shell(`docker rm ${containerId} --volumes`);
-    logger.success(`Container #${progress} with id <${containerId}> removed`);
+    logger_1.default.success(`Container #${progress} with id <${containerId}> removed`);
 };
 // Deprecated
 const dockerComposeDown = async () => {
     const timeout = 15;
     await execa_1.default.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`);
-    logger.success('docker-compose: success');
+    logger_1.default.success('docker-compose: success');
 };
 exports.dockerComposeDown = dockerComposeDown;

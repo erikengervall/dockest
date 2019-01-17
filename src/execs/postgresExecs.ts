@@ -1,13 +1,11 @@
 import execa from 'execa'
 
 import DockestError from '../errors/DockestError'
-import Logger from '../logger'
+import logger from '../logger'
 import { IPostgresRunnerConfig } from '../runners/postgres'
 import { IBaseExecs } from './types'
 import { tearSingle } from './utils/teardown'
 import { acquireConnection, sleep } from './utils/utils'
-
-const logger = new Logger()
 
 class PostgresExec implements IBaseExecs {
   private static instance: PostgresExec
