@@ -9,8 +9,7 @@ const teardown_1 = require("./utils/teardown");
 const setupExitHandler = async () => {
     const config = index_1.default.config;
     const exitHandler = async (errorPayload) => {
-        const success = errorPayload.code === 0;
-        if (success) {
+        if (errorPayload.code === 0) {
             process.exit(0);
         }
         logger_1.default.info('Exithandler invoced', errorPayload);
