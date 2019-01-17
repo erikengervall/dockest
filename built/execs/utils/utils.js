@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const net_1 = __importDefault(require("net"));
-const DockestLogger_1 = __importDefault(require("../../DockestLogger"));
-const logger = new DockestLogger_1.default();
+const logger_1 = __importDefault(require("../../logger"));
+const logger = new logger_1.default();
 const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 exports.sleep = sleep;
 const acquireConnection = (host = 'localhost', port) => new Promise((resolve, reject) => {
@@ -16,7 +16,6 @@ const acquireConnection = (host = 'localhost', port) => new Promise((resolve, re
         .createConnection({ host, port })
         .on('connect', () => {
         clearTimeout(timeoutId);
-        console.log('*** connected to server!'); // tslint:disable-line
         connected = true;
         netSocket.end();
         resolve();

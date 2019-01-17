@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
-const DockestLogger_1 = __importDefault(require("../DockestLogger"));
 const DockestError_1 = __importDefault(require("../errors/DockestError"));
-const teardown_1 = __importDefault(require("./utils/teardown"));
+const logger_1 = __importDefault(require("../logger"));
+const teardown_1 = require("./utils/teardown");
 const utils_1 = require("./utils/utils");
-const logger = new DockestLogger_1.default();
+const logger = new logger_1.default();
 class PostgresExec {
     constructor() {
         this.start = async (runnerConfig, dockerComposeFilePath) => {
@@ -19,13 +19,20 @@ class PostgresExec {
             logger.success('Postgres container started successfully');
             return containerId;
         };
+        this.checkHealth = async (containerId, runnerConfig) => {
+            await this.checkResponsiveness(containerId, runnerConfig);
+            await this.checkConnection(runnerConfig);
+        };
+        this.teardown = async (containerId) => {
+            await teardown_1.tearSingle(containerId);
+        };
         this.checkResponsiveness = async (containerId, runnerConfig) => {
             logger.loading('Attempting to establish database responsiveness');
             const { responsivenessTimeout = 10, host, username, db } = runnerConfig;
             const recurse = async (responsivenessTimeout) => {
-                logger.info(`Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`);
+                logger.loading(`Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`);
                 if (responsivenessTimeout <= 0) {
-                    throw new DockestError_1.default(`${this.checkResponsiveness.name} Database responsiveness timed out`);
+                    throw new DockestError_1.default(`Database responsiveness timed out`);
                 }
                 try {
                     await execa_1.default.shell(`docker exec ${containerId} bash -c "psql -h ${host} -U ${username} -d ${db} -c 'select 1'"`);
@@ -43,9 +50,9 @@ class PostgresExec {
             logger.loading('Attempting to establish database connection');
             const { connectionTimeout = 3, host, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {
-                logger.info(`Establishing database connection (Timing out in: ${connectionTimeout}s)`);
+                logger.loading(`Establishing database connection (Timing out in: ${connectionTimeout}s)`);
                 if (connectionTimeout <= 0) {
-                    throw new DockestError_1.default(`${this.checkConnection.name}: Database connection timed out`);
+                    throw new DockestError_1.default(`Database connection timed out`);
                 }
                 try {
                     await utils_1.acquireConnection(host, port);
@@ -59,13 +66,10 @@ class PostgresExec {
             };
             await recurse(connectionTimeout);
         };
-        this.teardown = async (containerId) => {
-            const teardown = new teardown_1.default();
-            teardown.tearSingle(containerId);
-        };
         if (PostgresExec.instance) {
             return PostgresExec.instance;
         }
+        PostgresExec.instance = this;
     }
 }
 exports.default = PostgresExec;

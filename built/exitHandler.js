@@ -3,20 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DockestLogger_1 = __importDefault(require("./DockestLogger"));
-const teardown_1 = __importDefault(require("./execs/utils/teardown"));
+const teardown_1 = require("./execs/utils/teardown");
 const index_1 = __importDefault(require("./index"));
+const logger_1 = __importDefault(require("./logger"));
 const setupExitHandler = async () => {
     const config = index_1.default.config;
-    const logger = new DockestLogger_1.default();
+    const logger = new logger_1.default();
     const exitHandler = async (errorPayload) => {
         logger.info('Exithandler invoced', errorPayload);
         if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
             const err = errorPayload.error || new Error('Failed to extract error');
             config.dockest.exitHandler(err);
         }
-        const teardown = new teardown_1.default();
-        await teardown.tearAll();
+        await teardown_1.tearAll();
         logger.info('Exit with payload');
         process.exit(errorPayload.code || 1);
     };

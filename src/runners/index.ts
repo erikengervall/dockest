@@ -1,5 +1,5 @@
 import Dockest from '../'
-import Logger from '../DockestLogger'
+import Logger from '../logger'
 import JestRunner from './jest'
 import PostgresRunner from './postgres'
 

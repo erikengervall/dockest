@@ -3,12 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DockestLogger_1 = __importDefault(require("../DockestLogger"));
 const ConfigurationError_1 = __importDefault(require("../errors/ConfigurationError"));
+const logger_1 = __importDefault(require("../logger"));
+const DEFAULT_CONFIG = {
+    projects: ['.'],
+};
 class JestRunner {
     constructor(config) {
         this.run = async () => {
-            const logger = new DockestLogger_1.default();
+            const logger = new logger_1.default();
             const jestOptions = JestRunner.config;
             const jest = JestRunner.config.lib;
             let success = false;
@@ -41,7 +44,8 @@ class JestRunner {
             return JestRunner.instance;
         }
         this.validateJestConfig(config);
-        JestRunner.config = config;
+        JestRunner.config = Object.assign({}, DEFAULT_CONFIG, config);
+        JestRunner.instance = this;
     }
 }
 exports.default = JestRunner;

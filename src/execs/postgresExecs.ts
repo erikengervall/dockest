@@ -1,10 +1,10 @@
 import execa from 'execa'
 
-import Logger from '../DockestLogger'
 import DockestError from '../errors/DockestError'
+import Logger from '../logger'
 import { IPostgresRunnerConfig } from '../runners/postgres'
 import { IBaseExecs } from './types'
-import Teardown from './utils/teardown'
+import { tearSingle } from './utils/teardown'
 import { acquireConnection, sleep } from './utils/utils'
 
 const logger = new Logger()
@@ -16,9 +16,11 @@ class PostgresExec implements IBaseExecs {
     if (PostgresExec.instance) {
       return PostgresExec.instance
     }
+
+    PostgresExec.instance = this
   }
 
-  start = async (runnerConfig: IPostgresRunnerConfig, dockerComposeFilePath?: string) => {
+  public start = async (runnerConfig: IPostgresRunnerConfig, dockerComposeFilePath?: string) => {
     logger.loading('Starting postgres container')
 
     const { label, port, service } = runnerConfig
@@ -33,17 +35,31 @@ class PostgresExec implements IBaseExecs {
     return containerId
   }
 
-  checkResponsiveness = async (containerId: string, runnerConfig: IPostgresRunnerConfig) => {
+  public checkHealth = async (containerId: string, runnerConfig: IPostgresRunnerConfig) => {
+    await this.checkResponsiveness(containerId, runnerConfig)
+    await this.checkConnection(runnerConfig)
+  }
+
+  public teardown = async (containerId?: string) => {
+    await tearSingle(containerId)
+  }
+
+  private checkResponsiveness = async (
+    containerId: string,
+    runnerConfig: IPostgresRunnerConfig
+  ) => {
     logger.loading('Attempting to establish database responsiveness')
 
     const { responsivenessTimeout = 10, host, username, db } = runnerConfig
 
     type Recurse = (responsivenessTimeout: number) => Promise<void>
     const recurse: Recurse = async responsivenessTimeout => {
-      logger.info(`Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`)
+      logger.loading(
+        `Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`
+      )
 
       if (responsivenessTimeout <= 0) {
-        throw new DockestError(`${this.checkResponsiveness.name} Database responsiveness timed out`)
+        throw new DockestError(`Database responsiveness timed out`)
       }
 
       try {
@@ -63,16 +79,16 @@ class PostgresExec implements IBaseExecs {
     await recurse(responsivenessTimeout)
   }
 
-  checkConnection = async (runnerConfig: IPostgresRunnerConfig) => {
+  private checkConnection = async (runnerConfig: IPostgresRunnerConfig) => {
     logger.loading('Attempting to establish database connection')
 
     const { connectionTimeout = 3, host, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
-      logger.info(`Establishing database connection (Timing out in: ${connectionTimeout}s)`)
+      logger.loading(`Establishing database connection (Timing out in: ${connectionTimeout}s)`)
 
       if (connectionTimeout <= 0) {
-        throw new DockestError(`${this.checkConnection.name}: Database connection timed out`)
+        throw new DockestError(`Database connection timed out`)
       }
 
       try {
@@ -88,11 +104,6 @@ class PostgresExec implements IBaseExecs {
     }
 
     await recurse(connectionTimeout)
-  }
-
-  teardown = async (containerId?: string) => {
-    const teardown = new Teardown()
-    teardown.tearSingle(containerId)
   }
 }
 

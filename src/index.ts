@@ -1,6 +1,6 @@
-import Logger from './DockestLogger'
-import Teardown from './execs/utils/teardown'
+import { tearAll } from './execs/utils/teardown'
 import setupExitHandler from './exitHandler'
+import Logger from './logger'
 import run, { PostgresRunner } from './runners'
 import { IJestConfig } from './runners/jest'
 import { validateInputFields } from './utils'
@@ -30,7 +30,6 @@ class Dockest {
 
   public run = async () => {
     const logger = new Logger()
-    const teardown = new Teardown()
 
     setupExitHandler()
 
@@ -39,7 +38,7 @@ class Dockest {
     } catch (error) {
       logger.error('Unexpected error', error)
 
-      await teardown.tearAll()
+      await tearAll()
 
       process.exit(1)
     }

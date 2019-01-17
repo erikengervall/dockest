@@ -1,81 +1,68 @@
 import execa from 'execa'
 
-import Logger from '../../DockestLogger'
 import DockestError from '../../errors/DockestError'
 import Dockest from '../../index'
+import Logger from '../../logger'
 import PostgresRunner from '../../runners/postgres'
 
+const { values } = Object
 const logger = new Logger()
 
-class Teardown {
-  private static instance: Teardown
-
-  constructor() {
-    if (Teardown.instance) {
-      return Teardown.instance
-    }
+const tearSingle = async (containerId?: string, progress: string = '1'): Promise<void> => {
+  if (!containerId) {
+    throw new DockestError(`No containerId`)
   }
 
-  public tearSingle = async (containerId?: string, progress: string = '1'): Promise<void> => {
-    if (!containerId) {
-      throw new DockestError(`${this.tearSingle.name}: No containerId`)
-    }
+  logger.loading('Teardown started')
 
-    logger.loading('Teardown started')
+  await stopContainerById(containerId, progress)
+  await removeContainerById(containerId, progress)
 
-    await this.stopContainerById(containerId, progress)
-    await this.removeContainerById(containerId, progress)
-
-    await this.dockerComposeDown() // TODO: Read up on this
-
-    logger.success('Teardown successful')
-  }
-
-  public tearAll = async (): Promise<void> => {
-    logger.loading('Teardown started')
-
-    const config = Dockest.config
-
-    const containerIds: string[] = [
-      ...config.runners.reduce(
-        (acc: string[], postgresRunner: PostgresRunner) =>
-          postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc,
-        []
-      ),
-    ]
-
-    const containerIdsLen = containerIds.length
-    for (let i = 0; containerIdsLen > i; i++) {
-      const progress = `${i + 1}/${containerIdsLen}`
-      const containerId = containerIds[i]
-
-      await this.stopContainerById(containerId, progress)
-      await this.removeContainerById(containerId, progress)
-    }
-
-    await this.dockerComposeDown() // TODO: Read up on this
-
-    logger.success('Teardown successful')
-  }
-
-  private stopContainerById = async (containerId: string, progress: string): Promise<void> => {
-    await execa.shell(`docker stop ${containerId}`)
-
-    logger.stop(`Container #${progress} with id <${containerId}> stopped`)
-  }
-
-  private removeContainerById = async (containerId: string, progress: string): Promise<void> => {
-    await execa.shell(`docker rm ${containerId} --volumes`)
-
-    logger.stop(`Container #${progress} with id <${containerId}> removed`)
-  }
-
-  private dockerComposeDown = async (): Promise<void> => {
-    const timeout = 15
-    await execa.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`)
-
-    logger.stop('docker-compose: success')
-  }
+  logger.success('Teardown successful')
 }
 
-export default Teardown
+const tearAll = async (): Promise<void> => {
+  logger.loading('Teardown started')
+
+  const config = Dockest.config
+
+  const containerIds = [
+    ...values(config.runners).reduce(
+      (acc: string[], postgresRunner: PostgresRunner) =>
+        postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc,
+      []
+    ),
+  ]
+
+  for (let i = 0; containerIds.length > i; i++) {
+    const progress = `${i + 1}/${containerIds.length}`
+    const containerId = containerIds[i]
+
+    await stopContainerById(containerId, progress)
+    await removeContainerById(containerId, progress)
+  }
+
+  logger.success('Teardown successful')
+}
+
+const stopContainerById = async (containerId: string, progress: string): Promise<void> => {
+  await execa.shell(`docker stop ${containerId}`)
+
+  logger.success(`Container #${progress} with id <${containerId}> stopped`)
+}
+
+const removeContainerById = async (containerId: string, progress: string): Promise<void> => {
+  await execa.shell(`docker rm ${containerId} --volumes`)
+
+  logger.success(`Container #${progress} with id <${containerId}> removed`)
+}
+
+// Deprecated
+const dockerComposeDown = async (): Promise<void> => {
+  const timeout = 15
+  await execa.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`)
+
+  logger.success('docker-compose: success')
+}
+
+export { tearSingle, tearAll, dockerComposeDown }

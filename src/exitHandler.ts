@@ -1,6 +1,6 @@
-import Logger from './DockestLogger'
-import Teardown from './execs/utils/teardown'
+import { tearAll } from './execs/utils/teardown'
 import Dockest from './index'
+import Logger from './logger'
 
 const setupExitHandler = async (): Promise<void> => {
   const config = Dockest.config
@@ -20,8 +20,7 @@ const setupExitHandler = async (): Promise<void> => {
       config.dockest.exitHandler(err)
     }
 
-    const teardown = new Teardown()
-    await teardown.tearAll()
+    await tearAll()
 
     logger.info('Exit with payload')
 

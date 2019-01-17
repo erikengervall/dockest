@@ -1,7 +1,7 @@
 import execa from 'execa'
 import net from 'net'
 
-import Logger from '../../DockestLogger'
+import Logger from '../../logger'
 import { IPostgresRunnerConfig } from '../../runners/postgres'
 
 const logger = new Logger()
@@ -18,7 +18,6 @@ const acquireConnection = (host: string = 'localhost', port: number): Promise<vo
       .createConnection({ host, port })
       .on('connect', () => {
         clearTimeout(timeoutId)
-        console.log('*** connected to server!') // tslint:disable-line
         connected = true
         netSocket.end()
         resolve()

@@ -1,5 +1,5 @@
-import Logger from '../DockestLogger'
 import ConfigurationError from '../errors/ConfigurationError'
+import Logger from '../logger'
 
 interface IJestResult {
   results: { success: true }
@@ -16,11 +16,15 @@ interface IJestLib {
 
 export interface IJestConfig {
   lib: IJestLib
+  projects: string[]
   silent?: boolean
   verbose?: boolean
   forceExit?: boolean
   watchAll?: boolean
-  projects: string[]
+}
+
+const DEFAULT_CONFIG = {
+  projects: ['.'],
 }
 
 class JestRunner {
@@ -33,7 +37,9 @@ class JestRunner {
     }
 
     this.validateJestConfig(config)
-    JestRunner.config = config
+
+    JestRunner.config = { ...DEFAULT_CONFIG, ...config }
+    JestRunner.instance = this
   }
 
   public run = async () => {
