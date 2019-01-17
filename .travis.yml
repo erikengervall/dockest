@@ -1,7 +1,7 @@
 language: node_js
 node_js:
  - "node"
-script: test
+script: yarn test
 addons:
   apt:
     packages:
