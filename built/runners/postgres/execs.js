@@ -4,17 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
-const DockestError_1 = __importDefault(require("../errors/DockestError"));
-const logger_1 = __importDefault(require("../logger"));
-const teardown_1 = require("./utils/teardown");
-const utils_1 = require("./utils/utils");
+const DockestError_1 = __importDefault(require("../../errors/DockestError"));
+const logger_1 = __importDefault(require("../../logger"));
+const utils_1 = require("../../utils");
+const teardown_1 = require("../../utils/teardown");
 class PostgresExec {
     constructor() {
         this.start = async (runnerConfig, dockerComposeFilePath) => {
             logger_1.default.loading('Starting postgres container');
-            const { label, port, service } = runnerConfig;
+            const { port, service } = runnerConfig;
             const file = dockerComposeFilePath ? `--file ${dockerComposeFilePath}` : '';
-            const { stdout: containerId } = await execa_1.default.shell(`docker-compose ${file} run --detach --no-deps --label ${label} --publish ${port}:5432 ${service}`);
+            const { stdout: containerId } = await execa_1.default.shell(`docker-compose ${file} run --detach --no-deps --publish ${port}:5432 ${service}`);
             logger_1.default.success('Postgres container started successfully');
             return containerId;
         };

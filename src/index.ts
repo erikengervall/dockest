@@ -1,9 +1,9 @@
-import { tearAll } from './execs/utils/teardown'
 import setupExitHandler from './exitHandler'
-import Logger from './logger'
+import logger from './logger'
 import run, { PostgresRunner } from './runners'
 import { IJestConfig } from './runners/jest'
 import { validateInputFields } from './utils'
+import { tearAll } from './utils/teardown'
 
 interface IDockest {
   verbose?: boolean
@@ -29,8 +29,6 @@ class Dockest {
   }
 
   public run = async () => {
-    const logger = new Logger()
-
     setupExitHandler()
 
     try {

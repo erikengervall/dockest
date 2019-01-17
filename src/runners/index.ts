@@ -1,10 +1,9 @@
 import Dockest from '../'
-import Logger from '../logger'
+import logger from '../logger'
 import JestRunner from './jest'
 import PostgresRunner from './postgres'
 
 const { values } = Object
-const logger = new Logger()
 
 const run = async (): Promise<void> => {
   logger.loading('Integration test initiated')

@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const net_1 = __importDefault(require("net"));
-const logger_1 = __importDefault(require("../../logger"));
+const ConfigurationError_1 = __importDefault(require("../errors/ConfigurationError"));
+const logger_1 = __importDefault(require("../logger"));
 const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 exports.sleep = sleep;
 const acquireConnection = (host = 'localhost', port) => new Promise((resolve, reject) => {
@@ -31,11 +32,10 @@ const runCustomCommand = async (command) => {
     logger_1.default.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
 };
 exports.runCustomCommand = runCustomCommand;
-// Deprecated
-const getContainerId = async (runnerConfig) => {
-    const { label } = runnerConfig;
-    const { stdout } = await execa_1.default.shell(`docker ps --filter "status=running" --filter "label=${label}" --no-trunc -q`);
-    const containerId = stdout.replace(/\r?\n|\r/g, '');
-    return containerId;
+const validateInputFields = (origin, requiredFields) => {
+    const missingFields = Object.keys(requiredFields).reduce((acc, requiredField) => !!requiredFields[requiredField] ? acc : acc.concat(requiredField), []);
+    if (missingFields.length !== 0) {
+        throw new ConfigurationError_1.default(`Invalid ${origin} configuration, missing required fields: [${missingFields.join(', ')}]`);
+    }
 };
-exports.getContainerId = getContainerId;
+exports.validateInputFields = validateInputFields;

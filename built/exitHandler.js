@@ -3,20 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const teardown_1 = require("./execs/utils/teardown");
 const index_1 = __importDefault(require("./index"));
 const logger_1 = __importDefault(require("./logger"));
+const teardown_1 = require("./utils/teardown");
 const setupExitHandler = async () => {
     const config = index_1.default.config;
-    const logger = new logger_1.default();
     const exitHandler = async (errorPayload) => {
-        logger.info('Exithandler invoced', errorPayload);
+        const success = errorPayload.code === 0;
+        if (success) {
+            process.exit(0);
+        }
+        logger_1.default.info('Exithandler invoced', errorPayload);
         if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
             const err = errorPayload.error || new Error('Failed to extract error');
             config.dockest.exitHandler(err);
         }
         await teardown_1.tearAll();
-        logger.info('Exit with payload');
+        logger_1.default.info('Exit with payload');
         process.exit(errorPayload.code || 1);
     };
     // so the program will not close instantly

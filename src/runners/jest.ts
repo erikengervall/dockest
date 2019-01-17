@@ -1,5 +1,5 @@
 import ConfigurationError from '../errors/ConfigurationError'
-import Logger from '../logger'
+import logger from '../logger'
 
 interface IJestResult {
   results: { success: true }
@@ -43,7 +43,6 @@ class JestRunner {
   }
 
   public run = async () => {
-    const logger = new Logger()
     const jestOptions = JestRunner.config
     const jest = JestRunner.config.lib
     let success = false

@@ -1,18 +1,24 @@
-import { tearAll } from './execs/utils/teardown'
 import Dockest from './index'
-import Logger from './logger'
+import logger from './logger'
+import { tearAll } from './utils/teardown'
+
+interface IErrorPayload {
+  code?: number
+  signal?: any
+  error?: Error
+  reason?: any
+  p?: any
+}
 
 const setupExitHandler = async (): Promise<void> => {
   const config = Dockest.config
-  const logger = new Logger()
 
-  const exitHandler = async (errorPayload: {
-    code?: number
-    signal?: any
-    error?: Error
-    reason?: any
-    p?: any
-  }): Promise<void> => {
+  const exitHandler = async (errorPayload: IErrorPayload): Promise<void> => {
+    const success = errorPayload.code === 0
+    if (success) {
+      process.exit(0)
+    }
+
     logger.info('Exithandler invoced', errorPayload)
 
     if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {

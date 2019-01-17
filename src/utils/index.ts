@@ -1,8 +1,8 @@
 import execa from 'execa'
 import net from 'net'
 
-import logger from '../../logger'
-import { IPostgresRunnerConfig } from '../../runners/postgres'
+import ConfigurationError from '../errors/ConfigurationError'
+import logger from '../logger'
 
 const sleep = (ms: number = 1000): Promise<number> =>
   new Promise(resolve => setTimeout(resolve, ms))
@@ -42,15 +42,18 @@ const runCustomCommand = async (command: string): Promise<void> => {
   )
 }
 
-// Deprecated
-const getContainerId = async (runnerConfig: IPostgresRunnerConfig): Promise<string> => {
-  const { label } = runnerConfig
-  const { stdout } = await execa.shell(
-    `docker ps --filter "status=running" --filter "label=${label}" --no-trunc -q`
+const validateInputFields = (origin: string, requiredFields: any): void => {
+  const missingFields = Object.keys(requiredFields).reduce(
+    (acc: boolean[], requiredField: any) =>
+      !!requiredFields[requiredField] ? acc : acc.concat(requiredField),
+    []
   )
-  const containerId = stdout.replace(/\r?\n|\r/g, '')
 
-  return containerId
+  if (missingFields.length !== 0) {
+    throw new ConfigurationError(
+      `Invalid ${origin} configuration, missing required fields: [${missingFields.join(', ')}]`
+    )
+  }
 }
 
-export { sleep, acquireConnection, getContainerId, runCustomCommand }
+export { sleep, acquireConnection, runCustomCommand, validateInputFields }

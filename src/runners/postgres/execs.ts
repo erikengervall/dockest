@@ -1,13 +1,13 @@
 import execa from 'execa'
 
-import DockestError from '../errors/DockestError'
-import logger from '../logger'
-import { IPostgresRunnerConfig } from '../runners/postgres'
-import { IBaseExecs } from './types'
-import { tearSingle } from './utils/teardown'
-import { acquireConnection, sleep } from './utils/utils'
+import DockestError from '../../errors/DockestError'
+import logger from '../../logger'
+import { acquireConnection, sleep } from '../../utils'
+import { tearSingle } from '../../utils/teardown'
+import { IExec } from '../types'
+import { IPostgresRunnerConfig } from './index'
 
-class PostgresExec implements IBaseExecs {
+class PostgresExec implements IExec {
   private static instance: PostgresExec
 
   constructor() {
@@ -21,11 +21,11 @@ class PostgresExec implements IBaseExecs {
   public start = async (runnerConfig: IPostgresRunnerConfig, dockerComposeFilePath?: string) => {
     logger.loading('Starting postgres container')
 
-    const { label, port, service } = runnerConfig
+    const { port, service } = runnerConfig
 
     const file = dockerComposeFilePath ? `--file ${dockerComposeFilePath}` : ''
     const { stdout: containerId } = await execa.shell(
-      `docker-compose ${file} run --detach --no-deps --label ${label} --publish ${port}:5432 ${service}`
+      `docker-compose ${file} run --detach --no-deps --publish ${port}:5432 ${service}`
     )
 
     logger.success('Postgres container started successfully')

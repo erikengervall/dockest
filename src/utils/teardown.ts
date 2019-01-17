@@ -1,9 +1,9 @@
 import execa from 'execa'
 
-import DockestError from '../../errors/DockestError'
-import Dockest from '../../index'
-import logger from '../../logger'
-import PostgresRunner from '../../runners/postgres'
+import DockestError from '../errors/DockestError'
+import Dockest from '../index'
+import logger from '../logger'
+import PostgresRunner from '../runners/postgres'
 
 const { values } = Object
 
@@ -47,13 +47,13 @@ const tearAll = async (): Promise<void> => {
 const stopContainerById = async (containerId: string, progress: string): Promise<void> => {
   await execa.shell(`docker stop ${containerId}`)
 
-  logger.success(`Container #${progress} with id <${containerId}> stopped`)
+  logger.loading(`Container #${progress} with id <${containerId}> stopped`)
 }
 
 const removeContainerById = async (containerId: string, progress: string): Promise<void> => {
   await execa.shell(`docker rm ${containerId} --volumes`)
 
-  logger.success(`Container #${progress} with id <${containerId}> removed`)
+  logger.loading(`Container #${progress} with id <${containerId}> removed`)
 }
 
 // Deprecated

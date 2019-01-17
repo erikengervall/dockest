@@ -1,11 +1,10 @@
-import ConfigurationError from '../errors/ConfigurationError'
-import PostgresExec from '../execs/postgresExecs'
-import Dockest from '../index'
-import { validateInputFields } from '../utils'
-import { IRunner } from './types'
+import ConfigurationError from '../../errors/ConfigurationError'
+import Dockest from '../../index'
+import { validateInputFields } from '../../utils'
+import { IRunner } from '../types'
+import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
-  label: string // Used for getting containerId using --filter
   service: string // dockest-compose service name
   host: string
   db: string
@@ -33,8 +32,7 @@ export class PostgresRunner implements IRunner {
     const containerId = await this.postgresExec.start(this.config, composeFile)
     this.containerId = containerId
 
-    await this.postgresExec.checkConnection(this.config)
-    await this.postgresExec.checkResponsiveness(containerId, this.config)
+    await this.postgresExec.checkHealth(containerId, this.config)
   }
 
   public teardown = async () => this.postgresExec.teardown(this.containerId)
@@ -45,8 +43,8 @@ export class PostgresRunner implements IRunner {
   })
 
   private validatePostgresConfig = (config: IPostgresRunnerConfig): void => {
-    const { label, service, host, db, port, password, username } = config
-    const requiredProps = { label, service, host, db, port, password, username }
+    const { service, host, db, port, password, username } = config
+    const requiredProps = { service, host, db, port, password, username }
     validateInputFields('postgres', requiredProps)
 
     if (!config) {

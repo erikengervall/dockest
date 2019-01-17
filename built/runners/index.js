@@ -9,9 +9,8 @@ const jest_1 = __importDefault(require("./jest"));
 const postgres_1 = __importDefault(require("./postgres"));
 exports.PostgresRunner = postgres_1.default;
 const { values } = Object;
-const logger = new logger_1.default();
 const run = async () => {
-    logger.loading('Integration test initiated');
+    logger_1.default.loading('Integration test initiated');
     const { runners } = __1.default.config;
     // setup runners
     for (const runner of values(runners)) {

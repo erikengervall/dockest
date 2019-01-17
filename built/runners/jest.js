@@ -11,24 +11,23 @@ const DEFAULT_CONFIG = {
 class JestRunner {
     constructor(config) {
         this.run = async () => {
-            const logger = new logger_1.default();
             const jestOptions = JestRunner.config;
             const jest = JestRunner.config.lib;
             let success = false;
-            logger.success(`Dependencies up and running, running Jest`);
+            logger_1.default.success(`Dependencies up and running, running Jest`);
             try {
                 const jestResult = await jest.runCLI(jestOptions, jestOptions.projects);
                 if (!jestResult.results.success) {
-                    logger.failed(`Integration test failed`);
+                    logger_1.default.failed(`Integration test failed`);
                     success = false;
                 }
                 else {
-                    logger.success(`Integration tests passed successfully`);
+                    logger_1.default.success(`Integration tests passed successfully`);
                     success = true;
                 }
             }
             catch (error) {
-                logger.error(`Encountered Jest error`, error);
+                logger_1.default.error(`Encountered Jest error`, error);
                 success = false;
             }
             return {
