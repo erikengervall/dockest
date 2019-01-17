@@ -1,25 +1,25 @@
-import exit from 'exit'
 import DockestConfig, { IConfig } from './DockestConfig'
 import DockestLogger from './DockestLogger'
-import { tearAll } from './execs/teardown'
+import Teardown from './execs/utils/teardown'
 import setupExitHandler from './exitHandler'
 import run from './runners'
 import PostgresRunner from './runners/postgres'
 
 const dockest = async (userConfig?: IConfig): Promise<void> => {
   new DockestConfig(userConfig) // tslint:disable-line
-  const Logger = new DockestLogger()
+  const logger = new DockestLogger()
+  const teardown = new Teardown()
+
+  setupExitHandler()
 
   try {
-    setupExitHandler()
-
     await run()
   } catch (error) {
-    Logger.error('Unexpected error', error)
+    logger.error('Unexpected error', error)
 
-    await tearAll()
+    await teardown.tearAll()
 
-    exit(1)
+    process.exit(1)
   }
 }
 

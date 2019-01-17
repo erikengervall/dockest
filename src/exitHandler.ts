@@ -1,8 +1,6 @@
-import exit from 'exit'
-
 import DockestConfig from './DockestConfig'
 import DockestLogger from './DockestLogger'
-import { tearAll } from './execs/teardown'
+import Teardown from './execs/utils/teardown'
 
 const setupExitHandler = async (): Promise<void> => {
   const config = new DockestConfig().getConfig()
@@ -22,11 +20,12 @@ const setupExitHandler = async (): Promise<void> => {
       config.dockest.exitHandler(err)
     }
 
-    await tearAll()
+    const teardown = new Teardown()
+    await teardown.tearAll()
 
     logger.info('Exit with payload')
 
-    exit(errorPayload.code || 1)
+    process.exit(errorPayload.code || 1)
   }
 
   // so the program will not close instantly

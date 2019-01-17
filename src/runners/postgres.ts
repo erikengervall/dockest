@@ -1,5 +1,4 @@
-import { checkConnection, checkResponsiveness, startContainer } from '../execs/postgres'
-import { tearSingle } from '../execs/teardown'
+import PostgresExec from '../execs/postgresExecs'
 import { IRunner } from './index'
 
 export interface IPostgresRunnerConfig {
@@ -19,29 +18,27 @@ export interface IPostgresRunnerConfig {
 export class PostgresRunner implements IRunner {
   public containerId?: string
   public config: IPostgresRunnerConfig
+  public postgresExec: PostgresExec
 
   constructor(config: IPostgresRunnerConfig) {
     this.config = config
+    this.postgresExec = new PostgresExec()
   }
 
-  public async setup() {
-    const containerId = await startContainer(this.config)
+  public setup = async () => {
+    const containerId = await this.postgresExec.start(this.config)
     this.containerId = containerId
 
-    await checkConnection(this.config)
-    await checkResponsiveness(containerId, this.config)
+    await this.postgresExec.checkConnection(this.config)
+    await this.postgresExec.checkResponsiveness(containerId, this.config)
   }
 
-  public async teardown() {
-    tearSingle(this.containerId)
-  }
+  public teardown = async () => this.postgresExec.teardown(this.containerId)
 
-  public async getHelpers() {
-    return {
-      clear: () => true,
-      loadData: () => true,
-    }
-  }
+  public getHelpers = async () => ({
+    clear: () => true,
+    loadData: () => true,
+  })
 }
 
 export default PostgresRunner

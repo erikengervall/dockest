@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const deepmerge_1 = __importDefault(require("deepmerge"));
 const fs_1 = __importDefault(require("fs"));
-const ConfigurationError_1 = __importDefault(require("./error/ConfigurationError"));
+const ConfigurationError_1 = __importDefault(require("./errors/ConfigurationError"));
 const DEFAULT_CONFIG = {
     jest: {
         projects: ['.'],

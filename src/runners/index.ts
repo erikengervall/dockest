@@ -21,13 +21,22 @@ const run: run = async () => {
 
   const { runners } = config
 
+  // setup runners
   for (const runner of runners) {
     await runner.setup()
   }
 
   logger.success('Dependencies up and running, ready for Jest unit tests')
 
-  await jestRunner()
+  // evaluate jest result
+  const result = await jestRunner()
+
+  // teardown runners
+  for (const runner of runners) {
+    await runner.teardown()
+  }
+
+  result.success ? process.exit(0) : process.exit(1)
 }
 
 export default run

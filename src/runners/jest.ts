@@ -1,36 +1,37 @@
-import exit from 'exit'
 import DockestConfig from '../DockestConfig'
 import DockestLogger from '../DockestLogger'
-import { tearAll } from '../execs/teardown'
 
 interface IJestResult {
   results: { success: true }
 }
 
-const jestRunner = async (): Promise<void> => {
+const jestRunner = async (): Promise<{ success: boolean }> => {
   const config = new DockestConfig().getConfig()
   const Logger = new DockestLogger()
   const jestOptions = config.jest
   const jest = jestOptions.lib
+  let success = false
 
   try {
     const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
 
     if (!jestResult.results.success) {
-      Logger.failed('Integration test failed')
-      await tearAll()
+      Logger.failed(`${jestRunner.name}: Integration test failed`)
 
-      exit(1)
+      success = false
     } else {
-      Logger.success('Integration tests passed successfully')
-      await tearAll()
+      Logger.success(`${jestRunner.name}: Integration tests passed successfully`)
 
-      exit(0)
+      success = true
     }
   } catch (error) {
-    Logger.error('Encountered Jest error', error)
+    Logger.error(`${jestRunner.name}: Encountered Jest error`, error)
 
-    exit(1)
+    success = false
+  }
+
+  return {
+    success,
   }
 }
 

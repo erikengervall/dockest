@@ -3,31 +3,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const exit_1 = __importDefault(require("exit"));
 const DockestConfig_1 = __importDefault(require("../DockestConfig"));
 const DockestLogger_1 = __importDefault(require("../DockestLogger"));
-const teardown_1 = require("../execs/teardown");
 const jestRunner = async () => {
     const config = new DockestConfig_1.default().getConfig();
     const Logger = new DockestLogger_1.default();
     const jestOptions = config.jest;
     const jest = jestOptions.lib;
+    let success = false;
     try {
         const jestResult = await jest.runCLI(jestOptions, jestOptions.projects);
         if (!jestResult.results.success) {
-            Logger.failed('Integration test failed');
-            await teardown_1.tearAll();
-            exit_1.default(1);
+            Logger.failed(`${jestRunner.name}: Integration test failed`);
+            success = false;
         }
         else {
-            Logger.success('Integration tests passed successfully');
-            await teardown_1.tearAll();
-            exit_1.default(0);
+            Logger.success(`${jestRunner.name}: Integration tests passed successfully`);
+            success = true;
         }
     }
     catch (error) {
-        Logger.error('Encountered Jest error', error);
-        exit_1.default(1);
+        Logger.error(`${jestRunner.name}: Encountered Jest error`, error);
+        success = false;
     }
+    return {
+        success,
+    };
 };
 exports.default = jestRunner;

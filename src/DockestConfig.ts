@@ -1,7 +1,7 @@
 import merge from 'deepmerge'
 import fs from 'fs'
 
-import ConfigurationError from './error/ConfigurationError'
+import ConfigurationError from './errors/ConfigurationError'
 import IPostgresRunner from './runners/postgres'
 
 export interface IJestConfig {

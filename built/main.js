@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DockestConfig_1 = __importDefault(require("../DockestConfig"));
-const DockestLogger_1 = __importDefault(require("../DockestLogger"));
-const jest_1 = __importDefault(require("./jest"));
+const DockestConfig_1 = __importDefault(require("./DockestConfig"));
+const DockestLogger_1 = __importDefault(require("./DockestLogger"));
+const jest_1 = __importDefault(require("./runners/jest"));
 const config = new DockestConfig_1.default().getConfig();
 const logger = new DockestLogger_1.default();
 const run = async () => {
