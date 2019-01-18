@@ -3,6 +3,7 @@ import { PostgresRunner } from './runners'
 import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
 import { validateInputFields } from './utils/runnerUtils'
+import { dockerComposeDown } from './utils/teardown'
 
 interface IDockest {
   verbose?: boolean

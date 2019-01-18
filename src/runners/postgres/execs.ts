@@ -24,8 +24,11 @@ class PostgresExec implements IExec {
     const { port, service } = runnerConfig
 
     const file = dockerComposeFilePath ? `--file ${dockerComposeFilePath}` : ''
-    const { stdout: containerId } = await execa.shell(
+    await execa.shell(
       `docker-compose ${file} run --detach --no-deps --publish ${port}:5432 ${service}`
+    )
+    const { stdout: containerId } = await execa.shell(
+      `docker ps --all --quiet --filter "name=${service}" --no-trunc --latest`
     )
 
     logger.success('Postgres container started successfully')
