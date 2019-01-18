@@ -7,17 +7,13 @@ import logger from './logger'
 
 const { values } = Object
 
-const tearSingle = async (containerId?: string, progress: string = '1'): Promise<void> => {
+const tearSingle = async (containerId?: string, progress: string = '1/1 '): Promise<void> => {
   if (!containerId) {
     throw new DockestError(`No containerId`)
   }
 
-  logger.loading('Teardown started')
-
   await stopContainerById(containerId, progress)
   await removeContainerById(containerId, progress)
-
-  logger.success('Teardown successful')
 }
 
 const tearAll = async (): Promise<void> => {
@@ -34,11 +30,10 @@ const tearAll = async (): Promise<void> => {
   ]
 
   for (let i = 0; containerIds.length > i; i++) {
-    const progress = `${i + 1}/${containerIds.length}`
+    const progress = `${i + 1}/${containerIds.length} `
     const containerId = containerIds[i]
 
-    await stopContainerById(containerId, progress)
-    await removeContainerById(containerId, progress)
+    await tearSingle(containerId, progress)
   }
 
   logger.success('Teardown successful')
@@ -47,7 +42,7 @@ const tearAll = async (): Promise<void> => {
 const stopContainerById = async (containerId: string, progress: string): Promise<void> => {
   await execa.shell(`docker stop ${containerId}`)
 
-  logger.loading(`Container #${progress} with id <${containerId}> stopped`)
+  logger.loading(`Container #${progress}with id <${containerId}> stopped`)
 }
 
 const removeContainerById = async (containerId: string, progress: string): Promise<void> => {

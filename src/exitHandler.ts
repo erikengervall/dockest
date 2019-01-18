@@ -14,8 +14,8 @@ const setupExitHandler = async (): Promise<void> => {
   const config = Dockest.config
 
   const exitHandler = async (errorPayload: IErrorPayload): Promise<void> => {
-    if (errorPayload.code === 0) {
-      process.exit(0)
+    if (Dockest.jestRanWithResult) {
+      return
     }
 
     logger.info('Exithandler invoced', errorPayload)

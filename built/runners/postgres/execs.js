@@ -20,7 +20,7 @@ class PostgresExec {
         };
         this.checkHealth = async (containerId, runnerConfig) => {
             await this.checkResponsiveness(containerId, runnerConfig);
-            // await this.checkConnectio/n(runnerConfig)
+            await this.checkConnection(runnerConfig);
         };
         this.teardown = async (containerId) => {
             await teardown_1.tearSingle(containerId);
@@ -46,6 +46,7 @@ class PostgresExec {
             await recurse(responsivenessTimeout);
         };
         this.checkConnection = async (runnerConfig) => {
+            return; // causes issues with travis
             logger_1.default.loading('Attempting to establish database connection');
             const { connectionTimeout = 3, host, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {

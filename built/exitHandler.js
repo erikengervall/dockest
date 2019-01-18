@@ -9,8 +9,8 @@ const teardown_1 = require("./utils/teardown");
 const setupExitHandler = async () => {
     const config = index_1.default.config;
     const exitHandler = async (errorPayload) => {
-        if (errorPayload.code === 0) {
-            process.exit(0);
+        if (index_1.default.jestRanWithResult) {
+            return;
         }
         logger_1.default.info('Exithandler invoced', errorPayload);
         if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {

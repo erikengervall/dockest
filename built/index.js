@@ -22,6 +22,7 @@ class Dockest {
             // evaluate jest result
             const jestRunner = new jest_1.default(Dockest.config.jest);
             const result = await jestRunner.run();
+            Dockest.jestRanWithResult = true;
             // teardown runners
             for (const runner of values(runners)) {
                 await runner.teardown();
@@ -32,6 +33,7 @@ class Dockest {
         const requiredProps = { dockest, jest, runners: exports.runners };
         runnerUtils_1.validateInputFields('Dockest', requiredProps);
         Dockest.config = userConfig;
+        Dockest.jestRanWithResult = false;
     }
 }
 exports.runners = { PostgresRunner: runners_1.PostgresRunner };

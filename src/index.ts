@@ -20,6 +20,7 @@ const { values } = Object
 
 class Dockest {
   public static config: IDockestConfig
+  public static jestRanWithResult: boolean
 
   constructor(userConfig: IDockestConfig) {
     const { dockest, jest } = userConfig
@@ -27,6 +28,7 @@ class Dockest {
     validateInputFields('Dockest', requiredProps)
 
     Dockest.config = userConfig
+    Dockest.jestRanWithResult = false
   }
 
   public run = async (): Promise<void> => {
@@ -44,6 +46,7 @@ class Dockest {
     // evaluate jest result
     const jestRunner = new JestRunner(Dockest.config.jest)
     const result = await jestRunner.run()
+    Dockest.jestRanWithResult = true
 
     // teardown runners
     for (const runner of values(runners)) {

@@ -35,7 +35,7 @@ class PostgresExec implements IExec {
 
   public checkHealth = async (containerId: string, runnerConfig: IPostgresRunnerConfig) => {
     await this.checkResponsiveness(containerId, runnerConfig)
-    // await this.checkConnectio/n(runnerConfig)
+    await this.checkConnection(runnerConfig)
   }
 
   public teardown = async (containerId?: string) => {
@@ -78,6 +78,7 @@ class PostgresExec implements IExec {
   }
 
   private checkConnection = async (runnerConfig: IPostgresRunnerConfig) => {
+    return // causes issues with travis
     logger.loading('Attempting to establish database connection')
 
     const { connectionTimeout = 3, host, port } = runnerConfig
