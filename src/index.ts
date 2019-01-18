@@ -36,21 +36,31 @@ class Dockest {
 
     logger.loading('Integration test initiated')
 
-    const { runners } = Dockest.config
-
-    for (const runnerKey of keys(runners)) {
-      await runners[runnerKey].setup(runnerKey)
-    }
+    await this.setupRunners()
 
     const jestRunner = new JestRunner(Dockest.config.jest)
     const result = await jestRunner.run()
     Dockest.jestRanWithResult = true
 
-    for (const runnerKey of keys(runners)) {
-      await runners[runnerKey].teardown()
-    }
+    await this.teardownRunners()
 
     result.success ? process.exit(0) : process.exit(1)
+  }
+
+  private setupRunners = async () => {
+    const { runners } = Dockest.config
+
+    for (const runnerKey of keys(runners)) {
+      await runners[runnerKey].setup()
+    }
+  }
+
+  private teardownRunners = async () => {
+    const { runners } = Dockest.config
+
+    for (const runnerKey of keys(runners)) {
+      await runners[runnerKey].teardown(runnerKey)
+    }
   }
 }
 
