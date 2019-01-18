@@ -1,8 +1,8 @@
 import setupExitHandler from './exitHandler'
 import { PostgresRunner } from './runners'
+import { validateInputFields } from './utils/config'
 import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
-import { validateInputFields } from './utils/runnerUtils'
 
 interface IDockest {
   verbose?: boolean

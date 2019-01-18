@@ -74,7 +74,12 @@ class JestRunner {
 
   private validateJestConfig = (config: IJestConfig) => {
     if (!config) {
-      throw new ConfigurationError('jest config missing')
+      throw new ConfigurationError('Jest config missing')
+    }
+
+    const MINIMUM_JEST_VERSION = '20.0.0' // Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
+    if (config.lib.getVersion() < MINIMUM_JEST_VERSION) {
+      throw new ConfigurationError('Jest version not supported')
     }
   }
 }

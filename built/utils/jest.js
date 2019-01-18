@@ -36,7 +36,11 @@ class JestRunner {
         };
         this.validateJestConfig = (config) => {
             if (!config) {
-                throw new errors_1.ConfigurationError('jest config missing');
+                throw new errors_1.ConfigurationError('Jest config missing');
+            }
+            const MINIMUM_JEST_VERSION = '20.0.0'; // Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
+            if (config.lib.getVersion() < MINIMUM_JEST_VERSION) {
+                throw new errors_1.ConfigurationError('Jest version not supported');
             }
         };
         if (JestRunner.instance) {

@@ -25,6 +25,11 @@ const acquireConnection = (host = 'localhost', port) => new Promise((resolve, re
     timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000);
 });
 exports.acquireConnection = acquireConnection;
+const getContainerId = async (serviceName) => {
+    const { stdout: containerId } = await execa_1.default.shell(`docker ps --quiet --filter "name=${serviceName}" --no-trunc --latest`);
+    return containerId;
+};
+exports.getContainerId = getContainerId;
 const runCustomCommand = async (command) => {
     logger_1.default.loading(`Running custom command: ${command}`);
     const { stdout: result = '' } = await execa_1.default.shell(command);

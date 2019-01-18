@@ -1,4 +1,4 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var postgres_1 = require("./postgres");
-exports.PostgresRunner = postgres_1.default;
+var PostgresRunner_1 = require("./PostgresRunner");
+exports.PostgresRunner = PostgresRunner_1.default;

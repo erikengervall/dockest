@@ -1,7 +1,7 @@
 import execa from 'execa'
 
 import { DockestError } from '../../errors'
-import { acquireConnection, sleep } from '../../utils/execUtils'
+import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
 import logger from '../../utils/logger'
 import { tearSingle } from '../../utils/teardown'
 import { IExec } from '../types'
@@ -27,9 +27,7 @@ class PostgresExec implements IExec {
     await execa.shell(
       `docker-compose ${file} run --detach --no-deps --publish ${port}:5432 ${service}`
     )
-    const { stdout: containerId } = await execa.shell(
-      `docker ps --quiet --filter "name=${service}" --no-trunc --latest`
-    )
+    const containerId = await getContainerId(service)
 
     logger.success('Postgres container started successfully')
 
@@ -51,7 +49,7 @@ class PostgresExec implements IExec {
   ) => {
     logger.loading('Attempting to establish database responsiveness')
 
-    const { responsivenessTimeout = 10, host, username, db } = runnerConfig
+    const { responsivenessTimeout = 10, host, username, database } = runnerConfig
 
     type Recurse = (responsivenessTimeout: number) => Promise<void>
     const recurse: Recurse = async responsivenessTimeout => {
@@ -65,7 +63,7 @@ class PostgresExec implements IExec {
 
       try {
         await execa.shell(
-          `docker exec ${containerId} bash -c "psql -h ${host} -U ${username} -d ${db} -c 'select 1'"`
+          `docker exec ${containerId} bash -c "psql -h ${host} -U ${username} -d ${database} -c 'select 1'"`
         )
 
         logger.success('Database responsiveness established')

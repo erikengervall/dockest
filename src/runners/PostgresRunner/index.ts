@@ -1,20 +1,24 @@
 import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
-import { runCustomCommand } from '../../utils/execUtils'
-import { validateInputFields } from '../../utils/runnerUtils'
+import { validateInputFields } from '../../utils/config'
+import { runCustomCommand } from '../../utils/execs'
 import { IRunner } from '../types'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
   service: string // dockest-compose service name
   host: string
-  db: string
+  database: string
   port: number
   password: string
   username: string
   commands?: string[] // Run custom scripts (migrate/seed)
   connectionTimeout?: number
   responsivenessTimeout?: number
+}
+
+const DEFAULT_CONFIG = {
+  commands: [],
 }
 
 export class PostgresRunner implements IRunner {
@@ -24,7 +28,7 @@ export class PostgresRunner implements IRunner {
 
   constructor(config: IPostgresRunnerConfig) {
     this.validatePostgresConfig(config)
-    this.config = config
+    this.config = { ...DEFAULT_CONFIG, ...config }
     this.postgresExec = new PostgresExec()
   }
 
@@ -53,8 +57,8 @@ export class PostgresRunner implements IRunner {
       throw new ConfigurationError('Missing configuration for Postgres runner')
     }
 
-    const { service, host, db, port, password, username } = config
-    const requiredProps = { service, host, db, port, password, username }
+    const { service, host, database, port, password, username } = config
+    const requiredProps = { service, host, database, port, password, username }
     validateInputFields('postgres', requiredProps)
   }
 }

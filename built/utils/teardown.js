@@ -38,9 +38,3 @@ const removeContainerById = async (containerId, progress) => {
     await execa_1.default.shell(`docker rm ${containerId} --volumes`);
     logger_1.default.loading(`Container #${progress} with id <${containerId}> removed`);
 };
-const dockerComposeDown = async () => {
-    const timeout = 15;
-    await execa_1.default.shell(`docker-compose down --volumes --rmi local --timeout ${timeout}`);
-    logger_1.default.stop(`Ran "docker-compose down"`);
-};
-exports.dockerComposeDown = dockerComposeDown;

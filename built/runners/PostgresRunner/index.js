@@ -5,9 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const errors_1 = require("../../errors");
 const index_1 = __importDefault(require("../../index"));
-const execUtils_1 = require("../../utils/execUtils");
-const runnerUtils_1 = require("../../utils/runnerUtils");
-const execs_1 = __importDefault(require("./execs"));
+const config_1 = require("../../utils/config");
+const execs_1 = require("../../utils/execs");
+const execs_2 = __importDefault(require("./execs"));
+const DEFAULT_CONFIG = {
+    commands: [],
+};
 class PostgresRunner {
     constructor(config) {
         this.setup = async () => {
@@ -17,7 +20,7 @@ class PostgresRunner {
             await this.postgresExec.checkHealth(containerId, this.config);
             const commands = this.config.commands || [];
             for (const cmd of commands) {
-                await execUtils_1.runCustomCommand(cmd);
+                await execs_1.runCustomCommand(cmd);
             }
         };
         this.teardown = async () => this.postgresExec.teardown(this.containerId);
@@ -29,13 +32,13 @@ class PostgresRunner {
             if (!config) {
                 throw new errors_1.ConfigurationError('Missing configuration for Postgres runner');
             }
-            const { service, host, db, port, password, username } = config;
-            const requiredProps = { service, host, db, port, password, username };
-            runnerUtils_1.validateInputFields('postgres', requiredProps);
+            const { service, host, database, port, password, username } = config;
+            const requiredProps = { service, host, database, port, password, username };
+            config_1.validateInputFields('postgres', requiredProps);
         };
         this.validatePostgresConfig(config);
-        this.config = config;
-        this.postgresExec = new execs_1.default();
+        this.config = Object.assign({}, DEFAULT_CONFIG, config);
+        this.postgresExec = new execs_2.default();
     }
 }
 exports.PostgresRunner = PostgresRunner;

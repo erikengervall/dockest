@@ -1,4 +1,4 @@
-import { IPostgresRunnerConfig } from './postgres'
+import { IPostgresRunnerConfig } from './PostgresRunner'
 
 export interface IRunner {
   setup: () => Promise<void>
