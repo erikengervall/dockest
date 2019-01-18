@@ -15,7 +15,7 @@ const integration = new Dockest({
       label: postgres1sequelize.label,
       username: postgres1sequelize.username,
       password: postgres1sequelize.password,
-      db: postgres1sequelize.database,
+      database: postgres1sequelize.database,
       host: postgres1sequelize.host,
       port: postgres1sequelize.port,
       service: postgres1sequelize.service,
