@@ -4,7 +4,7 @@
 
 ## Requirements
 
-Minimum Jest version: **20.0.0**. This is an arbitrary threshold simply to ensure the consistency of Jest's interface.\*\*\*\*
+`Dockest` requires at least Jest **v20.0.0** in order to ensure Jest's [CLI interface](https://github.com/facebook/jest/blob/master/packages/jest-cli/src/cli/index.js#L62).
 
 ## Usage
 

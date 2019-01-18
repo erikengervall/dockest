@@ -5,10 +5,11 @@ const {
 const { postgres1sequelize, postgres2knex } = require('./env')
 
 const integration = new Dockest({
-  dockest: { dockerComposeFilePath: './docker-compose-integration.yml' },
+  dockest: {
+    dockerComposeFilePath: './docker-compose-integration.yml',
+  },
   jest: {
     lib: require('jest'),
-    projects: ['.'],
   },
   runners: {
     pg1: new PostgresRunner({
