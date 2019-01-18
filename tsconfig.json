@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "built",
+    "outDir": "dist",
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
@@ -8,11 +8,11 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "strict": true,
     "target": "es2017",
     "noUnusedParameters": true,
     "noUnusedLocals": true
   },
-  "include": ["src/**/*.*"],
+  "include": ["src/**/*.*"]
 }

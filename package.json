@@ -2,21 +2,23 @@
   "name": "dockest",
   "version": "0.0.3",
   "description": "Docker + Jest",
-  "main": "built/index.js",
+  "main": "dist/index.js",
   "author": "Erik Engervall",
   "email": "erik.engervall@gmail.com",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf ./built",
-    "build": "npm run clean && tsc",
-    "build:watch": "npm run clean && tsc --watch",
+    "clean": "rimraf ./dist",
+    "build": "yarn clean && tsc",
+    "build:watch": "yarn clean && tsc --watch",
     "install-all": "yarn && cd example && yarn",
     "test": "cd example && yarn test",
     "docker:up": "docker-compose up",
     "docker:down": "docker-compose down --volumes --rmi local",
     "seq": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:undo:all && sequelize db:seed:all",
-    "jest": "jest ./built/example",
-    "jest:watch": "jest ./built/example --watch --detectOpenHandles"
+    "jest": "jest ./dist/example",
+    "jest:watch": "jest ./dist/example --watch --detectOpenHandles",
+    "buildw": "webpack --config webpack.config.js",
+    "buildww": "webpack --config webpack.config.js --watch"
   },
   "dependencies": {
     "deepmerge": "^3.0.0",
@@ -33,10 +35,13 @@
     "rimraf": "^2.6.2",
     "sequelize": "^4.41.2",
     "sequelize-cli": "^5.3.0",
+    "ts-loader": "^5.3.3",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.1.6",
-    "typescript-estree": "^18.1.0"
+    "typescript": "^3.2.4",
+    "typescript-estree": "^18.1.0",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
   }
 }
