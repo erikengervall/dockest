@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
-const DockestError_1 = __importDefault(require("../errors/DockestError"));
+const errors_1 = require("../errors");
 const index_1 = __importDefault(require("../index"));
 const logger_1 = __importDefault(require("./logger"));
 const { values } = Object;
 const tearSingle = async (containerId, progress = '1/1 ') => {
     if (!containerId) {
-        throw new DockestError_1.default(`No containerId`);
+        throw new errors_1.DockestError(`No containerId`);
     }
     await stopContainerById(containerId, progress);
     await removeContainerById(containerId, progress);

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ConfigurationError_1 = __importDefault(require("../errors/ConfigurationError"));
+const errors_1 = require("../errors");
 const logger_1 = __importDefault(require("./logger"));
 const DEFAULT_CONFIG = {
     projects: ['.'],
@@ -18,11 +18,11 @@ class JestRunner {
             try {
                 const jestResult = await jest.runCLI(jestOptions, jestOptions.projects);
                 if (!jestResult.results.success) {
-                    logger_1.default.failed(`Integration test failed`);
+                    logger_1.default.failed(`Jest test(s) failed`);
                     success = false;
                 }
                 else {
-                    logger_1.default.success(`Integration tests passed successfully`);
+                    logger_1.default.success(`Jest run successfully`);
                     success = true;
                 }
             }
@@ -36,7 +36,7 @@ class JestRunner {
         };
         this.validateJestConfig = (config) => {
             if (!config) {
-                throw new ConfigurationError_1.default('jest config missing');
+                throw new errors_1.ConfigurationError('jest config missing');
             }
         };
         if (JestRunner.instance) {

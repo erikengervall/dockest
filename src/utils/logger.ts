@@ -3,6 +3,7 @@
 import { ICONS } from '../constants'
 
 type logMethod = (message: string, data?: object | string) => void
+
 interface ILogger {
   info: logMethod
   loading: logMethod

@@ -1,6 +1,6 @@
 import execa from 'execa'
 
-import DockestError from '../../errors/DockestError'
+import { DockestError } from '../../errors'
 import { acquireConnection, sleep } from '../../utils/execUtils'
 import logger from '../../utils/logger'
 import { tearSingle } from '../../utils/teardown'

@@ -1,3 +1,1 @@
-import PostgresRunner from './postgres'
-
-export { PostgresRunner }
+export { default as PostgresRunner } from './postgres'

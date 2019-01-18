@@ -1,6 +1,6 @@
 import execa from 'execa'
 
-import DockestError from '../errors/DockestError'
+import { DockestError } from '../errors'
 import Dockest from '../index'
 import PostgresRunner from '../runners/postgres'
 import logger from './logger'

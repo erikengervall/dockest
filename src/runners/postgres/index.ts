@@ -1,5 +1,6 @@
-import ConfigurationError from '../../errors/ConfigurationError'
+import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
+import { runCustomCommand } from '../../utils/execUtils'
 import { validateInputFields } from '../../utils/runnerUtils'
 import { IRunner } from '../types'
 import PostgresExec from './execs'
@@ -33,6 +34,11 @@ export class PostgresRunner implements IRunner {
     this.containerId = containerId
 
     await this.postgresExec.checkHealth(containerId, this.config)
+
+    const commands = this.config.commands || []
+    for (const cmd of commands) {
+      await runCustomCommand(cmd)
+    }
   }
 
   public teardown = async () => this.postgresExec.teardown(this.containerId)
@@ -43,13 +49,13 @@ export class PostgresRunner implements IRunner {
   })
 
   private validatePostgresConfig = (config: IPostgresRunnerConfig): void => {
-    const { service, host, db, port, password, username } = config
-    const requiredProps = { service, host, db, port, password, username }
-    validateInputFields('postgres', requiredProps)
-
     if (!config) {
       throw new ConfigurationError('Missing configuration for Postgres runner')
     }
+
+    const { service, host, db, port, password, username } = config
+    const requiredProps = { service, host, db, port, password, username }
+    validateInputFields('postgres', requiredProps)
   }
 }
 

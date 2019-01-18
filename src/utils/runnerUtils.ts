@@ -1,4 +1,4 @@
-import ConfigurationError from '../errors/ConfigurationError'
+import { ConfigurationError } from '../errors'
 
 const validateInputFields = (origin: string, requiredFields: any): void => {
   const missingFields = Object.keys(requiredFields).reduce(

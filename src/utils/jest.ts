@@ -1,4 +1,4 @@
-import ConfigurationError from '../errors/ConfigurationError'
+import { ConfigurationError } from '../errors'
 import logger from './logger'
 
 interface IJestResult {
@@ -53,11 +53,11 @@ class JestRunner {
       const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
 
       if (!jestResult.results.success) {
-        logger.failed(`Integration test failed`)
+        logger.failed(`Jest test(s) failed`)
 
         success = false
       } else {
-        logger.success(`Integration tests passed successfully`)
+        logger.success(`Jest run successfully`)
 
         success = true
       }
