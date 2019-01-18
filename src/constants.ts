@@ -1,4 +1,4 @@
-const ICONS = {
+const ICONS: { [key: string]: string } = {
   LOADING: '⏳',
   SUCCESS: '✅',
   FAILED: '🔥',

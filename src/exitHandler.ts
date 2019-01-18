@@ -1,22 +1,24 @@
-import exit from 'exit'
+import Dockest from './index'
+import logger from './utils/logger'
+import { tearAll } from './utils/teardown'
 
-import { IResources } from '.'
+interface IErrorPayload {
+  code?: number
+  signal?: any
+  error?: Error
+  reason?: any
+  p?: any
+}
 
-const setupExitHandler = async (resources: IResources): Promise<void> => {
-  const { Config, Logger, Execs } = resources
-  const {
-    teardown: { tearAll },
-  } = Execs
+const setupExitHandler = async (): Promise<void> => {
+  const config = Dockest.config
 
-  const exitHandler = async (errorPayload: {
-    code?: number,
-    signal?: any,
-    error?: Error,
-    reason?: any,
-    p?: any,
-  }): Promise<void> => {
-    Logger.info('Exithandler invoced', errorPayload)
-    const config = Config.getConfig()
+  const exitHandler = async (errorPayload: IErrorPayload): Promise<void> => {
+    if (Dockest.jestRanWithResult) {
+      return
+    }
+
+    logger.info('Exithandler invoced', errorPayload)
 
     if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
       const err = errorPayload.error || new Error('Failed to extract error')
@@ -25,9 +27,9 @@ const setupExitHandler = async (resources: IResources): Promise<void> => {
 
     await tearAll()
 
-    Logger.info('Exit with payload')
+    logger.info('Exit with payload')
 
-    exit(errorPayload.code || 1)
+    process.exit(errorPayload.code || 1)
   }
 
   // so the program will not close instantly

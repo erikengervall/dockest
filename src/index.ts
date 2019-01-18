@@ -1,34 +1,61 @@
-import exit from 'exit'
-import DockestConfig, { IConfig } from './DockestConfig'
-import DockestLogger from './DockestLogger'
-import DockestExecs from './execs'
 import setupExitHandler from './exitHandler'
-import Runners from './runners'
+import { PostgresRunner } from './runners'
+import { validateInputFields } from './utils/config'
+import JestRunner, { IJestConfig } from './utils/jest'
+import logger from './utils/logger'
 
-export interface IResources {
-  Config: DockestConfig;
-  Logger: DockestLogger;
-  Execs: DockestExecs;
+interface IDockest {
+  verbose?: boolean
+  exitHandler?: (err?: Error) => void
+  dockerComposeFilePath?: string
 }
 
-const dockest = async (userConfig?: IConfig): Promise<void> => {
-  const Config = new DockestConfig(userConfig)
-  const Logger = new DockestLogger(Config)
-  const Execs = new DockestExecs(Config, Logger)
-  const resources: IResources = { Config, Logger, Execs }
+interface IDockestConfig {
+  dockest: IDockest
+  jest: IJestConfig
+  runners: PostgresRunner[]
+}
 
-  try {
-    setupExitHandler(resources)
-    const runners = Runners(resources)
+const { values } = Object
 
-    await runners.all()
-  } catch (error) {
-    Logger.error('Unexpected error', error)
+class Dockest {
+  public static config: IDockestConfig
+  public static jestRanWithResult: boolean
 
-    await Execs.teardown.tearAll()
+  constructor(userConfig: IDockestConfig) {
+    const { dockest, jest } = userConfig
+    const requiredProps = { dockest, jest, runners }
+    validateInputFields('Dockest', requiredProps)
 
-    exit(1)
+    Dockest.config = userConfig
+    Dockest.jestRanWithResult = false
+  }
+
+  public run = async (): Promise<void> => {
+    setupExitHandler()
+
+    logger.loading('Integration test initiated')
+
+    const { runners } = Dockest.config
+
+    // setup runners
+    for (const runner of values(runners)) {
+      await runner.setup()
+    }
+
+    // evaluate jest result
+    const jestRunner = new JestRunner(Dockest.config.jest)
+    const result = await jestRunner.run()
+    Dockest.jestRanWithResult = true
+
+    // teardown runners
+    for (const runner of values(runners)) {
+      await runner.teardown()
+    }
+
+    result.success ? process.exit(0) : process.exit(1)
   }
 }
 
-export default dockest
+export const runners = { PostgresRunner }
+export default Dockest
