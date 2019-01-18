@@ -3,26 +3,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const exit_1 = __importDefault(require("exit"));
-const DockestConfig_1 = __importDefault(require("./DockestConfig"));
-const DockestLogger_1 = __importDefault(require("./DockestLogger"));
-const execs_1 = __importDefault(require("./execs"));
 const exitHandler_1 = __importDefault(require("./exitHandler"));
-const runners_1 = __importDefault(require("./runners"));
-const dockest = async (userConfig) => {
-    const Config = new DockestConfig_1.default(userConfig);
-    const Logger = new DockestLogger_1.default(Config);
-    const Execs = new execs_1.default(Config, Logger);
-    const resources = { Config, Logger, Execs };
-    try {
-        exitHandler_1.default(resources);
-        const runners = runners_1.default(resources);
-        await runners.all();
+const runners_1 = require("./runners");
+const config_1 = require("./utils/config");
+const jest_1 = __importDefault(require("./utils/jest"));
+const logger_1 = __importDefault(require("./utils/logger"));
+const { values } = Object;
+class Dockest {
+    constructor(userConfig) {
+        this.run = async () => {
+            exitHandler_1.default();
+            logger_1.default.loading('Integration test initiated');
+            const { runners } = Dockest.config;
+            // setup runners
+            for (const runner of values(runners)) {
+                await runner.setup();
+            }
+            // evaluate jest result
+            const jestRunner = new jest_1.default(Dockest.config.jest);
+            const result = await jestRunner.run();
+            Dockest.jestRanWithResult = true;
+            // teardown runners
+            for (const runner of values(runners)) {
+                await runner.teardown();
+            }
+            result.success ? process.exit(0) : process.exit(1);
+        };
+        const { dockest, jest } = userConfig;
+        const requiredProps = { dockest, jest, runners: exports.runners };
+        config_1.validateInputFields('Dockest', requiredProps);
+        Dockest.config = userConfig;
+        Dockest.jestRanWithResult = false;
     }
-    catch (error) {
-        Logger.error('Unexpected error', error);
-        await Execs.teardown.tearAll();
-        exit_1.default(1);
-    }
-};
-exports.default = dockest;
+}
+exports.runners = { PostgresRunner: runners_1.PostgresRunner };
+exports.default = Dockest;

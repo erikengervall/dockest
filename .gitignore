@@ -22,3 +22,5 @@ trash
 # Dockest dev
 #
 dockest
+src/dockest
+built/dockest
