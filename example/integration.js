@@ -1,7 +1,9 @@
+console.log('WAT', require('../dist/index'))
+
 const {
   default: Dockest,
   runners: { PostgresRunner },
-} = require('../built')
+} = require('../dist/index')
 const { postgres1sequelize, postgres2knex } = require('./env')
 
 const integration = new Dockest({
@@ -31,7 +33,7 @@ const integration = new Dockest({
       label: postgres2knex.label,
       username: postgres2knex.username,
       password: postgres2knex.password,
-      db: postgres2knex.database,
+      database: postgres2knex.database,
       host: postgres2knex.host,
       port: postgres2knex.port,
       service: postgres2knex.service,

@@ -1,6 +1,5 @@
 import Dockest from './index'
 import logger from './utils/logger'
-import { tearAll } from './utils/teardown'
 
 interface IErrorPayload {
   code?: number
@@ -10,8 +9,11 @@ interface IErrorPayload {
   p?: any
 }
 
+const { keys } = Object
+
 const setupExitHandler = async (): Promise<void> => {
   const config = Dockest.config
+  const { runners } = config
 
   const exitHandler = async (errorPayload: IErrorPayload): Promise<void> => {
     if (Dockest.jestRanWithResult) {
@@ -25,7 +27,9 @@ const setupExitHandler = async (): Promise<void> => {
       config.dockest.exitHandler(err)
     }
 
-    await tearAll()
+    for (const runnerKey of keys(runners)) {
+      await runners[runnerKey].teardown(runnerKey)
+    }
 
     logger.info('Exit with payload')
 

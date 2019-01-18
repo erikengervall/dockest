@@ -12,7 +12,7 @@ const getFirstPostgres2Entry = async () =>
 
 const main = async (key, value) => {
   const firstPostgres1Entry = await getFirstPostgres1Entry()
-  const firstPostgres2Entry = 1 // await getFirstPostgres2Entry()
+  const firstPostgres2Entry = await getFirstPostgres2Entry()
 
   return {
     [key]: value,

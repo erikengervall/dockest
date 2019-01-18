@@ -2,7 +2,7 @@
   "name": "dockest",
   "version": "0.0.3",
   "description": "Docker + Jest",
-  "main": "dist/index.js",
+  "main": "dist/dockest.js",
   "author": "Erik Engervall",
   "email": "erik.engervall@gmail.com",
   "license": "MIT",

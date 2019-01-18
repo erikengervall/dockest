@@ -1,9 +1,10 @@
 module.exports = {
   mode: 'production',
   entry: './src/index.ts',
+  target: 'node',
   output: {
     path: require('path').resolve(__dirname, 'dist'),
-    filename: 'dockest.bundle.js',
+    filename: 'index.js',
   },
   module: {
     rules: [

@@ -1,54 +1,27 @@
 import execa from 'execa'
 
 import { DockestError } from '../errors'
-import Dockest from '../index'
-import PostgresRunner from '../runners/PostgresRunner'
 import logger from './logger'
 
-const { values } = Object
-
-const tearSingle = async (containerId?: string, progress: string = '1/1 '): Promise<void> => {
+const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
     throw new DockestError(`No containerId`)
   }
 
-  await stopContainerById(containerId, progress)
-  await removeContainerById(containerId, progress)
+  await stopContainerById(containerId, runnerKey)
+  await removeContainerById(containerId, runnerKey)
 }
 
-const tearAll = async (): Promise<void> => {
-  logger.loading('Teardown started')
-
-  const config = Dockest.config
-
-  const containerIds = [
-    ...values(config.runners).reduce(
-      (acc: string[], postgresRunner: PostgresRunner) =>
-        postgresRunner.containerId ? acc.concat(postgresRunner.containerId) : acc,
-      []
-    ),
-  ]
-
-  for (let i = 0; containerIds.length > i; i++) {
-    const progress = `${i + 1}/${containerIds.length} `
-    const containerId = containerIds[i]
-
-    await tearSingle(containerId, progress)
-  }
-
-  logger.success('Teardown successful')
-}
-
-const stopContainerById = async (containerId: string, progress: string): Promise<void> => {
+const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   await execa.shell(`docker stop ${containerId}`)
 
-  logger.loading(`Container #${progress}with id <${containerId}> stopped`)
+  logger.loading(`Container #${runnerKey}with id <${containerId}> stopped`)
 }
 
-const removeContainerById = async (containerId: string, progress: string): Promise<void> => {
+const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   await execa.shell(`docker rm ${containerId} --volumes`)
 
-  logger.loading(`Container #${progress} with id <${containerId}> removed`)
+  logger.loading(`Container #${runnerKey} with id <${containerId}> removed`)
 }
 
-export { tearSingle, tearAll }
+export { teardownSingle }
