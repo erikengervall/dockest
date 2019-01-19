@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Docker + Jest",
   "main": "dist/dockest.js",
   "author": "Erik Engervall",
@@ -8,17 +8,10 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ./dist",
-    "build": "yarn clean && tsc",
-    "build:watch": "yarn clean && tsc --watch",
+    "build": "yarn clean && webpack --config webpack.config.js",
+    "build:watch": "yarn clean && webpack --config webpack.config.js --watch",
     "install-all": "yarn && cd example && yarn",
-    "test": "cd example && yarn test",
-    "docker:up": "docker-compose up",
-    "docker:down": "docker-compose down --volumes --rmi local",
-    "seq": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:undo:all && sequelize db:seed:all",
-    "jest": "jest ./dist/example",
-    "jest:watch": "jest ./dist/example --watch --detectOpenHandles",
-    "buildw": "yarn clean && webpack --config webpack.config.js",
-    "buildww": "yarn clean && webpack --config webpack.config.js --watch"
+    "test": "cd example && yarn test"
   },
   "dependencies": {
     "deepmerge": "^3.0.0",
