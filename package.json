@@ -17,8 +17,8 @@
     "seq": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:undo:all && sequelize db:seed:all",
     "jest": "jest ./dist/example",
     "jest:watch": "jest ./dist/example --watch --detectOpenHandles",
-    "buildw": "webpack --config webpack.config.js",
-    "buildww": "webpack --config webpack.config.js --watch"
+    "buildw": "yarn clean && webpack --config webpack.config.js",
+    "buildww": "yarn clean && webpack --config webpack.config.js --watch"
   },
   "dependencies": {
     "deepmerge": "^3.0.0",

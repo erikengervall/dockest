@@ -15,13 +15,13 @@ const teardownSingle = async (containerId: string, runnerKey: string): Promise<v
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   await execa.shell(`docker stop ${containerId}`)
 
-  logger.loading(`Container #${runnerKey}with id <${containerId}> stopped`)
+  logger.loading(`Stopped service container: "${runnerKey}" `)
 }
 
 const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   await execa.shell(`docker rm ${containerId} --volumes`)
 
-  logger.loading(`Container #${runnerKey} with id <${containerId}> removed`)
+  logger.loading(`Removed service container: "${runnerKey}"`)
 }
 
 export { teardownSingle }

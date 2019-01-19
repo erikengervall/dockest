@@ -5,6 +5,8 @@ module.exports = {
   output: {
     path: require('path').resolve(__dirname, 'dist'),
     filename: 'index.js',
+    library: 'dockest',
+    libraryTarget: 'umd',
   },
   module: {
     rules: [
