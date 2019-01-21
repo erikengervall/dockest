@@ -6,13 +6,13 @@ import { IRunner } from '../types'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
-  service: string // dockest-compose service name
+  service: string
   host: string
   database: string
   port: number
   password: string
   username: string
-  commands?: string[] // Run custom scripts (migrate/seed)
+  commands?: string[]
   connectionTimeout?: number
   responsivenessTimeout?: number
 }
@@ -22,14 +22,15 @@ const DEFAULT_CONFIG = {
 }
 
 export class PostgresRunner implements IRunner {
-  public containerId?: string
   public config: IPostgresRunnerConfig
   public postgresExec: PostgresExec
+  public containerId: string
 
   constructor(config: IPostgresRunnerConfig) {
     this.validatePostgresConfig(config)
     this.config = { ...DEFAULT_CONFIG, ...config }
     this.postgresExec = new PostgresExec()
+    this.containerId = ''
   }
 
   public setup = async () => {
@@ -45,7 +46,8 @@ export class PostgresRunner implements IRunner {
     }
   }
 
-  public teardown = async () => this.postgresExec.teardown(this.containerId)
+  public teardown = async (runnerKey: string) =>
+    this.postgresExec.teardown(this.containerId, runnerKey)
 
   public getHelpers = async () => ({
     clear: () => true,

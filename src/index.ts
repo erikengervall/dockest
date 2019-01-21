@@ -1,5 +1,5 @@
 import setupExitHandler from './exitHandler'
-import { PostgresRunner } from './runners'
+import { IRunners, PostgresRunner } from './runners'
 import { validateInputFields } from './utils/config'
 import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
@@ -13,10 +13,10 @@ interface IDockest {
 interface IDockestConfig {
   dockest: IDockest
   jest: IJestConfig
-  runners: PostgresRunner[]
+  runners: IRunners
 }
 
-const { values } = Object
+const { keys } = Object
 
 class Dockest {
   public static config: IDockestConfig
@@ -36,24 +36,31 @@ class Dockest {
 
     logger.loading('Integration test initiated')
 
-    const { runners } = Dockest.config
+    await this.setupRunners()
 
-    // setup runners
-    for (const runner of values(runners)) {
-      await runner.setup()
-    }
-
-    // evaluate jest result
     const jestRunner = new JestRunner(Dockest.config.jest)
     const result = await jestRunner.run()
     Dockest.jestRanWithResult = true
 
-    // teardown runners
-    for (const runner of values(runners)) {
-      await runner.teardown()
-    }
+    await this.teardownRunners()
 
     result.success ? process.exit(0) : process.exit(1)
+  }
+
+  private setupRunners = async () => {
+    const { runners } = Dockest.config
+
+    for (const runnerKey of keys(runners)) {
+      await runners[runnerKey].setup()
+    }
+  }
+
+  private teardownRunners = async () => {
+    const { runners } = Dockest.config
+
+    for (const runnerKey of keys(runners)) {
+      await runners[runnerKey].teardown(runnerKey)
+    }
   }
 }
 

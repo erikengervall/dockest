@@ -12,7 +12,7 @@ describe('main', () => {
       expect.objectContaining({
         [key]: value,
         firstPostgres1Entry: expect.objectContaining(seedUser),
-        // firstPostgres2Entry: expect.objectContaining(seedBanana),
+        firstPostgres2Entry: expect.objectContaining(seedBanana),
       })
     )
   })

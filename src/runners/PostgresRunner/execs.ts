@@ -3,7 +3,7 @@ import execa from 'execa'
 import { DockestError } from '../../errors'
 import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
 import logger from '../../utils/logger'
-import { tearSingle } from '../../utils/teardown'
+import { teardownSingle } from '../../utils/teardown'
 import { IExec } from '../types'
 import { IPostgresRunnerConfig } from './index'
 
@@ -39,9 +39,8 @@ class PostgresExec implements IExec {
     await this.checkConnection(runnerConfig)
   }
 
-  public teardown = async (containerId?: string) => {
-    await tearSingle(containerId)
-  }
+  public teardown = async (containerId: string, runnerKey: string) =>
+    teardownSingle(containerId, runnerKey)
 
   private checkResponsiveness = async (
     containerId: string,
