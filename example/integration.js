@@ -1,5 +1,3 @@
-console.log('WAT', require('../dist/index'))
-
 const {
   default: Dockest,
   runners: { PostgresRunner },
