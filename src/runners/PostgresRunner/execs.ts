@@ -80,7 +80,7 @@ class PostgresExec implements IExec {
   }
 
   private checkConnection = async (runnerConfig: IPostgresRunnerConfig) => {
-    return // causes issues with travis
+    // return // causes issues with travis
     logger.loading('Attempting to establish database connection')
 
     const { connectionTimeout = 3, host, port } = runnerConfig
