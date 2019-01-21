@@ -1,7 +1,7 @@
 import { IPostgresRunnerConfig } from './PostgresRunner'
 
 export interface IRunner {
-  setup: () => Promise<void>
+  setup: (runnerKey: string) => Promise<void>
   teardown: (runnerKey: string) => Promise<void>
   getHelpers: () => Promise<{
     clear?: () => boolean

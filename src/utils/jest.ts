@@ -16,7 +16,7 @@ interface IJestLib {
 
 export interface IJestConfig {
   lib: IJestLib
-  projects: string[]
+  projects?: string[]
   silent?: boolean
   verbose?: boolean
   forceExit?: boolean

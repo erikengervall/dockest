@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize')
+import Sequelize from 'sequelize'
 
-const postgresConfig = require('../config/postgresConfig.js')
+import postgresConfig from '../config/postgresConfig.js'
 
 const config = postgresConfig.test
-const db = {}
+const db: any = {}
 
 const sequelize = new Sequelize({ ...config, operatorsAliases: false })
 
@@ -17,4 +17,4 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 db.UserModel = UserModel
 
-module.exports = db
+export default db

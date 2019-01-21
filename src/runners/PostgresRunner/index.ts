@@ -1,5 +1,4 @@
 import { ConfigurationError } from '../../errors'
-import Dockest from '../../index'
 import { validateInputFields } from '../../utils/config'
 import { runCustomCommand } from '../../utils/execs'
 import { IRunner } from '../types'
@@ -25,17 +24,23 @@ export class PostgresRunner implements IRunner {
   public config: IPostgresRunnerConfig
   public postgresExec: PostgresExec
   public containerId: string
+  public runnerKey: string
 
   constructor(config: IPostgresRunnerConfig) {
     this.validatePostgresConfig(config)
-    this.config = { ...DEFAULT_CONFIG, ...config }
+    this.config = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
     this.postgresExec = new PostgresExec()
     this.containerId = ''
+    this.runnerKey = ''
   }
 
-  public setup = async () => {
-    const composeFile = Dockest.config.dockest.dockerComposeFilePath
-    const containerId = await this.postgresExec.start(this.config, composeFile)
+  public setup = async (runnerKey: string) => {
+    this.runnerKey = runnerKey
+
+    const containerId = await this.postgresExec.start(this.config)
     this.containerId = containerId
 
     await this.postgresExec.checkHealth(containerId, this.config)

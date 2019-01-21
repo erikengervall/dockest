@@ -31,8 +31,9 @@ const acquireConnection = (host: string = 'localhost', port: number): Promise<vo
 
 const getContainerId = async (serviceName: string): Promise<string> => {
   const { stdout: containerId } = await execa.shell(
-    `docker ps --quiet --filter "name=${serviceName}" --no-trunc --latest`
+    `docker ps --quiet --filter "name=${serviceName}" --latest`
   )
+
   return containerId
 }
 

@@ -1,5 +1,6 @@
-const main = require('./app')
-const { seedUser, seedBanana } = require('./fixture')
+import main from './app'
+// @ts-ignore
+import { seedBanana, seedUser } from './fixture.json'
 
 describe('main', () => {
   it('should construct an object with key:value as first and second function arguments AND fetch stuff from resources', async () => {
