@@ -1,11 +1,11 @@
 import execa from 'execa'
 
-import { DockestError } from '../errors'
 import logger from './logger'
 
 const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
-    throw new DockestError(`No containerId`)
+    logger.error(`Missing containerId for runner "${runnerKey}"`)
+    return
   }
 
   await stopContainerById(containerId, runnerKey)
@@ -13,15 +13,25 @@ const teardownSingle = async (containerId: string, runnerKey: string): Promise<v
 }
 
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
-  await execa.shell(`docker stop ${containerId}`)
+  try {
+    await execa.shell(`docker stop ${containerId}`)
+  } catch (error) {
+    logger.error(`Failed to stop service container ${runnerKey}`, error)
+    return
+  }
 
-  logger.loading(`Stopped service container: "${runnerKey}" `)
+  logger.loading(`Stopped service container "${runnerKey}" `)
 }
 
 const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
-  await execa.shell(`docker rm ${containerId} --volumes`)
+  try {
+    await execa.shell(`docker rm ${containerId} --volumes`)
+  } catch (error) {
+    logger.error(`Failed to remove service container ${runnerKey}`, error)
+    return
+  }
 
-  logger.loading(`Removed service container: "${runnerKey}"`)
+  logger.loading(`Removed service container "${runnerKey}"`)
 }
 
 export { teardownSingle }

@@ -1,4 +1,8 @@
-const { seedBanana } = require('../../fixture')
+const { seedBanana } = require('../../fixture.json')
 
-exports.seed = knex =>
+const seed = knex =>
   knex('bananas').insert([{ id: 1, ...seedBanana }, { id: 2, size: 'YUGE', maturity: 'no bueno' }])
+
+module.exports = {
+  seed,
+}

@@ -11,7 +11,7 @@
     "build": "yarn clean && webpack --config webpack.config.js",
     "build:watch": "yarn clean && webpack --config webpack.config.js --watch",
     "install-all": "yarn && cd example && yarn",
-    "test": "yarn build && cd example && yarn test"
+    "test": "cd example && yarn test"
   },
   "dependencies": {
     "deepmerge": "^3.0.0",

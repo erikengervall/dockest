@@ -12,7 +12,8 @@
     "strict": true,
     "target": "es2017",
     "noUnusedParameters": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.*"]
 }

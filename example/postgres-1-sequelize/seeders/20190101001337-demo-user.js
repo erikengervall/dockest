@@ -1,4 +1,4 @@
-const { seedUser } = require('../../fixture')
+const { seedUser } = require('../../fixture.json')
 
 const demoUserSeeder = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Users', [seedUser], {}),

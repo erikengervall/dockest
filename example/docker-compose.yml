@@ -1,1 +1,27 @@
-version: '2'
+version: '3'
+services:
+  postgres1sequelize:
+    image: postgres:9.6.3
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: ramda
+      POSTGRES_PASSWORD: is
+      POSTGRES_DB: nobueno
+    volumes:
+      - postgres1Volume:/var/lib/postgresql/data
+
+  postgres2knex:
+    image: postgres:9.6.3
+    ports:
+      - '5435:5432'
+    environment:
+      POSTGRES_USER: ramda
+      POSTGRES_PASSWORD: is
+      POSTGRES_DB: nobueno
+    volumes:
+      - postgres2Volume:/var/lib/postgresql/data
+
+volumes:
+  postgres1Volume:
+  postgres2Volume:

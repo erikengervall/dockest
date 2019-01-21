@@ -18,18 +18,20 @@ class PostgresExec implements IExec {
     PostgresExec.instance = this
   }
 
-  public start = async (runnerConfig: IPostgresRunnerConfig, dockerComposeFilePath?: string) => {
+  public start = async (runnerConfig: IPostgresRunnerConfig) => {
     logger.loading('Starting postgres container')
 
     const { port, service } = runnerConfig
+    let containerId = ''
 
-    const file = dockerComposeFilePath ? `--file ${dockerComposeFilePath}` : ''
-    await execa.shell(
-      `docker-compose ${file} run --detach --no-deps --publish ${port}:5432 ${service}`
-    )
-    const containerId = await getContainerId(service)
+    containerId = await getContainerId(service)
+    if (!containerId) {
+      await execa.shell(`docker-compose run --detach --no-deps --publish ${port}:5432 ${service}`)
+    }
 
-    logger.success('Postgres container started successfully')
+    containerId = await getContainerId(service)
+
+    logger.success(`Postgres container started successfully`)
 
     return containerId
   }
