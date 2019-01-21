@@ -25,8 +25,8 @@ class Dockest {
   public config: IDockestConfig
 
   constructor(userConfig: IDockestConfig) {
-    const { dockest, jest } = userConfig
-    const requiredProps = { dockest, jest, runners }
+    const { jest, runners } = userConfig
+    const requiredProps = { jest, runners }
     validateInputFields('Dockest', requiredProps)
 
     this.config = {
