@@ -39,8 +39,8 @@ class Dockest {
                 await runners[runnerKey].teardown(runnerKey);
             }
         };
-        const { dockest, jest } = userConfig;
-        const requiredProps = { dockest, jest, runners: exports.runners };
+        const { jest, runners } = userConfig;
+        const requiredProps = { jest, runners };
         config_1.validateInputFields('Dockest', requiredProps);
         this.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
     }

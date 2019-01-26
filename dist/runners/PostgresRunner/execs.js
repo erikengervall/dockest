@@ -48,7 +48,7 @@ class PostgresExec {
             await recurse(responsivenessTimeout);
         };
         this.checkConnection = async (runnerConfig) => {
-            return; // causes issues with travis
+            // return // causes issues with travis
             logger_1.default.loading('Attempting to establish database connection');
             const { connectionTimeout = 3, host, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {
