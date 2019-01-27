@@ -13,8 +13,7 @@ class PostgresExec {
         this.start = async (runnerConfig) => {
             logger_1.default.loading('Starting postgres container');
             const { port, service } = runnerConfig;
-            let containerId = '';
-            containerId = await execs_1.getContainerId(service);
+            let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
                 await execa_1.default.shell(`docker-compose run --detach --no-deps --publish ${port}:5432 ${service}`);
             }

@@ -29,22 +29,22 @@ class KafkaExec implements IExec {
   public start = async (runnerConfig: IKafkaRunnerConfig) => {
     logger.loading('Starting kafka container')
 
-    const { ports, service, topics, autoCreateTopics } = runnerConfig
-    let containerId = ''
+    const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
 
-    containerId = await getContainerId(service)
-
+    let containerId = await getContainerId(service)
     if (!containerId) {
       const stringifiedPorts = Object.keys(ports)
         .map(port => `--publish ${ports[port]}:${port}`)
         .join(' ')
-      const env = ` -e kafka_hostname="" \
-                    -e kafka_advertised_hostname="localhost" \
-                    -e kafka_auto_create_topics_enable=${autoCreateTopics} \
-                    ${(topics.length && `-e kafka_create_topics="${topics.join(',')}"`) || ''}`
+      const envTopics = topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''
+      const envAutoCreateTopics = `-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`
+      const envZookeepeerConnect = `-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`
+      const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
+                    ${envAutoCreateTopics} \
+                    ${envTopics}
+                    ${envZookeepeerConnect}`
       await execa.shell(`docker-compose run --detach ${stringifiedPorts} ${env} ${service}`)
     }
-
     containerId = await getContainerId(service)
 
     logger.success(`Kafka container started successfully`)
@@ -62,7 +62,7 @@ class KafkaExec implements IExec {
   private checkConnection = async (runnerConfig: IKafkaRunnerConfig) => {
     logger.loading('Attempting to establish Kafka connection')
 
-    const { connectionTimeout = 5000, ports } = runnerConfig
+    const { connectionTimeout = 30, ports } = runnerConfig
 
     const primaryKafkaPort = Number(
       Object.keys(ports).find(port => ports[port] === PRIMARY_KAFKA_PORT)

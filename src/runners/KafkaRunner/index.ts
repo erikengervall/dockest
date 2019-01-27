@@ -12,6 +12,7 @@ export interface IKafkaRunnerConfig {
   host: string
   ports: IPorts
   topics: string[]
+  zookeepeerConnect: string
   autoCreateTopics: boolean
   connectionTimeout?: number
 }
@@ -28,11 +29,11 @@ export class KafkaRunner implements IBaseRunner {
   public runnerKey: string
 
   constructor(config: IKafkaRunnerConfig) {
-    this.validateKafkaConfig(config)
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
     }
+    this.validateKafkaConfig(config)
     this.kafkaExec = new KafkaExec()
     this.containerId = ''
     this.runnerKey = ''
@@ -60,8 +61,8 @@ export class KafkaRunner implements IBaseRunner {
       throw new ConfigurationError('Missing configuration for Kafka runner')
     }
 
-    const { service, host, ports } = config
-    const requiredProps = { service, host, ports }
+    const { service, host, ports, topics, zookeepeerConnect, autoCreateTopics } = config
+    const requiredProps = { service, host, ports, topics, zookeepeerConnect, autoCreateTopics }
 
     if (!ports['9093']) {
       throw new ConfigurationError('Missing required port-mapping for Kafka runner')

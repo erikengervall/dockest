@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import Dockest, { runners } from '../src/index'
 
 const env: any = dotenv.config().parsed
-const { KafkaRunner, PostgresRunner } = runners
+const { KafkaRunner, PostgresRunner, ZookeeperRunner } = runners
 
 // @ts-ignore
 const postgres1sequelize = new PostgresRunner({
@@ -37,16 +37,26 @@ const postgres2knex = new PostgresRunner({
 })
 
 // @ts-ignore
+const zookeeperService = 'zookeeper'
+const zookeeperPort = 2181
+const zookeeper = new ZookeeperRunner({
+  service: zookeeperService,
+  port: zookeeperPort,
+})
+
+// @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
   service: 'kafka',
   host: 'localhost',
   topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
+  zookeepeerConnect: `${zookeeperService}:${zookeeperPort}`,
+  autoCreateTopics: true,
   ports: {
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
     '9082': '8081', // registry
-    '2181': '2181', // zookeeper
+    // '2181': '2181', // zookeeper
   },
 })
 
@@ -56,8 +66,9 @@ const integration = new Dockest({
     lib: require('jest'),
   },
   runners: {
-    postgres1sequelize,
-    postgres2knex,
+    // postgres1sequelize,
+    // postgres2knex,
+    zookeeper,
     kafka1kafkajs,
   },
 })

@@ -28,13 +28,11 @@ class PostgresExec implements IExec {
     logger.loading('Starting postgres container')
 
     const { port, service } = runnerConfig
-    let containerId = ''
 
-    containerId = await getContainerId(service)
+    let containerId = await getContainerId(service)
     if (!containerId) {
       await execa.shell(`docker-compose run --detach --no-deps --publish ${port}:5432 ${service}`)
     }
-
     containerId = await getContainerId(service)
 
     logger.success(`Postgres container started successfully`)

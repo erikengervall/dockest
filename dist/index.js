@@ -41,11 +41,11 @@ class Dockest {
         };
         const { jest, runners } = userConfig;
         const requiredProps = { jest, runners };
-        config_1.validateInputFields('Dockest', requiredProps);
         this.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
+        config_1.validateInputFields('dockest', requiredProps);
     }
 }
 Dockest.jestRanWithResult = false;
-exports.runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner };
+exports.runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
 exports.default = Dockest;
 //# sourceMappingURL=index.js.map

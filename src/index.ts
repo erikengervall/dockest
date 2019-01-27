@@ -1,5 +1,5 @@
 import setupExitHandler from './exitHandler'
-import { IRunners, KafkaRunner, PostgresRunner } from './runners'
+import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
 import { validateInputFields } from './utils/config'
 import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
@@ -27,7 +27,6 @@ class Dockest {
   constructor(userConfig: IDockestConfig) {
     const { jest, runners } = userConfig
     const requiredProps = { jest, runners }
-    validateInputFields('Dockest', requiredProps)
 
     this.config = {
       ...userConfig,
@@ -36,6 +35,8 @@ class Dockest {
         ...userConfig.dockest,
       },
     }
+
+    validateInputFields('dockest', requiredProps)
   }
 
   public run = async (): Promise<void> => {
@@ -72,6 +73,6 @@ class Dockest {
   }
 }
 
-export const runners = { KafkaRunner, PostgresRunner }
+export const runners = { KafkaRunner, PostgresRunner, ZookeeperRunner }
 
 export default Dockest

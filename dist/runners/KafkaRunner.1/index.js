@@ -27,15 +27,15 @@ class KafkaRunner {
             if (!config) {
                 throw new errors_1.ConfigurationError('Missing configuration for Kafka runner');
             }
-            const { service, host, ports, topics, zookeepeerConnect, autoCreateTopics } = config;
-            const requiredProps = { service, host, ports, topics, zookeepeerConnect, autoCreateTopics };
+            const { service, host, ports } = config;
+            const requiredProps = { service, host, ports };
             if (!ports['9093']) {
                 throw new errors_1.ConfigurationError('Missing required port-mapping for Kafka runner');
             }
             config_1.validateInputFields('kafka', requiredProps);
         };
-        this.config = Object.assign({}, DEFAULT_CONFIG, config);
         this.validateKafkaConfig(config);
+        this.config = Object.assign({}, DEFAULT_CONFIG, config);
         this.kafkaExec = new execs_1.default();
         this.containerId = '';
         this.runnerKey = '';

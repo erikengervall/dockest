@@ -1,5 +1,6 @@
 import KafkaRunner from './KafkaRunner'
 import PostgresRunner from './PostgresRunner'
+import ZookeeperRunner from './ZookeeperRunner'
 
 export interface IBaseRunner {
   setup: (runnerKey: string) => Promise<void>
@@ -11,7 +12,7 @@ export interface IBaseRunner {
 }
 
 export interface IRunners {
-  [key: string]: PostgresRunner | KafkaRunner
+  [key: string]: PostgresRunner | KafkaRunner | ZookeeperRunner
 }
 
-export { KafkaRunner, PostgresRunner }
+export { KafkaRunner, PostgresRunner, ZookeeperRunner }

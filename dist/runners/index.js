@@ -7,4 +7,6 @@ const KafkaRunner_1 = __importDefault(require("./KafkaRunner"));
 exports.KafkaRunner = KafkaRunner_1.default;
 const PostgresRunner_1 = __importDefault(require("./PostgresRunner"));
 exports.PostgresRunner = PostgresRunner_1.default;
+const ZookeeperRunner_1 = __importDefault(require("./ZookeeperRunner"));
+exports.ZookeeperRunner = ZookeeperRunner_1.default;
 //# sourceMappingURL=index.js.map
