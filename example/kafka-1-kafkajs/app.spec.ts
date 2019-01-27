@@ -1,6 +1,4 @@
-// @ts-ignore
-import { seedUser } from './data.json'
-import main from './index'
+import main from './app'
 
 describe('postgres-1-sequelize', () => {
   it('trabajo', async () => {
@@ -8,7 +6,7 @@ describe('postgres-1-sequelize', () => {
 
     expect(result).toEqual(
       expect.objectContaining({
-        firstEntry: expect.objectContaining(seedUser),
+        kafka: expect.any(Object),
       })
     )
   })

@@ -1,14 +1,14 @@
+import main from './app'
 // @ts-ignore
-import { seedBanana } from './data.json'
-import main from './index'
+import { seedUser } from './data.json'
 
-describe('postgres-2-knex', () => {
+describe('postgres-1-sequelize', () => {
   it('trabajo', async () => {
     const result = await main()
 
     expect(result).toEqual(
       expect.objectContaining({
-        firstEntry: expect.objectContaining(seedBanana),
+        firstEntry: expect.objectContaining(seedUser),
       })
     )
   })
