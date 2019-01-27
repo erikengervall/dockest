@@ -10,8 +10,18 @@ services:
     volumes:
       - postgres2Volume:/var/lib/postgresql/data
 
+  zk:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - '2181:2181'
   kafka:
-    image: docker.artifactory.klarna.net/kafka/kafka:0.11.0.0
+    image: wurstmeister/kafka:2.11-0.11.0.3
+    links:
+      - zk
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zk:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
 
 volumes:
   postgres1Volume:
