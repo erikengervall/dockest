@@ -2,26 +2,6 @@ import dotenv from 'dotenv'
 
 import Dockest, { runners } from '../src/index'
 
-// import os from 'os'
-// const interfaces = os.networkInterfaces()
-// const addresses = []
-// /* tslint:disable */
-// for (var k in interfaces) {
-//   console.log('k', k)
-//   for (var k2 in interfaces[k]) {
-//     console.log('k2', k2)
-//     var address = interfaces[k][k2]
-//     console.log('address', address)
-//     if (address.family === 'IPv4' && !address.internal) {
-//       addresses.push(address.address)
-//     }
-//   }
-// }
-// console.log(addresses)
-
-// Dockest.jestRanWithResult = true
-// process.exit(1)
-
 const env: any = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner } = runners
 
@@ -60,8 +40,8 @@ const postgres2knex = new PostgresRunner({
 const kafka1kafkajs = new KafkaRunner({
   service: 'kafka',
   host: 'localhost',
+  topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
   ports: {
-    // exposed : docker
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
@@ -76,9 +56,9 @@ const integration = new Dockest({
     lib: require('jest'),
   },
   runners: {
-    postgres1sequelize,
-    postgres2knex,
-    // kafka1kafkajs,
+    // postgres1sequelize,
+    // postgres2knex,
+    kafka1kafkajs,
   },
 })
 

@@ -1,7 +1,6 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
 import { validateInputFields } from '../../utils/config'
-import { runCustomCommand } from '../../utils/execs'
 import KafkaExec from './execs'
 
 interface IPorts {
@@ -12,12 +11,14 @@ export interface IKafkaRunnerConfig {
   service: string
   host: string
   ports: IPorts
-  commands?: string[]
+  topics: string[]
+  autoCreateTopics: boolean
   connectionTimeout?: number
 }
 
 const DEFAULT_CONFIG = {
-  commands: [],
+  topics: [],
+  autoCreateTopics: true,
 }
 
 export class KafkaRunner implements IBaseRunner {
@@ -44,11 +45,6 @@ export class KafkaRunner implements IBaseRunner {
     this.containerId = containerId
 
     await this.kafkaExec.checkHealth(this.config)
-
-    const commands = this.config.commands || []
-    for (const cmd of commands) {
-      await runCustomCommand(cmd)
-    }
   }
 
   public teardown = async (runnerKey: string) =>

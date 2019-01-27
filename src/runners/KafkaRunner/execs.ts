@@ -13,6 +13,8 @@ interface IExec {
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
+const PRIMARY_KAFKA_PORT = '9092'
+
 class KafkaExec implements IExec {
   private static instance: KafkaExec
 
@@ -27,30 +29,19 @@ class KafkaExec implements IExec {
   public start = async (runnerConfig: IKafkaRunnerConfig) => {
     logger.loading('Starting kafka container')
 
-    const { ports, service } = runnerConfig
-    const stringifiedPorts = Object.keys(ports)
-      .map(port => `--publish ${ports[port]}:${port}`)
-      .join(' ')
+    const { ports, service, topics, autoCreateTopics } = runnerConfig
     let containerId = ''
-    let hostIp
-
-    // if (!fs.existsSync('/sbin/ifconfig')) {
-    //   const { stdout } = await execa.shell(
-    //     `ip addr | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1 | awk -F '/' '{ print $1 }'`
-    //   )
-    //   hostIp = stdout
-    // } else {
-    //   const { stdout } = await execa.shell(
-    //     `ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1`
-    //   )
-    //   hostIp = stdout
-    // }
-
-    hostIp = `"localhost"`
 
     containerId = await getContainerId(service)
+
     if (!containerId) {
-      const env = `-e kafka_hostname="" -e kafka_advertised_hostname=${hostIp} -e kafka_auto_create_topics_enable=true`
+      const stringifiedPorts = Object.keys(ports)
+        .map(port => `--publish ${ports[port]}:${port}`)
+        .join(' ')
+      const env = ` -e kafka_hostname="" \
+                    -e kafka_advertised_hostname="localhost" \
+                    -e kafka_auto_create_topics_enable=${autoCreateTopics} \
+                    ${(topics.length && `-e kafka_create_topics="${topics.join(',')}"`) || ''}`
       await execa.shell(`docker-compose run --detach ${stringifiedPorts} ${env} ${service}`)
     }
 
@@ -71,7 +62,11 @@ class KafkaExec implements IExec {
   private checkConnection = async (runnerConfig: IKafkaRunnerConfig) => {
     logger.loading('Attempting to establish Kafka connection')
 
-    const { connectionTimeout = 5000 } = runnerConfig
+    const { connectionTimeout = 5000, ports } = runnerConfig
+
+    const primaryKafkaPort = Number(
+      Object.keys(ports).find(port => ports[port] === PRIMARY_KAFKA_PORT)
+    )
 
     const recurse = async (connectionTimeout: number) => {
       logger.loading(`Establishing Kafka connection (Timing out in: ${connectionTimeout}s)`)
@@ -81,7 +76,7 @@ class KafkaExec implements IExec {
       }
 
       try {
-        await acquireConnection(9092)
+        await acquireConnection(primaryKafkaPort)
 
         logger.success('Kafka connection established')
       } catch (error) {

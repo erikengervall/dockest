@@ -1,6 +1,6 @@
 import main from './app'
 
-describe.skip('kafka-1-kafkajs', () => {
+describe('kafka-1-kafkajs', () => {
   it('trabajo', async () => {
     const result = await main()
 
