@@ -56,8 +56,8 @@ const integration = new Dockest({
     lib: require('jest'),
   },
   runners: {
-    // postgres1sequelize,
-    // postgres2knex,
+    postgres1sequelize,
+    postgres2knex,
     kafka1kafkajs,
   },
 })
