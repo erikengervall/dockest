@@ -3,7 +3,7 @@ services:
   postgres1sequelize:
     image: postgres:9.6.3
     ports:
-      - '5434:5432'
+      - '5433:5432'
     environment:
       POSTGRES_USER: ramda
       POSTGRES_PASSWORD: is
@@ -14,13 +14,22 @@ services:
   postgres2knex:
     image: postgres:9.6.3
     ports:
-      - '5435:5432'
+      - '5434:5432'
     environment:
       POSTGRES_USER: ramda
       POSTGRES_PASSWORD: is
       POSTGRES_DB: nobueno
     volumes:
       - postgres2Volume:/var/lib/postgresql/data
+
+  kafka:
+    image: docker.artifactory.klarna.net/kafka/kafka:0.11.0.0
+    ports:
+      - '9092:9092' #kafka
+      - '9093:9093' #kafka
+      - '9094:9094' #kafka
+      - '9082:8081' #registry
+      - '2181:2181' #zookeeper
 
 volumes:
   postgres1Volume:

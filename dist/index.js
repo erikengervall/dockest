@@ -46,6 +46,6 @@ class Dockest {
     }
 }
 Dockest.jestRanWithResult = false;
-exports.runners = { PostgresRunner: runners_1.PostgresRunner };
+exports.runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner };
 exports.default = Dockest;
 //# sourceMappingURL=index.js.map

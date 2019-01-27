@@ -9,6 +9,7 @@ const postgresConfig = {
     host: env.postgres1sequelize_host,
     port: Number(env.postgres1sequelize_port),
     dialect: 'postgres',
+    logging: false,
   },
   test: {
     username: env.postgres1sequelize_username,
@@ -17,6 +18,7 @@ const postgresConfig = {
     host: env.postgres1sequelize_host,
     port: Number(env.postgres1sequelize_port),
     dialect: 'postgres',
+    logging: false,
   },
   production: {
     username: env.postgres1sequelize_username,
@@ -25,6 +27,7 @@ const postgresConfig = {
     host: env.postgres1sequelize_host,
     port: Number(env.postgres1sequelize_port),
     dialect: 'postgres',
+    logging: false,
   },
 }
 

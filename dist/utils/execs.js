@@ -8,7 +8,7 @@ const net_1 = __importDefault(require("net"));
 const logger_1 = __importDefault(require("./logger"));
 const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 exports.sleep = sleep;
-const acquireConnection = (host = 'localhost', port) => new Promise((resolve, reject) => {
+const acquireConnection = (port, host = 'localhost') => new Promise((resolve, reject) => {
     let connected = false;
     let timeoutId = null;
     const netSocket = net_1.default

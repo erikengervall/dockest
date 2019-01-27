@@ -22,7 +22,7 @@ class PostgresExec {
             logger_1.default.success(`Postgres container started successfully`);
             return containerId;
         };
-        this.checkHealth = async (containerId, runnerConfig) => {
+        this.checkHealth = async (runnerConfig, containerId) => {
             await this.checkResponsiveness(containerId, runnerConfig);
             await this.checkConnection(runnerConfig);
         };
@@ -57,7 +57,7 @@ class PostgresExec {
                     throw new errors_1.DockestError(`Database connection timed out`);
                 }
                 try {
-                    await execs_1.acquireConnection(host, port);
+                    await execs_1.acquireConnection(port, host);
                     logger_1.default.success('Database connection established');
                 }
                 catch (error) {

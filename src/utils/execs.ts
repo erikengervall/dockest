@@ -6,7 +6,7 @@ import logger from './logger'
 const sleep = (ms: number = 1000): Promise<number> =>
   new Promise(resolve => setTimeout(resolve, ms))
 
-const acquireConnection = (host: string = 'localhost', port: number): Promise<void> =>
+const acquireConnection = (port: number, host: string = 'localhost'): Promise<void> =>
   new Promise((resolve, reject) => {
     let connected: boolean = false
     let timeoutId: any = null

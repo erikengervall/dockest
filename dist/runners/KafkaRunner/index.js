@@ -10,38 +10,41 @@ const execs_2 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     commands: [],
 };
-class PostgresRunner {
+class KafkaRunner {
     constructor(config) {
         this.setup = async (runnerKey) => {
             this.runnerKey = runnerKey;
-            const containerId = await this.postgresExec.start(this.config);
+            const containerId = await this.kafkaExec.start(this.config);
             this.containerId = containerId;
-            await this.postgresExec.checkHealth(this.config, containerId);
+            await this.kafkaExec.checkHealth(this.config);
             const commands = this.config.commands || [];
             for (const cmd of commands) {
                 await execs_1.runCustomCommand(cmd);
             }
         };
-        this.teardown = async (runnerKey) => this.postgresExec.teardown(this.containerId, runnerKey);
+        this.teardown = async (runnerKey) => this.kafkaExec.teardown(this.containerId, runnerKey);
         this.getHelpers = async () => ({
             clear: () => true,
             loadData: () => true,
         });
-        this.validatePostgresConfig = (config) => {
+        this.validateKafkaConfig = (config) => {
             if (!config) {
-                throw new errors_1.ConfigurationError('Missing configuration for Postgres runner');
+                throw new errors_1.ConfigurationError('Missing configuration for Kafka runner');
             }
-            const { service, host, database, port, password, username } = config;
-            const requiredProps = { service, host, database, port, password, username };
-            config_1.validateInputFields('postgres', requiredProps);
+            const { service, host, ports } = config;
+            const requiredProps = { service, host, ports };
+            if (!ports['9093']) {
+                throw new errors_1.ConfigurationError('Missing required port-mapping for Kafka runner');
+            }
+            config_1.validateInputFields('kafka', requiredProps);
         };
-        this.validatePostgresConfig(config);
+        this.validateKafkaConfig(config);
         this.config = Object.assign({}, DEFAULT_CONFIG, config);
-        this.postgresExec = new execs_2.default();
+        this.kafkaExec = new execs_2.default();
         this.containerId = '';
         this.runnerKey = '';
     }
 }
-exports.PostgresRunner = PostgresRunner;
-exports.default = PostgresRunner;
+exports.KafkaRunner = KafkaRunner;
+exports.default = KafkaRunner;
 //# sourceMappingURL=index.js.map

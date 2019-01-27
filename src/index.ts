@@ -1,5 +1,5 @@
 import setupExitHandler from './exitHandler'
-import { IRunners, PostgresRunner } from './runners'
+import { IRunners, KafkaRunner, PostgresRunner } from './runners'
 import { validateInputFields } from './utils/config'
 import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
@@ -72,6 +72,6 @@ class Dockest {
   }
 }
 
-export const runners = { PostgresRunner }
+export const runners = { KafkaRunner, PostgresRunner }
 
 export default Dockest

@@ -1,7 +1,7 @@
+import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
 import { validateInputFields } from '../../utils/config'
 import { runCustomCommand } from '../../utils/execs'
-import { IRunner } from '../types'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
@@ -20,7 +20,7 @@ const DEFAULT_CONFIG = {
   commands: [],
 }
 
-export class PostgresRunner implements IRunner {
+export class PostgresRunner implements IBaseRunner {
   public config: IPostgresRunnerConfig
   public postgresExec: PostgresExec
   public containerId: string
@@ -43,7 +43,7 @@ export class PostgresRunner implements IRunner {
     const containerId = await this.postgresExec.start(this.config)
     this.containerId = containerId
 
-    await this.postgresExec.checkHealth(containerId, this.config)
+    await this.postgresExec.checkHealth(this.config, containerId)
 
     const commands = this.config.commands || []
     for (const cmd of commands) {

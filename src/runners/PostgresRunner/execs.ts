@@ -4,8 +4,14 @@ import { DockestError } from '../../errors'
 import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
 import logger from '../../utils/logger'
 import { teardownSingle } from '../../utils/teardown'
-import { IExec } from '../types'
+
 import { IPostgresRunnerConfig } from './index'
+
+interface IExec {
+  start: (runnerConfig: IPostgresRunnerConfig) => Promise<string>
+  checkHealth: (runnerConfig: IPostgresRunnerConfig, containerId: string) => Promise<void>
+  teardown: (containerId: string, runnerKey: string) => Promise<void>
+}
 
 class PostgresExec implements IExec {
   private static instance: PostgresExec
@@ -36,7 +42,7 @@ class PostgresExec implements IExec {
     return containerId
   }
 
-  public checkHealth = async (containerId: string, runnerConfig: IPostgresRunnerConfig) => {
+  public checkHealth = async (runnerConfig: IPostgresRunnerConfig, containerId: string) => {
     await this.checkResponsiveness(containerId, runnerConfig)
     await this.checkConnection(runnerConfig)
   }
@@ -93,7 +99,7 @@ class PostgresExec implements IExec {
       }
 
       try {
-        await acquireConnection(host, port)
+        await acquireConnection(port, host)
 
         logger.success('Database connection established')
       } catch (error) {
