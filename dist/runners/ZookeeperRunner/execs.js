@@ -16,10 +16,9 @@ class ZookeeperExec {
             let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
                 await execa_1.default.shell(`docker-compose run --detach --publish ${port}:2181 ${service}`);
-                // const a = `docker-compose run --publish 8081:9082 --publish 9092:9092 --publish 9093:9093 --publish 9094:9094  -e kafka_hostname="" -e KAFKA_ADVERTISED_HOST_NAME="localhost" -e kafka_auto_create_topics_enable=true -e kafka_create_topics="Topic1:1:3,Topic2:1:1:compact" -e kafka_zookeeper_connect="zookeeper:2181" kafka`
             }
             containerId = await execs_1.getContainerId(service);
-            logger_1.default.success(`Zookeeper container started successfully`);
+            logger_1.default.success(`Zookeeper container started successfully (${containerId})`);
             return containerId;
         };
         this.checkHealth = async (runnerConfig) => {

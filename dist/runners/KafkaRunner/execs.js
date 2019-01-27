@@ -25,8 +25,8 @@ class KafkaExec {
                 const envZookeepeerConnect = `-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`;
                 const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
                     ${envAutoCreateTopics} \
-                    ${envTopics}
-                    ${envZookeepeerConnect}`;
+                    ${envTopics} \
+                    ${'' || envZookeepeerConnect}`;
                 await execa_1.default.shell(`docker-compose run --detach ${stringifiedPorts} ${env} ${service}`);
             }
             containerId = await execs_1.getContainerId(service);

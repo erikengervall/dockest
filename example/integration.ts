@@ -36,9 +36,9 @@ const postgres2knex = new PostgresRunner({
   ],
 })
 
-// @ts-ignore
-const zookeeperService = 'zookeeper'
+const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
+// @ts-ignore
 const zookeeper = new ZookeeperRunner({
   service: zookeeperService,
   port: zookeeperPort,
@@ -46,7 +46,7 @@ const zookeeper = new ZookeeperRunner({
 
 // @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
-  service: 'kafka',
+  service: 'kafka1wurstmeister',
   host: 'localhost',
   topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
   zookeepeerConnect: `${zookeeperService}:${zookeeperPort}`,
@@ -55,8 +55,7 @@ const kafka1kafkajs = new KafkaRunner({
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
-    '9082': '8081', // registry
-    // '2181': '2181', // zookeeper
+    '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
   },
 })
 

@@ -10,17 +10,11 @@ services:
     volumes:
       - postgres2Volume:/var/lib/postgresql/data
 
-  zookeeper:
+  zookeeper1wurstmeister:
     image: wurstmeister/zookeeper:latest
 
-  kafka:
-    image: wurstmeister/kafka:2.11-0.11.0.3
-    links:
-      - zookeeper
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+  kafka1wurstmeister:
+    image: wurstmeister/kafka:0.11.0.0
 
 volumes:
   postgres1Volume:

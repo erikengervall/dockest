@@ -41,8 +41,8 @@ class KafkaExec implements IExec {
       const envZookeepeerConnect = `-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`
       const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
                     ${envAutoCreateTopics} \
-                    ${envTopics}
-                    ${envZookeepeerConnect}`
+                    ${envTopics} \
+                    ${'' || envZookeepeerConnect}`
       await execa.shell(`docker-compose run --detach ${stringifiedPorts} ${env} ${service}`)
     }
     containerId = await getContainerId(service)
