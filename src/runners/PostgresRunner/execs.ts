@@ -1,5 +1,6 @@
 import execa from 'execa'
 
+import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
 import logger from '../../utils/logger'
@@ -27,11 +28,21 @@ class PostgresExec implements IExec {
   public start = async (runnerConfig: IPostgresRunnerConfig) => {
     logger.loading('Starting postgres container')
 
-    const { port, service } = runnerConfig
+    const { port, service, database, username, password } = runnerConfig
 
     let containerId = await getContainerId(service)
     if (!containerId) {
-      await execa.shell(`docker-compose run --detach --no-deps --publish ${port}:5432 ${service}`)
+      const portMapping = `--publish ${port}:5432`
+      const env = `-e POSTGRES_DB=${database} \
+                    -e POSTGRES_USER=${username} \
+                    -e POSTGRES_PASSWORD=${password}`
+      const cmd = `docker-compose run \
+                    ${defaultDockerComposeRunOpts} \
+                    ${portMapping} \
+                    ${env} \
+                    ${service}`
+      logger.command(cmd)
+      await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 
@@ -41,7 +52,7 @@ class PostgresExec implements IExec {
   }
 
   public checkHealth = async (runnerConfig: IPostgresRunnerConfig, containerId: string) => {
-    await this.checkResponsiveness(containerId, runnerConfig)
+    await this.checkResponsiveness(runnerConfig, containerId)
     await this.checkConnection(runnerConfig)
   }
 
@@ -49,15 +60,14 @@ class PostgresExec implements IExec {
     teardownSingle(containerId, runnerKey)
 
   private checkResponsiveness = async (
-    containerId: string,
-    runnerConfig: IPostgresRunnerConfig
+    runnerConfig: IPostgresRunnerConfig,
+    containerId: string
   ) => {
     logger.loading('Attempting to establish database responsiveness')
 
-    const { responsivenessTimeout = 10, host, username, database } = runnerConfig
+    const { responsivenessTimeout = 10, host, database, username } = runnerConfig
 
-    type Recurse = (responsivenessTimeout: number) => Promise<void>
-    const recurse: Recurse = async responsivenessTimeout => {
+    const recurse = async (responsivenessTimeout: number): Promise<void> => {
       logger.loading(
         `Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`
       )
@@ -67,9 +77,14 @@ class PostgresExec implements IExec {
       }
 
       try {
-        await execa.shell(
-          `docker exec ${containerId} bash -c "psql -h ${host} -U ${username} -d ${database} -c 'select 1'"`
-        )
+        const cmd = `docker exec ${containerId} \
+                      bash -c "psql \
+                      -h ${host} \
+                      -d ${database} \
+                      -U ${username} \
+                      -c 'select 1'"`
+        logger.command(cmd)
+        await execa.shell(cmd)
 
         logger.success('Database responsiveness established')
       } catch (error) {
@@ -83,8 +98,7 @@ class PostgresExec implements IExec {
     await recurse(responsivenessTimeout)
   }
 
-  private checkConnection = async (runnerConfig: IPostgresRunnerConfig) => {
-    // return // causes issues with travis
+  private checkConnection = async (runnerConfig: IPostgresRunnerConfig): Promise<void> => {
     logger.loading('Attempting to establish database connection')
 
     const { connectionTimeout = 3, host, port } = runnerConfig

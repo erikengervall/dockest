@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
+const constants_1 = require("../../constants");
 const errors_1 = require("../../errors");
 const execs_1 = require("../../utils/execs");
 const logger_1 = __importDefault(require("../../utils/logger"));
@@ -15,7 +16,13 @@ class ZookeeperExec {
             const { port, service } = runnerConfig;
             let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
-                await execa_1.default.shell(`docker-compose run --detach --publish ${port}:2181 ${service}`);
+                const portMapping = `--publish ${port}:2181`;
+                const cmd = `docker-compose run \
+                  ${constants_1.defaultDockerComposeRunOpts} \
+                  ${portMapping} \
+                  ${service}`;
+                logger_1.default.command(cmd);
+                await execa_1.default.shell(cmd);
             }
             containerId = await execs_1.getContainerId(service);
             logger_1.default.success(`Zookeeper container started successfully (${containerId})`);

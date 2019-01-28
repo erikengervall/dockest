@@ -14,9 +14,11 @@ const teardownSingle = async (containerId: string, runnerKey: string): Promise<v
 
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   try {
-    await execa.shell(`docker stop ${containerId}`)
+    const cmd = `docker stop ${containerId}`
+    logger.command(cmd)
+    await execa.shell(cmd)
   } catch (error) {
-    logger.error(`Failed to stop service container ${runnerKey}`, error)
+    logger.error(`Failed to stop service container "${runnerKey}"`, error)
     return
   }
 
@@ -25,9 +27,11 @@ const stopContainerById = async (containerId: string, runnerKey: string): Promis
 
 const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   try {
-    await execa.shell(`docker rm ${containerId} --volumes`)
+    const cmd = `docker rm ${containerId} --volumes`
+    logger.command(cmd)
+    await execa.shell(cmd)
   } catch (error) {
-    logger.error(`Failed to remove service container ${runnerKey}`, error)
+    logger.error(`Failed to remove service container "${runnerKey}"`, error)
     return
   }
 

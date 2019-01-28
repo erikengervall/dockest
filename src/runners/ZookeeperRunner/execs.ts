@@ -1,5 +1,6 @@
 import execa from 'execa'
 
+import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
 import logger from '../../utils/logger'
@@ -30,7 +31,13 @@ class ZookeeperExec implements IExec {
 
     let containerId = await getContainerId(service)
     if (!containerId) {
-      await execa.shell(`docker-compose run --detach --publish ${port}:2181 ${service}`)
+      const portMapping = `--publish ${port}:2181`
+      const cmd = `docker-compose run \
+                  ${defaultDockerComposeRunOpts} \
+                  ${portMapping} \
+                  ${service}`
+      logger.command(cmd)
+      await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 

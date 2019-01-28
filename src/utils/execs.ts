@@ -30,9 +30,13 @@ const acquireConnection = (port: number, host: string = 'localhost'): Promise<vo
   })
 
 const getContainerId = async (serviceName: string): Promise<string> => {
-  const { stdout: containerId } = await execa.shell(
-    `docker ps --quiet --filter "name=${serviceName}" --latest`
-  )
+  const cmd = `docker ps \
+  --quiet \
+  --filter \
+  "name=${serviceName}" \
+  --latest`
+  logger.command(cmd)
+  const { stdout: containerId } = await execa.shell(cmd)
 
   return containerId
 }
@@ -40,13 +44,12 @@ const getContainerId = async (serviceName: string): Promise<string> => {
 const runCustomCommand = async (command: string): Promise<void> => {
   logger.loading(`Running custom command: ${command}`)
 
-  const { stdout: result = '' } = await execa.shell(command)
+  const { stdout: result } = await execa.shell(command)
+  // console.log('**result')
+  // console.log(result)
+  // console.log('result**')
 
-  logger.success(
-    `Successfully ran custom command: ${
-      typeof result === 'object' ? JSON.stringify(result) : result
-    }`
-  )
+  logger.success(`Successfully ran custom command`, result)
 }
 
 export { sleep, acquireConnection, getContainerId, runCustomCommand }

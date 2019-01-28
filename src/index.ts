@@ -22,13 +22,13 @@ const DEFAULT_CONFIG_DOCKEST = {
 
 class Dockest {
   public static jestRanWithResult: boolean = false
-  public config: IDockestConfig
+  public static config: IDockestConfig
 
   constructor(userConfig: IDockestConfig) {
     const { jest, runners } = userConfig
     const requiredProps = { jest, runners }
 
-    this.config = {
+    Dockest.config = {
       ...userConfig,
       dockest: {
         ...DEFAULT_CONFIG_DOCKEST,
@@ -42,8 +42,8 @@ class Dockest {
   public run = async (): Promise<void> => {
     logger.loading('Integration test initiated')
 
-    const { jest, runners } = this.config
-    setupExitHandler(this.config)
+    const { jest, runners } = Dockest.config
+    setupExitHandler(Dockest.config)
 
     await this.setupRunners(runners)
     const result = await this.runJest(jest)

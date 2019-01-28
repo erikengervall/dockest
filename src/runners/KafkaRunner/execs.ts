@@ -1,6 +1,6 @@
 import execa from 'execa'
 
-// import fs from 'fs'
+import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
 import logger from '../../utils/logger'
@@ -33,17 +33,20 @@ class KafkaExec implements IExec {
 
     let containerId = await getContainerId(service)
     if (!containerId) {
-      const stringifiedPorts = Object.keys(ports)
+      const portMapping = Object.keys(ports)
         .map(port => `--publish ${ports[port]}:${port}`)
         .join(' ')
-      const envTopics = topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''
-      const envAutoCreateTopics = `-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`
-      const envZookeepeerConnect = `-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`
       const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
-                    ${envAutoCreateTopics} \
-                    ${envTopics} \
-                    ${'' || envZookeepeerConnect}`
-      await execa.shell(`docker-compose run --detach ${stringifiedPorts} ${env} ${service}`)
+                    ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
+                    ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
+                    ${`-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`}`
+      const cmd = `docker-compose run \
+                    ${defaultDockerComposeRunOpts} \
+                    ${portMapping} \
+                    ${env} \
+                    ${service}`
+      logger.command(cmd)
+      await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 

@@ -60,15 +60,17 @@ const kafka1kafkajs = new KafkaRunner({
 })
 
 const integration = new Dockest({
-  dockest: {},
+  dockest: {
+    verbose: true,
+  },
   jest: {
     lib: require('jest'),
   },
   runners: {
-    // postgres1sequelize,
+    postgres1sequelize,
     // postgres2knex,
-    zookeeper,
-    kafka1kafkajs,
+    // zookeeper,
+    // kafka1kafkajs,
   },
 })
 

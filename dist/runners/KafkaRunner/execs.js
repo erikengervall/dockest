@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
-// import fs from 'fs'
+const constants_1 = require("../../constants");
 const errors_1 = require("../../errors");
 const execs_1 = require("../../utils/execs");
 const logger_1 = __importDefault(require("../../utils/logger"));
@@ -17,17 +17,20 @@ class KafkaExec {
             const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig;
             let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
-                const stringifiedPorts = Object.keys(ports)
+                const portMapping = Object.keys(ports)
                     .map(port => `--publish ${ports[port]}:${port}`)
                     .join(' ');
-                const envTopics = topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : '';
-                const envAutoCreateTopics = `-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`;
-                const envZookeepeerConnect = `-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`;
                 const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
-                    ${envAutoCreateTopics} \
-                    ${envTopics} \
-                    ${'' || envZookeepeerConnect}`;
-                await execa_1.default.shell(`docker-compose run --detach ${stringifiedPorts} ${env} ${service}`);
+                    ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
+                    ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
+                    ${`-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`}`;
+                const cmd = `docker-compose run \
+                    ${constants_1.defaultDockerComposeRunOpts} \
+                    ${portMapping} \
+                    ${env} \
+                    ${service}`;
+                logger_1.default.command(cmd);
+                await execa_1.default.shell(cmd);
             }
             containerId = await execs_1.getContainerId(service);
             logger_1.default.success(`Kafka container started successfully`);

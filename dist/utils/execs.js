@@ -26,14 +26,23 @@ const acquireConnection = (port, host = 'localhost') => new Promise((resolve, re
 });
 exports.acquireConnection = acquireConnection;
 const getContainerId = async (serviceName) => {
-    const { stdout: containerId } = await execa_1.default.shell(`docker ps --quiet --filter "name=${serviceName}" --latest`);
+    const cmd = `docker ps \
+  --quiet \
+  --filter \
+  "name=${serviceName}" \
+  --latest`;
+    logger_1.default.command(cmd);
+    const { stdout: containerId } = await execa_1.default.shell(cmd);
     return containerId;
 };
 exports.getContainerId = getContainerId;
 const runCustomCommand = async (command) => {
     logger_1.default.loading(`Running custom command: ${command}`);
-    const { stdout: result = '' } = await execa_1.default.shell(command);
-    logger_1.default.success(`Successfully ran custom command: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
+    const { stdout: result } = await execa_1.default.shell(command);
+    // console.log('**result')
+    // console.log(result)
+    // console.log('result**')
+    logger_1.default.success(`Successfully ran custom command`, result);
 };
 exports.runCustomCommand = runCustomCommand;
 //# sourceMappingURL=execs.js.map

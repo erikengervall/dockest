@@ -16,8 +16,8 @@ class Dockest {
     constructor(userConfig) {
         this.run = async () => {
             logger_1.default.loading('Integration test initiated');
-            const { jest, runners } = this.config;
-            exitHandler_1.default(this.config);
+            const { jest, runners } = Dockest.config;
+            exitHandler_1.default(Dockest.config);
             await this.setupRunners(runners);
             const result = await this.runJest(jest);
             await this.teardownRunners(runners);
@@ -41,7 +41,7 @@ class Dockest {
         };
         const { jest, runners } = userConfig;
         const requiredProps = { jest, runners };
-        this.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
+        Dockest.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
         config_1.validateInputFields('dockest', requiredProps);
     }
 }

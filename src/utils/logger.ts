@@ -1,25 +1,55 @@
 // tslint:disable:no-console
 
-import { ICONS } from '../constants'
+import { COLORS, ICONS } from '../constants'
+import Dockest from '../index'
 
-type logMethod = (message: string, data?: object | string) => void
+const { VERBOSE, LOADING, SUCCESS, FAILED, ERROR } = ICONS
+const {
+  BG: { YELLOW: BG_Y },
+  FG: { BLACK: FG_B, RED: FG_R },
+  MISC: { RESET: M_R, BRIGHT: M_B },
+} = COLORS
+
+type logMethod = (message: string, logData?: object | string) => void
 
 interface ILogger {
-  info: logMethod
   loading: logMethod
-  stop: logMethod
   success: logMethod
   failed: logMethod
   error: logMethod
+  command: logMethod
+}
+
+const trim = (str: string = ''): string => str.replace(/\s+/g, ' ').trim()
+
+const handleLogData = (logData?: any) => {
+  if (typeof logData === 'string') {
+    return trim(logData)
+  }
+
+  return logData
 }
 
 const logger: ILogger = {
-  info: (message, data = '') => console.info(`${message}`, data),
-  loading: (message, data = '') => console.info(`${ICONS.LOADING} ${message}`, data),
-  stop: (message, data = '') => console.info(`${ICONS.STOPPED} ${message}`, data),
-  success: (message, data = '') => console.info(`${ICONS.SUCCESS} ${message}`, data, '\n'),
-  failed: (message, data = '') => console.error(`${ICONS.FAILED} ${message}`, data, '\n'),
-  error: (message, data = '') => console.error(`${ICONS.ERROR} ${message}`, data, '\n'),
+  command: (logData = '') => {
+    if (Dockest.config.dockest.verbose) {
+      console.info(`${VERBOSE} ${BG_Y}${FG_B} Ran command ${M_R}`, handleLogData(logData))
+    }
+  },
+
+  loading: (message, logData = '') => {
+    console.info(`${LOADING} ${M_B}${message}${M_R}`, logData)
+  },
+
+  success: (message, logData = '') => {
+    console.info(`${SUCCESS} ${M_B}${message}${M_R}`, logData, '\n')
+  },
+  failed: (message, logData = '') => {
+    console.info(`${FAILED} ${FG_R}${message}${M_R}`, logData, '\n')
+  },
+  error: (message, logData = '') => {
+    console.info(`${ERROR} ${FG_R}${message}${M_R}`, logData, '\n')
+  },
 }
 
 export default logger
