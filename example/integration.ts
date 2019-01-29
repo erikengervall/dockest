@@ -68,9 +68,9 @@ const integration = new Dockest({
   },
   runners: {
     postgres1sequelize,
-    // postgres2knex,
-    // zookeeper,
-    // kafka1kafkajs,
+    postgres2knex,
+    zookeeper,
+    kafka1kafkajs,
   },
 })
 
