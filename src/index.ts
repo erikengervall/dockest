@@ -54,7 +54,9 @@ class Dockest {
 
   private setupRunners = async (runners: IRunners) => {
     for (const runnerKey of Object.keys(runners)) {
+      logger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
+      logger.setupSuccess(runnerKey)
     }
   }
 

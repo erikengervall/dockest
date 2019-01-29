@@ -11,9 +11,9 @@ class ZookeeeperRunner {
     constructor(config) {
         this.setup = async (runnerKey) => {
             this.runnerKey = runnerKey;
-            const containerId = await this.ZookeeperExec.start(this.config);
+            const containerId = await this.ZookeeperExec.start(this.config, runnerKey);
             this.containerId = containerId;
-            await this.ZookeeperExec.checkHealth(this.config);
+            await this.ZookeeperExec.checkHealth(this.config, runnerKey);
         };
         this.teardown = async (runnerKey) => this.ZookeeperExec.teardown(this.containerId, runnerKey);
         this.getHelpers = async () => ({

@@ -14,9 +14,9 @@ class PostgresRunner {
     constructor(config) {
         this.setup = async (runnerKey) => {
             this.runnerKey = runnerKey;
-            const containerId = await this.postgresExec.start(this.config);
+            const containerId = await this.postgresExec.start(this.config, runnerKey);
             this.containerId = containerId;
-            await this.postgresExec.checkHealth(this.config, containerId);
+            await this.postgresExec.checkHealth(this.config, containerId, runnerKey);
             const commands = this.config.commands || [];
             for (const cmd of commands) {
                 await execs_1.runCustomCommand(cmd);

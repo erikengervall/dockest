@@ -12,8 +12,8 @@ const teardown_1 = require("../../utils/teardown");
 const PRIMARY_KAFKA_PORT = '9092';
 class KafkaExec {
     constructor() {
-        this.start = async (runnerConfig) => {
-            logger_1.default.loading('Starting kafka container');
+        this.start = async (runnerConfig, runnerKey) => {
+            logger_1.default.startContainer(runnerKey);
             const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig;
             let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
@@ -33,25 +33,26 @@ class KafkaExec {
                 await execa_1.default.shell(cmd);
             }
             containerId = await execs_1.getContainerId(service);
-            logger_1.default.success(`Kafka container started successfully`);
+            logger_1.default.startContainerSuccess(service);
             return containerId;
         };
-        this.checkHealth = async (runnerConfig) => {
-            await this.checkConnection(runnerConfig);
+        this.checkHealth = async (runnerConfig, runnerKey) => {
+            logger_1.default.checkHealth(runnerKey);
+            await this.checkConnection(runnerConfig, runnerKey);
+            logger_1.default.checkHealthSuccess(runnerKey);
         };
         this.teardown = async (containerId, runnerKey) => teardown_1.teardownSingle(containerId, runnerKey);
-        this.checkConnection = async (runnerConfig) => {
-            logger_1.default.loading('Attempting to establish Kafka connection');
+        this.checkConnection = async (runnerConfig, runnerKey) => {
             const { connectionTimeout = 30, ports } = runnerConfig;
             const primaryKafkaPort = Number(Object.keys(ports).find(port => ports[port] === PRIMARY_KAFKA_PORT));
             const recurse = async (connectionTimeout) => {
-                logger_1.default.loading(`Establishing Kafka connection (Timing out in: ${connectionTimeout}s)`);
+                logger_1.default.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {
                     throw new errors_1.DockestError('Kafka connection timed out');
                 }
                 try {
                     await execs_1.acquireConnection(primaryKafkaPort);
-                    logger_1.default.success('Kafka connection established');
+                    logger_1.default.checkConnectionSuccess(runnerKey);
                 }
                 catch (error) {
                     connectionTimeout--;

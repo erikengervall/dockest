@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const index_1 = __importDefault(require("../index"));
 const { VERBOSE, LOADING, SUCCESS, FAILED, ERROR } = constants_1.ICONS;
-const { BG: { YELLOW: BG_Y }, FG: { BLACK: FG_B, RED: FG_R }, MISC: { RESET: M_R, BRIGHT: M_B }, } = constants_1.COLORS;
+const { BG: { WHITE }, FG: { BLACK, RED }, MISC: { RESET, BRIGHT }, } = constants_1.COLORS;
 const trim = (str = '') => str.replace(/\s+/g, ' ').trim();
 const handleLogData = (logData) => {
     if (typeof logData === 'string') {
@@ -18,20 +18,78 @@ const handleLogData = (logData) => {
 const logger = {
     command: (logData = '') => {
         if (index_1.default.config.dockest.verbose) {
-            console.info(`${VERBOSE} ${BG_Y}${FG_B} Ran command ${M_R}`, handleLogData(logData));
+            console.log(`${VERBOSE} ${WHITE}${BLACK} Executed following shell script ${RESET}`, handleLogData(logData));
         }
     },
+    setup: runnerKey => {
+        const topSeparator = new Array(runnerKey.length * 2).fill(`-`).join('');
+        const bottomSeparator = new Array(runnerKey.length * 2).fill(`-`).join('');
+        console.log(`
+${topSeparator}\n\
+${BRIGHT}  ${runnerKey}: Setting up${RESET}\n\
+${bottomSeparator}`);
+    },
+    setupSuccess: runnerKey => {
+        const topSeparator = new Array(runnerKey.length * 2).fill(`/`).join('');
+        const bottomSeparator = new Array(runnerKey.length * 2).fill(`/`).join('');
+        console.log(`
+${topSeparator}\n\
+${BRIGHT}  ${runnerKey}: Setup successful${RESET}\n\
+${bottomSeparator}`);
+    },
+    startContainer: runnerKey => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Starting container${RESET}`);
+    },
+    startContainerSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container running${RESET}\n`);
+    },
+    checkHealth: runnerKey => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Healthchecking container${RESET}`);
+    },
+    checkHealthSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container healthchecked${RESET}\n`);
+    },
+    checkResponsiveness: (runnerKey, timeout) => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Checking container's responsiveness (Timeout in: ${timeout}s)${RESET}`);
+    },
+    checkResponsivenessSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container's responsiveness checked${RESET}`);
+    },
+    checkConnection: (runnerKey, timeout) => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Checking container's connection (Timeout in: ${timeout}s)${RESET}`);
+    },
+    checkConnectionSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container's connection checked${RESET}`);
+    },
+    stopContainer: runnerKey => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Stopping container${RESET}`);
+    },
+    stopContainerSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container stopped${RESET}\n`);
+    },
+    removeContainer: runnerKey => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Removing container${RESET}`);
+    },
+    removeContainerSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container removed${RESET}\n`);
+    },
+    teardown: runnerKey => {
+        console.log(`${LOADING} ${BRIGHT}${runnerKey}: Tearing down container${RESET}`);
+    },
+    teardownSuccess: runnerKey => {
+        console.log(`${SUCCESS} ${BRIGHT}${runnerKey}: Container teared down${RESET}\n`);
+    },
     loading: (message, logData = '') => {
-        console.info(`${LOADING} ${M_B}${message}${M_R}`, logData);
+        console.log(`${LOADING} ${BRIGHT}${message}${RESET}`, logData);
     },
     success: (message, logData = '') => {
-        console.info(`${SUCCESS} ${M_B}${message}${M_R}`, logData, '\n');
+        console.log(`${SUCCESS} ${BRIGHT}${message}${RESET}`, logData, '\n');
     },
     failed: (message, logData = '') => {
-        console.info(`${FAILED} ${FG_R}${message}${M_R}`, logData, '\n');
+        console.log(`${FAILED} ${RED}${message}${RESET}`, logData, '\n');
     },
     error: (message, logData = '') => {
-        console.info(`${ERROR} ${FG_R}${message}${M_R}`, logData, '\n');
+        console.log(`${ERROR} ${RED}${message}${RESET}`, logData, '\n');
     },
 };
 exports.default = logger;

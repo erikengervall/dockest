@@ -40,10 +40,10 @@ export class PostgresRunner implements IBaseRunner {
   public setup = async (runnerKey: string) => {
     this.runnerKey = runnerKey
 
-    const containerId = await this.postgresExec.start(this.config)
+    const containerId = await this.postgresExec.start(this.config, runnerKey)
     this.containerId = containerId
 
-    await this.postgresExec.checkHealth(this.config, containerId)
+    await this.postgresExec.checkHealth(this.config, containerId, runnerKey)
 
     const commands = this.config.commands || []
     for (const cmd of commands) {

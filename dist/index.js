@@ -25,7 +25,9 @@ class Dockest {
         };
         this.setupRunners = async (runners) => {
             for (const runnerKey of Object.keys(runners)) {
+                logger_1.default.setup(runnerKey);
                 await runners[runnerKey].setup(runnerKey);
+                logger_1.default.setupSuccess(runnerKey);
             }
         };
         this.runJest = async (jest) => {

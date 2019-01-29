@@ -42,10 +42,10 @@ export class KafkaRunner implements IBaseRunner {
   public setup = async (runnerKey: string) => {
     this.runnerKey = runnerKey
 
-    const containerId = await this.kafkaExec.start(this.config)
+    const containerId = await this.kafkaExec.start(this.config, runnerKey)
     this.containerId = containerId
 
-    await this.kafkaExec.checkHealth(this.config)
+    await this.kafkaExec.checkHealth(this.config, runnerKey)
   }
 
   public teardown = async (runnerKey: string) =>

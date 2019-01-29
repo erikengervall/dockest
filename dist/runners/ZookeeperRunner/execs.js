@@ -11,38 +11,39 @@ const logger_1 = __importDefault(require("../../utils/logger"));
 const teardown_1 = require("../../utils/teardown");
 class ZookeeperExec {
     constructor() {
-        this.start = async (runnerConfig) => {
-            logger_1.default.loading('Starting zookeeper container');
+        this.start = async (runnerConfig, runnerKey) => {
+            logger_1.default.startContainer(runnerKey);
             const { port, service } = runnerConfig;
             let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
                 const portMapping = `--publish ${port}:2181`;
                 const cmd = `docker-compose run \
-                  ${constants_1.defaultDockerComposeRunOpts} \
-                  ${portMapping} \
-                  ${service}`;
+                    ${constants_1.defaultDockerComposeRunOpts} \
+                    ${portMapping} \
+                    ${service}`;
                 logger_1.default.command(cmd);
                 await execa_1.default.shell(cmd);
             }
             containerId = await execs_1.getContainerId(service);
-            logger_1.default.success(`Zookeeper container started successfully (${containerId})`);
+            logger_1.default.startContainerSuccess(service);
             return containerId;
         };
-        this.checkHealth = async (runnerConfig) => {
-            await this.checkConnection(runnerConfig);
+        this.checkHealth = async (runnerConfig, runnerKey) => {
+            logger_1.default.checkHealth(runnerKey);
+            await this.checkConnection(runnerConfig, runnerKey);
+            logger_1.default.checkHealthSuccess(runnerKey);
         };
         this.teardown = async (containerId, runnerKey) => teardown_1.teardownSingle(containerId, runnerKey);
-        this.checkConnection = async (runnerConfig) => {
-            logger_1.default.loading('Attempting to establish zookeeper connection');
+        this.checkConnection = async (runnerConfig, runnerKey) => {
             const { connectionTimeout = 30, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {
-                logger_1.default.loading(`Establishing zookeeper connection (Timing out in: ${connectionTimeout}s)`);
+                logger_1.default.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {
                     throw new errors_1.DockestError('Zookeeper connection timed out');
                 }
                 try {
                     await execs_1.acquireConnection(port);
-                    logger_1.default.success('Zookeeper connection established');
+                    logger_1.default.checkConnectionSuccess(runnerKey);
                 }
                 catch (error) {
                     connectionTimeout--;

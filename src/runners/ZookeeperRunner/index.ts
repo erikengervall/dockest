@@ -31,10 +31,10 @@ export class ZookeeeperRunner implements IBaseRunner {
   public setup = async (runnerKey: string) => {
     this.runnerKey = runnerKey
 
-    const containerId = await this.ZookeeperExec.start(this.config)
+    const containerId = await this.ZookeeperExec.start(this.config, runnerKey)
     this.containerId = containerId
 
-    await this.ZookeeperExec.checkHealth(this.config)
+    await this.ZookeeperExec.checkHealth(this.config, runnerKey)
   }
 
   public teardown = async (runnerKey: string) =>

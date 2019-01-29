@@ -11,8 +11,8 @@ const logger_1 = __importDefault(require("../../utils/logger"));
 const teardown_1 = require("../../utils/teardown");
 class PostgresExec {
     constructor() {
-        this.start = async (runnerConfig) => {
-            logger_1.default.loading('Starting postgres container');
+        this.start = async (runnerConfig, runnerKey) => {
+            logger_1.default.startContainer(runnerKey);
             const { port, service, database, username, password } = runnerConfig;
             let containerId = await execs_1.getContainerId(service);
             if (!containerId) {
@@ -29,19 +29,20 @@ class PostgresExec {
                 await execa_1.default.shell(cmd);
             }
             containerId = await execs_1.getContainerId(service);
-            logger_1.default.success(`Postgres container started successfully`);
+            logger_1.default.startContainerSuccess(runnerKey);
             return containerId;
         };
-        this.checkHealth = async (runnerConfig, containerId) => {
-            await this.checkResponsiveness(runnerConfig, containerId);
-            await this.checkConnection(runnerConfig);
+        this.checkHealth = async (runnerConfig, containerId, runnerKey) => {
+            logger_1.default.checkHealth(runnerKey);
+            await this.checkResponsiveness(runnerConfig, containerId, runnerKey);
+            await this.checkConnection(runnerConfig, runnerKey);
+            logger_1.default.checkHealthSuccess(runnerKey);
         };
         this.teardown = async (containerId, runnerKey) => teardown_1.teardownSingle(containerId, runnerKey);
-        this.checkResponsiveness = async (runnerConfig, containerId) => {
-            logger_1.default.loading('Attempting to establish database responsiveness');
+        this.checkResponsiveness = async (runnerConfig, containerId, runnerKey) => {
             const { responsivenessTimeout = 10, host, database, username } = runnerConfig;
             const recurse = async (responsivenessTimeout) => {
-                logger_1.default.loading(`Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`);
+                logger_1.default.checkResponsiveness(runnerKey, responsivenessTimeout);
                 if (responsivenessTimeout <= 0) {
                     throw new errors_1.DockestError(`Database responsiveness timed out`);
                 }
@@ -54,7 +55,7 @@ class PostgresExec {
                       -c 'select 1'"`;
                     logger_1.default.command(cmd);
                     await execa_1.default.shell(cmd);
-                    logger_1.default.success('Database responsiveness established');
+                    logger_1.default.checkResponsivenessSuccess(runnerKey);
                 }
                 catch (error) {
                     responsivenessTimeout--;
@@ -64,17 +65,16 @@ class PostgresExec {
             };
             await recurse(responsivenessTimeout);
         };
-        this.checkConnection = async (runnerConfig) => {
-            logger_1.default.loading('Attempting to establish database connection');
+        this.checkConnection = async (runnerConfig, runnerKey) => {
             const { connectionTimeout = 3, host, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {
-                logger_1.default.loading(`Establishing database connection (Timing out in: ${connectionTimeout}s)`);
+                logger_1.default.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {
                     throw new errors_1.DockestError(`Database connection timed out`);
                 }
                 try {
                     await execs_1.acquireConnection(port, host);
-                    logger_1.default.success('Database connection established');
+                    logger_1.default.checkConnectionSuccess(runnerKey);
                 }
                 catch (error) {
                     connectionTimeout--;

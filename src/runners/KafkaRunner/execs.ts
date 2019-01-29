@@ -8,8 +8,8 @@ import { teardownSingle } from '../../utils/teardown'
 import { IKafkaRunnerConfig } from './index'
 
 interface IExec {
-  start: (runnerConfig: IKafkaRunnerConfig) => Promise<string>
-  checkHealth: (runnerConfig: IKafkaRunnerConfig) => Promise<void>
+  start: (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => Promise<string>
+  checkHealth: (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
@@ -26,8 +26,8 @@ class KafkaExec implements IExec {
     KafkaExec.instance = this
   }
 
-  public start = async (runnerConfig: IKafkaRunnerConfig) => {
-    logger.loading('Starting kafka container')
+  public start = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
+    logger.startContainer(runnerKey)
 
     const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
 
@@ -50,21 +50,23 @@ class KafkaExec implements IExec {
     }
     containerId = await getContainerId(service)
 
-    logger.success(`Kafka container started successfully`)
+    logger.startContainerSuccess(service)
 
     return containerId
   }
 
-  public checkHealth = async (runnerConfig: IKafkaRunnerConfig) => {
-    await this.checkConnection(runnerConfig)
+  public checkHealth = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
+    logger.checkHealth(runnerKey)
+
+    await this.checkConnection(runnerConfig, runnerKey)
+
+    logger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
     teardownSingle(containerId, runnerKey)
 
-  private checkConnection = async (runnerConfig: IKafkaRunnerConfig) => {
-    logger.loading('Attempting to establish Kafka connection')
-
+  private checkConnection = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
     const { connectionTimeout = 30, ports } = runnerConfig
 
     const primaryKafkaPort = Number(
@@ -72,7 +74,7 @@ class KafkaExec implements IExec {
     )
 
     const recurse = async (connectionTimeout: number) => {
-      logger.loading(`Establishing Kafka connection (Timing out in: ${connectionTimeout}s)`)
+      logger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError('Kafka connection timed out')
@@ -81,7 +83,7 @@ class KafkaExec implements IExec {
       try {
         await acquireConnection(primaryKafkaPort)
 
-        logger.success('Kafka connection established')
+        logger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 

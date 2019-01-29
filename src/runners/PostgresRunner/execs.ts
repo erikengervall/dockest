@@ -9,8 +9,12 @@ import { teardownSingle } from '../../utils/teardown'
 import { IPostgresRunnerConfig } from './index'
 
 interface IExec {
-  start: (runnerConfig: IPostgresRunnerConfig) => Promise<string>
-  checkHealth: (runnerConfig: IPostgresRunnerConfig, containerId: string) => Promise<void>
+  start: (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => Promise<string>
+  checkHealth: (
+    runnerConfig: IPostgresRunnerConfig,
+    containerId: string,
+    runnerKey: string
+  ) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
@@ -25,8 +29,8 @@ class PostgresExec implements IExec {
     PostgresExec.instance = this
   }
 
-  public start = async (runnerConfig: IPostgresRunnerConfig) => {
-    logger.loading('Starting postgres container')
+  public start = async (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => {
+    logger.startContainer(runnerKey)
 
     const { port, service, database, username, password } = runnerConfig
 
@@ -46,14 +50,22 @@ class PostgresExec implements IExec {
     }
     containerId = await getContainerId(service)
 
-    logger.success(`Postgres container started successfully`)
+    logger.startContainerSuccess(runnerKey)
 
     return containerId
   }
 
-  public checkHealth = async (runnerConfig: IPostgresRunnerConfig, containerId: string) => {
-    await this.checkResponsiveness(runnerConfig, containerId)
-    await this.checkConnection(runnerConfig)
+  public checkHealth = async (
+    runnerConfig: IPostgresRunnerConfig,
+    containerId: string,
+    runnerKey: string
+  ) => {
+    logger.checkHealth(runnerKey)
+
+    await this.checkResponsiveness(runnerConfig, containerId, runnerKey)
+    await this.checkConnection(runnerConfig, runnerKey)
+
+    logger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
@@ -61,16 +73,13 @@ class PostgresExec implements IExec {
 
   private checkResponsiveness = async (
     runnerConfig: IPostgresRunnerConfig,
-    containerId: string
+    containerId: string,
+    runnerKey: string
   ) => {
-    logger.loading('Attempting to establish database responsiveness')
-
     const { responsivenessTimeout = 10, host, database, username } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
-      logger.loading(
-        `Establishing database responsiveness (Timing out in: ${responsivenessTimeout}s)`
-      )
+      logger.checkResponsiveness(runnerKey, responsivenessTimeout)
 
       if (responsivenessTimeout <= 0) {
         throw new DockestError(`Database responsiveness timed out`)
@@ -86,7 +95,7 @@ class PostgresExec implements IExec {
         logger.command(cmd)
         await execa.shell(cmd)
 
-        logger.success('Database responsiveness established')
+        logger.checkResponsivenessSuccess(runnerKey)
       } catch (error) {
         responsivenessTimeout--
 
@@ -98,13 +107,14 @@ class PostgresExec implements IExec {
     await recurse(responsivenessTimeout)
   }
 
-  private checkConnection = async (runnerConfig: IPostgresRunnerConfig): Promise<void> => {
-    logger.loading('Attempting to establish database connection')
-
+  private checkConnection = async (
+    runnerConfig: IPostgresRunnerConfig,
+    runnerKey: string
+  ): Promise<void> => {
     const { connectionTimeout = 3, host, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
-      logger.loading(`Establishing database connection (Timing out in: ${connectionTimeout}s)`)
+      logger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError(`Database connection timed out`)
@@ -113,7 +123,7 @@ class PostgresExec implements IExec {
       try {
         await acquireConnection(port, host)
 
-        logger.success('Database connection established')
+        logger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 

@@ -14,9 +14,9 @@ class KafkaRunner {
     constructor(config) {
         this.setup = async (runnerKey) => {
             this.runnerKey = runnerKey;
-            const containerId = await this.kafkaExec.start(this.config);
+            const containerId = await this.kafkaExec.start(this.config, runnerKey);
             this.containerId = containerId;
-            await this.kafkaExec.checkHealth(this.config);
+            await this.kafkaExec.checkHealth(this.config, runnerKey);
         };
         this.teardown = async (runnerKey) => this.kafkaExec.teardown(this.containerId, runnerKey);
         this.getHelpers = async () => ({
