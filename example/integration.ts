@@ -48,7 +48,7 @@ const zookeeper = new ZookeeperRunner({
 const kafka1kafkajs = new KafkaRunner({
   service: 'kafka1wurstmeister',
   host: 'localhost',
-  topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
+  topics: [env.kafka_topic],
   zookeepeerConnect: `${zookeeperService}:${zookeeperPort}`,
   autoCreateTopics: true,
   ports: {
@@ -67,11 +67,12 @@ const integration = new Dockest({
     lib: require('jest'),
   },
   runners: {
-    postgres1sequelize,
-    postgres2knex,
+    // postgres1sequelize,
+    // postgres2knex,
     zookeeper,
     kafka1kafkajs,
   },
 })
 
-integration.run()
+integration.setupRunners()
+// integration.run()

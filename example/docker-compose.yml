@@ -2,6 +2,8 @@ version: '3'
 services:
   postgres1sequelize:
     image: postgres:9.6.3
+    ports:
+      - '2181:2181'
     volumes:
       - postgres1Volume:/var/lib/postgresql/data
 
@@ -15,6 +17,17 @@ services:
 
   kafka1wurstmeister:
     image: wurstmeister/kafka:0.11.0.0
+    ports:
+      - '9092:9092'
+      - '9093:9093'
+      - '9094:9094'
+    links:
+      - zookeeper1wurstmeister
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 'localhost:9092'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_CREATE_TOPICS: 'dockest-topic:1:1'
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1wurstmeister:2181
 
 volumes:
   postgres1Volume:
