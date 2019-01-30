@@ -1,6 +1,6 @@
 // @ts-ignore
-import { seedBanana } from './data.json'
-import postgres2knex from './models'
+const { seedBanana } = require('./data.json')
+const postgres2knex = require('./models')
 
 const getFirstEntry = async () =>
   postgres2knex('bananas')
@@ -15,4 +15,4 @@ const main = async () => {
   }
 }
 
-export default main
+module.exports = main

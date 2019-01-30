@@ -1,11 +1,9 @@
-import dotenv from 'dotenv'
+const dotenv =require( 'dotenv')
+const Dockest, { runners } =require( '../src/index')
 
-import Dockest, { runners } from '../src/index'
-
-const env: any = dotenv.config().parsed
+const env = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner, ZookeeperRunner } = runners
 
-// @ts-ignore
 const postgres1sequelize = new PostgresRunner({
   username: env.postgres1sequelize_username,
   password: env.postgres1sequelize_password,
@@ -21,7 +19,6 @@ const postgres1sequelize = new PostgresRunner({
   ],
 })
 
-// @ts-ignore
 const postgres2knex = new PostgresRunner({
   username: env.postgres2knex_username,
   password: env.postgres2knex_password,
@@ -38,17 +35,15 @@ const postgres2knex = new PostgresRunner({
 
 const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
-// @ts-ignore
 const zookeeper = new ZookeeperRunner({
   service: zookeeperService,
   port: zookeeperPort,
 })
 
-// @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
   service: 'kafka1wurstmeister',
   host: 'localhost',
-  topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
+  topics: ['dockest_test_topic:1:1'], // name:partitions:replicas
   zookeepeerConnect: `${zookeeperService}:${zookeeperPort}`,
   autoCreateTopics: true,
   ports: {

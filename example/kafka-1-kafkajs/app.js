@@ -1,4 +1,4 @@
-import createKafka from './index'
+const createKafka = require('./index')
 
 const main = async () => {
   const kafka = createKafka()
@@ -8,4 +8,4 @@ const main = async () => {
   }
 }
 
-export default main
+module.exports = main

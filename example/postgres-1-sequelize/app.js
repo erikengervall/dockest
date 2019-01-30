@@ -1,6 +1,5 @@
-// @ts-ignore
-import { seedUser } from './data.json'
-import postgres1sequelize from './models'
+const { seedUser } = require('./data.json')
+const postgres1sequelize = require('./models')
 
 const getFirstEntry = async () =>
   postgres1sequelize.UserModel.findOne({
@@ -18,4 +17,4 @@ const main = async () => {
   }
 }
 
-export default main
+module.exports = main

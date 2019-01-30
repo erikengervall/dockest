@@ -1,4 +1,4 @@
-import main from './app'
+const main = require('./app')
 
 describe('kafka-1-kafkajs', () => {
   it('trabajo', async () => {

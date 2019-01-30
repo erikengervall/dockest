@@ -1,6 +1,5 @@
-import main from './app'
-// @ts-ignore
-import { seedBanana } from './data.json'
+const main = require('./app')
+const { seedBanana } = require('./data.json')
 
 describe('postgres-2-knex', () => {
   it('trabajo', async () => {

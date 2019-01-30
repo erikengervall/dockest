@@ -1,6 +1,5 @@
-import main from './app'
-// @ts-ignore
-import { seedUser } from './data.json'
+const main = require('./app')
+const { seedUser } = require('./data.json')
 
 describe('postgres-1-sequelize', () => {
   it('trabajo', async () => {
