@@ -11,7 +11,7 @@
 ```javascript
 const {
   default: Dockest,
-  runners: { PostgresRunner },
+  runners: { KafkaRunner, PostgresRunner },
 } = require('dockest')
 
 const integration = new Dockest({
@@ -19,19 +19,27 @@ const integration = new Dockest({
     lib: require('jest'),
   },
   runners: {
-    pg1: new PostgresRunner({
-      username: env.username,
-      password: env.password,
-      database: env.database,
-      host: env.host,
-      port: env.port,
-      service: env.service,
+    postgres: new PostgresRunner({
+      username: 'username',
+      password: 'password',
+      database: 'database',
+      host: 'localhost',
+      port: 5432,
+      service: 'postgres',
       commands: [
         'sequelize db:migrate:undo:all',
         'sequelize db:migrate',
         'sequelize db:seed:undo:all',
         'sequelize db:seed --seed 20190101001337-demo-user',
       ],
+    }),
+    kafka: new KafkaRunner({
+      service: 'kafka',
+      host: 'localhost',
+      ports: {
+        // exposed:internal
+        '9092': '9092',
+      },
     }),
   },
 })

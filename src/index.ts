@@ -1,5 +1,5 @@
 import setupExitHandler from './exitHandler'
-import { IRunners, PostgresRunner } from './runners'
+import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
 import { validateInputFields } from './utils/config'
 import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
@@ -22,27 +22,28 @@ const DEFAULT_CONFIG_DOCKEST = {
 
 class Dockest {
   public static jestRanWithResult: boolean = false
-  public config: IDockestConfig
+  public static config: IDockestConfig
 
   constructor(userConfig: IDockestConfig) {
     const { jest, runners } = userConfig
     const requiredProps = { jest, runners }
-    validateInputFields('Dockest', requiredProps)
 
-    this.config = {
+    Dockest.config = {
       ...userConfig,
       dockest: {
         ...DEFAULT_CONFIG_DOCKEST,
         ...userConfig.dockest,
       },
     }
+
+    validateInputFields('dockest', requiredProps)
   }
 
   public run = async (): Promise<void> => {
     logger.loading('Integration test initiated')
 
-    const { jest, runners } = this.config
-    setupExitHandler(this.config)
+    const { jest, runners } = Dockest.config
+    setupExitHandler(Dockest.config)
 
     await this.setupRunners(runners)
     const result = await this.runJest(jest)
@@ -53,7 +54,9 @@ class Dockest {
 
   private setupRunners = async (runners: IRunners) => {
     for (const runnerKey of Object.keys(runners)) {
+      logger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
+      logger.setupSuccess(runnerKey)
     }
   }
 
@@ -72,6 +75,6 @@ class Dockest {
   }
 }
 
-export const runners = { PostgresRunner }
+export const runners = { KafkaRunner, PostgresRunner, ZookeeperRunner }
 
 export default Dockest

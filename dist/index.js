@@ -16,8 +16,8 @@ class Dockest {
     constructor(userConfig) {
         this.run = async () => {
             logger_1.default.loading('Integration test initiated');
-            const { jest, runners } = this.config;
-            exitHandler_1.default(this.config);
+            const { jest, runners } = Dockest.config;
+            exitHandler_1.default(Dockest.config);
             await this.setupRunners(runners);
             const result = await this.runJest(jest);
             await this.teardownRunners(runners);
@@ -25,7 +25,9 @@ class Dockest {
         };
         this.setupRunners = async (runners) => {
             for (const runnerKey of Object.keys(runners)) {
+                logger_1.default.setup(runnerKey);
                 await runners[runnerKey].setup(runnerKey);
+                logger_1.default.setupSuccess(runnerKey);
             }
         };
         this.runJest = async (jest) => {
@@ -39,13 +41,13 @@ class Dockest {
                 await runners[runnerKey].teardown(runnerKey);
             }
         };
-        const { dockest, jest } = userConfig;
-        const requiredProps = { dockest, jest, runners: exports.runners };
-        config_1.validateInputFields('Dockest', requiredProps);
-        this.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
+        const { jest, runners } = userConfig;
+        const requiredProps = { jest, runners };
+        Dockest.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
+        config_1.validateInputFields('dockest', requiredProps);
     }
 }
 Dockest.jestRanWithResult = false;
-exports.runners = { PostgresRunner: runners_1.PostgresRunner };
+exports.runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
 exports.default = Dockest;
 //# sourceMappingURL=index.js.map

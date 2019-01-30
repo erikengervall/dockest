@@ -3,10 +3,5 @@
     "firstName": "John",
     "lastName": "Doe",
     "email": "demo@demo.com"
-  },
-
-  "seedBanana": {
-    "size": "medium",
-    "maturity": "quite bueno"
   }
 }
