@@ -23,8 +23,13 @@ const DEFAULT_CONFIG_DOCKEST = {
 class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: IDockestConfig
+  private static instance: Dockest
 
   constructor(userConfig: IDockestConfig) {
+    if (Dockest.instance) {
+      return Dockest.instance
+    }
+
     const { jest, runners } = userConfig
     const requiredProps = { jest, runners }
 
@@ -37,22 +42,25 @@ class Dockest {
     }
 
     validateInputFields('dockest', requiredProps)
+
+    Dockest.instance = this
   }
 
   public run = async (): Promise<void> => {
-    logger.loading('Integration test initiated')
+    logger.loading('Dockest initiated')
 
-    const { jest, runners } = Dockest.config
     setupExitHandler(Dockest.config)
 
-    await this.setupRunners(runners)
-    const result = await this.runJest(jest)
-    await this.teardownRunners(runners)
+    await this.setupRunners()
+    const result = await this.runJest()
+    await this.teardownRunners()
 
     result.success ? process.exit(0) : process.exit(1)
   }
 
-  private setupRunners = async (runners: IRunners) => {
+  private setupRunners = async () => {
+    const { runners } = Dockest.config
+
     for (const runnerKey of Object.keys(runners)) {
       logger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
@@ -60,18 +68,22 @@ class Dockest {
     }
   }
 
-  private runJest = async (jest: IJestConfig) => {
+  private teardownRunners = async () => {
+    const { runners } = Dockest.config
+
+    for (const runnerKey of Object.keys(runners)) {
+      await runners[runnerKey].teardown(runnerKey)
+    }
+  }
+
+  private runJest = async () => {
+    const { jest } = Dockest.config
+
     const jestRunner = new JestRunner(jest)
     const result = await jestRunner.run()
     Dockest.jestRanWithResult = true
 
     return result
-  }
-
-  private teardownRunners = async (runners: IRunners) => {
-    for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown(runnerKey)
-    }
   }
 }
 
