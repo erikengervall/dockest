@@ -5,17 +5,7 @@ import Dockest from '../index'
 
 type logMethod = (message: string, logData?: object | string) => void
 
-interface ILogger {
-  verbose: logMethod
-  loading: logMethod
-  success: logMethod
-  error: logMethod
-
-  shellCmd: logMethod
-
-  jestFailed: logMethod
-  jestSuccess: logMethod
-
+interface IExecLogger {
   setup: {
     setup: (runnerKey: string) => void
     setupSuccess: (runnerKey: string) => void
@@ -42,68 +32,16 @@ interface ILogger {
   }
 }
 
-const { VERBOSE, LOADING, SUCCESS, FAILED, ERROR, INFO } = ICONS
+const { LOADING, SUCCESS } = ICONS
 const {
-  BG: { WHITE },
-  FG: { BLACK, RED },
   MISC: { RESET, BRIGHT },
 } = COLORS
 const logLevel = Dockest ? Dockest.config.dockest.logLevel : LOG_LEVEL.VERBOSE
 
-const trim = (str: string = ''): string => str.replace(/\s+/g, ' ').trim()
-
-const handleLogData = (logData?: any) => {
-  if (typeof logData === 'string') {
-    return trim(logData)
-  }
-
-  return logData
-}
-
 const logSuccess: logMethod = (m, d) => console.log(`${SUCCESS} ${BRIGHT}${m}${RESET}`, d, `\n`)
 const logLoading: logMethod = (m, d) => console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, d)
-const logInfo: logMethod = (m, d) => console.log(`${INFO} ${BRIGHT}${m}${RESET}`, d)
 
-const logger: ILogger = {
-  verbose: (m, d = '') => {
-    if (logLevel >= LOG_LEVEL.VERBOSE) {
-      logInfo(m, d)
-    }
-  },
-
-  loading: (m, d = '') => logLevel >= LOG_LEVEL.NORMAL && logLoading(m, d),
-
-  success: (message, logData = '') => {
-    if (logLevel >= LOG_LEVEL.ERROR) {
-      console.log(`${SUCCESS} ${BRIGHT}${message}${RESET}`, logData, '\n')
-      logSuccess(`${message}`, logData)
-    }
-  },
-
-  error: (message, logData = '') => {
-    if (logLevel >= LOG_LEVEL.ERROR) {
-      console.log(`${ERROR} ${RED}${message}${RESET}`, logData, '\n')
-    }
-  },
-
-  shellCmd: (logData = '') =>
-    logLevel >= LOG_LEVEL.VERBOSE &&
-    console.log(
-      `${VERBOSE} ${WHITE}${BLACK} Executed following shell script ${RESET}`,
-      handleLogData(logData)
-    ),
-
-  jestFailed: (message, logData = '') => {
-    if (logLevel >= LOG_LEVEL.ERROR) {
-      console.log(`${FAILED} ${RED}${message}${RESET}`, logData, '\n')
-    }
-  },
-  jestSuccess: (message, logData = '') => {
-    if (logLevel >= LOG_LEVEL.ERROR) {
-      console.log(`${SUCCESS} ${BRIGHT}${message}${RESET}`, logData, '\n')
-    }
-  },
-
+const logger: IExecLogger = {
   setup: {
     setup: runnerKey => {
       if (logLevel >= LOG_LEVEL.NORMAL) {

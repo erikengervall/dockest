@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 
-import Dockest, { runners } from '../src/index'
+import Dockest, { logLevel, runners } from '../src/index'
 
 const env: any = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner, ZookeeperRunner } = runners
@@ -61,16 +61,16 @@ const kafka1kafkajs = new KafkaRunner({
 
 const integration = new Dockest({
   dockest: {
-    verbose: true,
+    logLevel: logLevel.VERBOSE,
   },
   jest: {
     lib: require('jest'),
   },
   runners: {
     postgres1sequelize,
-    postgres2knex,
-    zookeeper,
-    kafka1kafkajs,
+    // postgres2knex,
+    // zookeeper,
+    // kafka1kafkajs,
   },
 })
 

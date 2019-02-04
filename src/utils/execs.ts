@@ -35,7 +35,7 @@ const getContainerId = async (serviceName: string): Promise<string> => {
                 --filter \
                 "name=${serviceName}" \
                 --latest`
-  logger.command(cmd)
+  logger.shellCmd(cmd)
   const { stdout: containerId } = await execa.shell(cmd)
 
   return containerId

@@ -53,11 +53,11 @@ class JestRunner {
       const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
 
       if (!jestResult.results.success) {
-        logger.failed(`Jest test(s) failed`)
+        logger.jestFailed(`Jest test(s) failed`)
 
         success = false
       } else {
-        logger.success(`Jest run successfully`)
+        logger.jestSuccess(`Jest run successfully`)
 
         success = true
       }

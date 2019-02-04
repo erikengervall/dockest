@@ -1,3 +1,4 @@
+import { LOG_LEVEL } from './constants'
 import setupExitHandler from './exitHandler'
 import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
 import { validateInputFields } from './utils/config'
@@ -5,6 +6,7 @@ import JestRunner, { IJestConfig } from './utils/jest'
 import logger from './utils/logger'
 
 interface IDockest {
+  logLevel: number
   verbose?: boolean
   exitHandler?: (err?: Error) => void
 }
@@ -16,6 +18,7 @@ export interface IDockestConfig {
 }
 
 const DEFAULT_CONFIG_DOCKEST = {
+  logLevel: LOG_LEVEL.NORMAL,
   verbose: false,
   exitHandler: () => undefined,
 }
@@ -36,6 +39,14 @@ class Dockest {
       },
     }
 
+    if (!Object.values(LOG_LEVEL).includes(Dockest.config.dockest.logLevel)) {
+      Dockest.config.dockest.logLevel = LOG_LEVEL.NORMAL
+
+      logger.verbose(`Invalid logLevel: ${Dockest.config.dockest.logLevel}, defaulting to standard`)
+    }
+
+    logger.verbose('Dockest instantiated with config', Dockest.config)
+
     validateInputFields('dockest', requiredProps)
   }
 
@@ -54,9 +65,9 @@ class Dockest {
 
   private setupRunners = async (runners: IRunners) => {
     for (const runnerKey of Object.keys(runners)) {
-      logger.setup(runnerKey)
+      logger.setup.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
-      logger.setupSuccess(runnerKey)
+      logger.setup.setupSuccess(runnerKey)
     }
   }
 
@@ -76,5 +87,6 @@ class Dockest {
 }
 
 export const runners = { KafkaRunner, PostgresRunner, ZookeeperRunner }
+export const logLevel = LOG_LEVEL
 
 export default Dockest

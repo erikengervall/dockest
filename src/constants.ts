@@ -41,10 +41,14 @@ const COLORS = {
   },
 }
 
-const dockerComposeRunOpts = {
-  runInBackground: '--detach',
-  doNotRunLinkedServices: '--no-deps',
-}
+const dockerComposeRunOpts = { runInBackground: '--detach', doNotRunLinkedServices: '--no-deps' }
 const defaultDockerComposeRunOpts = Object.values(dockerComposeRunOpts).join(' ')
 
-export { ICONS, COLORS, defaultDockerComposeRunOpts }
+const LOG_LEVEL = {
+  NOTHING: 0,
+  ERROR: 1,
+  NORMAL: 2,
+  VERBOSE: 3,
+}
+
+export { ICONS, COLORS, defaultDockerComposeRunOpts, LOG_LEVEL }
