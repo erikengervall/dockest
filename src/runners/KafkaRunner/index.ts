@@ -1,6 +1,6 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { validateInputFields } from '../../utils/config'
+import { getMissingProps } from '../utils'
 import KafkaExec from './execs'
 
 interface IPorts {
@@ -33,10 +33,11 @@ export class KafkaRunner implements IBaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.validateKafkaConfig(config)
     this.kafkaExec = new KafkaExec()
     this.containerId = ''
     this.runnerKey = ''
+
+    this.validateConfig()
   }
 
   public setup = async (runnerKey: string) => {
@@ -56,19 +57,30 @@ export class KafkaRunner implements IBaseRunner {
     loadData: () => true,
   })
 
-  private validateKafkaConfig = (config: IKafkaRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Kafka runner')
+  private validateConfig = () => {
+    if (!this.config) {
+      throw new ConfigurationError('config')
     }
 
-    const { service, host, ports, topics, zookeepeerConnect, autoCreateTopics } = config
-    const requiredProps = { service, host, ports, topics, zookeepeerConnect, autoCreateTopics }
+    // validate required props
+    const { service, host, ports, topics, zookeepeerConnect, autoCreateTopics } = this.config
+    const requiredProps: { [key: string]: any } = {
+      service,
+      host,
+      ports,
+      topics,
+      zookeepeerConnect,
+      autoCreateTopics,
+    }
 
     if (!ports['9093']) {
       throw new ConfigurationError('Missing required port-mapping for Kafka runner')
     }
 
-    validateInputFields('kafka', requiredProps)
+    const missingProps = getMissingProps(requiredProps)
+    if (missingProps.length > 0) {
+      throw new ConfigurationError(`${missingProps.join(', ')}`)
+    }
   }
 }
 

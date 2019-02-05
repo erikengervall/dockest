@@ -1,6 +1,6 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { validateInputFields } from '../../utils/config'
+import { getMissingProps } from '../utils'
 import ZookeeperExec from './execs'
 
 export interface IZookeeperRunnerConfig {
@@ -18,7 +18,6 @@ export class ZookeeeperRunner implements IBaseRunner {
   public runnerKey: string
 
   constructor(config: IZookeeperRunnerConfig) {
-    this.validateZookeeperConfig(config)
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -26,6 +25,8 @@ export class ZookeeeperRunner implements IBaseRunner {
     this.ZookeeperExec = new ZookeeperExec()
     this.containerId = ''
     this.runnerKey = ''
+
+    this.validateInput()
   }
 
   public setup = async (runnerKey: string) => {
@@ -45,15 +46,19 @@ export class ZookeeeperRunner implements IBaseRunner {
     loadData: () => true,
   })
 
-  private validateZookeeperConfig = (config: IZookeeperRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Zookeeper runner')
+  private validateInput = () => {
+    // validate config
+    if (!this.config) {
+      throw new ConfigurationError(`config`)
     }
 
-    const { service, port } = config
-    const requiredProps = { service, port }
-
-    validateInputFields('zookeeper', requiredProps)
+    // validate required props
+    const { service, port } = this.config
+    const requiredProps: { [key: string]: any } = { service, port }
+    const missingProps = getMissingProps(requiredProps)
+    if (missingProps.length > 0) {
+      throw new ConfigurationError(`${missingProps.join(', ')}`)
+    }
   }
 }
 

@@ -1,9 +1,9 @@
 import { LOG_LEVEL } from './constants'
+import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
+import JestRunner, { IJestConfig } from './jest'
 import { RunnerLogger } from './loggers'
 import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
-import { validateInputFields } from './utils/config'
-import JestRunner, { IJestConfig } from './utils/jest'
 
 interface IDockest {
   logLevel: number
@@ -24,12 +24,10 @@ const DEFAULT_CONFIG_DOCKEST = {
 class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: IDockestConfig
+  private static jestRunner: JestRunner
   private static instance: Dockest
 
   constructor(userConfig: IDockestConfig) {
-    const { jest, runners } = userConfig
-    const requiredProps = { jest, runners }
-
     Dockest.config = {
       ...userConfig,
       dockest: {
@@ -38,21 +36,19 @@ class Dockest {
       },
     }
 
-    if (!Object.values(LOG_LEVEL).includes(Dockest.config.dockest.logLevel)) {
-      Dockest.config.dockest.logLevel = LOG_LEVEL.NORMAL
-    }
+    Dockest.jestRunner = new JestRunner(Dockest.config.jest)
 
-    validateInputFields('dockest', requiredProps)
+    this.validateConfig()
 
     return Dockest.instance || (Dockest.instance = this)
   }
 
   public run = async (): Promise<void> => {
-    const { jest, runners } = Dockest.config
+    const { runners } = Dockest.config
     setupExitHandler(Dockest.config)
 
     await this.setupRunners(runners)
-    const result = await this.runJest(jest)
+    const result = await this.runJest()
     await this.teardownRunners(runners)
 
     result.success ? process.exit(0) : process.exit(1)
@@ -66,9 +62,8 @@ class Dockest {
     }
   }
 
-  private runJest = async (jest: IJestConfig) => {
-    const jestRunner = new JestRunner(jest)
-    const result = await jestRunner.run()
+  private runJest = async () => {
+    const result = await Dockest.jestRunner.run()
     Dockest.jestRanWithResult = true
 
     return result
@@ -77,6 +72,15 @@ class Dockest {
   private teardownRunners = async (runners: IRunners) => {
     for (const runnerKey of Object.keys(runners)) {
       await runners[runnerKey].teardown(runnerKey)
+    }
+  }
+
+  private validateConfig = () => {
+    const { dockest } = Dockest.config
+
+    // Validate dockest
+    if (!Object.values(LOG_LEVEL).includes(dockest.logLevel)) {
+      throw new ConfigurationError('logLevel')
     }
   }
 }

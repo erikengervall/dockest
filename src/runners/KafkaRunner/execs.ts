@@ -3,8 +3,7 @@ import execa from 'execa'
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
-import { teardownSingle } from '../../utils/teardown'
-import { acquireConnection, getContainerId, sleep } from '../utils'
+import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
 import { IKafkaRunnerConfig } from './index'
 
 interface IExec {

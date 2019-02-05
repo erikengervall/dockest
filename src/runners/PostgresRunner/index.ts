@@ -1,7 +1,6 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { validateInputFields } from '../../utils/config'
-import { runCustomCommand } from '../utils'
+import { getMissingProps, runCustomCommand } from '../utils'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
@@ -27,7 +26,6 @@ export class PostgresRunner implements IBaseRunner {
   public runnerKey: string
 
   constructor(config: IPostgresRunnerConfig) {
-    this.validatePostgresConfig(config)
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -35,6 +33,8 @@ export class PostgresRunner implements IBaseRunner {
     this.postgresExec = new PostgresExec()
     this.containerId = ''
     this.runnerKey = ''
+
+    this.validateConfig()
   }
 
   public setup = async (runnerKey: string) => {
@@ -59,14 +59,26 @@ export class PostgresRunner implements IBaseRunner {
     loadData: () => true,
   })
 
-  private validatePostgresConfig = (config: IPostgresRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Postgres runner')
+  private validateConfig = () => {
+    // config
+    if (!this.config) {
+      throw new ConfigurationError('config')
     }
 
-    const { service, host, database, port, password, username } = config
-    const requiredProps = { service, host, database, port, password, username }
-    validateInputFields('postgres', requiredProps)
+    // validate required props
+    const { service, host, database, port, password, username } = this.config
+    const requiredProps: { [key: string]: any } = {
+      service,
+      host,
+      database,
+      port,
+      password,
+      username,
+    }
+    const missingProps = getMissingProps(requiredProps)
+    if (missingProps.length > 0) {
+      throw new ConfigurationError(`${missingProps.join(', ')}`)
+    }
   }
 }
 

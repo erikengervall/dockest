@@ -1,10 +1,10 @@
 import execa from 'execa'
 
-import { GlobalLogger, RunnerLogger } from '../loggers'
+import { GlobalLogger, RunnerLogger } from '../../loggers'
 
 const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
-    GlobalLogger.error(`${runnerKey}: Missing containerId for runner`)
+    GlobalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`)
     return
   }
 
@@ -45,4 +45,4 @@ const removeContainerById = async (containerId: string, runnerKey: string): Prom
   RunnerLogger.removeContainerSuccess(runnerKey)
 }
 
-export { teardownSingle }
+export default teardownSingle
