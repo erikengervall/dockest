@@ -2,7 +2,7 @@ import execa from 'execa'
 
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
-import { ExecLogger } from '../../loggers'
+import { RunnerLogger } from '../../loggers'
 import { teardownSingle } from '../../utils/teardown'
 import { acquireConnection, getContainerId, sleep } from '../utils'
 
@@ -26,7 +26,7 @@ class PostgresExec implements IExec {
   }
 
   public start = async (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => {
-    ExecLogger.startContainer(runnerKey)
+    RunnerLogger.startContainer(runnerKey)
 
     const { port, service, database, username, password } = runnerConfig
 
@@ -41,12 +41,12 @@ class PostgresExec implements IExec {
                     ${portMapping} \
                     ${env} \
                     ${service}`
-      ExecLogger.shellCmd(cmd)
+      RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 
-    ExecLogger.startContainerSuccess(runnerKey)
+    RunnerLogger.startContainerSuccess(runnerKey)
 
     return containerId
   }
@@ -56,12 +56,12 @@ class PostgresExec implements IExec {
     containerId: string,
     runnerKey: string
   ) => {
-    ExecLogger.checkHealth(runnerKey)
+    RunnerLogger.checkHealth(runnerKey)
 
     await this.checkResponsiveness(runnerConfig, containerId, runnerKey)
     await this.checkConnection(runnerConfig, runnerKey)
 
-    ExecLogger.checkHealthSuccess(runnerKey)
+    RunnerLogger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
@@ -75,7 +75,7 @@ class PostgresExec implements IExec {
     const { responsivenessTimeout = 10, host, database, username } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
-      ExecLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
+      RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
 
       if (responsivenessTimeout <= 0) {
         throw new DockestError(`Database responsiveness timed out`)
@@ -88,10 +88,10 @@ class PostgresExec implements IExec {
                       -d ${database} \
                       -U ${username} \
                       -c 'select 1'"`
-        ExecLogger.shellCmd(cmd)
+        RunnerLogger.shellCmd(cmd)
         await execa.shell(cmd)
 
-        ExecLogger.checkResponsivenessSuccess(runnerKey)
+        RunnerLogger.checkResponsivenessSuccess(runnerKey)
       } catch (error) {
         responsivenessTimeout--
 
@@ -110,7 +110,7 @@ class PostgresExec implements IExec {
     const { connectionTimeout = 3, host, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
-      ExecLogger.checkConnection(runnerKey, connectionTimeout)
+      RunnerLogger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError(`Database connection timed out`)
@@ -119,7 +119,7 @@ class PostgresExec implements IExec {
       try {
         await acquireConnection(port, host)
 
-        ExecLogger.checkConnectionSuccess(runnerKey)
+        RunnerLogger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 

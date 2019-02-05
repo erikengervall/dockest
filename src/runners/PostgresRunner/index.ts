@@ -47,7 +47,7 @@ export class PostgresRunner implements IBaseRunner {
 
     const commands = this.config.commands || []
     for (const cmd of commands) {
-      await runCustomCommand(cmd)
+      await runCustomCommand(runnerKey, cmd)
     }
   }
 

@@ -1,7 +1,7 @@
 import execa from 'execa'
 import net from 'net'
 
-import logger from '../utils/logger'
+import { RunnerLogger, RunnerUtilsLogger } from '../loggers'
 
 const sleep = (ms: number = 1000): Promise<number> =>
   new Promise(resolve => setTimeout(resolve, ms))
@@ -35,18 +35,16 @@ const getContainerId = async (serviceName: string): Promise<string> => {
                 --filter \
                 "name=${serviceName}" \
                 --latest`
-  logger.shellCmd(cmd)
+  RunnerLogger.shellCmd(cmd)
   const { stdout: containerId } = await execa.shell(cmd)
 
   return containerId
 }
 
-const runCustomCommand = async (command: string): Promise<void> => {
-  logger.loading(`Running command`, command)
-
+const runCustomCommand = async (runnerKey: string, command: string): Promise<void> => {
+  RunnerUtilsLogger.customShellCmd(runnerKey, command)
   const { stdout: result } = await execa.shell(command)
-
-  logger.success(`Command successful`, result)
+  RunnerUtilsLogger.customShellCmdSuccess(runnerKey, result)
 }
 
 export { sleep, acquireConnection, getContainerId, runCustomCommand }

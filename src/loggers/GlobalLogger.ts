@@ -1,10 +1,4 @@
-// tslint:disable:no-console
-
-import { LOG_LEVEL } from '../constants'
-import Dockest from '../index'
 import BaseLogger, { logMethod } from './BaseLogger'
-
-const logLevel = Dockest ? Dockest.config.dockest.logLevel : LOG_LEVEL.VERBOSE
 
 class GlobalLogger extends BaseLogger {
   private static globalLoggerInstance: GlobalLogger
@@ -14,20 +8,13 @@ class GlobalLogger extends BaseLogger {
     return GlobalLogger.globalLoggerInstance || (GlobalLogger.globalLoggerInstance = this)
   }
 
-  public verbose: logMethod = (m, d) => logLevel >= LOG_LEVEL.VERBOSE && this.logInfo(m, d)
+  // Dockest
+  public info: logMethod = (m, d) => this.IS_VERBOSE() && this.logInfo(m, d)
 
-  public loading: logMethod = (m, d) => logLevel >= LOG_LEVEL.NORMAL && this.logLoading(m, d)
+  // Dockest
+  public loading: logMethod = (m, d) => this.IS_NORMAL() && this.logLoading(m, d)
 
-  public success: logMethod = (message, logData) =>
-    logLevel >= LOG_LEVEL.ERROR && this.logSuccess(`${message}`, logData)
-
-  public error: logMethod = (message, logData) =>
-    logLevel >= LOG_LEVEL.ERROR && this.logError(message, logData)
-
-  public jestFailed: logMethod = (message, logData) =>
-    logLevel >= LOG_LEVEL.ERROR && this.logError(message, logData)
-
-  public jestSuccess: logMethod = message => logLevel >= LOG_LEVEL.ERROR && this.logSuccess(message)
+  public error: logMethod = (message, logData) => this.IS_ERROR() && this.logError(message, logData)
 }
 
 const globalLogger = new GlobalLogger()

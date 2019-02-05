@@ -2,7 +2,7 @@ import execa from 'execa'
 
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
-import { ExecLogger } from '../../loggers'
+import { RunnerLogger } from '../../loggers'
 import { teardownSingle } from '../../utils/teardown'
 import { acquireConnection, getContainerId, sleep } from '../utils'
 import { IZookeeperRunnerConfig } from './index'
@@ -21,7 +21,7 @@ class ZookeeperExec implements IExec {
   }
 
   public start = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    ExecLogger.startContainer(runnerKey)
+    RunnerLogger.startContainer(runnerKey)
 
     const { port, service } = runnerConfig
 
@@ -32,22 +32,22 @@ class ZookeeperExec implements IExec {
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
                     ${service}`
-      ExecLogger.shellCmd(cmd)
+      RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 
-    ExecLogger.startContainerSuccess(service)
+    RunnerLogger.startContainerSuccess(service)
 
     return containerId
   }
 
   public checkHealth = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    ExecLogger.checkHealth(runnerKey)
+    RunnerLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig, runnerKey)
 
-    ExecLogger.checkHealthSuccess(runnerKey)
+    RunnerLogger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
@@ -57,7 +57,7 @@ class ZookeeperExec implements IExec {
     const { connectionTimeout = 30, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
-      ExecLogger.checkConnection(runnerKey, connectionTimeout)
+      RunnerLogger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError('Zookeeper connection timed out')
@@ -66,7 +66,7 @@ class ZookeeperExec implements IExec {
       try {
         await acquireConnection(port)
 
-        ExecLogger.checkConnectionSuccess(runnerKey)
+        RunnerLogger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 
