@@ -15,11 +15,7 @@ class BaseLogger {
   private static baseLoggerInstance: BaseLogger
 
   constructor() {
-    if (BaseLogger.baseLoggerInstance) {
-      return BaseLogger.baseLoggerInstance
-    }
-
-    BaseLogger.baseLoggerInstance = this
+    return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this)
   }
 
   public logSuccess: logMethod = (m, d) => {

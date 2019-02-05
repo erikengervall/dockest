@@ -61,7 +61,7 @@ const kafka1kafkajs = new KafkaRunner({
 
 const integration = new Dockest({
   dockest: {
-    logLevel: logLevel.VERBOSE,
+    logLevel: logLevel.NORMAL,
   },
   jest: {
     lib: require('jest'),

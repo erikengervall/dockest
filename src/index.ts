@@ -26,6 +26,7 @@ const DEFAULT_CONFIG_DOCKEST = {
 class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: IDockestConfig
+  private static instance: Dockest
 
   constructor(userConfig: IDockestConfig) {
     const { jest, runners } = userConfig
@@ -48,6 +49,8 @@ class Dockest {
     logger.verbose('Dockest instantiated with config', Dockest.config)
 
     validateInputFields('dockest', requiredProps)
+
+    return Dockest.instance || (Dockest.instance = this)
   }
 
   public run = async (): Promise<void> => {

@@ -19,11 +19,7 @@ class KafkaExec implements IExec {
   private static instance: KafkaExec
 
   constructor() {
-    if (KafkaExec.instance) {
-      return KafkaExec.instance
-    }
-
-    KafkaExec.instance = this
+    return KafkaExec.instance || (KafkaExec.instance = this)
   }
 
   public start = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {

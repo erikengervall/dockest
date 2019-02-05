@@ -17,11 +17,7 @@ class ZookeeperExec implements IExec {
   private static instance: ZookeeperExec
 
   constructor() {
-    if (ZookeeperExec.instance) {
-      return ZookeeperExec.instance
-    }
-
-    ZookeeperExec.instance = this
+    return ZookeeperExec.instance || (ZookeeperExec.instance = this)
   }
 
   public start = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {

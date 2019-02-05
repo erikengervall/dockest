@@ -16,6 +16,13 @@ const handleLogData = (logData?: any) => {
 }
 
 class ExecLogger extends BaseLogger {
+  private static execLoggerInstance: ExecLogger
+
+  constructor() {
+    super()
+    return ExecLogger.execLoggerInstance || (ExecLogger.execLoggerInstance = this)
+  }
+
   public shellCmd: logMethod = (logData = '') =>
     logLevel >= LOG_LEVEL.VERBOSE &&
     this.logVerbose(`Executed following shell script`, handleLogData(logData))

@@ -22,11 +22,7 @@ class PostgresExec implements IExec {
   private static instance: PostgresExec
 
   constructor() {
-    if (PostgresExec.instance) {
-      return PostgresExec.instance
-    }
-
-    PostgresExec.instance = this
+    return PostgresExec.instance || (PostgresExec.instance = this)
   }
 
   public start = async (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => {

@@ -8,13 +8,10 @@ const logLevel = Dockest ? Dockest.config.dockest.logLevel : LOG_LEVEL.VERBOSE
 
 class GlobalLogger extends BaseLogger {
   private static globalLoggerInstance: GlobalLogger
+
   constructor() {
     super()
-    if (GlobalLogger.globalLoggerInstance) {
-      return GlobalLogger.globalLoggerInstance
-    }
-
-    GlobalLogger.globalLoggerInstance = this
+    return GlobalLogger.globalLoggerInstance || (GlobalLogger.globalLoggerInstance = this)
   }
 
   public verbose: logMethod = (m, d) => logLevel >= LOG_LEVEL.VERBOSE && this.logInfo(m, d)
