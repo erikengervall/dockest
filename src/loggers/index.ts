@@ -1,2 +1,2 @@
-export { default as execLogger } from './execLogger'
-export { default as globalLogger } from './global'
+export { default as ExecLogger } from './ExecLogger'
+export { default as GlobalLogger } from './GlobalLogger'

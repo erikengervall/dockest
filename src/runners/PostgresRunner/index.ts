@@ -1,7 +1,7 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
 import { validateInputFields } from '../../utils/config'
-import { runCustomCommand } from '../../utils/execs'
+import { runCustomCommand } from '../utils'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {

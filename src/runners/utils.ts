@@ -1,7 +1,7 @@
 import execa from 'execa'
 import net from 'net'
 
-import logger from './logger'
+import logger from '../utils/logger'
 
 const sleep = (ms: number = 1000): Promise<number> =>
   new Promise(resolve => setTimeout(resolve, ms))

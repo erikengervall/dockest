@@ -2,9 +2,9 @@ import execa from 'execa'
 
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
-import { execLogger, globalLogger } from '../../loggers'
-import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
+import { ExecLogger } from '../../loggers'
 import { teardownSingle } from '../../utils/teardown'
+import { acquireConnection, getContainerId, sleep } from '../utils'
 import { IZookeeperRunnerConfig } from './index'
 
 interface IExec {
@@ -25,7 +25,7 @@ class ZookeeperExec implements IExec {
   }
 
   public start = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    execLogger.setup.startContainer(runnerKey)
+    ExecLogger.startContainer(runnerKey)
 
     const { port, service } = runnerConfig
 
@@ -36,22 +36,22 @@ class ZookeeperExec implements IExec {
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
                     ${service}`
-      globalLogger.shellCmd(cmd)
+      ExecLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 
-    execLogger.setup.startContainerSuccess(service)
+    ExecLogger.startContainerSuccess(service)
 
     return containerId
   }
 
   public checkHealth = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    execLogger.health.checkHealth(runnerKey)
+    ExecLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig, runnerKey)
 
-    execLogger.health.checkHealthSuccess(runnerKey)
+    ExecLogger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
@@ -61,7 +61,7 @@ class ZookeeperExec implements IExec {
     const { connectionTimeout = 30, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
-      execLogger.health.checkConnection(runnerKey, connectionTimeout)
+      ExecLogger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError('Zookeeper connection timed out')
@@ -70,7 +70,7 @@ class ZookeeperExec implements IExec {
       try {
         await acquireConnection(port)
 
-        execLogger.health.checkConnectionSuccess(runnerKey)
+        ExecLogger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 

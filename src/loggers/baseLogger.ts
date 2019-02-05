@@ -9,7 +9,7 @@ const {
   MISC: { RESET, BRIGHT },
 } = COLORS
 
-type logMethod = (message: string, logData?: object | string) => void
+type logMethod = (message: string, logData?: object) => void
 
 class BaseLogger {
   private static baseLoggerInstance: BaseLogger
@@ -22,11 +22,23 @@ class BaseLogger {
     BaseLogger.baseLoggerInstance = this
   }
 
-  public logSuccess: logMethod = (m, d) => console.log(`${SUCCESS} ${BRIGHT}${m}${RESET}`, d, `\n`)
-  public logLoading: logMethod = (m, d) => console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, d)
-  public logInfo: logMethod = (m, d) => console.log(`${INFO} ${BRIGHT}${m}${RESET}`, d)
-  public logVerbose: logMethod = (m, d) => console.log(`${VERBOSE} ${WHITE}${BLACK}${m}${RESET}`, d)
-  public logError: logMethod = (m, d) => console.log(`${FAILED} ${RED}${m}${RESET}`, d, '\n')
+  public logSuccess: logMethod = (m, d) => {
+    console.log(`${SUCCESS} ${BRIGHT}${m}${RESET}`, this.defaultD(d), `\n`)
+  }
+  public logLoading: logMethod = (m, d) => {
+    console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, this.defaultD(d))
+  }
+  public logInfo: logMethod = (m, d) => {
+    console.log(`${INFO} ${BRIGHT}${m}${RESET}`, this.defaultD(d))
+  }
+  public logVerbose: logMethod = (m, d) => {
+    console.log(`${VERBOSE} ${WHITE}${BLACK}${m}${RESET}`, this.defaultD(d))
+  }
+  public logError: logMethod = (m, d) => {
+    console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n')
+  }
+
+  private defaultD = (d?: object): object | string => d || ''
 }
 
 export { logMethod }
