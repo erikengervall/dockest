@@ -1,6 +1,6 @@
 import createKafka from './index'
 
-const main = async () => {
+const main = () => {
   const kafka = createKafka()
 
   return {

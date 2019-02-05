@@ -38,6 +38,7 @@ const postgres2knex = new PostgresRunner({
 
 const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
+const zookeepeerConnect = `${zookeeperService}:${zookeeperPort}`
 // @ts-ignore
 const zookeeper = new ZookeeperRunner({
   service: zookeeperService,
@@ -48,8 +49,8 @@ const zookeeper = new ZookeeperRunner({
 const kafka1kafkajs = new KafkaRunner({
   service: 'kafka1wurstmeister',
   host: 'localhost',
-  topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
-  zookeepeerConnect: `${zookeeperService}:${zookeeperPort}`,
+  topics: [env.kafka_topic],
+  zookeepeerConnect,
   autoCreateTopics: true,
   ports: {
     '9092': '9092', // kafka
@@ -59,6 +60,21 @@ const kafka1kafkajs = new KafkaRunner({
   },
 })
 
+const myRunners: any = {}
+myRunners.postgres1sequelize = postgres1sequelize
+if (env.postgres2knex_enabled === 'true') {
+  myRunners.postgres2knex = postgres2knex
+}
+if (env.kafka_enabled === 'true') {
+  myRunners.zookeeper = zookeeper
+}
+if (env.kafka_enabled === 'true') {
+  myRunners.kafka1kafkajs = kafka1kafkajs
+}
+// console.log('myRunners', myRunners)
+// Dockest.jestRanWithResult = true
+// process.exit(1)
+
 const integration = new Dockest({
   dockest: {
     logLevel: logLevel.NORMAL,
@@ -66,12 +82,7 @@ const integration = new Dockest({
   jest: {
     lib: require('jest'),
   },
-  runners: {
-    postgres1sequelize,
-    // postgres2knex,
-    // zookeeper,
-    // kafka1kafkajs,
-  },
+  runners: myRunners,
 })
 
 integration.run()
