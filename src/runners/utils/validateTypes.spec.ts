@@ -15,7 +15,7 @@ describe('validateTypes', () => {
       portMapping: {
         '1337': '1338',
       },
-      logLevel: 4,
+      logLevel: 1,
     }
   })
 
