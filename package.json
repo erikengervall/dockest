@@ -12,8 +12,7 @@
     "build:watch": "yarn clean && tsc --watch",
     "buildw": "yarn clean && webpack --config webpack.config.js",
     "buildw:watch": "yarn clean && webpack --config webpack.config.js --watch",
-    "install-all": "yarn && cd example && yarn",
-    "test": "cd example && yarn test",
+    "test:example": "cd example && yarn test",
     "test:unit": "jest ./src",
     "test:unit:watch": "jest ./src --watch"
   },
