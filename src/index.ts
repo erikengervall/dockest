@@ -4,6 +4,7 @@ import setupExitHandler from './exitHandler'
 import JestRunner, { IJestConfig } from './jest'
 import { RunnerLogger } from './loggers'
 import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
+import { validateTypes } from './runners/utils'
 
 interface IDockest {
   logLevel: number
@@ -78,11 +79,14 @@ class Dockest {
   }
 
   private validateConfig = () => {
-    const { dockest } = Dockest.config
+    const schema = {
+      logLevel: validateTypes.isOneOf(Object.values(LOG_LEVEL)),
+    }
 
-    // Validate dockest
-    if (!Object.values(LOG_LEVEL).includes(dockest.logLevel)) {
-      throw new ConfigurationError('logLevel')
+    const failures = validateTypes(schema, Dockest.config.dockest)
+
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
     }
   }
 }

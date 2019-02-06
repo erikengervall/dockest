@@ -27,6 +27,6 @@ before_install:
 install:
   # install dependencies
   - yarn
-  - cd example && yarn
+  - cd example && yarn && ../
 
   - echo "*** install complete ***"

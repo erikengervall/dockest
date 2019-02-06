@@ -56,6 +56,7 @@ const kafka1kafkajs = new KafkaRunner({
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
+    zookeeperPort: `${zookeeperPort}`, // zookeeper
     '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
   },
 })

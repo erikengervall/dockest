@@ -10,6 +10,12 @@ interface IObject {
 }
 type isType = (_?: any) => boolean
 
+const getExpected = (typeValidator: any): string =>
+  typeValidator.expected || typeValidator.name.substring(2).toLowerCase()
+
+const getReceived = (value: any): string =>
+  isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`
+
 const validateTypes = (schema: IObject, config?: IObject): string[] => {
   if (!config) {
     return [`${RED}No config found${RESET}`]
@@ -25,13 +31,8 @@ const validateTypes = (schema: IObject, config?: IObject): string[] => {
 
       if (!typeValidator(value)) {
         const testedSchemaKey = `${schemaKey}${RESET}`
-        const expectedType =
-          typeValidator.name.substring(2) === 'ArrayOfType'
-            ? `${typeValidator.ofType.substring(2).toLowerCase()}[]`
-            : typeValidator.name.substring(2).toLowerCase()
-        const expected = `${RED}Expected${RESET} ${expectedType}`
-        const receivedType = isArray(value) ? `${typeof value[0]}[]` : typeof value
-        const received = `${GREEN}Received${RESET} ${receivedType}`
+        const expected = `${RED}Expected${RESET} ${getExpected(typeValidator)}`
+        const received = `${GREEN}Received${RESET} ${getReceived(value)}`
 
         failures.push(`${testedSchemaKey}: ${expected} | ${received}`)
       }
@@ -48,7 +49,7 @@ const isNumber: isType = _ => _ && typeof _ === 'number' && isFinite(_)
 const isArray = (_?: any): boolean => _ && typeof _ === 'object' && _.constructor === Array
 const isArrayOfType = (fn: isType) => {
   const isArrayOfType = (_?: any): boolean => isArray(_) && !_.some((_?: any) => !fn(_))
-  isArrayOfType.ofType = fn.name
+  isArrayOfType.expected = `${fn.name.substring(2).toLowerCase()}[]`
   return isArrayOfType
 }
 const isFunction: isType = _ => _ && typeof _ === 'function'
@@ -56,7 +57,7 @@ const isObject: isType = _ => _ && typeof _ === 'object' && _.constructor === Ob
 const isObjectOfType = (fn: isType) => {
   const isObjectOfType = (_?: any): boolean =>
     isObject(_) && !Object.values(_).some((_?: any) => !fn(_))
-  isObjectOfType.ofType = fn.name
+  isObjectOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`
   return isObjectOfType
 }
 const isNull: isType = _ => _ === null
@@ -67,6 +68,11 @@ const isError: isType = _ => _ && _ instanceof Error && typeof _.message !== 'un
 const isDate: isType = _ => _ && _ instanceof Date
 const isSymbol: isType = _ => _ && typeof _ === 'symbol'
 const isAny: isType = _ => _ && !isNull(_) && !isUndefined(_)
+const isOneOf = (haystack: any[]) => {
+  const isOneOf = (needle: any): boolean => isArray(haystack) && !!haystack.find(_ => _ === needle)
+  isOneOf.expected = `oneOf [${haystack.join(', ')}]`
+  return isOneOf
+}
 
 validateTypes.isString = isString
 validateTypes.isNumber = isNumber
@@ -83,4 +89,5 @@ validateTypes.isError = isError
 validateTypes.isDate = isDate
 validateTypes.isSymbol = isSymbol
 validateTypes.isAny = isAny
+validateTypes.isOneOf = isOneOf
 export default validateTypes

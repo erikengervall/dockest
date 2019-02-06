@@ -9,7 +9,11 @@ const ICONS: { [key: string]: string } = {
   INFO: 'ℹ️',
 }
 
-const COLORS = {
+const COLORS: {
+  [key: string]: {
+    [key2: string]: string
+  }
+} = {
   MISC: {
     RESET: '\x1b[0m',
     BRIGHT: '\x1b[1m',
