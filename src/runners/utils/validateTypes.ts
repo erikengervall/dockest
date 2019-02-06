@@ -43,24 +43,30 @@ const validateTypes = (schema: IObject, config?: IObject): string[] => {
   return failures
 }
 
-const isString: isType = _ => typeof _ === 'string' || _ instanceof String
-const isNumber: isType = _ => typeof _ === 'number' && isFinite(_)
+const isString: isType = _ => (_ && typeof _ === 'string') || _ instanceof String
+const isNumber: isType = _ => _ && typeof _ === 'number' && isFinite(_)
 const isArray = (_?: any): boolean => _ && typeof _ === 'object' && _.constructor === Array
 const isArrayOfType = (fn: isType) => {
   const isArrayOfType = (_?: any): boolean => isArray(_) && !_.some((_?: any) => !fn(_))
   isArrayOfType.ofType = fn.name
   return isArrayOfType
 }
-const isFunction: isType = _ => typeof _ === 'function'
+const isFunction: isType = _ => _ && typeof _ === 'function'
 const isObject: isType = _ => _ && typeof _ === 'object' && _.constructor === Object
+const isObjectOfType = (fn: isType) => {
+  const isObjectOfType = (_?: any): boolean =>
+    isObject(_) && !Object.values(_).some((_?: any) => !fn(_))
+  isObjectOfType.ofType = fn.name
+  return isObjectOfType
+}
 const isNull: isType = _ => _ === null
 const isUndefined: isType = _ => typeof _ === 'undefined'
-const isBoolean: isType = _ => typeof _ === 'boolean'
+const isBoolean: isType = _ => _ && typeof _ === 'boolean'
 const isRegExp: isType = _ => _ && typeof _ === 'object' && _.constructor === RegExp
-const isError: isType = _ => _ instanceof Error && typeof _.message !== 'undefined'
-const isDate: isType = _ => _ instanceof Date
-const isSymbol: isType = _ => typeof _ === 'symbol'
-const isAny: isType = _ => !isNull(_) && !isUndefined(_)
+const isError: isType = _ => _ && _ instanceof Error && typeof _.message !== 'undefined'
+const isDate: isType = _ => _ && _ instanceof Date
+const isSymbol: isType = _ => _ && typeof _ === 'symbol'
+const isAny: isType = _ => _ && !isNull(_) && !isUndefined(_)
 
 validateTypes.isString = isString
 validateTypes.isNumber = isNumber
@@ -68,6 +74,7 @@ validateTypes.isArray = isArray
 validateTypes.isArrayOfType = isArrayOfType
 validateTypes.isFunction = isFunction
 validateTypes.isObject = isObject
+validateTypes.isObjectOfType = isObjectOfType
 validateTypes.isNull = isNull
 validateTypes.isUndefined = isUndefined
 validateTypes.isBoolean = isBoolean

@@ -10,7 +10,9 @@ describe('validateTypes', () => {
       port: 1337,
       ports: [1337, 1338],
       autoCreateTopics: true,
-      topLevelObjectCheck: {},
+      portMapping: {
+        '1337': '1338',
+      },
     }
   })
 
@@ -22,7 +24,7 @@ describe('validateTypes', () => {
         port: validateTypes.isNumber,
         ports: validateTypes.isArrayOfType(validateTypes.isNumber),
         autoCreateTopics: validateTypes.isBoolean,
-        topLevelObjectCheck: validateTypes.isObject,
+        portMapping: validateTypes.isObjectOfType(validateTypes.isString),
       }
 
       expect(validateTypes(validationSchema, config)).toEqual([])
