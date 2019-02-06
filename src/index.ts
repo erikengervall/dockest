@@ -39,22 +39,22 @@ class Dockest {
     Dockest.jestRunner = new JestRunner(Dockest.config.jest)
 
     this.validateConfig()
+    setupExitHandler(Dockest.config)
 
     return Dockest.instance || (Dockest.instance = this)
   }
 
   public run = async (): Promise<void> => {
-    const { runners } = Dockest.config
-    setupExitHandler(Dockest.config)
-
-    await this.setupRunners(runners)
+    await this.setupRunners()
     const result = await this.runJest()
-    await this.teardownRunners(runners)
+    await this.teardownRunners()
 
     result.success ? process.exit(0) : process.exit(1)
   }
 
-  private setupRunners = async (runners: IRunners) => {
+  private setupRunners = async () => {
+    const { runners } = Dockest.config
+
     for (const runnerKey of Object.keys(runners)) {
       RunnerLogger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
@@ -69,7 +69,9 @@ class Dockest {
     return result
   }
 
-  private teardownRunners = async (runners: IRunners) => {
+  private teardownRunners = async () => {
+    const { runners } = Dockest.config
+
     for (const runnerKey of Object.keys(runners)) {
       await runners[runnerKey].teardown(runnerKey)
     }
