@@ -20,7 +20,7 @@ describe('validateTypes', () => {
   })
 
   describe('happy', () => {
-    it.only('should work for valid config', () => {
+    it('should work for valid config', () => {
       const validationSchema = {
         service: validateTypes.isString,
         commands: validateTypes.isArrayOfType(validateTypes.isString),
