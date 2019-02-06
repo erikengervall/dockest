@@ -56,7 +56,7 @@ export class KafkaRunner implements IBaseRunner {
     const schema = {
       service: validateTypes.isString,
       host: validateTypes.isString,
-      ports: validateTypes.isArrayOfType(validateTypes.isNumber),
+      ports: validateTypes.isObjectOfType(validateTypes.isString),
       topics: validateTypes.isArray,
       zookeepeerConnect: validateTypes.isString,
       autoCreateTopics: validateTypes.isBoolean,
