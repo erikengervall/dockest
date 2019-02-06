@@ -31,6 +31,8 @@ const stopContainerById = async (containerId: string, runnerKey: string): Promis
 }
 
 const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
+  RunnerLogger.removeContainer(runnerKey)
+
   try {
     const cmd = `docker rm ${containerId} --volumes`
 
