@@ -65,25 +65,10 @@ class ExecLogger extends BaseLogger {
     this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container removed`)
 
   /**
-   * Utils
-   */
-  public customShellCmd: logMethod = (runnerKey, cmd) =>
-    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Executed custom command "${cmd}"`)
-
-  public customShellCmdSuccess: logMethod = (runnerKey, logData) =>
-    this.IS_NORMAL() &&
-    this.logSuccess(
-      `${runnerKey}: Executed custom command successfully with result`,
-      this.trim(logData)
-    )
-
-  /**
    * Misc
    */
   public shellCmd: logMethod = (logData = '') =>
     this.IS_VERBOSE() && this.logInfo(`Executed following shell script`, this.trim(logData))
-
-  public loading: logMethod = (m, d) => this.IS_VERBOSE() && this.logInfo(m, d)
 }
 
 const execLogger = new ExecLogger()

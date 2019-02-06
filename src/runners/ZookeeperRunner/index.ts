@@ -1,6 +1,6 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { getMissingProps } from '../utils'
+import { validateTypes } from '../utils'
 import ZookeeperExec from './execs'
 
 export interface IZookeeperRunnerConfig {
@@ -41,23 +41,16 @@ export class ZookeeeperRunner implements IBaseRunner {
   public teardown = async (runnerKey: string) =>
     this.ZookeeperExec.teardown(this.containerId, runnerKey)
 
-  public getHelpers = async () => ({
-    clear: () => true,
-    loadData: () => true,
-  })
-
   private validateInput = () => {
-    // validate config
-    if (!this.config) {
-      throw new ConfigurationError(`config`)
+    const schema = {
+      service: validateTypes.isString,
+      port: validateTypes.isNumber,
     }
 
-    // validate required props
-    const { service, port } = this.config
-    const requiredProps: { [key: string]: any } = { service, port }
-    const missingProps = getMissingProps(requiredProps)
-    if (missingProps.length > 0) {
-      throw new ConfigurationError(`${missingProps.join(', ')}`)
+    const failures = validateTypes(schema, this.config)
+
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
     }
   }
 }

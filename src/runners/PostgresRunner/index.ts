@@ -1,6 +1,6 @@
 import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { getMissingProps, runCustomCommand } from '../utils'
+import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
@@ -54,30 +54,20 @@ export class PostgresRunner implements IBaseRunner {
   public teardown = async (runnerKey: string) =>
     this.postgresExec.teardown(this.containerId, runnerKey)
 
-  public getHelpers = async () => ({
-    clear: () => true,
-    loadData: () => true,
-  })
-
   private validateConfig = () => {
-    // config
-    if (!this.config) {
-      throw new ConfigurationError('config')
+    const schema = {
+      service: validateTypes.isString,
+      host: validateTypes.isString,
+      database: validateTypes.isString,
+      port: validateTypes.isNumber,
+      password: validateTypes.isString,
+      username: validateTypes.isString,
     }
 
-    // validate required props
-    const { service, host, database, port, password, username } = this.config
-    const requiredProps: { [key: string]: any } = {
-      service,
-      host,
-      database,
-      port,
-      password,
-      username,
-    }
-    const missingProps = getMissingProps(requiredProps)
-    if (missingProps.length > 0) {
-      throw new ConfigurationError(`${missingProps.join(', ')}`)
+    const failures = validateTypes(schema, this.config)
+
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
     }
   }
 }

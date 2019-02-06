@@ -12,11 +12,11 @@ class RunnerUtilsLogger extends BaseLogger {
   }
 
   public customShellCmd: logMethod = (runnerKey, cmd) =>
-    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Executed custom command "${cmd}"`)
+    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Executed custom command`, cmd)
 
   public customShellCmdSuccess: logMethod = (runnerKey, logData) =>
     this.IS_NORMAL() &&
-    this.logSuccess(`${runnerKey}: Executed custom command successfully with result:`, logData)
+    this.logSuccess(`${runnerKey}: Executed custom command successfully with result\n`, logData)
 }
 
 const runnerUtilsLogger = new RunnerUtilsLogger()
