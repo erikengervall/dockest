@@ -1,10 +1,10 @@
 import execa from 'execa'
 
-import { GlobalLogger, RunnerLogger } from '../../loggers'
+import { RunnerLogger } from '../../loggers' //GlobalLogger,
 
 const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
-    GlobalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`)
+    // GlobalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`)
     return
   }
 
@@ -23,7 +23,7 @@ const stopContainerById = async (containerId: string, runnerKey: string): Promis
     RunnerLogger.shellCmd(cmd)
     await execa.shell(cmd)
   } catch (error) {
-    GlobalLogger.error(`${runnerKey}: Failed to stop service container`, error)
+    // GlobalLogger.error(`${runnerKey}: Failed to stop service container`, error)
     return
   }
 
@@ -39,7 +39,7 @@ const removeContainerById = async (containerId: string, runnerKey: string): Prom
     RunnerLogger.shellCmd(cmd)
     await execa.shell(cmd)
   } catch (error) {
-    GlobalLogger.error(`${runnerKey}: Failed to remove service container`, error)
+    // GlobalLogger.error(`${runnerKey}: Failed to remove service container`, error)
 
     return
   }
