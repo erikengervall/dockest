@@ -23,7 +23,7 @@ before_install:
   - docker-compose build
   - cd ../
 
-  - yarn install -g typescript
+  - yarn global add typescript
 
   - echo "*** before_install complete ***"
 install:
