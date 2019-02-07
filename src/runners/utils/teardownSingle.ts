@@ -1,6 +1,6 @@
 import execa from 'execa'
 
-import { RunnerLogger } from '../../loggers' //GlobalLogger,
+import { RunnerLogger } from '../../loggers' // GlobalLogger
 
 const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
