@@ -73,14 +73,14 @@ if (env.kafka_enabled === 'true') {
   myRunners.kafka1kafkajs = kafka1kafkajs
 }
 
-const dockest = new Dockest({
-  dockest: {
-    logLevel: logLevel.NORMAL,
-  },
-  jest: {
-    lib: require('jest'),
-  },
-  runners: myRunners,
-})
+// const dockest = new Dockest({
+//   dockest: {
+//     logLevel: logLevel.NORMAL,
+//   },
+//   jest: {
+//     lib: require('jest'),
+//   },
+//   runners: myRunners,
+// })
 
-dockest.run()
+// dockest.run()
