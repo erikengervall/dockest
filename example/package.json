@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "./node_modules/.bin/ts-node ./integration.ts"
+    "test": "ts-node ./integration.ts"
   },
   "dependencies": {
     "dotenv": "^6.2.0",
