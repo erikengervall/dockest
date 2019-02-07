@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 
-import Dockest from '../'
+import Dockest from '..'
 import { COLORS, ICONS, LOG_LEVEL } from '../constants'
 
 const { LOADING, SUCCESS, INFO, FAILED } = ICONS

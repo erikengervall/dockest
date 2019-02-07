@@ -1,4 +1,4 @@
-import BaseLogger, { logMethod } from './baseLogger'
+import BaseLogger, { logMethod } from './BaseLogger'
 
 class RunnerUtilsLogger extends BaseLogger {
   private static runnerUtilsLoggerInstance: RunnerUtilsLogger

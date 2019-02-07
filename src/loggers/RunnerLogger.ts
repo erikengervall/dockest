@@ -1,4 +1,4 @@
-import BaseLogger, { logMethod } from './baseLogger'
+import BaseLogger, { logMethod } from './BaseLogger'
 
 class ExecLogger extends BaseLogger {
   private static execLoggerInstance: ExecLogger
