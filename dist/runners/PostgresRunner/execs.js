@@ -6,15 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const constants_1 = require("../../constants");
 const errors_1 = require("../../errors");
-const execs_1 = require("../../utils/execs");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const teardown_1 = require("../../utils/teardown");
+const loggers_1 = require("../../loggers");
+const utils_1 = require("../utils");
 class PostgresExec {
     constructor() {
         this.start = async (runnerConfig, runnerKey) => {
-            logger_1.default.startContainer(runnerKey);
+            loggers_1.RunnerLogger.startContainer(runnerKey);
             const { port, service, database, username, password } = runnerConfig;
-            let containerId = await execs_1.getContainerId(service);
+            let containerId = await utils_1.getContainerId(service);
             if (!containerId) {
                 const portMapping = `--publish ${port}:5432`;
                 const env = `-e POSTGRES_DB=${database} \
@@ -25,24 +24,24 @@ class PostgresExec {
                     ${portMapping} \
                     ${env} \
                     ${service}`;
-                logger_1.default.command(cmd);
+                loggers_1.RunnerLogger.shellCmd(cmd);
                 await execa_1.default.shell(cmd);
             }
-            containerId = await execs_1.getContainerId(service);
-            logger_1.default.startContainerSuccess(runnerKey);
+            containerId = await utils_1.getContainerId(service);
+            loggers_1.RunnerLogger.startContainerSuccess(runnerKey);
             return containerId;
         };
         this.checkHealth = async (runnerConfig, containerId, runnerKey) => {
-            logger_1.default.checkHealth(runnerKey);
+            loggers_1.RunnerLogger.checkHealth(runnerKey);
             await this.checkResponsiveness(runnerConfig, containerId, runnerKey);
             await this.checkConnection(runnerConfig, runnerKey);
-            logger_1.default.checkHealthSuccess(runnerKey);
+            loggers_1.RunnerLogger.checkHealthSuccess(runnerKey);
         };
-        this.teardown = async (containerId, runnerKey) => teardown_1.teardownSingle(containerId, runnerKey);
+        this.teardown = async (containerId, runnerKey) => utils_1.teardownSingle(containerId, runnerKey);
         this.checkResponsiveness = async (runnerConfig, containerId, runnerKey) => {
             const { responsivenessTimeout = 10, host, database, username } = runnerConfig;
             const recurse = async (responsivenessTimeout) => {
-                logger_1.default.checkResponsiveness(runnerKey, responsivenessTimeout);
+                loggers_1.RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout);
                 if (responsivenessTimeout <= 0) {
                     throw new errors_1.DockestError(`Database responsiveness timed out`);
                 }
@@ -53,13 +52,13 @@ class PostgresExec {
                       -d ${database} \
                       -U ${username} \
                       -c 'select 1'"`;
-                    logger_1.default.command(cmd);
+                    loggers_1.RunnerLogger.shellCmd(cmd);
                     await execa_1.default.shell(cmd);
-                    logger_1.default.checkResponsivenessSuccess(runnerKey);
+                    loggers_1.RunnerLogger.checkResponsivenessSuccess(runnerKey);
                 }
                 catch (error) {
                     responsivenessTimeout--;
-                    await execs_1.sleep(1000);
+                    await utils_1.sleep(1000);
                     await recurse(responsivenessTimeout);
                 }
             };
@@ -68,26 +67,23 @@ class PostgresExec {
         this.checkConnection = async (runnerConfig, runnerKey) => {
             const { connectionTimeout = 3, host, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {
-                logger_1.default.checkConnection(runnerKey, connectionTimeout);
+                loggers_1.RunnerLogger.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {
                     throw new errors_1.DockestError(`Database connection timed out`);
                 }
                 try {
-                    await execs_1.acquireConnection(port, host);
-                    logger_1.default.checkConnectionSuccess(runnerKey);
+                    await utils_1.acquireConnection(port, host);
+                    loggers_1.RunnerLogger.checkConnectionSuccess(runnerKey);
                 }
                 catch (error) {
                     connectionTimeout--;
-                    await execs_1.sleep(1000);
+                    await utils_1.sleep(1000);
                     await recurse(connectionTimeout);
                 }
             };
             await recurse(connectionTimeout);
         };
-        if (PostgresExec.instance) {
-            return PostgresExec.instance;
-        }
-        PostgresExec.instance = this;
+        return PostgresExec.instance || (PostgresExec.instance = this);
     }
 }
 exports.default = PostgresExec;

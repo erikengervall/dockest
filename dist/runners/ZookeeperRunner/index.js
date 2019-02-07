@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const errors_1 = require("../../errors");
-const config_1 = require("../../utils/config");
+const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {};
 class ZookeeeperRunner {
@@ -16,23 +16,21 @@ class ZookeeeperRunner {
             await this.ZookeeperExec.checkHealth(this.config, runnerKey);
         };
         this.teardown = async (runnerKey) => this.ZookeeperExec.teardown(this.containerId, runnerKey);
-        this.getHelpers = async () => ({
-            clear: () => true,
-            loadData: () => true,
-        });
-        this.validateZookeeperConfig = (config) => {
-            if (!config) {
-                throw new errors_1.ConfigurationError('Missing configuration for Zookeeper runner');
+        this.validateInput = () => {
+            const schema = {
+                service: utils_1.validateTypes.isString,
+                port: utils_1.validateTypes.isNumber,
+            };
+            const failures = utils_1.validateTypes(schema, this.config);
+            if (failures.length > 0) {
+                throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
             }
-            const { service, port } = config;
-            const requiredProps = { service, port };
-            config_1.validateInputFields('zookeeper', requiredProps);
         };
-        this.validateZookeeperConfig(config);
         this.config = Object.assign({}, DEFAULT_CONFIG, config);
         this.ZookeeperExec = new execs_1.default();
         this.containerId = '';
         this.runnerKey = '';
+        this.validateInput();
     }
 }
 exports.ZookeeeperRunner = ZookeeeperRunner;

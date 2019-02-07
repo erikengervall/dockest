@@ -1,6 +1,3 @@
-// tslint:disable
-console.log('WHAT')
-
 import BaseLogger, { logMethod } from './BaseLogger'
 
 class GlobalLogger extends BaseLogger {
