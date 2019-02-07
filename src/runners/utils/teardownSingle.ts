@@ -1,43 +1,50 @@
 import execa from 'execa'
 
-import logger from './logger'
+import { GlobalLogger, RunnerLogger } from '../../loggers'
 
 const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
-    logger.error(`${runnerKey}: Missing containerId for runner`)
+    GlobalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`)
     return
   }
 
+  RunnerLogger.teardown(runnerKey)
   await stopContainerById(containerId, runnerKey)
   await removeContainerById(containerId, runnerKey)
+  RunnerLogger.teardownSuccess(runnerKey)
 }
 
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
-  logger.stopContainer(runnerKey)
+  RunnerLogger.stopContainer(runnerKey)
 
   try {
     const cmd = `docker stop ${containerId}`
-    logger.command(cmd)
+
+    RunnerLogger.shellCmd(cmd)
     await execa.shell(cmd)
   } catch (error) {
-    logger.error(`${runnerKey}: Failed to stop service container`, error)
+    GlobalLogger.error(`${runnerKey}: Failed to stop service container`, error)
     return
   }
 
-  logger.stopContainerSuccess(runnerKey)
+  RunnerLogger.stopContainerSuccess(runnerKey)
 }
 
 const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
+  RunnerLogger.removeContainer(runnerKey)
+
   try {
     const cmd = `docker rm ${containerId} --volumes`
-    logger.command(cmd)
+
+    RunnerLogger.shellCmd(cmd)
     await execa.shell(cmd)
   } catch (error) {
-    logger.error(`${runnerKey}: Failed to remove service container`, error)
+    GlobalLogger.error(`${runnerKey}: Failed to remove service container`, error)
+
     return
   }
 
-  logger.removeContainerSuccess(runnerKey)
+  RunnerLogger.removeContainerSuccess(runnerKey)
 }
 
-export { teardownSingle }
+export default teardownSingle

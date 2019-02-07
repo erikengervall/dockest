@@ -2,9 +2,8 @@ import execa from 'execa'
 
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
-import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
-import logger from '../../utils/logger'
-import { teardownSingle } from '../../utils/teardown'
+import { RunnerLogger } from '../../loggers'
+import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
 import { IKafkaRunnerConfig } from './index'
 
 interface IExec {
@@ -19,15 +18,11 @@ class KafkaExec implements IExec {
   private static instance: KafkaExec
 
   constructor() {
-    if (KafkaExec.instance) {
-      return KafkaExec.instance
-    }
-
-    KafkaExec.instance = this
+    return KafkaExec.instance || (KafkaExec.instance = this)
   }
 
   public start = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
-    logger.startContainer(runnerKey)
+    RunnerLogger.startContainer(runnerKey)
 
     const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
 
@@ -45,22 +40,22 @@ class KafkaExec implements IExec {
                     ${portMapping} \
                     ${env} \
                     ${service}`
-      logger.command(cmd)
+      RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 
-    logger.startContainerSuccess(service)
+    RunnerLogger.startContainerSuccess(service)
 
     return containerId
   }
 
   public checkHealth = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
-    logger.checkHealth(runnerKey)
+    RunnerLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig, runnerKey)
 
-    logger.checkHealthSuccess(runnerKey)
+    RunnerLogger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
@@ -74,7 +69,7 @@ class KafkaExec implements IExec {
     )
 
     const recurse = async (connectionTimeout: number) => {
-      logger.checkConnection(runnerKey, connectionTimeout)
+      RunnerLogger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError('Kafka connection timed out')
@@ -83,7 +78,7 @@ class KafkaExec implements IExec {
       try {
         await acquireConnection(primaryKafkaPort)
 
-        logger.checkConnectionSuccess(runnerKey)
+        RunnerLogger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 

@@ -1,8 +1,10 @@
 import dotenv from 'dotenv'
 
-import Dockest, { runners } from '../src/index'
+// @ts-ignore
+import Dockest, { logLevel, runners } from '../src/index'
 
 const env: any = dotenv.config().parsed
+// @ts-ignore
 const { KafkaRunner, PostgresRunner, ZookeeperRunner } = runners
 
 // @ts-ignore
@@ -38,6 +40,7 @@ const postgres2knex = new PostgresRunner({
 
 const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
+const zookeepeerConnect = `${zookeeperService}:${zookeeperPort}`
 // @ts-ignore
 const zookeeper = new ZookeeperRunner({
   service: zookeeperService,
@@ -46,32 +49,40 @@ const zookeeper = new ZookeeperRunner({
 
 // @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
-  service: 'kafka1wurstmeister',
+  service: env.kafka_service,
   host: 'localhost',
-  topics: ['Topic1:1:3', 'Topic2:1:1:compact'],
-  zookeepeerConnect: `${zookeeperService}:${zookeeperPort}`,
+  topics: [env.kafka_topic],
+  zookeepeerConnect,
   autoCreateTopics: true,
   ports: {
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
-    '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
+    zookeeperPort: `${zookeeperPort}`, // zookeeper
+    // '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
   },
 })
 
-const integration = new Dockest({
+const myRunners: any = {}
+myRunners.postgres1sequelize = postgres1sequelize
+if (env.postgres2knex_enabled === 'true') {
+  myRunners.postgres2knex = postgres2knex
+}
+if (env.kafka_enabled === 'true') {
+  myRunners.zookeeper = zookeeper
+}
+if (env.kafka_enabled === 'true') {
+  myRunners.kafka1kafkajs = kafka1kafkajs
+}
+
+const dockest = new Dockest({
   dockest: {
-    verbose: true,
+    logLevel: logLevel.NORMAL,
   },
   jest: {
     lib: require('jest'),
   },
-  runners: {
-    postgres1sequelize,
-    postgres2knex,
-    zookeeper,
-    kafka1kafkajs,
-  },
+  runners: myRunners,
 })
 
-integration.run()
+dockest.run()

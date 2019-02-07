@@ -1,6 +1,6 @@
-import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { validateInputFields } from '../../utils/config'
+import { IBaseRunner } from '../index'
+import { validateTypes } from '../utils'
 import ZookeeperExec from './execs'
 
 export interface IZookeeperRunnerConfig {
@@ -18,7 +18,6 @@ export class ZookeeeperRunner implements IBaseRunner {
   public runnerKey: string
 
   constructor(config: IZookeeperRunnerConfig) {
-    this.validateZookeeperConfig(config)
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -26,6 +25,8 @@ export class ZookeeeperRunner implements IBaseRunner {
     this.ZookeeperExec = new ZookeeperExec()
     this.containerId = ''
     this.runnerKey = ''
+
+    this.validateInput()
   }
 
   public setup = async (runnerKey: string) => {
@@ -40,20 +41,17 @@ export class ZookeeeperRunner implements IBaseRunner {
   public teardown = async (runnerKey: string) =>
     this.ZookeeperExec.teardown(this.containerId, runnerKey)
 
-  public getHelpers = async () => ({
-    clear: () => true,
-    loadData: () => true,
-  })
-
-  private validateZookeeperConfig = (config: IZookeeperRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Zookeeper runner')
+  private validateInput = () => {
+    const schema = {
+      service: validateTypes.isString,
+      port: validateTypes.isNumber,
     }
 
-    const { service, port } = config
-    const requiredProps = { service, port }
+    const failures = validateTypes(schema, this.config)
 
-    validateInputFields('zookeeper', requiredProps)
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
+    }
   }
 }
 

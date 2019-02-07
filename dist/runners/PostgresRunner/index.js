@@ -4,9 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const errors_1 = require("../../errors");
-const config_1 = require("../../utils/config");
-const execs_1 = require("../../utils/execs");
-const execs_2 = __importDefault(require("./execs"));
+const utils_1 = require("../utils");
+const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     commands: [],
 };
@@ -19,27 +18,29 @@ class PostgresRunner {
             await this.postgresExec.checkHealth(this.config, containerId, runnerKey);
             const commands = this.config.commands || [];
             for (const cmd of commands) {
-                await execs_1.runCustomCommand(cmd);
+                await utils_1.runCustomCommand(runnerKey, cmd);
             }
         };
         this.teardown = async (runnerKey) => this.postgresExec.teardown(this.containerId, runnerKey);
-        this.getHelpers = async () => ({
-            clear: () => true,
-            loadData: () => true,
-        });
-        this.validatePostgresConfig = (config) => {
-            if (!config) {
-                throw new errors_1.ConfigurationError('Missing configuration for Postgres runner');
+        this.validateConfig = () => {
+            const schema = {
+                service: utils_1.validateTypes.isString,
+                host: utils_1.validateTypes.isString,
+                database: utils_1.validateTypes.isString,
+                port: utils_1.validateTypes.isNumber,
+                password: utils_1.validateTypes.isString,
+                username: utils_1.validateTypes.isString,
+            };
+            const failures = utils_1.validateTypes(schema, this.config);
+            if (failures.length > 0) {
+                throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
             }
-            const { service, host, database, port, password, username } = config;
-            const requiredProps = { service, host, database, port, password, username };
-            config_1.validateInputFields('postgres', requiredProps);
         };
-        this.validatePostgresConfig(config);
         this.config = Object.assign({}, DEFAULT_CONFIG, config);
-        this.postgresExec = new execs_2.default();
+        this.postgresExec = new execs_1.default();
         this.containerId = '';
         this.runnerKey = '';
+        this.validateConfig();
     }
 }
 exports.PostgresRunner = PostgresRunner;

@@ -1,11 +1,13 @@
+import { LOG_LEVEL } from './constants'
+import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
+import JestRunner, { IJestConfig } from './jest'
+import { RunnerLogger } from './loggers'
 import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
-import { validateInputFields } from './utils/config'
-import JestRunner, { IJestConfig } from './utils/jest'
-import logger from './utils/logger'
+import { validateTypes } from './runners/utils'
 
 interface IDockest {
-  verbose?: boolean
+  logLevel: number
   exitHandler?: (err?: Error) => void
 }
 
@@ -16,23 +18,17 @@ export interface IDockestConfig {
 }
 
 const DEFAULT_CONFIG_DOCKEST = {
-  verbose: false,
+  logLevel: LOG_LEVEL.NORMAL,
   exitHandler: () => undefined,
 }
 
 class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: IDockestConfig
+  private static jestRunner: JestRunner
   private static instance: Dockest
 
   constructor(userConfig: IDockestConfig) {
-    if (Dockest.instance) {
-      return Dockest.instance
-    }
-
-    const { jest, runners } = userConfig
-    const requiredProps = { jest, runners }
-
     Dockest.config = {
       ...userConfig,
       dockest: {
@@ -41,16 +37,15 @@ class Dockest {
       },
     }
 
-    validateInputFields('dockest', requiredProps)
+    Dockest.jestRunner = new JestRunner(Dockest.config.jest)
 
-    Dockest.instance = this
+    this.validateConfig()
+    setupExitHandler(Dockest.config)
+
+    return Dockest.instance || (Dockest.instance = this)
   }
 
   public run = async (): Promise<void> => {
-    logger.loading('Dockest initiated')
-
-    setupExitHandler(Dockest.config)
-
     await this.setupRunners()
     const result = await this.runJest()
     await this.teardownRunners()
@@ -62,10 +57,17 @@ class Dockest {
     const { runners } = Dockest.config
 
     for (const runnerKey of Object.keys(runners)) {
-      logger.setup(runnerKey)
+      RunnerLogger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
-      logger.setupSuccess(runnerKey)
+      RunnerLogger.setupSuccess(runnerKey)
     }
+  }
+
+  private runJest = async () => {
+    const result = await Dockest.jestRunner.run()
+    Dockest.jestRanWithResult = true
+
+    return result
   }
 
   private teardownRunners = async () => {
@@ -76,17 +78,20 @@ class Dockest {
     }
   }
 
-  private runJest = async () => {
-    const { jest } = Dockest.config
+  private validateConfig = () => {
+    const schema = {
+      logLevel: validateTypes.isOneOf(Object.values(LOG_LEVEL)),
+    }
 
-    const jestRunner = new JestRunner(jest)
-    const result = await jestRunner.run()
-    Dockest.jestRanWithResult = true
+    const failures = validateTypes(schema, Dockest.config.dockest)
 
-    return result
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
+    }
   }
 }
 
 export const runners = { KafkaRunner, PostgresRunner, ZookeeperRunner }
+export const logLevel = LOG_LEVEL
 
 export default Dockest

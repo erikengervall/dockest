@@ -1,5 +1,5 @@
-import { ConfigurationError } from '../errors'
-import logger from './logger'
+import { ConfigurationError } from './errors'
+import { JestLogger } from './loggers'
 
 interface IJestResult {
   results: { success: true }
@@ -36,9 +36,10 @@ class JestRunner {
       return JestRunner.instance
     }
 
-    this.validateJestConfig(config)
-
     JestRunner.config = { ...DEFAULT_CONFIG, ...config }
+
+    this.validateJestConfig()
+
     JestRunner.instance = this
   }
 
@@ -47,22 +48,22 @@ class JestRunner {
     const jest = JestRunner.config.lib
     let success = false
 
-    logger.success(`Dependencies up and running, running Jest`)
+    JestLogger.success(`Dependencies up and running, running Jest`)
 
     try {
       const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
 
       if (!jestResult.results.success) {
-        logger.failed(`Jest test(s) failed`)
+        JestLogger.failed(`Jest test(s) failed`)
 
         success = false
       } else {
-        logger.success(`Jest run successfully`)
+        JestLogger.success(`Jest test(s) successful`)
 
         success = true
       }
     } catch (error) {
-      logger.error(`Encountered Jest error`, error)
+      JestLogger.error(`Failed to run Jest`, error)
 
       success = false
     }
@@ -72,11 +73,20 @@ class JestRunner {
     }
   }
 
-  private validateJestConfig = (config: IJestConfig) => {
+  private validateJestConfig = () => {
+    const config = JestRunner.config
+
+    // Validate jest
     if (!config) {
-      throw new ConfigurationError('Jest config missing')
+      throw new ConfigurationError('jest')
     }
 
+    // Validate jest.lib
+    if (!config.lib) {
+      throw new ConfigurationError('jest.lib')
+    }
+
+    // Validate jest version
     const MINIMUM_JEST_VERSION = '20.0.0' // Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
     if (config.lib.getVersion() < MINIMUM_JEST_VERSION) {
       throw new ConfigurationError('Jest version not supported')

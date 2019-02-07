@@ -1,7 +1,6 @@
-import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { validateInputFields } from '../../utils/config'
-import { runCustomCommand } from '../../utils/execs'
+import { IBaseRunner } from '../index'
+import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
@@ -27,7 +26,6 @@ export class PostgresRunner implements IBaseRunner {
   public runnerKey: string
 
   constructor(config: IPostgresRunnerConfig) {
-    this.validatePostgresConfig(config)
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -35,6 +33,8 @@ export class PostgresRunner implements IBaseRunner {
     this.postgresExec = new PostgresExec()
     this.containerId = ''
     this.runnerKey = ''
+
+    this.validateConfig()
   }
 
   public setup = async (runnerKey: string) => {
@@ -47,26 +47,28 @@ export class PostgresRunner implements IBaseRunner {
 
     const commands = this.config.commands || []
     for (const cmd of commands) {
-      await runCustomCommand(cmd)
+      await runCustomCommand(runnerKey, cmd)
     }
   }
 
   public teardown = async (runnerKey: string) =>
     this.postgresExec.teardown(this.containerId, runnerKey)
 
-  public getHelpers = async () => ({
-    clear: () => true,
-    loadData: () => true,
-  })
-
-  private validatePostgresConfig = (config: IPostgresRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Postgres runner')
+  private validateConfig = () => {
+    const schema = {
+      service: validateTypes.isString,
+      host: validateTypes.isString,
+      database: validateTypes.isString,
+      port: validateTypes.isNumber,
+      password: validateTypes.isString,
+      username: validateTypes.isString,
     }
 
-    const { service, host, database, port, password, username } = config
-    const requiredProps = { service, host, database, port, password, username }
-    validateInputFields('postgres', requiredProps)
+    const failures = validateTypes(schema, this.config)
+
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
+    }
   }
 }
 

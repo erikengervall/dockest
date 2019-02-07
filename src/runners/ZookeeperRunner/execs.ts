@@ -2,9 +2,8 @@ import execa from 'execa'
 
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
-import { acquireConnection, getContainerId, sleep } from '../../utils/execs'
-import logger from '../../utils/logger'
-import { teardownSingle } from '../../utils/teardown'
+import { RunnerLogger } from '../../loggers'
+import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
 import { IZookeeperRunnerConfig } from './index'
 
 interface IExec {
@@ -17,15 +16,11 @@ class ZookeeperExec implements IExec {
   private static instance: ZookeeperExec
 
   constructor() {
-    if (ZookeeperExec.instance) {
-      return ZookeeperExec.instance
-    }
-
-    ZookeeperExec.instance = this
+    return ZookeeperExec.instance || (ZookeeperExec.instance = this)
   }
 
   public start = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    logger.startContainer(runnerKey)
+    RunnerLogger.startContainer(runnerKey)
 
     const { port, service } = runnerConfig
 
@@ -36,22 +31,22 @@ class ZookeeperExec implements IExec {
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
                     ${service}`
-      logger.command(cmd)
+      RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
     containerId = await getContainerId(service)
 
-    logger.startContainerSuccess(service)
+    RunnerLogger.startContainerSuccess(service)
 
     return containerId
   }
 
   public checkHealth = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    logger.checkHealth(runnerKey)
+    RunnerLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig, runnerKey)
 
-    logger.checkHealthSuccess(runnerKey)
+    RunnerLogger.checkHealthSuccess(runnerKey)
   }
 
   public teardown = async (containerId: string, runnerKey: string) =>
@@ -61,7 +56,7 @@ class ZookeeperExec implements IExec {
     const { connectionTimeout = 30, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
-      logger.checkConnection(runnerKey, connectionTimeout)
+      RunnerLogger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
         throw new DockestError('Zookeeper connection timed out')
@@ -70,7 +65,7 @@ class ZookeeperExec implements IExec {
       try {
         await acquireConnection(port)
 
-        logger.checkConnectionSuccess(runnerKey)
+        RunnerLogger.checkConnectionSuccess(runnerKey)
       } catch (error) {
         connectionTimeout--
 
