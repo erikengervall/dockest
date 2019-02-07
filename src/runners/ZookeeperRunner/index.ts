@@ -1,5 +1,5 @@
-import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
+import { IBaseRunner } from '../index'
 import { validateTypes } from '../utils'
 import ZookeeperExec from './execs'
 

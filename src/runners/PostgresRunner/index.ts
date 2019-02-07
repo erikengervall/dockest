@@ -1,5 +1,5 @@
-import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
+import { IBaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
 
