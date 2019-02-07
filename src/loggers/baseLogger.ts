@@ -42,6 +42,5 @@ class BaseLogger {
   private defaultD = (d?: object): object | string => d || ''
 }
 
-const baseLogger = new BaseLogger()
-export { logMethod, baseLogger }
+export { logMethod }
 export default BaseLogger

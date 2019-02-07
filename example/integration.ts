@@ -47,7 +47,7 @@ const zookeeper = new ZookeeperRunner({
 
 // @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
-  service: 'kafka1wurstmeister',
+  service: env.kafka_service,
   host: 'localhost',
   topics: [env.kafka_topic],
   zookeepeerConnect,
@@ -72,9 +72,6 @@ if (env.kafka_enabled === 'true') {
 if (env.kafka_enabled === 'true') {
   myRunners.kafka1kafkajs = kafka1kafkajs
 }
-// console.log('myRunners', myRunners)
-// Dockest.jestRanWithResult = true
-// process.exit(1)
 
 const integration = new Dockest({
   dockest: {
