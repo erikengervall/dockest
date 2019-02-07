@@ -1,6 +1,6 @@
-import BaseLogger2 from './BaseLogger2'
+import BaseLogger, { logMethod } from './BaseLogger'
 
-class GlobalLogger extends BaseLogger2 {
+class GlobalLogger extends BaseLogger {
   private static globalLoggerInstance: GlobalLogger
 
   constructor() {
@@ -8,7 +8,14 @@ class GlobalLogger extends BaseLogger2 {
     return GlobalLogger.globalLoggerInstance || (GlobalLogger.globalLoggerInstance = this)
   }
 
-  public info: any = () => ({})
+  public error: logMethod = (message, logData) => this.IS_ERROR() && this.logError(message, logData)
+
+  /**
+   * Dockest
+   */
+  public info: logMethod = (m, d) => this.IS_VERBOSE() && this.logInfo(m, d)
+
+  public loading: logMethod = (m, d) => this.IS_NORMAL() && this.logLoading(m, d)
 }
 
 const globalLogger = new GlobalLogger()
