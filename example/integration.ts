@@ -57,7 +57,7 @@ const kafka1kafkajs = new KafkaRunner({
     '9093': '9093', // kafka
     '9094': '9094', // kafka
     zookeeperPort: `${zookeeperPort}`, // zookeeper
-    '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
+    // '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
   },
 })
 
@@ -73,7 +73,7 @@ if (env.kafka_enabled === 'true') {
   myRunners.kafka1kafkajs = kafka1kafkajs
 }
 
-const integration = new Dockest({
+const dockest = new Dockest({
   dockest: {
     logLevel: logLevel.NORMAL,
   },
@@ -83,4 +83,4 @@ const integration = new Dockest({
   runners: myRunners,
 })
 
-integration.run()
+dockest.run()
