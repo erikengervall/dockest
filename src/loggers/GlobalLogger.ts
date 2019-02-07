@@ -1,6 +1,6 @@
-import BaseLogger from './BaseLogger'
+import BaseLogger2 from './BaseLogger2'
 
-class GlobalLogger extends BaseLogger {
+class GlobalLogger extends BaseLogger2 {
   private static globalLoggerInstance: GlobalLogger
 
   constructor() {
