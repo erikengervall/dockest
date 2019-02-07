@@ -14,7 +14,7 @@
     "buildw:watch": "yarn clean && webpack --config webpack.config.js --watch",
     "test:example": "cd example && yarn test",
     "test": "jest ./src",
-    "test:unit": "jest ./src",
+    "test:unit": "yarn test",
     "test:unit:watch": "jest ./src --watch",
     "travis:install:all": "yarn && cd example && yarn",
     "travis:test:all": "cd example && yarn test"
