@@ -22,7 +22,6 @@ const runner: any = {
   removeContainerSuccess: () => ({}),
   shellCmd: () => ({}),
 }
-
 const runnerutil: any = {
   customShellCmd: () => ({}),
   customShellCmdSuccess: () => ({}),
@@ -38,7 +37,7 @@ export { runner as RunnerLogger }
 export { runnerutil as RunnerUtilsLogger }
 export { jest as JestLogger }
 
-// export { default as GlobalLogger } from './GlobalLogger'
+export { default as _ } from './GlobalLogger'
 // export { default as RunnerLogger } from './RunnerLogger'
 // export { default as RunnerUtilsLogger } from './RunnerUtilsLogger'
 // export { default as JestLogger } from './JestLogger'
