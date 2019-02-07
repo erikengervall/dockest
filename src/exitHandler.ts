@@ -20,7 +20,7 @@ const setupExitHandler = async (config: IDockestConfig): Promise<void> => {
 
     GlobalLogger.error('Exithandler invoced', errorPayload)
 
-    if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
+    if (config.dockest.exitHandler && typeof exitHandler === 'function') {
       const err = errorPayload.error || new Error('Failed to extract error')
       config.dockest.exitHandler(err)
     }
