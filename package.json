@@ -13,8 +13,11 @@
     "buildw": "yarn clean && webpack --config webpack.config.js",
     "buildw:watch": "yarn clean && webpack --config webpack.config.js --watch",
     "test:example": "cd example && yarn test",
+    "test": "jest ./src",
     "test:unit": "jest ./src",
-    "test:unit:watch": "jest ./src --watch"
+    "test:unit:watch": "jest ./src --watch",
+    "travis:install:all": "yarn && cd example && yarn",
+    "travis:test:all": "yarn test && cd example && yarn test"
   },
   "dependencies": {
     "execa": "^1.0.0"
