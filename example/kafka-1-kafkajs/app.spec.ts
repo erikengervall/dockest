@@ -1,8 +1,11 @@
+import dotenv from 'dotenv'
 import main from './app'
 
-describe('kafka-1-kafkajs', () => {
+const env: any = dotenv.config().parsed
+
+const test = () => {
   it('trabajo', async () => {
-    const result = await main()
+    const result = main()
 
     expect(result).toEqual(
       expect.objectContaining({
@@ -10,4 +13,10 @@ describe('kafka-1-kafkajs', () => {
       })
     )
   })
-})
+}
+
+if (env.kafka_enabled === 'true') {
+  describe('kafka-1-kafkajs', test)
+} else {
+  describe.skip('', () => it.skip('', () => undefined))
+}

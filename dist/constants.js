@@ -43,10 +43,14 @@ const COLORS = {
     },
 };
 exports.COLORS = COLORS;
-const dockerComposeRunOpts = {
-    runInBackground: '--detach',
-    doNotRunLinkedServices: '--no-deps',
-};
+const dockerComposeRunOpts = { runInBackground: '--detach', doNotRunLinkedServices: '--no-deps' };
 const defaultDockerComposeRunOpts = Object.values(dockerComposeRunOpts).join(' ');
 exports.defaultDockerComposeRunOpts = defaultDockerComposeRunOpts;
+const LOG_LEVEL = {
+    NOTHING: 0,
+    ERROR: 1,
+    NORMAL: 2,
+    VERBOSE: 3,
+};
+exports.LOG_LEVEL = LOG_LEVEL;
 //# sourceMappingURL=constants.js.map

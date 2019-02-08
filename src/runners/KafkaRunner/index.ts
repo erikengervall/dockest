@@ -1,6 +1,6 @@
-import { IBaseRunner } from '../'
 import { ConfigurationError } from '../../errors'
-import { validateInputFields } from '../../utils/config'
+import { IBaseRunner } from '../index'
+import { validateTypes } from '../utils'
 import KafkaExec from './execs'
 
 interface IPorts {
@@ -25,18 +25,17 @@ const DEFAULT_CONFIG = {
 export class KafkaRunner implements IBaseRunner {
   public config: IKafkaRunnerConfig
   public kafkaExec: KafkaExec
-  public containerId: string
-  public runnerKey: string
+  public containerId: string = ''
+  public runnerKey: string = ''
 
   constructor(config: IKafkaRunnerConfig) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.validateKafkaConfig(config)
     this.kafkaExec = new KafkaExec()
-    this.containerId = ''
-    this.runnerKey = ''
+
+    this.validateConfig()
   }
 
   public setup = async (runnerKey: string) => {
@@ -48,27 +47,23 @@ export class KafkaRunner implements IBaseRunner {
     await this.kafkaExec.checkHealth(this.config, runnerKey)
   }
 
-  public teardown = async (runnerKey: string) =>
-    this.kafkaExec.teardown(this.containerId, runnerKey)
+  public teardown = async () => this.kafkaExec.teardown(this.containerId, this.runnerKey)
 
-  public getHelpers = async () => ({
-    clear: () => true,
-    loadData: () => true,
-  })
-
-  private validateKafkaConfig = (config: IKafkaRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Kafka runner')
+  private validateConfig = () => {
+    const schema = {
+      service: validateTypes.isString,
+      host: validateTypes.isString,
+      ports: validateTypes.isObjectOfType(validateTypes.isString),
+      topics: validateTypes.isArray,
+      zookeepeerConnect: validateTypes.isString,
+      autoCreateTopics: validateTypes.isBoolean,
     }
 
-    const { service, host, ports, topics, zookeepeerConnect, autoCreateTopics } = config
-    const requiredProps = { service, host, ports, topics, zookeepeerConnect, autoCreateTopics }
+    const failures = validateTypes(schema, this.config)
 
-    if (!ports['9093']) {
-      throw new ConfigurationError('Missing required port-mapping for Kafka runner')
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
     }
-
-    validateInputFields('kafka', requiredProps)
   }
 }
 

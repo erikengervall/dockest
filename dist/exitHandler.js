@@ -4,16 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
-const logger_1 = __importDefault(require("./utils/logger"));
+const loggers_1 = require("./loggers");
 const setupExitHandler = async (config) => {
     const { runners } = config;
     const exitHandler = async (errorPayload) => {
         if (index_1.default.jestRanWithResult) {
-            // Expected exit, exit early
+            // Program ran as expected
             return;
         }
-        logger_1.default.error('Exithandler invoced', errorPayload);
-        if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
+        loggers_1.GlobalLogger.error('Exithandler invoced', errorPayload);
+        if (config.dockest.exitHandler && typeof exitHandler === 'function') {
             const err = errorPayload.error || new Error('Failed to extract error');
             config.dockest.exitHandler(err);
         }

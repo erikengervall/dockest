@@ -1,5 +1,5 @@
 import Dockest, { IDockestConfig } from './index'
-import logger from './utils/logger'
+import { GlobalLogger } from './loggers'
 
 interface IErrorPayload {
   code?: number
@@ -14,19 +14,19 @@ const setupExitHandler = async (config: IDockestConfig): Promise<void> => {
 
   const exitHandler = async (errorPayload: IErrorPayload): Promise<void> => {
     if (Dockest.jestRanWithResult) {
-      // Expected exit, exit early
+      // Program ran as expected
       return
     }
 
-    logger.error('Exithandler invoced', errorPayload)
+    GlobalLogger.error('Exithandler invoced', errorPayload)
 
-    if (config.dockest && config.dockest.exitHandler && typeof exitHandler === 'function') {
+    if (config.dockest.exitHandler && typeof exitHandler === 'function') {
       const err = errorPayload.error || new Error('Failed to extract error')
       config.dockest.exitHandler(err)
     }
 
     for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown(runnerKey)
+      await runners[runnerKey].teardown()
     }
 
     process.exit(errorPayload.code || 1)

@@ -1,9 +1,14 @@
+import dotenv from 'dotenv'
+import { runners } from '../../src/index'
 import main from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
 
-describe('postgres-1-sequelize', () => {
-  it('trabajo', async () => {
+const env: any = dotenv.config().parsed
+const { runHelpCmd } = runners.PostgresRunner.getHelpers()
+
+const test = async () => {
+  it('main', async () => {
     const result = await main()
 
     expect(result).toEqual(
@@ -12,4 +17,27 @@ describe('postgres-1-sequelize', () => {
       })
     )
   })
+
+  it('runHelpCmd', async () => {
+    await runHelpCmd('sequelize db:seed:undo:all')
+
+    const result = await main()
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        firstEntry: null,
+      })
+    )
+  })
+}
+
+beforeEach(async () => {
+  await runHelpCmd('sequelize db:seed:undo:all')
+  await runHelpCmd('sequelize db:seed:all')
 })
+
+if (env.postgres1sequelize_enabled === 'true') {
+  describe('postgres-1-sequelize', test)
+} else {
+  describe.skip('', () => it.skip('', () => undefined))
+}
