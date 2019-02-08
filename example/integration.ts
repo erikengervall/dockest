@@ -5,7 +5,7 @@ import Dockest, { logLevel, runners } from '../src/index'
 
 const env: any = dotenv.config().parsed
 // @ts-ignore
-const { KafkaRunner, PostgresRunner, ZookeeperRunner } = runners
+const { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } = runners
 
 // @ts-ignore
 const postgres1sequelize = new PostgresRunner({
@@ -61,6 +61,11 @@ const kafka1kafkajs = new KafkaRunner({
     zookeeperPort: `${zookeeperPort}`, // zookeeper
     // '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
   },
+})
+
+// @ts-ignore
+const redis1redis = new RedisRunner({
+  service: 'redis',
 })
 
 const myRunners: any = {}

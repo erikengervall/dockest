@@ -10,6 +10,8 @@ export interface IZookeeperRunnerConfig {
 }
 
 const DEFAULT_CONFIG = {
+  service: 'zookeeper',
+  port: 2181,
   connectionTimeout: 30,
 }
 

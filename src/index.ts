@@ -3,7 +3,7 @@ import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { IJestConfig } from './jest'
 import { RunnerLogger } from './loggers'
-import { IRunners, KafkaRunner, PostgresRunner, ZookeeperRunner } from './runners'
+import { IRunners, KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
 import { validateTypes } from './runners/utils'
 
 interface IDockest {
@@ -17,7 +17,7 @@ export interface IDockestConfig {
   runners: IRunners
 }
 
-const DEFAULT_CONFIG_DOCKEST = {
+const DEFAULT_CONFIG = {
   logLevel: LOG_LEVEL.NORMAL,
   exitHandler: () => undefined,
 }
@@ -39,7 +39,7 @@ class Dockest {
     Dockest.config = {
       ...userConfig,
       dockest: {
-        ...DEFAULT_CONFIG_DOCKEST,
+        ...DEFAULT_CONFIG,
         ...userConfig.dockest,
       },
     }
@@ -98,7 +98,7 @@ class Dockest {
   }
 }
 
-export const runners = { KafkaRunner, PostgresRunner, ZookeeperRunner }
+export const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
 export const logLevel = LOG_LEVEL
 
 export default Dockest

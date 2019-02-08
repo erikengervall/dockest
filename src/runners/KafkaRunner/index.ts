@@ -18,6 +18,10 @@ export interface IKafkaRunnerConfig {
 }
 
 const DEFAULT_CONFIG = {
+  service: 'kafka',
+  host: 'localhost',
+  ports: {},
+  zookeepeerConnect: 'zk:1',
   topics: [],
   autoCreateTopics: true,
   connectionTimeout: 30,

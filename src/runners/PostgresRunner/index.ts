@@ -17,6 +17,12 @@ export interface IPostgresRunnerConfig {
 }
 
 const DEFAULT_CONFIG = {
+  service: 'postgres',
+  host: 'localhost',
+  database: 'database',
+  port: 5432,
+  password: 'password',
+  username: 'username',
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,

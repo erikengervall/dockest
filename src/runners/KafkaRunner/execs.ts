@@ -12,8 +12,6 @@ interface IExec {
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
-const PRIMARY_KAFKA_PORT = '9092'
-
 class KafkaExec implements IExec {
   private static instance: KafkaExec
 
@@ -64,6 +62,7 @@ class KafkaExec implements IExec {
   private checkConnection = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
     const { connectionTimeout, ports } = runnerConfig
 
+    const PRIMARY_KAFKA_PORT = '9092'
     const primaryKafkaPort = Number(
       Object.keys(ports).find(port => ports[port] === PRIMARY_KAFKA_PORT)
     )
