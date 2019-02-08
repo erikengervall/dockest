@@ -14,12 +14,13 @@ export interface IKafkaRunnerConfig {
   topics: string[]
   zookeepeerConnect: string
   autoCreateTopics: boolean
-  connectionTimeout?: number
+  connectionTimeout: number
 }
 
 const DEFAULT_CONFIG = {
   topics: [],
   autoCreateTopics: true,
+  connectionTimeout: 30,
 }
 
 export class KafkaRunner implements IBaseRunner {
