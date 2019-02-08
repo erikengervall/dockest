@@ -1,5 +1,6 @@
 import KafkaRunner from './KafkaRunner'
 import PostgresRunner from './PostgresRunner'
+import RedisRunner from './RedisRunner'
 import ZookeeperRunner from './ZookeeperRunner'
 
 export interface IBaseRunner {
@@ -24,4 +25,4 @@ export interface IRunners {
   [runnerKey: string]: PostgresRunner | KafkaRunner | ZookeeperRunner
 }
 
-export { KafkaRunner, PostgresRunner, ZookeeperRunner }
+export { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
