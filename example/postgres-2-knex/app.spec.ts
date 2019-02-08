@@ -5,7 +5,6 @@ import { seedBanana } from './data.json'
 
 const env: any = dotenv.config().parsed
 
-const describeName = 'postgres-2-knex'
 const test = () => {
   it('trabajo', async () => {
     const result = await main()
@@ -19,7 +18,7 @@ const test = () => {
 }
 
 if (env.postgres2knex_enabled === 'true') {
-  describe(describeName, test)
+  describe('postgres-2-knex', test)
 } else {
-  describe.skip(describeName, test)
+  describe.skip('', () => it.skip('', () => undefined))
 }
