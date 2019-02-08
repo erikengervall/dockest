@@ -25,6 +25,13 @@ const DEFAULT_CONFIG_DOCKEST = {
 class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: IDockestConfig
+  /**
+   * jestEnv
+   * Dockest has been imported from a non-global node env (e.g. jest's node vm)
+   * This means that the Dockest singleton is unretrievable
+   * This variable is primarily used to default the logLevel to normal
+   */
+  public static jestEnv: boolean = false
   private static jestRunner: JestRunner
   private static instance: Dockest
 

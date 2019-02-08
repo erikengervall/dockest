@@ -38,7 +38,8 @@ class BaseLogger {
   public logError: logMethod = (m, d) =>
     console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n')
 
-  private getLogLevel = (): number => Dockest.config.dockest.logLevel
+  private getLogLevel = (): number =>
+    Dockest.jestEnv ? LOG_LEVEL.NORMAL : Dockest.config.dockest.logLevel
   private defaultD = (d?: object): object | string => d || ''
 }
 
