@@ -1,4 +1,5 @@
 import { ConfigurationError } from '../../errors'
+import Dockest from '../../index'
 import { IBaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
@@ -20,6 +21,13 @@ const DEFAULT_CONFIG = {
 }
 
 export class PostgresRunner implements IBaseRunner {
+  public static getHelpers = () => {
+    Dockest.jestEnv = true
+    return {
+      runHelpCmd: async (cmd: string) => runCustomCommand('PostgresRunner', cmd),
+    }
+  }
+
   public config: IPostgresRunnerConfig
   public postgresExec: PostgresExec
   public containerId: string
