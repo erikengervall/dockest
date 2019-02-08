@@ -81,6 +81,7 @@ const dockest = new Dockest({
   },
   jest: {
     lib: require('jest'),
+    verbose: true,
   },
   runners: myRunners,
 })

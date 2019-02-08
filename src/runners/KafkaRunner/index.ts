@@ -25,8 +25,8 @@ const DEFAULT_CONFIG = {
 export class KafkaRunner implements IBaseRunner {
   public config: IKafkaRunnerConfig
   public kafkaExec: KafkaExec
-  public containerId: string
-  public runnerKey: string
+  public containerId: string = ''
+  public runnerKey: string = ''
 
   constructor(config: IKafkaRunnerConfig) {
     this.config = {
@@ -34,8 +34,6 @@ export class KafkaRunner implements IBaseRunner {
       ...config,
     }
     this.kafkaExec = new KafkaExec()
-    this.containerId = ''
-    this.runnerKey = ''
 
     this.validateConfig()
   }
@@ -49,8 +47,7 @@ export class KafkaRunner implements IBaseRunner {
     await this.kafkaExec.checkHealth(this.config, runnerKey)
   }
 
-  public teardown = async (runnerKey: string) =>
-    this.kafkaExec.teardown(this.containerId, runnerKey)
+  public teardown = async () => this.kafkaExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
     const schema = {

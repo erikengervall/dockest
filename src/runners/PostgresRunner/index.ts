@@ -1,4 +1,5 @@
 import { ConfigurationError } from '../../errors'
+import Dockest from '../../index'
 import { IBaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
@@ -20,10 +21,18 @@ const DEFAULT_CONFIG = {
 }
 
 export class PostgresRunner implements IBaseRunner {
+  public static getHelpers = () => {
+    Dockest.jestEnv = true
+
+    return {
+      runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd),
+    }
+  }
+
   public config: IPostgresRunnerConfig
   public postgresExec: PostgresExec
-  public containerId: string
-  public runnerKey: string
+  public containerId: string = ''
+  public runnerKey: string = ''
 
   constructor(config: IPostgresRunnerConfig) {
     this.config = {
@@ -31,10 +40,12 @@ export class PostgresRunner implements IBaseRunner {
       ...config,
     }
     this.postgresExec = new PostgresExec()
-    this.containerId = ''
-    this.runnerKey = ''
 
     this.validateConfig()
+  }
+
+  public setRunnerKey = (runnerKey: string) => {
+    this.runnerKey = runnerKey
   }
 
   public setup = async (runnerKey: string) => {
@@ -51,8 +62,7 @@ export class PostgresRunner implements IBaseRunner {
     }
   }
 
-  public teardown = async (runnerKey: string) =>
-    this.postgresExec.teardown(this.containerId, runnerKey)
+  public teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
     const schema = {

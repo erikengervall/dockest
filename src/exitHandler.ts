@@ -26,7 +26,7 @@ const setupExitHandler = async (config: IDockestConfig): Promise<void> => {
     }
 
     for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown(runnerKey)
+      await runners[runnerKey].teardown()
     }
 
     process.exit(errorPayload.code || 1)

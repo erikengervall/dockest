@@ -3,7 +3,6 @@ import main from './app'
 
 const env: any = dotenv.config().parsed
 
-const describeName = 'kafka-1-kafkajs'
 const test = () => {
   it('trabajo', async () => {
     const result = main()
@@ -17,7 +16,7 @@ const test = () => {
 }
 
 if (env.kafka_enabled === 'true') {
-  describe(describeName, test)
+  describe('kafka-1-kafkajs', test)
 } else {
-  describe.skip(describeName, test)
+  describe.skip('', () => it.skip('', () => undefined))
 }

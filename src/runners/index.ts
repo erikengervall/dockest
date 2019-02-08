@@ -13,7 +13,7 @@ export interface IBaseRunner {
    * Stop containers
    * Remove containers
    */
-  teardown: (runnerKey: string) => Promise<void>
+  teardown: () => Promise<void>
 }
 
 export interface IRunners {

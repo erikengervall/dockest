@@ -14,8 +14,8 @@ const DEFAULT_CONFIG = {}
 export class ZookeeeperRunner implements IBaseRunner {
   public config: IZookeeperRunnerConfig
   public ZookeeperExec: ZookeeperExec
-  public containerId: string
-  public runnerKey: string
+  public containerId: string = ''
+  public runnerKey: string = ''
 
   constructor(config: IZookeeperRunnerConfig) {
     this.config = {
@@ -23,8 +23,6 @@ export class ZookeeeperRunner implements IBaseRunner {
       ...config,
     }
     this.ZookeeperExec = new ZookeeperExec()
-    this.containerId = ''
-    this.runnerKey = ''
 
     this.validateInput()
   }
@@ -38,8 +36,7 @@ export class ZookeeeperRunner implements IBaseRunner {
     await this.ZookeeperExec.checkHealth(this.config, runnerKey)
   }
 
-  public teardown = async (runnerKey: string) =>
-    this.ZookeeperExec.teardown(this.containerId, runnerKey)
+  public teardown = async () => this.ZookeeperExec.teardown(this.containerId, this.runnerKey)
 
   private validateInput = () => {
     const schema = {
