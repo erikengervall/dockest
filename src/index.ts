@@ -81,7 +81,7 @@ class Dockest {
     const { runners } = Dockest.config
 
     for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown(runnerKey)
+      await runners[runnerKey].teardown()
     }
   }
 
