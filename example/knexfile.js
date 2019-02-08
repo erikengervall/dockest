@@ -1,15 +1,14 @@
-const {
-  postgres2knex: { host, database, username, password, port },
-} = require('./env')
+const dotenv = require('dotenv')
+const env = dotenv.config().parsed
 
 const dbConfig = {
   client: 'postgresql',
   connection: {
-    host,
-    database,
-    user: username,
-    password,
-    port,
+    host: env.postgres2knex_host,
+    database: env.postgres2knex_database,
+    user: env.postgres2knex_username,
+    password: env.postgres2knex_password,
+    port: Number(env.postgres2knex_port),
   },
   migrations: {
     directory: './postgres-2-knex/migrations',

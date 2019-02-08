@@ -1,31 +1,33 @@
-const {
-  postgres1sequelize: { username, password, database, host, port },
-} = require('../../env')
+const dotenv = require('dotenv')
+const env = dotenv.config().parsed
 
 const postgresConfig = {
   development: {
-    username,
-    password,
-    database,
-    host,
-    port,
+    username: env.postgres1sequelize_username,
+    password: env.postgres1sequelize_password,
+    database: env.postgres1sequelize_database,
+    host: env.postgres1sequelize_host,
+    port: Number(env.postgres1sequelize_port),
     dialect: 'postgres',
+    logging: false,
   },
   test: {
-    username,
-    password,
-    database,
-    host,
-    port,
+    username: env.postgres1sequelize_username,
+    password: env.postgres1sequelize_password,
+    database: env.postgres1sequelize_database,
+    host: env.postgres1sequelize_host,
+    port: Number(env.postgres1sequelize_port),
     dialect: 'postgres',
+    logging: false,
   },
   production: {
-    username,
-    password,
-    database,
-    host,
-    port,
+    username: env.postgres1sequelize_username,
+    password: env.postgres1sequelize_password,
+    database: env.postgres1sequelize_database,
+    host: env.postgres1sequelize_host,
+    port: Number(env.postgres1sequelize_port),
     dialect: 'postgres',
+    logging: false,
   },
 }
 

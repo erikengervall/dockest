@@ -1,1 +1,5 @@
-exports.seed = knex => knex('bananas').del()
+const seed = knex => knex('bananas').del()
+
+module.exports = {
+  seed,
+}

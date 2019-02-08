@@ -1,17 +1,16 @@
 language: node_js
 node_js:
- - "node"
-script: yarn test
+  - '8'
+script: yarn travis:test:all
 addons:
   apt:
     packages:
       - docker-ce
 before_install:
-  # Print relevant versions
+  # print relevant versions
   - docker --version
   - docker-compose --version
 
-  # thanks https://github.com/Accenture/adop-docker-compose/blob/master/.travis.yml
   # upgrading docker-compose to match my development version
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
@@ -24,6 +23,11 @@ before_install:
   - docker-compose build
   - cd ../
 
-  - echo "** before_install done ***"
+  - yarn global add typescript
+
+  - echo "*** before_install complete ***"
 install:
-  - yarn install-all
+  # install dependencies
+  - yarn travis:install:all
+
+  - echo "*** install complete ***"

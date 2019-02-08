@@ -23,4 +23,4 @@ trash
 #
 dockest
 src/dockest
-built/dockest
+dist/dockest

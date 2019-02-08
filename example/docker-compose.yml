@@ -1,1 +1,21 @@
-version: '2'
+version: '3'
+services:
+  postgres1sequelize:
+    image: postgres:9.6.3
+    volumes:
+      - postgres1Volume:/var/lib/postgresql/data
+
+  postgres2knex:
+    image: postgres:9.6.3
+    volumes:
+      - postgres2Volume:/var/lib/postgresql/data
+
+  zookeeper1wurstmeister:
+    image: wurstmeister/zookeeper:latest
+
+  kafka1wurstmeister:
+    image: wurstmeister/kafka:0.11.0.0
+
+volumes:
+  postgres1Volume:
+  postgres2Volume:

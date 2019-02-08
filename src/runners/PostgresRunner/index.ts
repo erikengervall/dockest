@@ -1,18 +1,17 @@
 import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
-import { validateInputFields } from '../../utils/config'
-import { runCustomCommand } from '../../utils/execs'
-import { IRunner } from '../types'
+import { IBaseRunner } from '../index'
+import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
 
 export interface IPostgresRunnerConfig {
-  service: string // dockest-compose service name
+  service: string
   host: string
   database: string
   port: number
   password: string
   username: string
-  commands?: string[] // Run custom scripts (migrate/seed)
+  commands?: string[]
   connectionTimeout?: number
   responsivenessTimeout?: number
 }
@@ -21,45 +20,65 @@ const DEFAULT_CONFIG = {
   commands: [],
 }
 
-export class PostgresRunner implements IRunner {
-  public containerId?: string
-  public config: IPostgresRunnerConfig
-  public postgresExec: PostgresExec
+export class PostgresRunner implements IBaseRunner {
+  public static getHelpers = () => {
+    Dockest.jestEnv = true
 
-  constructor(config: IPostgresRunnerConfig) {
-    this.validatePostgresConfig(config)
-    this.config = { ...DEFAULT_CONFIG, ...config }
-    this.postgresExec = new PostgresExec()
+    return {
+      runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd),
+    }
   }
 
-  public setup = async () => {
-    const composeFile = Dockest.config.dockest.dockerComposeFilePath
-    const containerId = await this.postgresExec.start(this.config, composeFile)
+  public config: IPostgresRunnerConfig
+  public postgresExec: PostgresExec
+  public containerId: string = ''
+  public runnerKey: string = ''
+
+  constructor(config: IPostgresRunnerConfig) {
+    this.config = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
+    this.postgresExec = new PostgresExec()
+
+    this.validateConfig()
+  }
+
+  public setRunnerKey = (runnerKey: string) => {
+    this.runnerKey = runnerKey
+  }
+
+  public setup = async (runnerKey: string) => {
+    this.runnerKey = runnerKey
+
+    const containerId = await this.postgresExec.start(this.config, runnerKey)
     this.containerId = containerId
 
-    await this.postgresExec.checkHealth(containerId, this.config)
+    await this.postgresExec.checkHealth(this.config, containerId, runnerKey)
 
     const commands = this.config.commands || []
     for (const cmd of commands) {
-      await runCustomCommand(cmd)
+      await runCustomCommand(runnerKey, cmd)
     }
   }
 
-  public teardown = async () => this.postgresExec.teardown(this.containerId)
+  public teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey)
 
-  public getHelpers = async () => ({
-    clear: () => true,
-    loadData: () => true,
-  })
-
-  private validatePostgresConfig = (config: IPostgresRunnerConfig): void => {
-    if (!config) {
-      throw new ConfigurationError('Missing configuration for Postgres runner')
+  private validateConfig = () => {
+    const schema = {
+      service: validateTypes.isString,
+      host: validateTypes.isString,
+      database: validateTypes.isString,
+      port: validateTypes.isNumber,
+      password: validateTypes.isString,
+      username: validateTypes.isString,
     }
 
-    const { service, host, database, port, password, username } = config
-    const requiredProps = { service, host, database, port, password, username }
-    validateInputFields('postgres', requiredProps)
+    const failures = validateTypes(schema, this.config)
+
+    if (failures.length > 0) {
+      throw new ConfigurationError(`${failures.join('\n')}`)
+    }
   }
 }
 
