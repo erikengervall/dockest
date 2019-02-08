@@ -62,7 +62,7 @@ class KafkaExec implements IExec {
     teardownSingle(containerId, runnerKey)
 
   private checkConnection = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
-    const { connectionTimeout = 30, ports } = runnerConfig
+    const { connectionTimeout, ports } = runnerConfig
 
     const primaryKafkaPort = Number(
       Object.keys(ports).find(port => ports[port] === PRIMARY_KAFKA_PORT)

@@ -70,7 +70,7 @@ class PostgresExec implements IExec {
     containerId: string,
     runnerKey: string
   ) => {
-    const { responsivenessTimeout = 10, host, database, username } = runnerConfig
+    const { responsivenessTimeout, host, database, username } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
@@ -105,7 +105,7 @@ class PostgresExec implements IExec {
     runnerConfig: IPostgresRunnerConfig,
     runnerKey: string
   ): Promise<void> => {
-    const { connectionTimeout = 3, host, port } = runnerConfig
+    const { connectionTimeout, host, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
       RunnerLogger.checkConnection(runnerKey, connectionTimeout)

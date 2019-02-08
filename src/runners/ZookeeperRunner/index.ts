@@ -6,10 +6,12 @@ import ZookeeperExec from './execs'
 export interface IZookeeperRunnerConfig {
   service: string
   port: number
-  connectionTimeout?: number
+  connectionTimeout: number
 }
 
-const DEFAULT_CONFIG = {}
+const DEFAULT_CONFIG = {
+  connectionTimeout: 30,
+}
 
 export class ZookeeeperRunner implements IBaseRunner {
   public config: IZookeeperRunnerConfig
