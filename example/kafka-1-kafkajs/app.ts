@@ -64,6 +64,4 @@ const main = async () => {
   // }, 1000)
 }
 
-main()
-
 export default main
