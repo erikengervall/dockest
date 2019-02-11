@@ -64,25 +64,28 @@ const kafka1kafkajs = new KafkaRunner({
 })
 
 // @ts-ignore
-const redis1redis = new RedisRunner({
-  service: 'redis',
+const redis1ioredis = new RedisRunner({
+  service: 'redis1ioredis',
 })
 
 const myRunners: any = {}
-myRunners.postgres1sequelize = postgres1sequelize
+if (env.postgres1sequelize_enabled === 'true') {
+  myRunners.postgres1sequelize = postgres1sequelize
+}
 if (env.postgres2knex_enabled === 'true') {
   myRunners.postgres2knex = postgres2knex
 }
 if (env.kafka_enabled === 'true') {
   myRunners.zookeeper = zookeeper
-}
-if (env.kafka_enabled === 'true') {
   myRunners.kafka1kafkajs = kafka1kafkajs
+}
+if (env.redis1ioredis_enabled === 'true') {
+  myRunners.redis1ioredis = redis1ioredis
 }
 
 const dockest = new Dockest({
   dockest: {
-    logLevel: logLevel.NORMAL,
+    logLevel: logLevel.VERBOSE,
   },
   jest: {
     lib: require('jest'),

@@ -46,6 +46,7 @@ export class ZookeeeperRunner implements IBaseRunner {
     const schema = {
       service: validateTypes.isString,
       port: validateTypes.isNumber,
+      connectionTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

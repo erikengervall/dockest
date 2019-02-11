@@ -16,8 +16,13 @@ export interface IRedisRunnerConfig {
 }
 
 const DEFAULT_CONFIG = {
+  service: 'redis',
+  host: 'localhost',
+  port: 6379,
+  password: 'password',
+  username: 'username',
   commands: [],
-  connectionTimeout: 10,
+  connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
@@ -72,6 +77,9 @@ export class RedisRunner implements IBaseRunner {
       port: validateTypes.isNumber,
       password: validateTypes.isString,
       username: validateTypes.isString,
+      commands: validateTypes.isArrayOfType(validateTypes.isString),
+      connectionTimeout: validateTypes.isNumber,
+      responsivenessTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

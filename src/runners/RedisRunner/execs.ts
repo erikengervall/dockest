@@ -65,7 +65,7 @@ class RedisExec implements IExec {
     containerId: string,
     runnerKey: string
   ) => {
-    const { responsivenessTimeout, host, port } = runnerConfig
+    const { responsivenessTimeout } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
@@ -75,13 +75,15 @@ class RedisExec implements IExec {
       }
 
       try {
-        const portMapping = `--publish ${port}:6379`
-        const cmd = `docker exec ${containerId} \
-                      ${portMapping}`
+        const redisCliCommand = `ping`
+        const cmd = `docker exec ${containerId} redis-cli ${redisCliCommand}`
         // docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
         // https://hub.docker.com/_/redis
         RunnerLogger.shellCmd(cmd)
-        await execa.shell(cmd)
+        const { stdout: result } = await execa.shell(cmd)
+        if (result !== 'PONG') {
+          throw new Error('PING did not recieve a PONG')
+        }
 
         RunnerLogger.checkResponsivenessSuccess(runnerKey)
       } catch (error) {
@@ -99,7 +101,7 @@ class RedisExec implements IExec {
     runnerConfig: IRedisRunnerConfig,
     runnerKey: string
   ): Promise<void> => {
-    const { connectionTimeout = 3, host, port } = runnerConfig
+    const { connectionTimeout, host, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
       RunnerLogger.checkConnection(runnerKey, connectionTimeout)

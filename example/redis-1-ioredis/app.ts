@@ -1,14 +1,18 @@
+import dotenv from 'dotenv'
+import Redis from 'ioredis'
 // @ts-ignore
-import { seedMovie } from './data.json'
+import { seedCake } from './data.json'
 
-const getFirstEntry = async () => ({}) // TODO: Implement
+const env: any = dotenv.config().parsed
+const redis = new Redis({
+  host: env.redis1ioredis_host,
+  port: env.redis1ioredis_port,
+})
 
 const main = async () => {
-  const firstEntry = await getFirstEntry()
+  redis.set(seedCake.key, seedCake.value)
 
-  return {
-    firstEntry,
-  }
+  return { redis }
 }
 
 export default main

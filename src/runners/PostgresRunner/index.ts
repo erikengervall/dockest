@@ -80,6 +80,9 @@ export class PostgresRunner implements IBaseRunner {
       port: validateTypes.isNumber,
       password: validateTypes.isString,
       username: validateTypes.isString,
+      commands: validateTypes.isArrayOfType(validateTypes.isString),
+      connectionTimeout: validateTypes.isNumber,
+      responsivenessTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

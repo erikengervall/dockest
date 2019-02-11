@@ -12,9 +12,7 @@ describe('validateTypes', () => {
       port: 1337,
       ports: [1337, 1338],
       autoCreateTopics: true,
-      portMapping: {
-        '1337': '1338',
-      },
+      portMapping: { '1337': '1338' },
       logLevel: 1,
     }
   })

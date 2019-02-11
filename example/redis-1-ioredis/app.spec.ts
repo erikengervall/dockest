@@ -1,19 +1,17 @@
 import dotenv from 'dotenv'
 import main from './app'
 // @ts-ignore
-import { seedUser } from './data.json'
+import { seedCake } from './data.json'
 
 const env: any = dotenv.config().parsed
 
 const test = async () => {
   it('main', async () => {
-    const result = await main()
+    const { redis } = await main()
 
-    expect(result).toEqual(
-      expect.objectContaining({
-        firstEntry: expect.objectContaining(seedUser),
-      })
-    )
+    const value = redis.get(seedCake.key)
+
+    expect(value).toEqual(seedCake.value)
   })
 }
 
