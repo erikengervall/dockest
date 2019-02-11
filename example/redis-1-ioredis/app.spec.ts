@@ -7,11 +7,15 @@ const env: any = dotenv.config().parsed
 
 const test = async () => {
   it('main', async () => {
-    const { redis } = await main()
+    const { redis } = main()
 
-    const value = redis.get(seedCake.key)
-
+    const value = await redis.get(seedCake.key)
     expect(value).toEqual(seedCake.value)
+
+    await redis.flushall()
+
+    const flushedValue = await redis.get(seedCake.key)
+    expect(flushedValue).toEqual(null)
   })
 }
 

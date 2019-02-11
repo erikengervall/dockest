@@ -25,15 +25,17 @@ class RedisExec implements IExec {
   public start = async (runnerConfig: IRedisRunnerConfig, runnerKey: string) => {
     RunnerLogger.startContainer(runnerKey)
 
-    const { port, service } = runnerConfig
+    const { port, service, password } = runnerConfig
 
     let containerId = await getContainerId(service)
     if (!containerId) {
       const portMapping = `--publish ${port}:6379`
+      const requirePassword = password ? `--requirepass ${password}` : ''
       const cmd = `docker-compose run \
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
-                    ${service}`
+                    ${service} \
+                    ${requirePassword}`
       RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
@@ -65,7 +67,7 @@ class RedisExec implements IExec {
     containerId: string,
     runnerKey: string
   ) => {
-    const { responsivenessTimeout } = runnerConfig
+    const { responsivenessTimeout, password } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
@@ -75,10 +77,9 @@ class RedisExec implements IExec {
       }
 
       try {
-        const redisCliCommand = `ping`
-        const cmd = `docker exec ${containerId} redis-cli ${redisCliCommand}`
-        // docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
-        // https://hub.docker.com/_/redis
+        const auth = password ? `-a ${password}` : ''
+        const redisCliCommand = `PING`
+        const cmd = `docker exec ${containerId} redis-cli ${auth} ${redisCliCommand}`
         RunnerLogger.shellCmd(cmd)
         const { stdout: result } = await execa.shell(cmd)
         if (result !== 'PONG') {

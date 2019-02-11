@@ -38,8 +38,8 @@ const postgres2knex = new PostgresRunner({
   ],
 })
 
-const zookeeperService = 'zookeeper1wurstmeister'
-const zookeeperPort = 2181
+const zookeeperService = env.zookeeper_service
+const zookeeperPort = Number(env.zookeeper_port)
 const zookeepeerConnect = `${zookeeperService}:${zookeeperPort}`
 // @ts-ignore
 const zookeeper = new ZookeeperRunner({
@@ -50,22 +50,22 @@ const zookeeper = new ZookeeperRunner({
 // @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
   service: env.kafka_service,
-  host: 'localhost',
+  host: env.kafka_host,
   topics: [env.kafka_topic],
   zookeepeerConnect,
   autoCreateTopics: true,
   ports: {
-    '9092': '9092', // kafka
-    '9093': '9093', // kafka
-    '9094': '9094', // kafka
-    zookeeperPort: `${zookeeperPort}`, // zookeeper
-    // '9082': '8081', // TODO: registry (https://hub.docker.com/r/confluentinc/cp-schema-registry/)
+    [env.kafka_port1]: env.kafka_port1,
+    [env.kafka_port2]: env.kafka_port2,
+    [env.kafka_port3]: env.kafka_port3,
+    zookeeperPort: `${zookeeperPort}`,
   },
 })
 
 // @ts-ignore
 const redis1ioredis = new RedisRunner({
-  service: 'redis1ioredis',
+  service: env.redis1ioredis_service,
+  password: env.redis1ioredis_password,
 })
 
 const myRunners: any = {}
@@ -75,8 +75,10 @@ if (env.postgres1sequelize_enabled === 'true') {
 if (env.postgres2knex_enabled === 'true') {
   myRunners.postgres2knex = postgres2knex
 }
-if (env.kafka_enabled === 'true') {
+if (env.zookeeper_enabled === 'true') {
   myRunners.zookeeper = zookeeper
+}
+if (env.kafka_enabled === 'true') {
   myRunners.kafka1kafkajs = kafka1kafkajs
 }
 if (env.redis1ioredis_enabled === 'true') {

@@ -6,7 +6,7 @@ const env: any = dotenv.config().parsed
 const createKafka = () => {
   const kafka = new Kafka({
     clientId: 'dockest/example',
-    brokers: [env.KAFKA_HOST],
+    brokers: [env.kafka_broker],
     // ssl: { rejectUnauthorized: false },
   })
 
@@ -16,7 +16,7 @@ const createKafka = () => {
 const main = () => {
   const kafka = createKafka()
 
-  // Fire up a consumer and produce test events
+  // TODO: Fire up a consumer and produce test events
 
   return {
     kafka,
