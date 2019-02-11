@@ -65,6 +65,8 @@ const kafka1kafkajs = new KafkaRunner({
 // @ts-ignore
 const redis1ioredis = new RedisRunner({
   service: env.redis1ioredis_service,
+  host: env.redis1ioredis_host,
+  port: env.redis1ioredis_port,
   password: env.redis1ioredis_password,
 })
 

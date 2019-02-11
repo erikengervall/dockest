@@ -82,9 +82,9 @@ class RedisExec implements IExec {
       }
 
       try {
-        const password = runnerPassword ? `-a ${runnerPassword}` : ''
-        const port = `-p ${runnerPort}`
         const host = `-h ${runnerHost}`
+        const port = `-p ${runnerPort}`
+        const password = runnerPassword ? `-a ${runnerPassword}` : ''
         const command = `PING`
         const redisCliOpts = `${host} \
                               ${port} \
