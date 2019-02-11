@@ -30,12 +30,12 @@ class RedisExec implements IExec {
     let containerId = await getContainerId(service)
     if (!containerId) {
       const portMapping = `--publish ${port}:6379`
-      const requirePassword = password ? `--requirepass ${password}` : ''
+      const auth = password ? `--requirepass ${password}` : ''
       const cmd = `docker-compose run \
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
                     ${service} \
-                    ${requirePassword}`
+                    ${auth}`
       RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
@@ -67,7 +67,12 @@ class RedisExec implements IExec {
     containerId: string,
     runnerKey: string
   ) => {
-    const { responsivenessTimeout, password } = runnerConfig
+    const {
+      responsivenessTimeout,
+      host: runnerHost,
+      port: runnerPort,
+      password: runnerPassword,
+    } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
@@ -77,9 +82,15 @@ class RedisExec implements IExec {
       }
 
       try {
-        const auth = password ? `-a ${password}` : ''
-        const redisCliCommand = `PING`
-        const cmd = `docker exec ${containerId} redis-cli ${auth} ${redisCliCommand}`
+        const password = runnerPassword ? `-a ${runnerPassword}` : ''
+        const port = `-p ${runnerPort}`
+        const host = `-h ${runnerHost}`
+        const command = `PING`
+        const redisCliOpts = `${host} \
+                              ${port} \
+                              ${password} \
+                              ${command}`
+        const cmd = `docker exec ${containerId} redis-cli ${redisCliOpts}`
         RunnerLogger.shellCmd(cmd)
         const { stdout: result } = await execa.shell(cmd)
         if (result !== 'PONG') {
