@@ -8,6 +8,7 @@ const ICONS: { [key: string]: string } = {
   WARNING: '⚠️',
   INFO: 'ℹ️',
   t: '2',
+  tt: '2',
 }
 
 const COLORS: {
