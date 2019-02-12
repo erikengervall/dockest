@@ -3,4 +3,3 @@
 yarn build
 git add ./dist
 git commit --amend --no-edit
-git push
