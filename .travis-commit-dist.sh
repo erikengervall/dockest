@@ -7,8 +7,10 @@ setup_git() {
 
 commit_build_files() {
   yarn build
-  git pull
+  git fetch --all
   git checkout $BRANCH
+  echo "inbetween checkouts xd"
+  git checkout -b $BRANCH
   git add ./dist
   git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 }
