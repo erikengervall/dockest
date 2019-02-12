@@ -7,6 +7,7 @@ addons:
       - docker-ce
 env:
   - CI=true
+
 before_install:
   # print relevant versions
   - docker --version
@@ -32,9 +33,6 @@ install:
 
   - echo "*** <install> complete ***"
 script:
-  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+  # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  # - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   - yarn travis:test:all
-  - echo "*** <script> complete ***"
-after_success:
-  - ./.travis-commit-dist.sh
