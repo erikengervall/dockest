@@ -12,11 +12,13 @@
     "build:watch": "yarn clean && tsc --watch",
     "buildw": "yarn clean && webpack --config webpack.config.js",
     "buildw:watch": "yarn clean && webpack --config webpack.config.js --watch",
+    "setup": "./setup.sh",
     "test:example": "cd example && yarn test",
     "test": "jest ./src",
     "test:unit:watch": "jest ./src --watch",
     "travis:install:all": "yarn && cd example && yarn",
-    "travis:test:all": "yarn test && yarn test:example"
+    "travis:test:all": "yarn test && yarn test:example",
+    "postinstall": "./dev-toolbox/postinstall.sh"
   },
   "dependencies": {
     "execa": "^1.0.0"
