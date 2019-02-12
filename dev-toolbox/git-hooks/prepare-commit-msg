@@ -1,17 +1,24 @@
 #!/usr/bin/env python
 
-import sys, os, re
+import sys, re
 from subprocess import check_output
 
 # Collect the parameters
 commit_msg_filepath = sys.argv[1]
 
+# Get the branch
+branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
+
+# Only prepare the commit message if it's an issue-brach, working on the assumption that issue-branch names end with hashtag+number
 if re.search('#\d+$', branch):
-    ## print "prepare-commit-msg: Oh hey, it's an issue branch."
-    result = re.match('.*(#\d+$)', branch)
-    issue_number = result.group(1)
+    # Regex group the issue number
+    issueResult = re.match('.*(#\d+$)', branch)
+
+    # Select the first group from the regex
+    issueTag = issueResult.group(1)
+
     with open(commit_msg_filepath, 'r+') as f:
-        message = f.read()
+        oldMessage = f.read()
         f.seek(0, 0)
-        newMessage = "%s: %s" % (issue_number, message)
+        newMessage = "%s: %s" % (issueTag, oldMessage)
         f.write(newMessage)
