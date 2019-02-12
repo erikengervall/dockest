@@ -27,5 +27,3 @@ if re.search('#\d+$', branch):
         content = f.read()
         f.seek(0, 0)
         f.write("%s: %s" % (issue_number, content))
-
-exit(1)
