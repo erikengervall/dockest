@@ -37,4 +37,4 @@ script:
   - yarn travis:test:all
   - echo "*** <script> complete ***"
 after_success:
-  - ./travisPush.sh
+  - ./.travis-commit-dist.sh
