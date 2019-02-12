@@ -9,7 +9,11 @@ const ICONS = {
     STOPPED: '🛑',
     WARNING: '⚠️',
     INFO: 'ℹ️',
+<<<<<<< HEAD
     as123123d: 'ℹ️',
+=======
+    as123d: 'ℹ️',
+>>>>>>> 26209a568ef0d767fd205253ca5310c59c28a685
 };
 exports.ICONS = ICONS;
 const COLORS = {
