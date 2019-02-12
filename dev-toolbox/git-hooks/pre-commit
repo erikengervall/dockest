@@ -10,5 +10,5 @@ else
 	# echo "git-hook post-commit: amending previous commit with new dist"
 	yarn build
 	git add ./dist
-	git commit --amend --no-edit --no-verify
+	git commit --amend --no-verify # --no-edit
 fi;
