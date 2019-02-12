@@ -8,5 +8,7 @@ gitCacheDiff="$(git diff --cached --name-only | grep 'dist/' | uniq)"
 if [ -z "$gitCacheDiff" ]; then
 	exit 0
 else
+	# Amend the previous commit with the dist files
+	echo "post-commit: amending previous commit with new dist"
 	git commit --amend --no-edit
 fi;

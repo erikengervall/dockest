@@ -20,5 +20,6 @@ if re.search('#\d+$', branch):
     with open(commit_msg_filepath, 'r+') as f:
         oldMessage = f.read()
         f.seek(0, 0)
-        newMessage = "%s: %s" % (issueTag, oldMessage)
+        newMessage = '%s: %s' % (issueTag, oldMessage)
         f.write(newMessage)
+        print('prepare-commit-msg: attached issue-tag %s to commit message' % (issueTag))
