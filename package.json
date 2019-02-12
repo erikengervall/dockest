@@ -1,7 +1,7 @@
 {
   "name": "dockest",
-  "version": "0.1.0",
-  "description": "Docker + Jest",
+  "version": "0.2.0",
+  "description": "Docker + Jest integration testing",
   "main": "dist/dockest.js",
   "author": "Erik Engervall",
   "email": "erik.engervall@gmail.com",
@@ -14,10 +14,9 @@
     "buildw:watch": "yarn clean && webpack --config webpack.config.js --watch",
     "test:example": "cd example && yarn test",
     "test": "jest ./src",
-    "test:unit": "yarn test",
     "test:unit:watch": "jest ./src --watch",
     "travis:install:all": "yarn && cd example && yarn",
-    "travis:test:all": "yarn test:unit && yarn test:example"
+    "travis:test:all": "yarn test && yarn test:example"
   },
   "dependencies": {
     "execa": "^1.0.0"

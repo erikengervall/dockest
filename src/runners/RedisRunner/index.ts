@@ -72,6 +72,7 @@ export class RedisRunner implements IBaseRunner {
       service: validateTypes.isString,
       host: validateTypes.isString,
       port: validateTypes.isNumber,
+      password: validateTypes.isString,
       commands: validateTypes.isArrayOfType(validateTypes.isString),
       connectionTimeout: validateTypes.isNumber,
       responsivenessTimeout: validateTypes.isNumber,

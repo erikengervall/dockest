@@ -1,12 +1,12 @@
 version: '3'
 services:
   postgres1sequelize: # https://hub.docker.com/_/postgres
-    image: postgres:11.1
+    image: postgres:9.6
     volumes:
       - postgres1Volume:/var/lib/postgresql/data
 
   postgres2knex: # https://hub.docker.com/_/postgres
-    image: postgres:11.1
+    image: postgres:9.6
     volumes:
       - postgres2Volume:/var/lib/postgresql/data
 

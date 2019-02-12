@@ -10,7 +10,7 @@
 
 ### [Postgres](https://hub.docker.com/_/postgres)
 
-```javascript
+```typescript
 new PostgresRunner({
   service: 'postgres',
   host: 'localhost',
@@ -27,9 +27,20 @@ new PostgresRunner({
 })
 ```
 
+### [Redis](https://hub.docker.com/_/redis)
+
+```typescript
+new RedisRunner({
+  service: 'redis',
+  host: 'localhost',
+  port: 6379,
+  password: 'password',
+})
+```
+
 ### (WIP) [Zookeeper](https://hub.docker.com/r/wurstmeister/zookeeper/) & [Kafka](https://hub.docker.com/r/wurstmeister/kafka)
 
-```javascript
+```typescript
 const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
 const zookeeperConnect = `${zookeeperService}:${zookeeperPort}`
@@ -55,25 +66,42 @@ new KafkaRunner({
 
 ## Basic usage
 
-```javascript
-const {
-  default: Dockest,
-  runners: { PostgresRunner },
-} = require('dockest')
+### Typescript
 
-const myPostgresRunner = new PostgresRunner({
-  username: 'username',
-  password: 'password',
-  database: 'database',
-  host: 'localhost',
-  port: 5432,
-  service: 'postgres',
-  commands: [
-    'sequelize db:migrate:undo:all',
-    'sequelize db:migrate',
-    'sequelize db:seed:undo:all',
-    'sequelize db:seed --seed 20190101001337-demo-user',
-  ],
+`jest.config.js`
+
+```js
+module.exports = {
+  preset: 'ts-jest',
+}
+```
+
+`package.json`
+
+```json
+{
+  "scripts": {
+    "test": "ts-node ./integration.ts"
+  },
+  "devDependencies": {
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.0.2"
+  }
+}
+```
+
+`dockest.ts`
+
+```typescript
+import Dockest, { runners } from 'dockest'
+
+const { PostgresRunner } = runners
+
+const postgres = new PostgresRunner({
+  service: 'insert-docker-compose-service-name-here',
+  username: 'insert-username-here',
+  password: 'insert-password-here',
+  database: 'insert-database-here',
 })
 
 const integration = new Dockest({
@@ -81,7 +109,7 @@ const integration = new Dockest({
     lib: require('jest'),
   },
   runners: {
-    myPostgresRunner,
+    postgres,
   },
 })
 

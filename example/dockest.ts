@@ -71,10 +71,10 @@ const redis1ioredis = new RedisRunner({
 })
 
 const myRunners: any = {}
-if (env.postgres1sequelize_enabled === 'true') {
+if (env.postgres1sequelize_enabled === 'true' || env.CI === 'true') {
   myRunners.postgres1sequelize = postgres1sequelize
 }
-if (env.postgres2knex_enabled === 'true') {
+if (env.postgres2knex_enabled === 'true' || env.CI === 'true') {
   myRunners.postgres2knex = postgres2knex
 }
 if (env.zookeeper_enabled === 'true') {
@@ -83,7 +83,7 @@ if (env.zookeeper_enabled === 'true') {
 if (env.kafka_enabled === 'true') {
   myRunners.kafka1kafkajs = kafka1kafkajs
 }
-if (env.redis1ioredis_enabled === 'true') {
+if (env.redis1ioredis_enabled === 'true' || env.CI === 'true') {
   myRunners.redis1ioredis = redis1ioredis
 }
 

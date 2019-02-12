@@ -67,12 +67,7 @@ class RedisExec implements IExec {
     containerId: string,
     runnerKey: string
   ) => {
-    const {
-      responsivenessTimeout,
-      host: runnerHost,
-      port: runnerPort,
-      password: runnerPassword,
-    } = runnerConfig
+    const { responsivenessTimeout, host: runnerHost, password: runnerPassword } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
@@ -83,7 +78,7 @@ class RedisExec implements IExec {
 
       try {
         const host = `-h ${runnerHost}`
-        const port = `-p ${runnerPort}`
+        const port = `-p 6379`
         const password = runnerPassword ? `-a ${runnerPassword}` : ''
         const command = `PING`
         const redisCliOpts = `${host} \
