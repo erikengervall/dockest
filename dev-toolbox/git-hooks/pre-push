@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# gitCacheDiff="$(git diff --cached --name-only | grep 'src/' | uniq)"
+# hasAlreadyBuilt="$(git diff --cached --name-only | grep 'dist/' | uniq)"
+
+# ## In order to prevent infinite commit>post-commit>loop
+# if [ -z "$hasAlreadyBuilt" ]; then
+# 	exit 0
+# fi;
+
+## Amend the previous commit with the dist files
+yarn build
+git add ./dist
+git commit --amend --no-edit
