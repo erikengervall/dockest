@@ -2,12 +2,12 @@
 
 gitCacheDiff="$(git diff --cached --name-only | grep 'src/' | uniq)"
 
-# In order to prevent infinite commit>post-commit>loop
+## In order to prevent infinite commit>post-commit>loop
 if [ -z "$gitCacheDiff" ]; then
 	exit 0
 else
-	# Amend the previous commit with the dist files
-	echo "git-hook post-commit: amending previous commit with new dist"
+	## Amend the previous commit with the dist files
+	# echo "git-hook post-commit: amending previous commit with new dist"
 	yarn build
 	git add ./dist
 	git commit --amend --no-edit
