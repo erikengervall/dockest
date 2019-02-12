@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - '8'
-script: yarn travis:test:all
 addons:
   apt:
     packages:
@@ -27,15 +26,15 @@ before_install:
 
   - yarn global add typescript
 
-  - echo "*** before_install complete ***"
+  - echo "*** <before_install> complete ***"
 install:
-  # install dependencies
   - yarn travis:install:all
 
-  - echo "*** install complete ***"
+  - echo "*** <install> complete ***"
 script:
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-  - echo "*** scripzt remove-me ***"
+  - yarn travis:test:all
+  - echo "*** <script> complete ***"
 after_success:
-  - .travis/push.sh
+  - ./travisPush.sh
