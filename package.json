@@ -18,7 +18,7 @@
     "test:unit:watch": "jest ./src --watch",
     "travis:install:all": "yarn && cd example && yarn",
     "travis:test:all": "yarn test && yarn test:example",
-    "postinstall": "./dev-toolbox/postinstall.sh"
+    "postinstall": "./dev-toolbox/postinstall"
   },
   "dependencies": {
     "execa": "^1.0.0"
