@@ -2,7 +2,7 @@ import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
 import { BaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
-import RedixExec from './execs'
+import RedisExec from './execs'
 
 interface RequiredConfigProps {
   service: string
@@ -39,7 +39,7 @@ export class RedisRunner implements BaseRunner {
   }
 
   public config: RedisRunnerConfig
-  public redisExec: RedixExec
+  public redisExec: RedisExec
   public containerId: string = ''
   public runnerKey: string = ''
 
@@ -48,7 +48,7 @@ export class RedisRunner implements BaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.redisExec = new RedixExec()
+    this.redisExec = new RedisExec()
 
     this.validateConfig()
   }
