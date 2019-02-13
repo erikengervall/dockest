@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exit 0
+
 # gitCacheDiff="$(git diff --cached --name-only | grep 'src/' | uniq)"
 # hasAlreadyBuilt="$(git diff --cached --name-only | grep 'dist/' | uniq)"
 
@@ -11,4 +13,4 @@
 ## Amend the previous commit with the dist files
 yarn build
 git add ./dist
-git commit --amend --no-edit
+git commit --amend --no-edit --no-verify

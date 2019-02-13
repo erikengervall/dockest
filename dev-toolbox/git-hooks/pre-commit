@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exit 0
+
 gitCacheDiff="$(git diff --cached --name-only | grep 'src/' | uniq)"
 
 ## In order to prevent infinite commit>post-commit>loop
