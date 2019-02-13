@@ -3,11 +3,12 @@
 
 ##
 ## Prepends the commit message with the branch's issueTag
-## Example: `commit -m "fix"` from branch "fix-stuff#2" becomes `commit -m "#2: fix"`
+## Example: `commit -m 'fix'` from branch 'fix-stuff#2' becomes `commit -m '#2: fix'`
 ##
 
 import sys, re
 from subprocess import check_output
+from __future__ import print_function
 
 ## Collect the parameters
 commit_msg_filepath = sys.argv[1]
@@ -23,9 +24,9 @@ if re.search('#\d+$', branch):
     ## Select the first group from the regex
     issueTag = issueResult.group(1)
     with open(commit_msg_filepath, 'r+') as f:
-        print("⏳ prepare-commit-message")
+        print('⏳ prepare-commit-message')
         oldMessage = f.read()
         f.seek(0, 0)
         newMessage = '%s: %s' % (issueTag, oldMessage)
         f.write(newMessage)
-        print("✅ prepare-commit-message: \"%s\"" % (newMessage))
+        print('✅ prepare-commit-message: "%s"' % (newMessage), end = '')
