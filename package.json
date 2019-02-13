@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Docker + Jest integration testing",
   "main": "dist/dockest.js",
   "author": "Erik Engervall",
@@ -12,7 +12,8 @@
     "test:example": "cd example && yarn test",
     "test:all": "yarn test && yarn test:example",
     "install:all": "yarn && cd example && yarn",
-    "postinstall": "./dev-toolbox/postinstall"
+    "postinstall": "yarn build",
+    "setup": "./dev-toolbox/setup"
   },
   "dependencies": {
     "execa": "^1.0.0"
