@@ -7,17 +7,11 @@
   "email": "erik.engervall@gmail.com",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "yarn clean && tsc",
-    "build:watch": "yarn clean && tsc --watch",
-    "buildw": "yarn clean && webpack --config webpack.config.js",
-    "buildw:watch": "yarn clean && webpack --config webpack.config.js --watch",
-    "setup": "./setup.sh",
-    "test:example": "cd example && yarn test",
+    "build": "rimraf ./dist && tsc",
     "test": "jest ./src",
-    "test:unit:watch": "jest ./src --watch",
-    "travis:install:all": "yarn && cd example && yarn",
-    "travis:test:all": "yarn test && yarn test:example",
+    "test:example": "cd example && yarn test",
+    "test:all": "yarn test && yarn test:example",
+    "install:all": "yarn && cd example && yarn",
     "postinstall": "./dev-toolbox/postinstall"
   },
   "dependencies": {
