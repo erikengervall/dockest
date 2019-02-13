@@ -56,7 +56,6 @@ const kafka1kafkajs = new KafkaRunner({
   },
 })
 
-// @ts-ignore
 const redis1ioredis = new RedisRunner({
   service: env.redis1ioredis_service,
   host: env.redis1ioredis_host,
@@ -82,9 +81,7 @@ if (env.redis1ioredis_enabled === 'true' || env.CI === 'true') {
 }
 
 const dockest = new Dockest({
-  dockest: {
-    logLevel: logLevel.VERBOSE,
-  },
+  logLevel: logLevel.VERBOSE,
   jest: {
     // tslint:disable-next-line
     lib: require('jest'),

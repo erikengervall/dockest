@@ -17,9 +17,9 @@ class BaseLogger {
         this.trim = (str = '') => typeof str === 'string' ? str.replace(/\s+/g, ' ').trim() : str;
         this.logSuccess = (m, d) => console.log(`${SUCCESS} ${BRIGHT}${m}${RESET}`, this.defaultD(d), `\n`);
         this.logLoading = (m, d) => console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, this.defaultD(d));
-        this.logInfo = (m, d) => console.log(`${INFO} ${BRIGHT}${m}${RESET}`, this.defaultD(d));
+        this.logInfo = (m, d) => console.log(`${INFO}  ${BRIGHT}${m}${RESET}`, this.defaultD(d));
         this.logError = (m, d) => console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n');
-        this.getLogLevel = () => index_1.default.jestEnv ? constants_1.LOG_LEVEL.NORMAL : index_1.default.config.dockest.logLevel;
+        this.getLogLevel = () => (index_1.default.jestEnv ? constants_1.LOG_LEVEL.NORMAL : index_1.default.config.logLevel);
         this.defaultD = (d) => d || '';
         return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this);
     }

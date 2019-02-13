@@ -25,4 +25,5 @@ export interface Runners {
   [runnerKey: string]: PostgresRunner | KafkaRunner | ZookeeperRunner
 }
 
-export { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
+const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
+export { runners }

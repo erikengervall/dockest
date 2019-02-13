@@ -26,7 +26,7 @@ class KafkaRunner {
         this.validateConfig = () => {
             const schema = {
                 service: utils_1.validateTypes.isString,
-                ports: utils_1.validateTypes.isObjectOfType(utils_1.validateTypes.isString),
+                ports: utils_1.validateTypes.isObjectWithValuesOfType(utils_1.validateTypes.isString),
                 zookeepeerConnect: utils_1.validateTypes.isString,
             };
             const failures = utils_1.validateTypes(schema, this.config);

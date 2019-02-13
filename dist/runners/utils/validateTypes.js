@@ -39,10 +39,10 @@ const isArrayOfType = (fn) => {
 };
 const isFunction = _ => _ && typeof _ === 'function';
 const isObject = _ => _ && typeof _ === 'object' && _.constructor === Object;
-const isObjectOfType = (fn) => {
-    const isObjectOfType = (_) => isObject(_) && !Object.values(_).some((_) => !fn(_));
-    isObjectOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`;
-    return isObjectOfType;
+const isObjectWithValuesOfType = (fn) => {
+    const isObjectWithValuesOfType = (_) => isObject(_) && !Object.values(_).some((_) => !fn(_));
+    isObjectWithValuesOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`;
+    return isObjectWithValuesOfType;
 };
 const isNull = _ => _ === null;
 const isUndefined = _ => typeof _ === 'undefined';
@@ -65,7 +65,7 @@ validateTypes.isArray = isArray;
 validateTypes.isArrayOfType = isArrayOfType;
 validateTypes.isFunction = isFunction;
 validateTypes.isObject = isObject;
-validateTypes.isObjectOfType = isObjectOfType;
+validateTypes.isObjectWithValuesOfType = isObjectWithValuesOfType;
 validateTypes.isNull = isNull;
 validateTypes.isUndefined = isUndefined;
 validateTypes.isBoolean = isBoolean;

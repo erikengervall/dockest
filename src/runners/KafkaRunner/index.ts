@@ -55,7 +55,7 @@ export class KafkaRunner implements BaseRunner {
   private validateConfig = () => {
     const schema = {
       service: validateTypes.isString,
-      ports: validateTypes.isObjectOfType(validateTypes.isString),
+      ports: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
       zookeepeerConnect: validateTypes.isString,
     }
 

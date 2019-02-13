@@ -33,7 +33,7 @@ class BaseLogger {
     console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, this.defaultD(d))
 
   public logInfo: logMethod = (m, d) =>
-    console.log(`${INFO} ${BRIGHT}${m}${RESET}`, this.defaultD(d))
+    console.log(`${INFO}  ${BRIGHT}${m}${RESET}`, this.defaultD(d))
 
   public logError: logMethod = (m, d) =>
     console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n')

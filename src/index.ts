@@ -3,26 +3,21 @@ import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { RunnerLogger } from './loggers'
-import { KafkaRunner, PostgresRunner, RedisRunner, Runners, ZookeeperRunner } from './runners'
+import { runners, Runners } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
+interface RequiredConfigProps {
+  jest: JestConfig
+  runners: Runners
+}
 interface DefaultableConfigProps {
   logLevel: number
   exitHandler: (_: any) => void
 }
-export type DockestConfig = {
-  dockest: DefaultableConfigProps
-  jest: JestConfig
-  runners: Runners
-}
+export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
+type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-type DockestConfigUserInput = {
-  dockest: Partial<DefaultableConfigProps>
-  jest: JestConfig
-  runners: Runners
-}
-
-const DEFAULT_DOCKEST_CONFIG: DefaultableConfigProps = {
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   logLevel: LOG_LEVEL.NORMAL,
   exitHandler: (_: any) => undefined,
 }
@@ -42,11 +37,8 @@ class Dockest {
 
   constructor(userConfig: DockestConfigUserInput) {
     Dockest.config = {
+      ...DEFAULT_CONFIG,
       ...userConfig,
-      dockest: {
-        ...DEFAULT_DOCKEST_CONFIG,
-        ...userConfig.dockest,
-      },
     }
 
     this.jestRunner = new JestRunner(Dockest.config.jest)
@@ -93,9 +85,12 @@ class Dockest {
   }
 
   private validateConfig = () => {
-    const schema: { [key: string]: any } = {}
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
+      jest: validateTypes.isObject,
+      runners: validateTypes.isObject,
+    }
 
-    const failures = validateTypes(schema, Dockest.config.dockest)
+    const failures = validateTypes(schema, Dockest.config)
 
     if (failures.length > 0) {
       throw new ConfigurationError(`${failures.join('\n')}`)
@@ -103,7 +98,6 @@ class Dockest {
   }
 }
 
-export const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
-export const logLevel = LOG_LEVEL
-
+const logLevel = LOG_LEVEL
+export { runners, logLevel }
 export default Dockest
