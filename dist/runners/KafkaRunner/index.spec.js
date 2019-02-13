@@ -6,15 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
 const config = {
     service: '_',
-    database: '_',
-    password: '_',
-    username: '_',
+    zookeepeerConnect: '_',
+    topics: ['_'],
+    host: '_',
 };
-const postgresRunner1 = new index_1.default(config);
-const postgresRunner2 = new index_1.default(config);
-describe('PostgresRunner', () => {
+const KafkaRunner1 = new index_1.default(config);
+const KafkaRunner2 = new index_1.default(config);
+describe('KafkaRunner', () => {
     it('should create unique instances', () => {
-        expect(postgresRunner1).not.toBe(postgresRunner2);
+        expect(KafkaRunner1).not.toBe(KafkaRunner2);
     });
 });
 //# sourceMappingURL=index.spec.js.map

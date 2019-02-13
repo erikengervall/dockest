@@ -6,15 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./index"));
 const config = {
     service: '_',
-    database: '_',
-    password: '_',
-    username: '_',
 };
-const postgresRunner1 = new index_1.default(config);
-const postgresRunner2 = new index_1.default(config);
-describe('PostgresRunner', () => {
+const RedisRunner1 = new index_1.default(config);
+const RedisRunner2 = new index_1.default(config);
+describe('RedisRunner', () => {
     it('should create unique instances', () => {
-        expect(postgresRunner1).not.toBe(postgresRunner2);
+        expect(RedisRunner1).not.toBe(RedisRunner2);
     });
 });
 //# sourceMappingURL=index.spec.js.map
