@@ -7,13 +7,10 @@ const errors_1 = require("../../errors");
 const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
-    service: 'kafka',
     host: 'localhost',
-    ports: {},
     topics: [],
     autoCreateTopics: true,
     connectionTimeout: 30,
-    zookeepeerConnect: 'zookeeper:2181',
 };
 class KafkaRunner {
     constructor(config) {
@@ -29,11 +26,7 @@ class KafkaRunner {
         this.validateConfig = () => {
             const schema = {
                 service: utils_1.validateTypes.isString,
-                host: utils_1.validateTypes.isString,
                 ports: utils_1.validateTypes.isObjectOfType(utils_1.validateTypes.isString),
-                topics: utils_1.validateTypes.isArray,
-                autoCreateTopics: utils_1.validateTypes.isBoolean,
-                connectionTimeout: utils_1.validateTypes.isNumber,
                 zookeepeerConnect: utils_1.validateTypes.isString,
             };
             const failures = utils_1.validateTypes(schema, this.config);

@@ -29,6 +29,10 @@ const validateTypes = (schema: IObject, config?: IObject): string[] => {
     if (value) {
       const typeValidator = schema[schemaKey]
 
+      if (isArray(typeValidator)) {
+        // Allow sending multiple thangz
+      }
+
       if (!typeValidator(value)) {
         const testedSchemaKey = `${schemaKey}${RESET}`
         const expected = `${RED}Expected${RESET} ${getExpected(typeValidator)}`
@@ -73,6 +77,8 @@ const isOneOf = (haystack: any[]) => {
   isOneOf.expected = `oneOf [${haystack.join(', ')}]`
   return isOneOf
 }
+const OR = 'OR'
+const AND = 'AND'
 
 validateTypes.isString = isString
 validateTypes.isNumber = isNumber
@@ -90,4 +96,6 @@ validateTypes.isDate = isDate
 validateTypes.isSymbol = isSymbol
 validateTypes.isAny = isAny
 validateTypes.isOneOf = isOneOf
+validateTypes.OR = OR
+validateTypes.AND = AND
 export default validateTypes

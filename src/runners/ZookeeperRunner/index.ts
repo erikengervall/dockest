@@ -10,7 +10,6 @@ export interface IZookeeperRunnerConfig {
 }
 
 const DEFAULT_CONFIG = {
-  service: 'zookeeper',
   port: 2181,
   connectionTimeout: 30,
 }
@@ -45,8 +44,6 @@ export class ZookeeeperRunner implements IBaseRunner {
   private validateInput = () => {
     const schema = {
       service: validateTypes.isString,
-      port: validateTypes.isNumber,
-      connectionTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

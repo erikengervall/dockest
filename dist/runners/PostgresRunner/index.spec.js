@@ -20,7 +20,6 @@ const postgresRunner2 = new index_1.default(config);
 describe('PostgresRunner', () => {
     it('should create unique instances', () => {
         expect(postgresRunner1).not.toBe(postgresRunner2);
-        expect(postgresRunner1).not.toBe(postgresRunner2);
     });
 });
 //# sourceMappingURL=index.spec.js.map

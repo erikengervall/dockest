@@ -9,22 +9,19 @@ interface IPorts {
 
 export interface IKafkaRunnerConfig {
   service: string
-  host: string
   ports: IPorts
+  zookeepeerConnect: string
   topics: string[]
+  host: string
   autoCreateTopics: boolean
   connectionTimeout: number
-  zookeepeerConnect: string
 }
 
 const DEFAULT_CONFIG = {
-  service: 'kafka',
   host: 'localhost',
-  ports: {},
   topics: [],
   autoCreateTopics: true,
   connectionTimeout: 30,
-  zookeepeerConnect: 'zookeeper:2181',
 }
 
 export class KafkaRunner implements IBaseRunner {
@@ -57,11 +54,7 @@ export class KafkaRunner implements IBaseRunner {
   private validateConfig = () => {
     const schema = {
       service: validateTypes.isString,
-      host: validateTypes.isString,
       ports: validateTypes.isObjectOfType(validateTypes.isString),
-      topics: validateTypes.isArray,
-      autoCreateTopics: validateTypes.isBoolean,
-      connectionTimeout: validateTypes.isNumber,
       zookeepeerConnect: validateTypes.isString,
     }
 

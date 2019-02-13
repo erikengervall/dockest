@@ -8,7 +8,6 @@ const index_1 = __importDefault(require("../../index"));
 const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
-    service: 'redis',
     host: 'localhost',
     port: 6379,
     commands: [],
@@ -36,12 +35,6 @@ class RedisRunner {
         this.validateConfig = () => {
             const schema = {
                 service: utils_1.validateTypes.isString,
-                host: utils_1.validateTypes.isString,
-                port: utils_1.validateTypes.isNumber,
-                password: utils_1.validateTypes.isString,
-                commands: utils_1.validateTypes.isArrayOfType(utils_1.validateTypes.isString),
-                connectionTimeout: utils_1.validateTypes.isNumber,
-                responsivenessTimeout: utils_1.validateTypes.isNumber,
             };
             const failures = utils_1.validateTypes(schema, this.config);
             if (failures.length > 0) {

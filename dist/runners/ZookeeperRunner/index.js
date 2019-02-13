@@ -7,7 +7,6 @@ const errors_1 = require("../../errors");
 const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
-    service: 'zookeeper',
     port: 2181,
     connectionTimeout: 30,
 };
@@ -25,8 +24,6 @@ class ZookeeeperRunner {
         this.validateInput = () => {
             const schema = {
                 service: utils_1.validateTypes.isString,
-                port: utils_1.validateTypes.isNumber,
-                connectionTimeout: utils_1.validateTypes.isNumber,
             };
             const failures = utils_1.validateTypes(schema, this.config);
             if (failures.length > 0) {

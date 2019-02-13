@@ -11,9 +11,9 @@ export interface IPostgresRunnerConfig {
   port: number
   password: string
   username: string
-  commands?: string[]
-  connectionTimeout?: number
-  responsivenessTimeout?: number
+  commands: string[]
+  connectionTimeout: number
+  responsivenessTimeout: number
 }
 
 const DEFAULT_CONFIG = {
