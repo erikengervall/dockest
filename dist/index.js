@@ -12,7 +12,7 @@ const runners_1 = require("./runners");
 const utils_1 = require("./runners/utils");
 const DEFAULT_DOCKEST_CONFIG = {
     logLevel: constants_1.LOG_LEVEL.NORMAL,
-    exitHandler: () => undefined,
+    exitHandler: (_) => undefined,
 };
 class Dockest {
     constructor(userConfig) {

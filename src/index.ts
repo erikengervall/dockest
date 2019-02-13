@@ -24,7 +24,7 @@ type DockestConfigUserInput = {
 
 const DEFAULT_DOCKEST_CONFIG: DefaultableConfigProps = {
   logLevel: LOG_LEVEL.NORMAL,
-  exitHandler: () => undefined,
+  exitHandler: (_: any) => undefined,
 }
 
 class Dockest {
