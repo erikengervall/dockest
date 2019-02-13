@@ -12,7 +12,11 @@ if [ -z "$buildableFilesTouched" ]; then
 	exit 0
 else
 	echo "⏳ pre-commit"
-	yarn build
-	git add ./dist
-	echo "✅ pre-commit \n"
+	if yarn build; then
+		git add ./dist
+		echo "✅ pre-commit \n"
+	else
+		echo "🔥 pre-commit \n"
+		exit 1
+	fi;
 fi;
