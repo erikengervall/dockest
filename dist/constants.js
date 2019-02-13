@@ -9,6 +9,7 @@ const ICONS = {
     STOPPED: '🛑',
     WARNING: '⚠️',
     INFO: 'ℹ️',
+    tINFO: 'ℹ️',
 };
 exports.ICONS = ICONS;
 const COLORS = {
