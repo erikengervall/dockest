@@ -2,6 +2,8 @@
 
 `Dockest` is a small library that executes Jest alongside with your application's dependencies.
 
+[![Build Status](https://travis-ci.com/erikengervall/dockest.svg?branch=master)](https://travis-ci.com/erikengervall/dockest)
+
 ## Requirements
 
 `Dockest` requires at least Jest **v20.0.0** in order to ensure Jest's [CLI interface](https://github.com/facebook/jest/blob/master/packages/jest-cli/src/cli/index.js#L62).

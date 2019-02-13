@@ -11,18 +11,14 @@ export interface IPostgresRunnerConfig {
   port: number
   password: string
   username: string
-  commands: string[]
-  connectionTimeout: number
-  responsivenessTimeout: number
+  commands?: string[]
+  connectionTimeout?: number
+  responsivenessTimeout?: number
 }
 
 const DEFAULT_CONFIG = {
-  service: 'postgres',
   host: 'localhost',
-  database: 'database',
   port: 5432,
-  password: 'password',
-  username: 'username',
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
@@ -75,14 +71,9 @@ export class PostgresRunner implements IBaseRunner {
   private validateConfig = () => {
     const schema = {
       service: validateTypes.isString,
-      host: validateTypes.isString,
       database: validateTypes.isString,
-      port: validateTypes.isNumber,
       password: validateTypes.isString,
       username: validateTypes.isString,
-      commands: validateTypes.isArrayOfType(validateTypes.isString),
-      connectionTimeout: validateTypes.isNumber,
-      responsivenessTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

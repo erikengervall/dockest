@@ -1,13 +1,10 @@
 import dotenv from 'dotenv'
 
-// @ts-ignore
 import Dockest, { logLevel, runners } from '../src/index'
 
 const env: any = dotenv.config().parsed
-// @ts-ignore
 const { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } = runners
 
-// @ts-ignore
 const postgres1sequelize = new PostgresRunner({
   username: env.postgres1sequelize_username,
   password: env.postgres1sequelize_password,
@@ -23,7 +20,6 @@ const postgres1sequelize = new PostgresRunner({
   ],
 })
 
-// @ts-ignore
 const postgres2knex = new PostgresRunner({
   username: env.postgres2knex_username,
   password: env.postgres2knex_password,
@@ -41,13 +37,11 @@ const postgres2knex = new PostgresRunner({
 const zookeeperService = env.zookeeper_service
 const zookeeperPort = Number(env.zookeeper_port)
 const zookeepeerConnect = `${zookeeperService}:${zookeeperPort}`
-// @ts-ignore
 const zookeeper = new ZookeeperRunner({
   service: zookeeperService,
   port: zookeeperPort,
 })
 
-// @ts-ignore
 const kafka1kafkajs = new KafkaRunner({
   service: env.kafka_service,
   host: env.kafka_host,
@@ -62,7 +56,6 @@ const kafka1kafkajs = new KafkaRunner({
   },
 })
 
-// @ts-ignore
 const redis1ioredis = new RedisRunner({
   service: env.redis1ioredis_service,
   host: env.redis1ioredis_host,
