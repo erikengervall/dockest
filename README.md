@@ -78,6 +78,8 @@ new KafkaRunner({
 
 ## Basic usage
 
+Check out `/example/dockest.ts` for a more extensive example.
+
 ### Typescript
 
 `jest.config.js`
@@ -93,7 +95,7 @@ module.exports = {
 ```json
 {
   "scripts": {
-    "test": "ts-node ./integration.ts"
+    "test": "ts-node ./dockest.ts"
   },
   "devDependencies": {
     "ts-jest": "^23.10.5",
@@ -116,7 +118,7 @@ const postgres = new PostgresRunner({
   database: 'insert-database-here',
 })
 
-const integration = new Dockest({
+const dockest = new Dockest({
   jest: {
     lib: require('jest'),
   },
@@ -125,7 +127,7 @@ const integration = new Dockest({
   },
 })
 
-integration.run()
+dockest.run()
 ```
 
 ## Contributing
