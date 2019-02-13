@@ -2,52 +2,47 @@ import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
 import { IBaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
-import PostgresExec from './execs'
+import RedixExec from './execs'
 
-export interface IPostgresRunnerConfig {
+export interface IRedisRunnerConfig {
   service: string
   host: string
-  database: string
   port: number
   password: string
-  username: string
   commands: string[]
   connectionTimeout: number
   responsivenessTimeout: number
 }
 
 const DEFAULT_CONFIG = {
-  service: 'postgres',
+  service: 'redis',
   host: 'localhost',
-  database: 'database',
-  port: 5432,
-  password: 'password',
-  username: 'username',
+  port: 6379,
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-export class PostgresRunner implements IBaseRunner {
+export class RedisRunner implements IBaseRunner {
   public static getHelpers = () => {
     Dockest.jestEnv = true
 
     return {
-      runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd),
+      runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
     }
   }
 
-  public config: IPostgresRunnerConfig
-  public postgresExec: PostgresExec
+  public config: IRedisRunnerConfig
+  public redisExec: RedixExec
   public containerId: string = ''
   public runnerKey: string = ''
 
-  constructor(config: IPostgresRunnerConfig) {
+  constructor(config: IRedisRunnerConfig) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.postgresExec = new PostgresExec()
+    this.redisExec = new RedixExec()
 
     this.validateConfig()
   }
@@ -59,10 +54,10 @@ export class PostgresRunner implements IBaseRunner {
   public setup = async (runnerKey: string) => {
     this.runnerKey = runnerKey
 
-    const containerId = await this.postgresExec.start(this.config, runnerKey)
+    const containerId = await this.redisExec.start(this.config, runnerKey)
     this.containerId = containerId
 
-    await this.postgresExec.checkHealth(this.config, containerId, runnerKey)
+    await this.redisExec.checkHealth(this.config, containerId, runnerKey)
 
     const commands = this.config.commands || []
     for (const cmd of commands) {
@@ -70,16 +65,14 @@ export class PostgresRunner implements IBaseRunner {
     }
   }
 
-  public teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey)
+  public teardown = async () => this.redisExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
     const schema = {
       service: validateTypes.isString,
       host: validateTypes.isString,
-      database: validateTypes.isString,
       port: validateTypes.isNumber,
       password: validateTypes.isString,
-      username: validateTypes.isString,
       commands: validateTypes.isArrayOfType(validateTypes.isString),
       connectionTimeout: validateTypes.isNumber,
       responsivenessTimeout: validateTypes.isNumber,
@@ -93,4 +86,4 @@ export class PostgresRunner implements IBaseRunner {
   }
 }
 
-export default PostgresRunner
+export default RedisRunner

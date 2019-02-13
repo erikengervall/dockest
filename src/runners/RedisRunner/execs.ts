@@ -1,44 +1,41 @@
 import execa from 'execa'
-
 import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
-import { IPostgresRunnerConfig } from './index'
+import { IRedisRunnerConfig } from './index'
 
 interface IExec {
-  start: (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => Promise<string>
+  start: (runnerConfig: IRedisRunnerConfig, runnerKey: string) => Promise<string>
   checkHealth: (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: IRedisRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
-class PostgresExec implements IExec {
-  private static instance: PostgresExec
+class RedisExec implements IExec {
+  private static instance: RedisExec
 
   constructor() {
-    return PostgresExec.instance || (PostgresExec.instance = this)
+    return RedisExec.instance || (RedisExec.instance = this)
   }
 
-  public start = async (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => {
+  public start = async (runnerConfig: IRedisRunnerConfig, runnerKey: string) => {
     RunnerLogger.startContainer(runnerKey)
 
-    const { port, service, database, username, password } = runnerConfig
+    const { port, service, password } = runnerConfig
 
     let containerId = await getContainerId(service)
     if (!containerId) {
-      const portMapping = `--publish ${port}:5432`
-      const env = `-e POSTGRES_DB=${database} \
-                    -e POSTGRES_USER=${username} \
-                    -e POSTGRES_PASSWORD=${password}`
+      const portMapping = `--publish ${port}:6379`
+      const auth = password ? `--requirepass ${password}` : ''
       const cmd = `docker-compose run \
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
-                    ${env} \
-                    ${service}`
+                    ${service} \
+                    ${auth}`
       RunnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
     }
@@ -50,7 +47,7 @@ class PostgresExec implements IExec {
   }
 
   public checkHealth = async (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: IRedisRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => {
@@ -66,28 +63,34 @@ class PostgresExec implements IExec {
     teardownSingle(containerId, runnerKey)
 
   private checkResponsiveness = async (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: IRedisRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => {
-    const { responsivenessTimeout, host, database, username } = runnerConfig
+    const { responsivenessTimeout, host: runnerHost, password: runnerPassword } = runnerConfig
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
 
       if (responsivenessTimeout <= 0) {
-        throw new DockestError(`Database responsiveness timed out`)
+        throw new DockestError(`Redis responsiveness timed out`)
       }
 
       try {
-        const cmd = `docker exec ${containerId} \
-                      bash -c "psql \
-                      -h ${host} \
-                      -d ${database} \
-                      -U ${username} \
-                      -c 'select 1'"`
+        const host = `-h ${runnerHost}`
+        const port = `-p 6379`
+        const password = runnerPassword ? `-a ${runnerPassword}` : ''
+        const command = `PING`
+        const redisCliOpts = `${host} \
+                              ${port} \
+                              ${password} \
+                              ${command}`
+        const cmd = `docker exec ${containerId} redis-cli ${redisCliOpts}`
         RunnerLogger.shellCmd(cmd)
-        await execa.shell(cmd)
+        const { stdout: result } = await execa.shell(cmd)
+        if (result !== 'PONG') {
+          throw new Error('PING did not recieve a PONG')
+        }
 
         RunnerLogger.checkResponsivenessSuccess(runnerKey)
       } catch (error) {
@@ -102,7 +105,7 @@ class PostgresExec implements IExec {
   }
 
   private checkConnection = async (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: IRedisRunnerConfig,
     runnerKey: string
   ): Promise<void> => {
     const { connectionTimeout, host, port } = runnerConfig
@@ -111,7 +114,7 @@ class PostgresExec implements IExec {
       RunnerLogger.checkConnection(runnerKey, connectionTimeout)
 
       if (connectionTimeout <= 0) {
-        throw new DockestError(`Database connection timed out`)
+        throw new DockestError(`Redis connection timed out`)
       }
 
       try {
@@ -130,4 +133,4 @@ class PostgresExec implements IExec {
   }
 }
 
-export default PostgresExec
+export default RedisExec

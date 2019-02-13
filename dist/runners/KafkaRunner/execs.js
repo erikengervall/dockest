@@ -8,7 +8,6 @@ const constants_1 = require("../../constants");
 const errors_1 = require("../../errors");
 const loggers_1 = require("../../loggers");
 const utils_1 = require("../utils");
-const PRIMARY_KAFKA_PORT = '9092';
 class KafkaExec {
     constructor() {
         this.start = async (runnerConfig, runnerKey) => {
@@ -42,7 +41,8 @@ class KafkaExec {
         };
         this.teardown = async (containerId, runnerKey) => utils_1.teardownSingle(containerId, runnerKey);
         this.checkConnection = async (runnerConfig, runnerKey) => {
-            const { connectionTimeout = 30, ports } = runnerConfig;
+            const { connectionTimeout, ports } = runnerConfig;
+            const PRIMARY_KAFKA_PORT = '9092';
             const primaryKafkaPort = Number(Object.keys(ports).find(port => ports[port] === PRIMARY_KAFKA_PORT));
             const recurse = async (connectionTimeout) => {
                 loggers_1.RunnerLogger.checkConnection(runnerKey, connectionTimeout);

@@ -6,10 +6,14 @@ import ZookeeperExec from './execs'
 export interface IZookeeperRunnerConfig {
   service: string
   port: number
-  connectionTimeout?: number
+  connectionTimeout: number
 }
 
-const DEFAULT_CONFIG = {}
+const DEFAULT_CONFIG = {
+  service: 'zookeeper',
+  port: 2181,
+  connectionTimeout: 30,
+}
 
 export class ZookeeeperRunner implements IBaseRunner {
   public config: IZookeeperRunnerConfig
@@ -42,6 +46,7 @@ export class ZookeeeperRunner implements IBaseRunner {
     const schema = {
       service: validateTypes.isString,
       port: validateTypes.isNumber,
+      connectionTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

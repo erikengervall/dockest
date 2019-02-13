@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+##
+## Prepends the commit message with the branch's issueTag
+## Example: `commit -m 'fix'` from branch 'fix-stuff#2' becomes `commit -m '#2: fix'`
+##
+
+import sys, re
+from subprocess import check_output
+
+## Collect the parameters
+commit_msg_filepath = sys.argv[1]
+
+## Get the branch
+branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
+
+## Only prepare the commit message if it's an issue-brach, working on the assumption that issue-branch names end with hashtag+number
+if re.search('#\d+$', branch):
+    ## Regex group the issue number
+    issueResult = re.match('.*(#\d+$)', branch)
+
+    ## Select the first group from the regex
+    issueTag = issueResult.group(1)
+    with open(commit_msg_filepath, 'r+') as f:
+        print('⏳ prepare-commit-message')
+        oldMessage = f.read()
+        f.seek(0, 0)
+        newMessage = '%s: %s' % (issueTag, oldMessage)
+        f.write(newMessage)
+        print('✅ prepare-commit-message\n')

@@ -4,10 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "ts-node ./integration.ts"
+    "test": "ts-node ./dockest.ts"
   },
   "dependencies": {
     "dotenv": "^6.2.0",
+    "ioredis": "^4.3.0",
     "jest": "^23.6.0",
     "kafkajs": "^1.4.7",
     "knex": "^0.16.3",

@@ -53,7 +53,7 @@ class ZookeeperExec implements IExec {
     teardownSingle(containerId, runnerKey)
 
   private checkConnection = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
-    const { connectionTimeout = 30, port } = runnerConfig
+    const { connectionTimeout, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {
       RunnerLogger.checkConnection(runnerKey, connectionTimeout)

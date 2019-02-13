@@ -43,8 +43,11 @@ const COLORS = {
     },
 };
 exports.COLORS = COLORS;
-const dockerComposeRunOpts = { runInBackground: '--detach', doNotRunLinkedServices: '--no-deps' };
-const defaultDockerComposeRunOpts = Object.values(dockerComposeRunOpts).join(' ');
+const defaultDockerComposeRunOpts = Object.values({
+    // cleanUp: '--rm',
+    runInBackground: '--detach',
+    doNotRunLinkedServices: '--no-deps',
+}).join(' ');
 exports.defaultDockerComposeRunOpts = defaultDockerComposeRunOpts;
 const LOG_LEVEL = {
     NOTHING: 0,

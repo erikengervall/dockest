@@ -8,22 +8,20 @@ const constants_1 = require("../../constants");
 const errors_1 = require("../../errors");
 const loggers_1 = require("../../loggers");
 const utils_1 = require("../utils");
-class PostgresExec {
+class RedisExec {
     constructor() {
         this.start = async (runnerConfig, runnerKey) => {
             loggers_1.RunnerLogger.startContainer(runnerKey);
-            const { port, service, database, username, password } = runnerConfig;
+            const { port, service, password } = runnerConfig;
             let containerId = await utils_1.getContainerId(service);
             if (!containerId) {
-                const portMapping = `--publish ${port}:5432`;
-                const env = `-e POSTGRES_DB=${database} \
-                    -e POSTGRES_USER=${username} \
-                    -e POSTGRES_PASSWORD=${password}`;
+                const portMapping = `--publish ${port}:6379`;
+                const auth = password ? `--requirepass ${password}` : '';
                 const cmd = `docker-compose run \
                     ${constants_1.defaultDockerComposeRunOpts} \
                     ${portMapping} \
-                    ${env} \
-                    ${service}`;
+                    ${service} \
+                    ${auth}`;
                 loggers_1.RunnerLogger.shellCmd(cmd);
                 await execa_1.default.shell(cmd);
             }
@@ -39,21 +37,27 @@ class PostgresExec {
         };
         this.teardown = async (containerId, runnerKey) => utils_1.teardownSingle(containerId, runnerKey);
         this.checkResponsiveness = async (runnerConfig, containerId, runnerKey) => {
-            const { responsivenessTimeout, host, database, username } = runnerConfig;
+            const { responsivenessTimeout, host: runnerHost, password: runnerPassword } = runnerConfig;
             const recurse = async (responsivenessTimeout) => {
                 loggers_1.RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout);
                 if (responsivenessTimeout <= 0) {
-                    throw new errors_1.DockestError(`Database responsiveness timed out`);
+                    throw new errors_1.DockestError(`Redis responsiveness timed out`);
                 }
                 try {
-                    const cmd = `docker exec ${containerId} \
-                      bash -c "psql \
-                      -h ${host} \
-                      -d ${database} \
-                      -U ${username} \
-                      -c 'select 1'"`;
+                    const host = `-h ${runnerHost}`;
+                    const port = `-p 6379`;
+                    const password = runnerPassword ? `-a ${runnerPassword}` : '';
+                    const command = `PING`;
+                    const redisCliOpts = `${host} \
+                              ${port} \
+                              ${password} \
+                              ${command}`;
+                    const cmd = `docker exec ${containerId} redis-cli ${redisCliOpts}`;
                     loggers_1.RunnerLogger.shellCmd(cmd);
-                    await execa_1.default.shell(cmd);
+                    const { stdout: result } = await execa_1.default.shell(cmd);
+                    if (result !== 'PONG') {
+                        throw new Error('PING did not recieve a PONG');
+                    }
                     loggers_1.RunnerLogger.checkResponsivenessSuccess(runnerKey);
                 }
                 catch (error) {
@@ -69,7 +73,7 @@ class PostgresExec {
             const recurse = async (connectionTimeout) => {
                 loggers_1.RunnerLogger.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {
-                    throw new errors_1.DockestError(`Database connection timed out`);
+                    throw new errors_1.DockestError(`Redis connection timed out`);
                 }
                 try {
                     await utils_1.acquireConnection(port, host);
@@ -83,8 +87,8 @@ class PostgresExec {
             };
             await recurse(connectionTimeout);
         };
-        return PostgresExec.instance || (PostgresExec.instance = this);
+        return RedisExec.instance || (RedisExec.instance = this);
     }
 }
-exports.default = PostgresExec;
+exports.default = RedisExec;
 //# sourceMappingURL=execs.js.map

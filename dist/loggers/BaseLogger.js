@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = __importDefault(require(".."));
 const constants_1 = require("../constants");
+const index_1 = __importDefault(require("../index"));
 const { LOADING, SUCCESS, INFO, FAILED } = constants_1.ICONS;
 const { FG: { RED }, MISC: { RESET, BRIGHT }, } = constants_1.COLORS;
 class BaseLogger {
@@ -19,12 +19,10 @@ class BaseLogger {
         this.logLoading = (m, d) => console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, this.defaultD(d));
         this.logInfo = (m, d) => console.log(`${INFO} ${BRIGHT}${m}${RESET}`, this.defaultD(d));
         this.logError = (m, d) => console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n');
-        this.getLogLevel = () => __1.default.config.dockest.logLevel;
+        this.getLogLevel = () => index_1.default.jestEnv ? constants_1.LOG_LEVEL.NORMAL : index_1.default.config.dockest.logLevel;
         this.defaultD = (d) => d || '';
         return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this);
     }
 }
-const baseLogger = new BaseLogger();
-exports.baseLogger = baseLogger;
 exports.default = BaseLogger;
 //# sourceMappingURL=BaseLogger.js.map

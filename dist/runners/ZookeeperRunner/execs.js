@@ -34,7 +34,7 @@ class ZookeeperExec {
         };
         this.teardown = async (containerId, runnerKey) => utils_1.teardownSingle(containerId, runnerKey);
         this.checkConnection = async (runnerConfig, runnerKey) => {
-            const { connectionTimeout = 30, port } = runnerConfig;
+            const { connectionTimeout, port } = runnerConfig;
             const recurse = async (connectionTimeout) => {
                 loggers_1.RunnerLogger.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {

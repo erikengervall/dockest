@@ -18,7 +18,7 @@ const setupExitHandler = async (config) => {
             config.dockest.exitHandler(err);
         }
         for (const runnerKey of Object.keys(runners)) {
-            await runners[runnerKey].teardown(runnerKey);
+            await runners[runnerKey].teardown();
         }
         process.exit(errorPayload.code || 1);
     };

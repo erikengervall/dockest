@@ -8,17 +8,14 @@ const index_1 = __importDefault(require("../../index"));
 const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
-    service: 'postgres',
+    service: 'redis',
     host: 'localhost',
-    database: 'database',
-    port: 5432,
-    password: 'password',
-    username: 'username',
+    port: 6379,
     commands: [],
     connectionTimeout: 3,
     responsivenessTimeout: 10,
 };
-class PostgresRunner {
+class RedisRunner {
     constructor(config) {
         this.containerId = '';
         this.runnerKey = '';
@@ -27,23 +24,21 @@ class PostgresRunner {
         };
         this.setup = async (runnerKey) => {
             this.runnerKey = runnerKey;
-            const containerId = await this.postgresExec.start(this.config, runnerKey);
+            const containerId = await this.redisExec.start(this.config, runnerKey);
             this.containerId = containerId;
-            await this.postgresExec.checkHealth(this.config, containerId, runnerKey);
+            await this.redisExec.checkHealth(this.config, containerId, runnerKey);
             const commands = this.config.commands || [];
             for (const cmd of commands) {
                 await utils_1.runCustomCommand(runnerKey, cmd);
             }
         };
-        this.teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey);
+        this.teardown = async () => this.redisExec.teardown(this.containerId, this.runnerKey);
         this.validateConfig = () => {
             const schema = {
                 service: utils_1.validateTypes.isString,
                 host: utils_1.validateTypes.isString,
-                database: utils_1.validateTypes.isString,
                 port: utils_1.validateTypes.isNumber,
                 password: utils_1.validateTypes.isString,
-                username: utils_1.validateTypes.isString,
                 commands: utils_1.validateTypes.isArrayOfType(utils_1.validateTypes.isString),
                 connectionTimeout: utils_1.validateTypes.isNumber,
                 responsivenessTimeout: utils_1.validateTypes.isNumber,
@@ -54,16 +49,16 @@ class PostgresRunner {
             }
         };
         this.config = Object.assign({}, DEFAULT_CONFIG, config);
-        this.postgresExec = new execs_1.default();
+        this.redisExec = new execs_1.default();
         this.validateConfig();
     }
 }
-PostgresRunner.getHelpers = () => {
+RedisRunner.getHelpers = () => {
     index_1.default.jestEnv = true;
     return {
-        runHelpCmd: async (cmd) => utils_1.runCustomCommand(PostgresRunner.name, cmd),
+        runHelpCmd: async (cmd) => utils_1.runCustomCommand(RedisRunner.name, cmd),
     };
 };
-exports.PostgresRunner = PostgresRunner;
-exports.default = PostgresRunner;
+exports.RedisRunner = RedisRunner;
+exports.default = RedisRunner;
 //# sourceMappingURL=index.js.map

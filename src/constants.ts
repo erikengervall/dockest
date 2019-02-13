@@ -45,8 +45,11 @@ const COLORS: {
   },
 }
 
-const dockerComposeRunOpts = { runInBackground: '--detach', doNotRunLinkedServices: '--no-deps' }
-const defaultDockerComposeRunOpts = Object.values(dockerComposeRunOpts).join(' ')
+const defaultDockerComposeRunOpts = Object.values({
+  // cleanUp: '--rm',
+  runInBackground: '--detach',
+  doNotRunLinkedServices: '--no-deps',
+}).join(' ')
 
 const LOG_LEVEL = {
   NOTHING: 0,
