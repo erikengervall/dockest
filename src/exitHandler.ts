@@ -29,7 +29,7 @@ const setupExitHandler = async (config: IDockestConfig): Promise<void> => {
       await runners[runnerKey].teardown()
     }
 
-    process.exit(errorPayload.code || 1)
+    process.exit(errorPayload.code || 2)
   }
 
   // so the program will not close instantly

@@ -14,5 +14,7 @@ else
 	echo "⏳ pre-commit"
 	yarn build
 	git add ./dist
-	echo "✅ pre-commit: $buildableFilesTouched"
+	echo "✅ pre-commit: "
+	printf -- "%s, " ${buildableFilesTouched[*]}
+	echo "\n"
 fi;
