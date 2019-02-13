@@ -33,13 +33,12 @@ class BaseLogger {
     console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, this.defaultD(d))
 
   public logInfo: logMethod = (m, d) =>
-    console.log(`${INFO} ${BRIGHT}${m}${RESET}`, this.defaultD(d))
+    console.log(`${INFO}  ${BRIGHT}${m}${RESET}`, this.defaultD(d))
 
   public logError: logMethod = (m, d) =>
     console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n')
 
-  private getLogLevel = (): number =>
-    Dockest.jestEnv ? LOG_LEVEL.NORMAL : Dockest.config.dockest.logLevel
+  private getLogLevel = (): number => (Dockest.jestEnv ? LOG_LEVEL.NORMAL : Dockest.config.logLevel)
   private defaultD = (d?: object): object | string => d || ''
 }
 

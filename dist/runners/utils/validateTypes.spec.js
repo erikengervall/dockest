@@ -28,7 +28,7 @@ describe('validateTypes', () => {
                 port: validateTypes_1.default.isNumber,
                 ports: validateTypes_1.default.isArrayOfType(validateTypes_1.default.isNumber),
                 autoCreateTopics: validateTypes_1.default.isBoolean,
-                portMapping: validateTypes_1.default.isObjectOfType(validateTypes_1.default.isString),
+                portMapping: validateTypes_1.default.isObjectWithValuesOfType(validateTypes_1.default.isString),
                 logLevel: validateTypes_1.default.isOneOf(Object.values(constants_1.LOG_LEVEL)),
             };
             const failures = validateTypes_1.default(validationSchema, config);

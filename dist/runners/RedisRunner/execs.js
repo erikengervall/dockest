@@ -16,7 +16,7 @@ class RedisExec {
             let containerId = await utils_1.getContainerId(service);
             if (!containerId) {
                 const portMapping = `--publish ${port}:6379`;
-                const auth = password ? `--requirepass ${password}` : '';
+                const auth = !!password ? `--requirepass ${password}` : '';
                 const cmd = `docker-compose run \
                     ${constants_1.defaultDockerComposeRunOpts} \
                     ${portMapping} \

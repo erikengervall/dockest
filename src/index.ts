@@ -1,30 +1,30 @@
 import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
-import JestRunner, { IJestConfig } from './jest'
+import JestRunner, { JestConfig } from './jest'
 import { RunnerLogger } from './loggers'
-import { IRunners, KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
+import { runners, Runners } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
-interface IDockest {
+interface RequiredConfigProps {
+  jest: JestConfig
+  runners: Runners
+}
+interface DefaultableConfigProps {
   logLevel: number
-  exitHandler?: (err?: Error) => void
+  exitHandler: (_: any) => void
 }
+export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
+type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-export interface IDockestConfig {
-  dockest: IDockest
-  jest: IJestConfig
-  runners: IRunners
-}
-
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   logLevel: LOG_LEVEL.NORMAL,
-  exitHandler: () => undefined,
+  exitHandler: (_: any) => undefined,
 }
 
 class Dockest {
   public static jestRanWithResult: boolean = false
-  public static config: IDockestConfig
+  public static config: DockestConfig
   /**
    * jestEnv
    * Dockest has been imported from a non-global node env (e.g. jest's node vm)
@@ -32,19 +32,16 @@ class Dockest {
    * This variable is primarily used to default the logLevel to normal
    */
   public static jestEnv: boolean = false
-  private static jestRunner: JestRunner
   private static instance: Dockest
+  private jestRunner: JestRunner
 
-  constructor(userConfig: IDockestConfig) {
+  constructor(userConfig: DockestConfigUserInput) {
     Dockest.config = {
+      ...DEFAULT_CONFIG,
       ...userConfig,
-      dockest: {
-        ...DEFAULT_CONFIG,
-        ...userConfig.dockest,
-      },
     }
 
-    Dockest.jestRunner = new JestRunner(Dockest.config.jest)
+    this.jestRunner = new JestRunner(Dockest.config.jest)
 
     this.validateConfig()
     setupExitHandler(Dockest.config)
@@ -73,7 +70,7 @@ class Dockest {
   }
 
   private runJest = async () => {
-    const result = await Dockest.jestRunner.run()
+    const result = await this.jestRunner.run()
     Dockest.jestRanWithResult = true
 
     return result
@@ -88,11 +85,12 @@ class Dockest {
   }
 
   private validateConfig = () => {
-    const schema = {
-      logLevel: validateTypes.isOneOf(Object.values(LOG_LEVEL)),
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
+      jest: validateTypes.isObject,
+      runners: validateTypes.isObject,
     }
 
-    const failures = validateTypes(schema, Dockest.config.dockest)
+    const failures = validateTypes(schema, Dockest.config)
 
     if (failures.length > 0) {
       throw new ConfigurationError(`${failures.join('\n')}`)
@@ -100,7 +98,6 @@ class Dockest {
   }
 }
 
-export const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
-export const logLevel = LOG_LEVEL
-
+const logLevel = LOG_LEVEL
+export { runners, logLevel }
 export default Dockest

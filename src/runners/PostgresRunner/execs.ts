@@ -4,26 +4,26 @@ import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
-import { IPostgresRunnerConfig } from './index'
+import { PostgresRunnerConfig } from './index'
 
-interface IExec {
-  start: (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => Promise<string>
+interface Exec {
+  start: (runnerConfig: PostgresRunnerConfig, runnerKey: string) => Promise<string>
   checkHealth: (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: PostgresRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
-class PostgresExec implements IExec {
+class PostgresExec implements Exec {
   private static instance: PostgresExec
 
   constructor() {
     return PostgresExec.instance || (PostgresExec.instance = this)
   }
 
-  public start = async (runnerConfig: IPostgresRunnerConfig, runnerKey: string) => {
+  public start = async (runnerConfig: PostgresRunnerConfig, runnerKey: string) => {
     RunnerLogger.startContainer(runnerKey)
 
     const { port, service, database, username, password } = runnerConfig
@@ -50,7 +50,7 @@ class PostgresExec implements IExec {
   }
 
   public checkHealth = async (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: PostgresRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => {
@@ -66,7 +66,7 @@ class PostgresExec implements IExec {
     teardownSingle(containerId, runnerKey)
 
   private checkResponsiveness = async (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: PostgresRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => {
@@ -102,7 +102,7 @@ class PostgresExec implements IExec {
   }
 
   private checkConnection = async (
-    runnerConfig: IPostgresRunnerConfig,
+    runnerConfig: PostgresRunnerConfig,
     runnerKey: string
   ): Promise<void> => {
     const { connectionTimeout, host, port } = runnerConfig

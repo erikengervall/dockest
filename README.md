@@ -2,6 +2,18 @@
 
 `Dockest` is a small library that executes Jest alongside with your application's dependencies.
 
+<p style="text-align: center">
+  <a href="https://travis-ci.com/erikengervall/dockest">
+    <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat">
+  </a>
+  <a href="https://www.npmjs.com/package/dockest">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat">
+  </a>
+  <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
+    <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat">
+  </a>
+</p>
+
 ## Requirements
 
 `Dockest` requires at least Jest **v20.0.0** in order to ensure Jest's [CLI interface](https://github.com/facebook/jest/blob/master/packages/jest-cli/src/cli/index.js#L62).
@@ -66,6 +78,8 @@ new KafkaRunner({
 
 ## Basic usage
 
+Check out `/example/dockest.ts` for a more extensive example.
+
 ### Typescript
 
 `jest.config.js`
@@ -81,7 +95,7 @@ module.exports = {
 ```json
 {
   "scripts": {
-    "test": "ts-node ./integration.ts"
+    "test": "ts-node ./dockest.ts"
   },
   "devDependencies": {
     "ts-jest": "^23.10.5",
@@ -104,7 +118,7 @@ const postgres = new PostgresRunner({
   database: 'insert-database-here',
 })
 
-const integration = new Dockest({
+const dockest = new Dockest({
   jest: {
     lib: require('jest'),
   },
@@ -113,5 +127,16 @@ const integration = new Dockest({
   },
 })
 
-integration.run()
+dockest.run()
 ```
+
+## Contributing
+
+- `yarn install:all`: Installs all dependencies and necessary git-hooks
+- `yarn test:all`: Runs `yarn test` and `yarn test:example`
+  - `yarn test`: Runs jest for _./Dockest/src_
+  - `yarn test:example`: Runs `yarn test` from _./example_
+
+## License
+
+MIT

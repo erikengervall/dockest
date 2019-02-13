@@ -1,34 +1,34 @@
 import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
-import { IBaseRunner } from '../index'
+import { BaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
 
-export interface IPostgresRunnerConfig {
+interface RequiredConfigProps {
   service: string
-  host: string
   database: string
-  port: number
-  password: string
   username: string
+  password: string
+}
+interface DefaultableConfigProps {
+  host: string
+  port: number
   commands: string[]
   connectionTimeout: number
   responsivenessTimeout: number
 }
+export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_CONFIG = {
-  service: 'postgres',
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  database: 'database',
   port: 5432,
-  password: 'password',
-  username: 'username',
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-export class PostgresRunner implements IBaseRunner {
+export class PostgresRunner implements BaseRunner {
   public static getHelpers = () => {
     Dockest.jestEnv = true
 
@@ -37,12 +37,12 @@ export class PostgresRunner implements IBaseRunner {
     }
   }
 
-  public config: IPostgresRunnerConfig
+  public config: PostgresRunnerConfig
   public postgresExec: PostgresExec
   public containerId: string = ''
   public runnerKey: string = ''
 
-  constructor(config: IPostgresRunnerConfig) {
+  constructor(config: PostgresRunnerConfigUserInput) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -73,16 +73,11 @@ export class PostgresRunner implements IBaseRunner {
   public teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
-    const schema = {
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      host: validateTypes.isString,
       database: validateTypes.isString,
-      port: validateTypes.isNumber,
       password: validateTypes.isString,
       username: validateTypes.isString,
-      commands: validateTypes.isArrayOfType(validateTypes.isString),
-      connectionTimeout: validateTypes.isNumber,
-      responsivenessTimeout: validateTypes.isNumber,
     }
 
     const failures = validateTypes(schema, this.config)

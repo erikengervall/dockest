@@ -1,39 +1,37 @@
 import { ConfigurationError } from '../../errors'
-import { IBaseRunner } from '../index'
+import { BaseRunner } from '../index'
 import { validateTypes } from '../utils'
 import KafkaExec from './execs'
 
-interface IPorts {
-  [key: string]: string | number
-}
-
-export interface IKafkaRunnerConfig {
+interface RequiredConfigProps {
   service: string
-  host: string
-  ports: IPorts
+  zookeepeerConnect: string
   topics: string[]
+  host: string
+}
+interface DefaultableConfigProps {
+  host: string
+  ports: { [key: string]: string | number }
   autoCreateTopics: boolean
   connectionTimeout: number
-  zookeepeerConnect: string
 }
+export type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+export type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_CONFIG = {
-  service: 'kafka',
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  ports: {},
-  topics: [],
+  ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
   autoCreateTopics: true,
   connectionTimeout: 30,
-  zookeepeerConnect: 'zookeeper:2181',
 }
 
-export class KafkaRunner implements IBaseRunner {
-  public config: IKafkaRunnerConfig
+export class KafkaRunner implements BaseRunner {
+  public config: RequiredConfigProps & DefaultableConfigProps
   public kafkaExec: KafkaExec
   public containerId: string = ''
   public runnerKey: string = ''
 
-  constructor(config: IKafkaRunnerConfig) {
+  constructor(config: KafkaRunnerConfigUserInput) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -57,11 +55,7 @@ export class KafkaRunner implements IBaseRunner {
   private validateConfig = () => {
     const schema = {
       service: validateTypes.isString,
-      host: validateTypes.isString,
-      ports: validateTypes.isObjectOfType(validateTypes.isString),
-      topics: validateTypes.isArray,
-      autoCreateTopics: validateTypes.isBoolean,
-      connectionTimeout: validateTypes.isNumber,
+      ports: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
       zookeepeerConnect: validateTypes.isString,
     }
 

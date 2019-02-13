@@ -26,7 +26,7 @@ describe('validateTypes', () => {
         port: validateTypes.isNumber,
         ports: validateTypes.isArrayOfType(validateTypes.isNumber),
         autoCreateTopics: validateTypes.isBoolean,
-        portMapping: validateTypes.isObjectOfType(validateTypes.isString),
+        portMapping: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
         logLevel: validateTypes.isOneOf(Object.values(LOG_LEVEL)),
       }
 

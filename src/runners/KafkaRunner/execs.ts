@@ -4,22 +4,22 @@ import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
-import { IKafkaRunnerConfig } from './index'
+import { KafkaRunnerConfig } from './index'
 
-interface IExec {
-  start: (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => Promise<string>
-  checkHealth: (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => Promise<void>
+interface Exec {
+  start: (runnerConfig: KafkaRunnerConfig, runnerKey: string) => Promise<string>
+  checkHealth: (runnerConfig: KafkaRunnerConfig, runnerKey: string) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
-class KafkaExec implements IExec {
+class KafkaExec implements Exec {
   private static instance: KafkaExec
 
   constructor() {
     return KafkaExec.instance || (KafkaExec.instance = this)
   }
 
-  public start = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
+  public start = async (runnerConfig: KafkaRunnerConfig, runnerKey: string) => {
     RunnerLogger.startContainer(runnerKey)
 
     const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
@@ -48,7 +48,7 @@ class KafkaExec implements IExec {
     return containerId
   }
 
-  public checkHealth = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
+  public checkHealth = async (runnerConfig: KafkaRunnerConfig, runnerKey: string) => {
     RunnerLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig, runnerKey)
@@ -59,7 +59,7 @@ class KafkaExec implements IExec {
   public teardown = async (containerId: string, runnerKey: string) =>
     teardownSingle(containerId, runnerKey)
 
-  private checkConnection = async (runnerConfig: IKafkaRunnerConfig, runnerKey: string) => {
+  private checkConnection = async (runnerConfig: KafkaRunnerConfig, runnerKey: string) => {
     const { connectionTimeout, ports } = runnerConfig
 
     const PRIMARY_KAFKA_PORT = '9092'

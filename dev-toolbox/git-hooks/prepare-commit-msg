@@ -23,9 +23,9 @@ if re.search('#\d+$', branch):
     ## Select the first group from the regex
     issueTag = issueResult.group(1)
     with open(commit_msg_filepath, 'r+') as f:
-        print('⏳ prepare-commit-message')
+        print('⏳⏳⏳ prepare-commit-message ⏳⏳⏳')
         oldMessage = f.read()
         f.seek(0, 0)
         newMessage = '%s: %s' % (issueTag, oldMessage)
         f.write(newMessage)
-        print('✅ prepare-commit-message\n')
+        print('✅✅✅ prepare-commit-message ✅✅✅\n')
