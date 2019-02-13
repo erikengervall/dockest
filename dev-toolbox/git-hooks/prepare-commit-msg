@@ -8,7 +8,6 @@
 
 import sys, re
 from subprocess import check_output
-from __future__ import print_function
 
 ## Collect the parameters
 commit_msg_filepath = sys.argv[1]
@@ -29,4 +28,4 @@ if re.search('#\d+$', branch):
         f.seek(0, 0)
         newMessage = '%s: %s' % (issueTag, oldMessage)
         f.write(newMessage)
-        print('✅ prepare-commit-message: "%s"' % (newMessage), end = '')
+        print('✅ prepare-commit-message)
