@@ -117,3 +117,14 @@ const integration = new Dockest({
 
 integration.run()
 ```
+
+## Development
+
+- `yarn install:all`: Installs all dependencies and necessary git-hooks
+- `yarn test:all`: Runs `yarn test` and `yarn test:example`
+  - `yarn test`: Runs jest for _./Dockest/src_
+  - `yarn test:example`: Runs `yarn test` from _./example_
+
+## License
+
+MIT
