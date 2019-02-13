@@ -20,7 +20,7 @@ const setupExitHandler = async (config) => {
         for (const runnerKey of Object.keys(runners)) {
             await runners[runnerKey].teardown();
         }
-        process.exit(errorPayload.code || 2);
+        process.exit(errorPayload.code || 1);
     };
     // so the program will not close instantly
     process.stdin.resume();

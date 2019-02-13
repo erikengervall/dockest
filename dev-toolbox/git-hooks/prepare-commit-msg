@@ -28,4 +28,4 @@ if re.search('#\d+$', branch):
         f.seek(0, 0)
         newMessage = '%s: %s' % (issueTag, oldMessage)
         f.write(newMessage)
-        print("✅ prepare-commit-message: %s" % (newMessage))
+        print("✅ prepare-commit-message: %s\n" % (newMessage))

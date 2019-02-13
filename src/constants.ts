@@ -7,7 +7,6 @@ const ICONS: { [key: string]: string } = {
   STOPPED: '🛑',
   WARNING: '⚠️',
   INFO: 'ℹ️',
-  tINFOt: 'ℹ️',
 }
 
 const COLORS: {
