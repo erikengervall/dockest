@@ -1,22 +1,26 @@
 import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
-import { IBaseRunner } from '../index'
+import { BaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
 import PostgresExec from './execs'
 
-export interface IPostgresRunnerConfig {
+interface RequiredConfigProps {
   service: string
-  host: string
   database: string
-  port: number
-  password: string
   username: string
+  password: string
+}
+interface DefaultableConfigProps {
+  host: string
+  port: number
   commands: string[]
   connectionTimeout: number
   responsivenessTimeout: number
 }
+export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
   port: 5432,
   commands: [],
@@ -24,7 +28,7 @@ const DEFAULT_CONFIG = {
   responsivenessTimeout: 10,
 }
 
-export class PostgresRunner implements IBaseRunner {
+export class PostgresRunner implements BaseRunner {
   public static getHelpers = () => {
     Dockest.jestEnv = true
 
@@ -33,12 +37,12 @@ export class PostgresRunner implements IBaseRunner {
     }
   }
 
-  public config: IPostgresRunnerConfig
+  public config: PostgresRunnerConfig
   public postgresExec: PostgresExec
   public containerId: string = ''
   public runnerKey: string = ''
 
-  constructor(config: IPostgresRunnerConfig) {
+  constructor(config: PostgresRunnerConfigUserInput) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -69,7 +73,7 @@ export class PostgresRunner implements IBaseRunner {
   public teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
-    const schema = {
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
       database: validateTypes.isString,
       password: validateTypes.isString,

@@ -1,36 +1,37 @@
 import { ConfigurationError } from '../../errors'
-import { IBaseRunner } from '../index'
+import { BaseRunner } from '../index'
 import { validateTypes } from '../utils'
 import KafkaExec from './execs'
 
-interface IPorts {
-  [key: string]: string | number
-}
-
-export interface IKafkaRunnerConfig {
+interface RequiredConfigProps {
   service: string
-  ports: IPorts
   zookeepeerConnect: string
   topics: string[]
   host: string
+}
+interface DefaultableConfigProps {
+  host: string
+  ports: { [key: string]: string | number }
   autoCreateTopics: boolean
   connectionTimeout: number
 }
+export type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+export type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  topics: [],
+  ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
   autoCreateTopics: true,
   connectionTimeout: 30,
 }
 
-export class KafkaRunner implements IBaseRunner {
-  public config: IKafkaRunnerConfig
+export class KafkaRunner implements BaseRunner {
+  public config: RequiredConfigProps & DefaultableConfigProps
   public kafkaExec: KafkaExec
   public containerId: string = ''
   public runnerKey: string = ''
 
-  constructor(config: IKafkaRunnerConfig) {
+  constructor(config: KafkaRunnerConfigUserInput) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,

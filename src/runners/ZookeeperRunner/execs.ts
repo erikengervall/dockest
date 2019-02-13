@@ -4,22 +4,22 @@ import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
-import { IZookeeperRunnerConfig } from './index'
+import { ZookeeperRunnerConfig } from './index'
 
-interface IExec {
-  start: (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => Promise<string>
-  checkHealth: (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => Promise<void>
+interface Exec {
+  start: (runnerConfig: ZookeeperRunnerConfig, runnerKey: string) => Promise<string>
+  checkHealth: (runnerConfig: ZookeeperRunnerConfig, runnerKey: string) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
-class ZookeeperExec implements IExec {
+class ZookeeperExec implements Exec {
   private static instance: ZookeeperExec
 
   constructor() {
     return ZookeeperExec.instance || (ZookeeperExec.instance = this)
   }
 
-  public start = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
+  public start = async (runnerConfig: ZookeeperRunnerConfig, runnerKey: string) => {
     RunnerLogger.startContainer(runnerKey)
 
     const { port, service } = runnerConfig
@@ -41,7 +41,7 @@ class ZookeeperExec implements IExec {
     return containerId
   }
 
-  public checkHealth = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
+  public checkHealth = async (runnerConfig: ZookeeperRunnerConfig, runnerKey: string) => {
     RunnerLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig, runnerKey)
@@ -52,7 +52,7 @@ class ZookeeperExec implements IExec {
   public teardown = async (containerId: string, runnerKey: string) =>
     teardownSingle(containerId, runnerKey)
 
-  private checkConnection = async (runnerConfig: IZookeeperRunnerConfig, runnerKey: string) => {
+  private checkConnection = async (runnerConfig: ZookeeperRunnerConfig, runnerKey: string) => {
     const { connectionTimeout, port } = runnerConfig
 
     const recurse = async (connectionTimeout: number) => {

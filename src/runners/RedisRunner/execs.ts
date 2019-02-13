@@ -3,26 +3,26 @@ import { defaultDockerComposeRunOpts } from '../../constants'
 import { DockestError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from '../utils'
-import { IRedisRunnerConfig } from './index'
+import { RedisRunnerConfig } from './index'
 
-interface IExec {
-  start: (runnerConfig: IRedisRunnerConfig, runnerKey: string) => Promise<string>
+interface Exec {
+  start: (runnerConfig: RedisRunnerConfig, runnerKey: string) => Promise<string>
   checkHealth: (
-    runnerConfig: IRedisRunnerConfig,
+    runnerConfig: RedisRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => Promise<void>
   teardown: (containerId: string, runnerKey: string) => Promise<void>
 }
 
-class RedisExec implements IExec {
+class RedisExec implements Exec {
   private static instance: RedisExec
 
   constructor() {
     return RedisExec.instance || (RedisExec.instance = this)
   }
 
-  public start = async (runnerConfig: IRedisRunnerConfig, runnerKey: string) => {
+  public start = async (runnerConfig: RedisRunnerConfig, runnerKey: string) => {
     RunnerLogger.startContainer(runnerKey)
 
     const { port, service, password } = runnerConfig
@@ -30,7 +30,7 @@ class RedisExec implements IExec {
     let containerId = await getContainerId(service)
     if (!containerId) {
       const portMapping = `--publish ${port}:6379`
-      const auth = password ? `--requirepass ${password}` : ''
+      const auth = !!password ? `--requirepass ${password}` : ''
       const cmd = `docker-compose run \
                     ${defaultDockerComposeRunOpts} \
                     ${portMapping} \
@@ -47,7 +47,7 @@ class RedisExec implements IExec {
   }
 
   public checkHealth = async (
-    runnerConfig: IRedisRunnerConfig,
+    runnerConfig: RedisRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => {
@@ -63,7 +63,7 @@ class RedisExec implements IExec {
     teardownSingle(containerId, runnerKey)
 
   private checkResponsiveness = async (
-    runnerConfig: IRedisRunnerConfig,
+    runnerConfig: RedisRunnerConfig,
     containerId: string,
     runnerKey: string
   ) => {
@@ -105,7 +105,7 @@ class RedisExec implements IExec {
   }
 
   private checkConnection = async (
-    runnerConfig: IRedisRunnerConfig,
+    runnerConfig: RedisRunnerConfig,
     runnerKey: string
   ): Promise<void> => {
     const { connectionTimeout, host, port } = runnerConfig

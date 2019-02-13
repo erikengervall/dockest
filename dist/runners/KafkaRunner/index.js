@@ -8,7 +8,7 @@ const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     host: 'localhost',
-    topics: [],
+    ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
     autoCreateTopics: true,
     connectionTimeout: 30,
 };

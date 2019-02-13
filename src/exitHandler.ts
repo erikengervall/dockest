@@ -1,7 +1,7 @@
-import Dockest, { IDockestConfig } from './index'
+import Dockest, { DockestConfig } from './index'
 import { GlobalLogger } from './loggers'
 
-interface IErrorPayload {
+interface ErrorPayload {
   code?: number
   signal?: any
   error?: Error
@@ -9,10 +9,10 @@ interface IErrorPayload {
   p?: any
 }
 
-const setupExitHandler = async (config: IDockestConfig): Promise<void> => {
+const setupExitHandler = async (config: DockestConfig): Promise<void> => {
   const { runners } = config
 
-  const exitHandler = async (errorPayload: IErrorPayload): Promise<void> => {
+  const exitHandler = async (errorPayload: ErrorPayload): Promise<void> => {
     if (Dockest.jestRanWithResult) {
       // Program ran as expected
       return

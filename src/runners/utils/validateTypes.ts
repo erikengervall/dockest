@@ -5,7 +5,7 @@ const {
   MISC: { RESET },
 } = COLORS
 
-interface IObject {
+interface OObject {
   [key: string]: any
 }
 type isType = (_?: any) => boolean
@@ -16,7 +16,7 @@ const getExpected = (typeValidator: any): string =>
 const getReceived = (value: any): string =>
   isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`
 
-const validateTypes = (schema: IObject, config?: IObject): string[] => {
+const validateTypes = (schema: OObject, config?: OObject): string[] => {
   if (!config) {
     return [`${RED}No config found${RESET}`]
   }

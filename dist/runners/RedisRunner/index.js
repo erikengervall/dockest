@@ -10,6 +10,7 @@ const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     host: 'localhost',
     port: 6379,
+    password: '',
     commands: [],
     connectionTimeout: 3,
     responsivenessTimeout: 10,

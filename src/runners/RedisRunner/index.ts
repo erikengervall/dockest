@@ -1,11 +1,13 @@
 import { ConfigurationError } from '../../errors'
 import Dockest from '../../index'
-import { IBaseRunner } from '../index'
+import { BaseRunner } from '../index'
 import { runCustomCommand, validateTypes } from '../utils'
 import RedixExec from './execs'
 
-export interface IRedisRunnerConfig {
+interface RequiredConfigProps {
   service: string
+}
+interface DefaultableConfigProps {
   host: string
   port: number
   password: string
@@ -13,16 +15,21 @@ export interface IRedisRunnerConfig {
   connectionTimeout: number
   responsivenessTimeout: number
 }
+export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
   port: 6379,
+  password: '',
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-export class RedisRunner implements IBaseRunner {
+export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+
+export class RedisRunner implements BaseRunner {
   public static getHelpers = () => {
     Dockest.jestEnv = true
 
@@ -31,12 +38,12 @@ export class RedisRunner implements IBaseRunner {
     }
   }
 
-  public config: IRedisRunnerConfig
+  public config: RedisRunnerConfig
   public redisExec: RedixExec
   public containerId: string = ''
   public runnerKey: string = ''
 
-  constructor(config: IRedisRunnerConfig) {
+  constructor(config: PostgresRunnerConfigUserInput) {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -67,7 +74,7 @@ export class RedisRunner implements IBaseRunner {
   public teardown = async () => this.redisExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
-    const schema = {
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }
 

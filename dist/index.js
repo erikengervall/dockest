@@ -10,7 +10,7 @@ const jest_1 = __importDefault(require("./jest"));
 const loggers_1 = require("./loggers");
 const runners_1 = require("./runners");
 const utils_1 = require("./runners/utils");
-const DEFAULT_CONFIG = {
+const DEFAULT_DOCKEST_CONFIG = {
     logLevel: constants_1.LOG_LEVEL.NORMAL,
     exitHandler: () => undefined,
 };
@@ -32,7 +32,7 @@ class Dockest {
             }
         };
         this.runJest = async () => {
-            const result = await Dockest.jestRunner.run();
+            const result = await this.jestRunner.run();
             Dockest.jestRanWithResult = true;
             return result;
         };
@@ -43,16 +43,14 @@ class Dockest {
             }
         };
         this.validateConfig = () => {
-            const schema = {
-                logLevel: utils_1.validateTypes.isOneOf(Object.values(constants_1.LOG_LEVEL)),
-            };
+            const schema = {};
             const failures = utils_1.validateTypes(schema, Dockest.config.dockest);
             if (failures.length > 0) {
                 throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
             }
         };
-        Dockest.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG, userConfig.dockest) });
-        Dockest.jestRunner = new jest_1.default(Dockest.config.jest);
+        Dockest.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_DOCKEST_CONFIG, userConfig.dockest) });
+        this.jestRunner = new jest_1.default(Dockest.config.jest);
         this.validateConfig();
         exitHandler_1.default(Dockest.config);
         return Dockest.instance || (Dockest.instance = this);

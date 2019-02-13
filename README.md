@@ -2,12 +2,12 @@
 
 `Dockest` is a small library that executes Jest alongside with your application's dependencies.
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/dockest">
-    <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat">
-  </a>
+<p style="text-align: center">
   <a href="https://travis-ci.com/erikengervall/dockest">
     <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat">
+  </a>
+  <a href="https://www.npmjs.com/package/dockest">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat">
   </a>
   <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
     <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat">
