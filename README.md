@@ -2,7 +2,20 @@
 
 `Dockest` is a small library that executes Jest alongside with your application's dependencies.
 
-[![Build Status](https://travis-ci.com/erikengervall/dockest.svg?branch=master)](https://travis-ci.com/erikengervall/dockest)
+[![travis](https://travis-ci.com/erikengervall/dockest.svg?branch=master)](https://travis-ci.com/erikengervall/dockest)
+
+![npm downloads](https://img.shields.io/npm/dm/dockest.svg?style=flat)
+
+![licence](https://img.shields.io/npm/l/dockest.svg?style=flat)
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/swc">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat">
+  </a>
+  <a href="https://crates.io/crates/swc_ecma_parser">
+    <img alt="undefined" src="https://img.shields.io/crates/d/swc_ecma_parser.svg?label=crates.io%20dowloads">
+  </a>
+</p>
 
 ## Requirements
 
@@ -118,7 +131,7 @@ const integration = new Dockest({
 integration.run()
 ```
 
-## Development
+## Contributing
 
 - `yarn install:all`: Installs all dependencies and necessary git-hooks
 - `yarn test:all`: Runs `yarn test` and `yarn test:example`

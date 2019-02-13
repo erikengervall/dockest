@@ -90,6 +90,7 @@ const dockest = new Dockest({
     logLevel: logLevel.VERBOSE,
   },
   jest: {
+    // tslint:disable-next-line
     lib: require('jest'),
     verbose: true,
   },
