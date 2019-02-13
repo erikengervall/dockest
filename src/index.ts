@@ -99,5 +99,5 @@ class Dockest {
 }
 
 const logLevel = LOG_LEVEL
-export { runners, logLevel }
+export { logLevel, runners }
 export default Dockest
