@@ -11,10 +11,18 @@ config.gypi
 CVS
 npm-debug.log
 
+.github
+.editorconfig
+.gitignore
 .prettierrc
-.eslintrc
+.travis.yml
+jest.config.js
+jestSetup.ts
 .tsconfig.json
 .tslint.json
+yarn-error.log
 
+assets/
+dev-toolbox/
 example/
 **/*.spec.js
