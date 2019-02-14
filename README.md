@@ -4,7 +4,9 @@
 
 <p align="center">
   <img alt="dockest logo" src="./dev-toolbox/logo/pinterest_profile_image.png">
+</p>
 
+<p align="center">
   <a href="https://travis-ci.com/erikengervall/dockest">
     <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat">
   </a>
