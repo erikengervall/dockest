@@ -43,13 +43,19 @@ new PostgresRunner({
 })
 ```
 
-Colons can be used to align columns.
+#### Interface
 
-| Prop | Required | Default   |
-| ---- | -------- | --------- |
-| 1    | true     | something |
-| 2    | true     | something |
-| 3    | true     | something |
+| Prop                  | Required | Type     | Default     |
+| --------------------- | -------- | -------- | ----------- |
+| service               | true     | string   | -           |
+| database              | true     | string   | -           |
+| username              | true     | string   | -           |
+| password              | true     | string   | -           |
+| host                  | false    | string   | 'localhost' |
+| port                  | false    | number   | 5432        |
+| commands              | false    | string[] | []          |
+| connectionTimeout     | false    | number   | 3           |
+| responsivenessTimeout | false    | number   | 10          |
 
 ### [Redis](https://hub.docker.com/_/redis)
 
@@ -61,6 +67,18 @@ new RedisRunner({
   password: 'password',
 })
 ```
+
+#### Interface
+
+| Prop                  | Required | Type     | Default     |
+| --------------------- | -------- | -------- | ----------- |
+| service               | true     | string   | -           |
+| host                  | false    | string   | 'localhost' |
+| port                  | false    | number   | 6379        |
+| password              | false    | string   | ''          |
+| commands              | false    | string[] | []          |
+| connectionTimeout     | false    | number   | 3           |
+| responsivenessTimeout | false    | number   | 10          |
 
 ### (WIP) [Zookeeper](https://hub.docker.com/r/wurstmeister/zookeeper/) & [Kafka](https://hub.docker.com/r/wurstmeister/kafka)
 
@@ -87,6 +105,26 @@ new KafkaRunner({
   },
 })
 ```
+
+#### Zookepeer Interface
+
+| Prop              | Required | Type   | Default | Description                                       |
+| ----------------- | -------- | ------ | ------- | ------------------------------------------------- |
+| service           | true     | string | -       | Should match designated docker-compose resource   |
+| port              | false    | number | 2181    | This will be the exposed port from your resource  |
+| connectionTimeout | false    | number | 30      | How long to wait for the resource to be reachable |
+
+#### Kafka Interface
+
+| Prop                  | Required | Type                  | Default                                            | Desciption                                                |
+| --------------------- | -------- | --------------------- | -------------------------------------------------- | --------------------------------------------------------- |
+| service               | true     | string                | -                                                  | Should match designated docker-compose resource           |
+| zookeepeerConnect     | true     | string                | -                                                  | host:port connection configuration towards your Zookeeper |
+| topics                | true     | string[]              | -                                                  | Topics for testing                                        |
+| host                  | false    | string                | 'localhost'                                        | Hostname                                                  |
+| ports                 | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container`     |
+| autoCreateTopics      | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics            |
+| responsivenessTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable         |
 
 ## Basic usage
 
