@@ -2,21 +2,19 @@
 
 `Dockest` is a small library that executes Jest alongside with your application's dependencies.
 
-<div>
-  <img alt="dockest logo" style="width: 20%; float:left;" src="./dev-toolbox/logo/logo.png">
+<img alt="dockest logo" src="./dev-toolbox/logo/pinterest_profile_image.png">
 
-  <p style="">
-    <a href="https://travis-ci.com/erikengervall/dockest">
-      <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat">
-    </a>
-    <a href="https://www.npmjs.com/package/dockest">
-      <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat">
-    </a>
-    <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
-      <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat">
-    </a>
-  </p>
-</div>
+<p align="center">
+  <a href="https://travis-ci.com/erikengervall/dockest">
+    <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat">
+  </a>
+  <a href="https://www.npmjs.com/package/dockest">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat">
+  </a>
+  <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
+    <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat">
+  </a>
+<p>
 
 ## Requirements
 
@@ -42,6 +40,14 @@ new PostgresRunner({
   ],
 })
 ```
+
+Colons can be used to align columns.
+
+| Prop | Required | Default   |
+| ---- | -------- | --------- |
+| 1    | true     | something |
+| 2    | true     | something |
+| 3    | true     | something |
 
 ### [Redis](https://hub.docker.com/_/redis)
 
