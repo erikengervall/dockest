@@ -8,6 +8,7 @@ interface RequiredConfigProps {
 }
 interface DefaultableConfigProps {
   port: number
+  commands: string[]
   connectionTimeout: number
 }
 export type ZookeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
@@ -15,6 +16,7 @@ type ZookeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableC
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   port: 2181,
+  commands: [],
   connectionTimeout: 30,
 }
 

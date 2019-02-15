@@ -1,8 +1,7 @@
-import { ConfigurationError } from '../../errors'
+import { defaultDockerComposeRunOpts } from '../../constants'
 import Dockest from '../../index'
-import { BaseRunner } from '../index'
+import BaseRunner, { ExecOpts } from '../BaseRunner'
 import { runCustomCommand, validateTypes } from '../utils'
-import PostgresExec from './execs'
 
 interface RequiredConfigProps {
   service: string
@@ -17,8 +16,15 @@ interface DefaultableConfigProps {
   connectionTimeout: number
   responsivenessTimeout: number
 }
-export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
-type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+interface RunTimeConfigProps {
+  runnerKey: string
+}
+export type PostgresRunnerConfig = RequiredConfigProps &
+  DefaultableConfigProps &
+  Partial<RunTimeConfigProps>
+type PostgresRunnerConfigUserInput = RequiredConfigProps &
+  Partial<DefaultableConfigProps> &
+  Partial<RunTimeConfigProps>
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
@@ -28,7 +34,46 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   responsivenessTimeout: 10,
 }
 
-export class PostgresRunner implements BaseRunner {
+const createStartCommand = (runnerConfig: PostgresRunnerConfig) => {
+  const { port, service, database, username, password } = runnerConfig
+  const portMapping = ` \ 
+                --publish ${port}:5432 \
+                `
+  const env = ` \
+                -e POSTGRES_DB=${database} \
+                -e POSTGRES_USER=${username} \
+                -e POSTGRES_PASSWORD=${password} \
+              `
+  const cmd = ` \
+                docker-compose run \
+                ${defaultDockerComposeRunOpts} \
+                ${portMapping} \
+                ${env} \
+                ${service} \
+              `
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+const createCheckResponsivenessCommand = (
+  runnerConfig: PostgresRunnerConfig,
+  execOpts: ExecOpts
+) => {
+  const { host, database, username } = runnerConfig
+  const { containerId } = execOpts
+  const cmd = ` \
+                docker exec ${containerId} \
+                bash -c "psql \
+                -h ${host} \
+                -d ${database} \
+                -U ${username} \
+                -c 'select 1'"
+              `
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+export class PostgresRunner extends BaseRunner {
   public static getHelpers = () => {
     Dockest.jestEnv = true
 
@@ -37,54 +82,25 @@ export class PostgresRunner implements BaseRunner {
     }
   }
 
-  public config: PostgresRunnerConfig
-  public postgresExec: PostgresExec
-  public containerId: string = ''
-  public runnerKey: string = ''
-
-  constructor(config: PostgresRunnerConfigUserInput) {
-    this.config = {
+  constructor(configUserInput: PostgresRunnerConfigUserInput) {
+    const commandCreators = {
+      start: createStartCommand,
+      checkResponsiveness: createCheckResponsivenessCommand,
+    }
+    const runnerConfig = {
       ...DEFAULT_CONFIG,
-      ...config,
+      ...configUserInput,
     }
-    this.postgresExec = new PostgresExec()
+    // @ts-ignore // TODO: This needs to be addressed
+    super(runnerConfig, commandCreators)
 
-    this.validateConfig()
-  }
-
-  public setRunnerKey = (runnerKey: string) => {
-    this.runnerKey = runnerKey
-  }
-
-  public setup = async (runnerKey: string) => {
-    this.runnerKey = runnerKey
-
-    const containerId = await this.postgresExec.start(this.config, runnerKey)
-    this.containerId = containerId
-
-    await this.postgresExec.checkHealth(this.config, containerId, runnerKey)
-
-    const commands = this.config.commands || []
-    for (const cmd of commands) {
-      await runCustomCommand(runnerKey, cmd)
-    }
-  }
-
-  public teardown = async () => this.postgresExec.teardown(this.containerId, this.runnerKey)
-
-  private validateConfig = () => {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
       database: validateTypes.isString,
       password: validateTypes.isString,
       username: validateTypes.isString,
     }
-
-    const failures = validateTypes(schema, this.config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+    this.validateConfig(schema, this.runnerConfig)
   }
 }
 

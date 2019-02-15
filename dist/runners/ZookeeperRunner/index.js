@@ -8,6 +8,7 @@ const utils_1 = require("../utils");
 const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     port: 2181,
+    commands: [],
     connectionTimeout: 30,
 };
 class ZookeeeperRunner {

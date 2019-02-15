@@ -7,7 +7,6 @@ const constants_1 = require("./constants");
 const errors_1 = require("./errors");
 const exitHandler_1 = __importDefault(require("./exitHandler"));
 const jest_1 = __importDefault(require("./jest"));
-const loggers_1 = require("./loggers");
 const runners_1 = require("./runners");
 exports.runners = runners_1.runners;
 const utils_1 = require("./runners/utils");
@@ -27,9 +26,7 @@ class Dockest {
             const { runners } = Dockest.config;
             await utils_1.runCustomCommand('Dockest', 'docker-compose pull');
             for (const runnerKey of Object.keys(runners)) {
-                loggers_1.RunnerLogger.setup(runnerKey);
                 await runners[runnerKey].setup(runnerKey);
-                loggers_1.RunnerLogger.setupSuccess(runnerKey);
             }
         };
         this.runJest = async () => {

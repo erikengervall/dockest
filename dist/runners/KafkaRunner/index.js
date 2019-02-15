@@ -10,6 +10,7 @@ const DEFAULT_CONFIG = {
     host: 'localhost',
     ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
     autoCreateTopics: true,
+    commands: [],
     connectionTimeout: 30,
 };
 class KafkaRunner {

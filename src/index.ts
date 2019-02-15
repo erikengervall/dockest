@@ -2,7 +2,6 @@ import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
-import { RunnerLogger } from './loggers'
 import { runners, Runners } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
@@ -63,9 +62,7 @@ class Dockest {
     await runCustomCommand('Dockest', 'docker-compose pull')
 
     for (const runnerKey of Object.keys(runners)) {
-      RunnerLogger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
-      RunnerLogger.setupSuccess(runnerKey)
     }
   }
 

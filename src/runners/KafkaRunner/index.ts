@@ -12,6 +12,7 @@ interface DefaultableConfigProps {
   host: string
   ports: { [key: string]: string | number }
   autoCreateTopics: boolean
+  commands: string[]
   connectionTimeout: number
 }
 export type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
@@ -21,6 +22,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
   ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
   autoCreateTopics: true,
+  commands: [],
   connectionTimeout: 30,
 }
 
