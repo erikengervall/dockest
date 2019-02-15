@@ -7,7 +7,6 @@ interface RequiredConfigProps {
   service: string
   zookeepeerConnect: string
   topics: string[]
-  host: string
 }
 interface DefaultableConfigProps {
   host: string
@@ -53,10 +52,10 @@ export class KafkaRunner implements BaseRunner {
   public teardown = async () => this.kafkaExec.teardown(this.containerId, this.runnerKey)
 
   private validateConfig = () => {
-    const schema = {
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      ports: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
       zookeepeerConnect: validateTypes.isString,
+      topics: validateTypes.isArrayOfType(validateTypes.isString),
     }
 
     const failures = validateTypes(schema, this.config)

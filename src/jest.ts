@@ -2,7 +2,9 @@ import { ConfigurationError } from './errors'
 import { JestLogger } from './loggers'
 
 interface JestResult {
-  results: { success: true }
+  results: {
+    success: true
+  }
 }
 
 interface JestLib {

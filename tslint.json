@@ -11,12 +11,7 @@
     "no-shadowed-variable": false,
     "arrow-parens": false,
     "no-unused-variable": true,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": { "arguments": "never" }
-      }
-    ],
+    "trailing-comma": [true, { "multiline": { "arguments": "never" } }],
     "no-duplicate-variable": true,
     "max-line-length": false,
     "interface-over-type-literal": false,
