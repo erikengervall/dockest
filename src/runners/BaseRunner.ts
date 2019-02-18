@@ -4,9 +4,10 @@ import BaseExec from './BaseExec'
 import { RunnerConfigs } from './index'
 import { runCustomCommand, validateTypes } from './utils'
 
+// TODO: Replace any with a working RunnerConfigs
 type CommandCreators = {
-  start: (runnerConfig: RunnerConfigs) => string
-  checkResponsiveness: (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => string
+  createStartCommand: (runnerConfig: any) => string
+  createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string
 }
 
 export interface ExecOpts {
@@ -21,13 +22,13 @@ class BaseRunner {
   public exec: any
 
   constructor(runnerConfig: RunnerConfigs, commandCreators: CommandCreators) {
-    this.exec = new BaseExec()
     this.runnerConfig = runnerConfig
     this.execOpts = {
       commandCreators,
       containerId: '',
       runnerKey: '',
     }
+    this.exec = new BaseExec()
   }
 
   public validateConfig = (schema: { [key: string]: any }, config: RunnerConfigs) => {

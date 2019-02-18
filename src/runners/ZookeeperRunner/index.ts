@@ -1,7 +1,6 @@
-import { ConfigurationError } from '../../errors'
-import { BaseRunner } from '../index'
+import { defaultDockerComposeRunOpts } from '../../constants'
+import BaseRunner from '../BaseRunner'
 import { validateTypes } from '../utils'
-import ZookeeperExec from './execs'
 
 interface RequiredConfigProps {
   service: string
@@ -20,43 +19,34 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   connectionTimeout: 30,
 }
 
-export class ZookeeeperRunner implements BaseRunner {
-  public config: ZookeeperRunnerConfig
-  public ZookeeperExec: ZookeeperExec
-  public containerId: string = ''
-  public runnerKey: string = ''
+const createStartCommand = (runnerConfig: ZookeeperRunnerConfig) => {
+  const { port, service } = runnerConfig
 
+  const portMapping = `--publish ${port}:2181`
+  const cmd = `docker-compose run \
+                ${defaultDockerComposeRunOpts} \
+                ${portMapping} \
+                ${service}`
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+export class ZookeeeperRunner extends BaseRunner {
   constructor(config: ZookeeperRunnerConfigUserInput) {
-    this.config = {
+    const commandCreators = {
+      createStartCommand,
+    }
+    const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.ZookeeperExec = new ZookeeperExec()
 
-    this.validateInput()
-  }
+    super(runnerConfig, commandCreators)
 
-  public setup = async (runnerKey: string) => {
-    this.runnerKey = runnerKey
-
-    const containerId = await this.ZookeeperExec.start(this.config, runnerKey)
-    this.containerId = containerId
-
-    await this.ZookeeperExec.checkHealth(this.config, runnerKey)
-  }
-
-  public teardown = async () => this.ZookeeperExec.teardown(this.containerId, this.runnerKey)
-
-  private validateInput = () => {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }
-
-    const failures = validateTypes(schema, this.config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+    this.validateConfig(schema, runnerConfig)
   }
 }
 

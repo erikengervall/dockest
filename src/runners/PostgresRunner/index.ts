@@ -84,14 +84,14 @@ export class PostgresRunner extends BaseRunner {
 
   constructor(configUserInput: PostgresRunnerConfigUserInput) {
     const commandCreators = {
-      start: createStartCommand,
-      checkResponsiveness: createCheckResponsivenessCommand,
+      createStartCommand,
+      createCheckResponsivenessCommand,
     }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...configUserInput,
     }
-    // @ts-ignore // TODO: This needs to be addressed
+
     super(runnerConfig, commandCreators)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
@@ -100,7 +100,7 @@ export class PostgresRunner extends BaseRunner {
       password: validateTypes.isString,
       username: validateTypes.isString,
     }
-    this.validateConfig(schema, this.runnerConfig)
+    this.validateConfig(schema, runnerConfig)
   }
 }
 

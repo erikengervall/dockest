@@ -12,7 +12,7 @@ class BaseExec {
         this.start = async (runnerConfig, execOpts) => {
             const { service } = runnerConfig;
             const { runnerKey, commandCreators } = execOpts;
-            const startCommand = commandCreators.start(runnerConfig);
+            const startCommand = commandCreators.createStartCommand(runnerConfig);
             loggers_1.RunnerLogger.startContainer(runnerKey);
             let containerId = await utils_1.getContainerId(service);
             if (!containerId) {
@@ -24,14 +24,11 @@ class BaseExec {
             return containerId;
         };
         this.checkHealth = async (runnerConfig, execOpts) => {
-            // @ts-ignore TODO: This needs to be addressed
-            const { checkResponsiveness } = runnerConfig;
+            // @ts-ignore TODO: Fix TS
             const { runnerKey } = execOpts;
             loggers_1.RunnerLogger.checkHealth(runnerKey);
             await this.checkConnection(runnerConfig);
-            if (checkResponsiveness) {
-                await this.checkResponsiveness(runnerConfig);
-            }
+            await this.checkResponsiveness(runnerConfig, execOpts);
             loggers_1.RunnerLogger.checkHealthSuccess(runnerKey);
         };
         this.teardown = async (execConfig) => {
@@ -57,16 +54,21 @@ class BaseExec {
             };
             await recurse(connectionTimeout);
         };
-        this.checkResponsiveness = async (runnerConfig) => {
-            const { runnerKey, service, responsivenessTimeout, commands: { checkResponsiveness }, } = runnerConfig;
+        this.checkResponsiveness = async (runnerConfig, execOpts) => {
+            const { runnerKey, service, responsivenessTimeout } = runnerConfig;
+            const { commandCreators: { createCheckResponsivenessCommand }, } = execOpts;
+            if (!createCheckResponsivenessCommand) {
+                return Promise.resolve();
+            }
+            const cmd = createCheckResponsivenessCommand(runnerConfig, execOpts);
             const recurse = async (responsivenessTimeout) => {
                 loggers_1.RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout);
                 if (responsivenessTimeout <= 0) {
                     throw new errors_1.DockestError(`${service} responsiveness timed out`);
                 }
                 try {
-                    loggers_1.RunnerLogger.shellCmd(checkResponsiveness(runnerConfig));
-                    await execa_1.default.shell(checkResponsiveness(runnerConfig));
+                    loggers_1.RunnerLogger.shellCmd(cmd);
+                    await execa_1.default.shell(cmd);
                     loggers_1.RunnerLogger.checkResponsivenessSuccess(runnerKey);
                 }
                 catch (error) {
@@ -77,6 +79,7 @@ class BaseExec {
             };
             await recurse(responsivenessTimeout);
         };
+        return BaseExec.instance || (BaseExec.instance = this);
     }
 }
 exports.default = BaseExec;

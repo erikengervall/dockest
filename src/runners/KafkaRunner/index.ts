@@ -1,7 +1,6 @@
-import { ConfigurationError } from '../../errors'
-import { BaseRunner } from '../index'
+import { defaultDockerComposeRunOpts } from '../../constants'
+import BaseRunner from '../BaseRunner'
 import { validateTypes } from '../utils'
-import KafkaExec from './execs'
 
 interface RequiredConfigProps {
   service: string
@@ -26,46 +25,42 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   connectionTimeout: 30,
 }
 
-export class KafkaRunner implements BaseRunner {
-  public config: RequiredConfigProps & DefaultableConfigProps
-  public kafkaExec: KafkaExec
-  public containerId: string = ''
-  public runnerKey: string = ''
+const createStartCommand = (runnerConfig: KafkaRunnerConfig) => {
+  const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
 
+  const portMapping = Object.keys(ports)
+    .map(port => `--publish ${ports[port]}:${port}`)
+    .join(' ')
+  const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
+              ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
+              ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
+              ${`-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`}`
+  const cmd = `docker-compose run \
+              ${defaultDockerComposeRunOpts} \
+              ${portMapping} \
+              ${env} \
+              ${service}`
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+export default class KafkaRunner extends BaseRunner {
   constructor(config: KafkaRunnerConfigUserInput) {
-    this.config = {
+    const commandCreators = {
+      createStartCommand,
+    }
+    const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.kafkaExec = new KafkaExec()
 
-    this.validateConfig()
-  }
+    super(runnerConfig, commandCreators)
 
-  public setup = async (runnerKey: string) => {
-    this.runnerKey = runnerKey
-
-    const containerId = await this.kafkaExec.start(this.config, runnerKey)
-    this.containerId = containerId
-
-    await this.kafkaExec.checkHealth(this.config, runnerKey)
-  }
-
-  public teardown = async () => this.kafkaExec.teardown(this.containerId, this.runnerKey)
-
-  private validateConfig = () => {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
       zookeepeerConnect: validateTypes.isString,
       topics: validateTypes.isArrayOfType(validateTypes.isString),
     }
-
-    const failures = validateTypes(schema, this.config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+    this.validateConfig(schema, runnerConfig)
   }
 }
-
-export default KafkaRunner

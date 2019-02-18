@@ -5,16 +5,17 @@ import { RunnerLogger } from '../loggers'
 import { ExecOpts, RunnerConfigs } from './index'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from './utils'
 
-export interface Commands {
-  start: any
-  checkResponsiveness?: any
-}
-
 class BaseExec {
+  private static instance: BaseExec
+
+  constructor() {
+    return BaseExec.instance || (BaseExec.instance = this)
+  }
+
   public start = async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
     const { service } = runnerConfig
     const { runnerKey, commandCreators } = execOpts
-    const startCommand = commandCreators.start(runnerConfig)
+    const startCommand = commandCreators.createStartCommand(runnerConfig)
     RunnerLogger.startContainer(runnerKey)
 
     let containerId = await getContainerId(service)
@@ -30,16 +31,12 @@ class BaseExec {
   }
 
   public checkHealth = async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
-    // @ts-ignore TODO: This needs to be addressed
-    const { checkResponsiveness } = runnerConfig
+    // @ts-ignore TODO: Fix TS
     const { runnerKey } = execOpts
     RunnerLogger.checkHealth(runnerKey)
 
     await this.checkConnection(runnerConfig)
-
-    if (checkResponsiveness) {
-      await this.checkResponsiveness(runnerConfig)
-    }
+    await this.checkResponsiveness(runnerConfig, execOpts)
 
     RunnerLogger.checkHealthSuccess(runnerKey)
   }
@@ -74,13 +71,15 @@ class BaseExec {
     await recurse(connectionTimeout)
   }
 
-  private checkResponsiveness = async (runnerConfig: any) => {
+  private checkResponsiveness = async (runnerConfig: any, execOpts: ExecOpts) => {
+    const { runnerKey, service, responsivenessTimeout } = runnerConfig
     const {
-      runnerKey,
-      service,
-      responsivenessTimeout,
-      commands: { checkResponsiveness },
-    } = runnerConfig
+      commandCreators: { createCheckResponsivenessCommand },
+    } = execOpts
+    if (!createCheckResponsivenessCommand) {
+      return Promise.resolve()
+    }
+    const cmd = createCheckResponsivenessCommand(runnerConfig, execOpts)
 
     const recurse = async (responsivenessTimeout: number): Promise<void> => {
       RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
@@ -90,8 +89,8 @@ class BaseExec {
       }
 
       try {
-        RunnerLogger.shellCmd(checkResponsiveness(runnerConfig))
-        await execa.shell(checkResponsiveness(runnerConfig))
+        RunnerLogger.shellCmd(cmd)
+        await execa.shell(cmd)
 
         RunnerLogger.checkResponsivenessSuccess(runnerKey)
       } catch (error) {

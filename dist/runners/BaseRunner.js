@@ -30,13 +30,13 @@ class BaseRunner {
         this.teardown = async () => {
             return this.exec.teardown(this.execOpts);
         };
-        this.exec = new BaseExec_1.default();
         this.runnerConfig = runnerConfig;
         this.execOpts = {
             commandCreators,
             containerId: '',
             runnerKey: '',
         };
+        this.exec = new BaseExec_1.default();
     }
 }
 exports.default = BaseRunner;

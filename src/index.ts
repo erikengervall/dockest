@@ -2,12 +2,12 @@ import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
-import { runners, Runners } from './runners'
+import { runners, UserRunners } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
 interface RequiredConfigProps {
   jest: JestConfig
-  runners: Runners
+  runners: UserRunners
 }
 interface DefaultableConfigProps {
   logLevel: number

@@ -3,37 +3,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const errors_1 = require("../../errors");
+const constants_1 = require("../../constants");
+const BaseRunner_1 = __importDefault(require("../BaseRunner"));
 const utils_1 = require("../utils");
-const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     port: 2181,
     commands: [],
     connectionTimeout: 30,
 };
-class ZookeeeperRunner {
+const createStartCommand = (runnerConfig) => {
+    const { port, service } = runnerConfig;
+    const portMapping = `--publish ${port}:2181`;
+    const cmd = `docker-compose run \
+                ${constants_1.defaultDockerComposeRunOpts} \
+                ${portMapping} \
+                ${service}`;
+    return cmd.replace(/\s+/g, ' ').trim();
+};
+class ZookeeeperRunner extends BaseRunner_1.default {
     constructor(config) {
-        this.containerId = '';
-        this.runnerKey = '';
-        this.setup = async (runnerKey) => {
-            this.runnerKey = runnerKey;
-            const containerId = await this.ZookeeperExec.start(this.config, runnerKey);
-            this.containerId = containerId;
-            await this.ZookeeperExec.checkHealth(this.config, runnerKey);
+        const commandCreators = {
+            createStartCommand,
         };
-        this.teardown = async () => this.ZookeeperExec.teardown(this.containerId, this.runnerKey);
-        this.validateInput = () => {
-            const schema = {
-                service: utils_1.validateTypes.isString,
-            };
-            const failures = utils_1.validateTypes(schema, this.config);
-            if (failures.length > 0) {
-                throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
-            }
+        const runnerConfig = Object.assign({}, DEFAULT_CONFIG, config);
+        super(runnerConfig, commandCreators);
+        const schema = {
+            service: utils_1.validateTypes.isString,
         };
-        this.config = Object.assign({}, DEFAULT_CONFIG, config);
-        this.ZookeeperExec = new execs_1.default();
-        this.validateInput();
+        this.validateConfig(schema, runnerConfig);
     }
 }
 exports.ZookeeeperRunner = ZookeeeperRunner;

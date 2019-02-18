@@ -49,11 +49,10 @@ const createCheckResponsivenessCommand = (runnerConfig, execOpts) => {
 class PostgresRunner extends BaseRunner_1.default {
     constructor(configUserInput) {
         const commandCreators = {
-            start: createStartCommand,
-            checkResponsiveness: createCheckResponsivenessCommand,
+            createStartCommand,
+            createCheckResponsivenessCommand,
         };
         const runnerConfig = Object.assign({}, DEFAULT_CONFIG, configUserInput);
-        // @ts-ignore // TODO: This needs to be addressed
         super(runnerConfig, commandCreators);
         const schema = {
             service: utils_1.validateTypes.isString,
@@ -61,7 +60,7 @@ class PostgresRunner extends BaseRunner_1.default {
             password: utils_1.validateTypes.isString,
             username: utils_1.validateTypes.isString,
         };
-        this.validateConfig(schema, this.runnerConfig);
+        this.validateConfig(schema, runnerConfig);
     }
 }
 PostgresRunner.getHelpers = () => {
