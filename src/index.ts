@@ -5,23 +5,27 @@ import JestRunner, { JestConfig } from './jest'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
+interface UserRunners {
+  [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner
+}
+
 interface RequiredConfigProps {
   jest: JestConfig
-  runners: { [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner }
+  runners: UserRunners
 }
 interface DefaultableConfigProps {
   logLevel: number
   exitHandler: (_: any) => void
 }
-export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   logLevel: LOG_LEVEL.NORMAL,
   exitHandler: (_: any) => undefined,
 }
 
-class Dockest {
+export default class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: DockestConfig
   /**
@@ -98,4 +102,3 @@ class Dockest {
 const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
 export { logLevel, runners }
-export default Dockest

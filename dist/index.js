@@ -64,9 +64,9 @@ Dockest.jestRanWithResult = false;
  * This variable is primarily used to default the logLevel to normal
  */
 Dockest.jestEnv = false;
+exports.default = Dockest;
 const logLevel = constants_1.LOG_LEVEL;
 exports.logLevel = logLevel;
 const runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, RedisRunner: runners_1.RedisRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
 exports.runners = runners;
-exports.default = Dockest;
 //# sourceMappingURL=index.js.map
