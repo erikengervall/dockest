@@ -63,23 +63,6 @@ const redis1ioredis = new RedisRunner({
   password: env.redis1ioredis_password,
 })
 
-const myRunners: any = {}
-if (env.postgres1sequelize_enabled === 'true' || env.CI === 'true') {
-  myRunners.postgres1sequelize = postgres1sequelize
-}
-if (env.postgres2knex_enabled === 'true' || env.CI === 'true') {
-  myRunners.postgres2knex = postgres2knex
-}
-if (env.zookeeper_enabled === 'true') {
-  myRunners.zookeeper = zookeeper
-}
-if (env.kafka_enabled === 'true') {
-  myRunners.kafka1kafkajs = kafka1kafkajs
-}
-if (env.redis1ioredis_enabled === 'true' || env.CI === 'true') {
-  myRunners.redis1ioredis = redis1ioredis
-}
-
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   jest: {
@@ -87,7 +70,15 @@ const dockest = new Dockest({
     lib: require('jest'),
     verbose: true,
   },
-  runners: myRunners,
+  runners: {
+    ...(env.postgres1sequelize_enabled === 'true' || env.CI === 'true'
+      ? { postgres1sequelize }
+      : {}),
+    ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knex } : {}),
+    ...(env.zookeeper_enabled === 'true' ? { zookeeper } : {}),
+    ...(env.kafka_enabled === 'true' ? { kafka1kafkajs } : {}),
+    ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredis } : {}),
+  },
 })
 
 dockest.run()
