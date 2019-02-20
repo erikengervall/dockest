@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const loggers_1 = require("../../loggers");
-const getContainerId = async (serviceName) => {
+exports.default = async (serviceName) => {
     const cmd = `docker ps \
                   --quiet \
                   --filter \
@@ -15,5 +15,4 @@ const getContainerId = async (serviceName) => {
     const { stdout: containerId } = await execa_1.default.shell(cmd);
     return containerId;
 };
-exports.default = getContainerId;
 //# sourceMappingURL=getContainerId.js.map

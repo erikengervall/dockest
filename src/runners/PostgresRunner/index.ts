@@ -16,15 +16,8 @@ interface DefaultableConfigProps {
   connectionTimeout: number
   responsivenessTimeout: number
 }
-interface RunTimeConfigProps {
-  runnerKey: string
-}
-export type PostgresRunnerConfig = RequiredConfigProps &
-  DefaultableConfigProps &
-  Partial<RunTimeConfigProps>
-type PostgresRunnerConfigUserInput = RequiredConfigProps &
-  Partial<DefaultableConfigProps> &
-  Partial<RunTimeConfigProps>
+type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
@@ -73,7 +66,7 @@ const createCheckResponsivenessCommand = (
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
-export class PostgresRunner extends BaseRunner {
+export default class PostgresRunner extends BaseRunner {
   public static getHelpers = () => {
     Dockest.jestEnv = true
 
@@ -103,5 +96,3 @@ export class PostgresRunner extends BaseRunner {
     this.validateConfig(schema, runnerConfig)
   }
 }
-
-export default PostgresRunner

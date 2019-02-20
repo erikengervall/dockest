@@ -8,7 +8,6 @@ const errors_1 = require("./errors");
 const exitHandler_1 = __importDefault(require("./exitHandler"));
 const jest_1 = __importDefault(require("./jest"));
 const runners_1 = require("./runners");
-exports.runners = runners_1.runners;
 const utils_1 = require("./runners/utils");
 const DEFAULT_CONFIG = {
     logLevel: constants_1.LOG_LEVEL.NORMAL,
@@ -67,5 +66,7 @@ Dockest.jestRanWithResult = false;
 Dockest.jestEnv = false;
 const logLevel = constants_1.LOG_LEVEL;
 exports.logLevel = logLevel;
+const runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, RedisRunner: runners_1.RedisRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
+exports.runners = runners;
 exports.default = Dockest;
 //# sourceMappingURL=index.js.map

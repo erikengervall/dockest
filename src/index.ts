@@ -2,12 +2,12 @@ import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
-import { runners, UserRunners } from './runners'
+import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
 interface RequiredConfigProps {
   jest: JestConfig
-  runners: UserRunners
+  runners: { [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner }
 }
 interface DefaultableConfigProps {
   logLevel: number
@@ -96,5 +96,6 @@ class Dockest {
 }
 
 const logLevel = LOG_LEVEL
+const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
 export { logLevel, runners }
 export default Dockest

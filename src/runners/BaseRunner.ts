@@ -4,19 +4,18 @@ import BaseExec from './BaseExec'
 import { RunnerConfigs } from './index'
 import { runCustomCommand, validateTypes } from './utils'
 
-// TODO: Replace any with a working RunnerConfigs
 type CommandCreators = {
-  createStartCommand: (runnerConfig: any) => string
-  createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string
+  createStartCommand: (runnerConfig: any) => string // TODO: no-any
+  createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // TODO: no-any
 }
 
-export interface ExecOpts {
+export type ExecOpts = {
   commandCreators: CommandCreators
   containerId: string
   runnerKey: string
 }
 
-class BaseRunner {
+export default class BaseRunner {
   public runnerConfig: RunnerConfigs
   public execOpts: ExecOpts
   public exec: any
@@ -60,5 +59,3 @@ class BaseRunner {
     return this.exec.teardown(this.execOpts)
   }
 }
-
-export default BaseRunner

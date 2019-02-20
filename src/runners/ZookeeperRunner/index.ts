@@ -10,8 +10,8 @@ interface DefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
 }
-export type ZookeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type ZookeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type ZookeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   port: 2181,
@@ -31,7 +31,7 @@ const createStartCommand = (runnerConfig: ZookeeperRunnerConfig) => {
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
-export class ZookeeeperRunner extends BaseRunner {
+export default class ZookeeeperRunner extends BaseRunner {
   constructor(config: ZookeeperRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
@@ -49,5 +49,3 @@ export class ZookeeeperRunner extends BaseRunner {
     this.validateConfig(schema, runnerConfig)
   }
 }
-
-export default ZookeeeperRunner

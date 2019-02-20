@@ -15,7 +15,7 @@ interface DefaultableConfigProps {
   connectionTimeout: number
 }
 export type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
-export type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
@@ -25,7 +25,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   connectionTimeout: 30,
 }
 
-const createStartCommand = (runnerConfig: KafkaRunnerConfig) => {
+const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
   const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
 
   const portMapping = Object.keys(ports)

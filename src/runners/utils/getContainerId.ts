@@ -1,7 +1,7 @@
 import execa from 'execa'
 import { RunnerLogger } from '../../loggers'
 
-const getContainerId = async (serviceName: string): Promise<string> => {
+export default async (serviceName: string): Promise<string> => {
   const cmd = `docker ps \
                   --quiet \
                   --filter \
@@ -12,5 +12,3 @@ const getContainerId = async (serviceName: string): Promise<string> => {
 
   return containerId
 }
-
-export default getContainerId

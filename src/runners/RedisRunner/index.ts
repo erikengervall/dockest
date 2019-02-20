@@ -14,8 +14,8 @@ interface DefaultableConfigProps {
   connectionTimeout: number
   responsivenessTimeout: number
 }
-export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type RedisRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',

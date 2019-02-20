@@ -24,10 +24,9 @@ class BaseExec {
             return containerId;
         };
         this.checkHealth = async (runnerConfig, execOpts) => {
-            // @ts-ignore TODO: Fix TS
             const { runnerKey } = execOpts;
             loggers_1.RunnerLogger.checkHealth(runnerKey);
-            await this.checkConnection(runnerConfig);
+            await this.checkConnection(runnerConfig, execOpts);
             await this.checkResponsiveness(runnerConfig, execOpts);
             loggers_1.RunnerLogger.checkHealthSuccess(runnerKey);
         };
@@ -35,8 +34,10 @@ class BaseExec {
             const { containerId, runnerKey } = execConfig;
             return utils_1.teardownSingle(containerId, runnerKey);
         };
-        this.checkConnection = async (runnerConfig) => {
-            const { runnerKey, service, connectionTimeout, host, port } = runnerConfig;
+        // TODO: no-any
+        this.checkConnection = async (runnerConfig, execOpts) => {
+            const { service, connectionTimeout, host, port } = runnerConfig;
+            const { runnerKey } = execOpts;
             const recurse = async (connectionTimeout) => {
                 loggers_1.RunnerLogger.checkConnection(runnerKey, connectionTimeout);
                 if (connectionTimeout <= 0) {
@@ -54,9 +55,10 @@ class BaseExec {
             };
             await recurse(connectionTimeout);
         };
+        // TODO: no-any
         this.checkResponsiveness = async (runnerConfig, execOpts) => {
-            const { runnerKey, service, responsivenessTimeout } = runnerConfig;
-            const { commandCreators: { createCheckResponsivenessCommand }, } = execOpts;
+            const { service, responsivenessTimeout } = runnerConfig;
+            const { runnerKey, commandCreators: { createCheckResponsivenessCommand }, } = execOpts;
             if (!createCheckResponsivenessCommand) {
                 return Promise.resolve();
             }

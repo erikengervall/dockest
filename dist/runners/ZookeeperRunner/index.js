@@ -33,6 +33,5 @@ class ZookeeeperRunner extends BaseRunner_1.default {
         this.validateConfig(schema, runnerConfig);
     }
 }
-exports.ZookeeeperRunner = ZookeeeperRunner;
 exports.default = ZookeeeperRunner;
 //# sourceMappingURL=index.js.map

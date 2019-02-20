@@ -5,16 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const execa_1 = __importDefault(require("execa"));
 const loggers_1 = require("../../loggers");
-const teardownSingle = async (containerId, runnerKey) => {
-    if (!containerId) {
-        loggers_1.GlobalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`);
-        return;
-    }
-    loggers_1.RunnerLogger.teardown(runnerKey);
-    await stopContainerById(containerId, runnerKey);
-    await removeContainerById(containerId, runnerKey);
-    loggers_1.RunnerLogger.teardownSuccess(runnerKey);
-};
 const stopContainerById = async (containerId, runnerKey) => {
     loggers_1.RunnerLogger.stopContainer(runnerKey);
     try {
@@ -41,5 +31,14 @@ const removeContainerById = async (containerId, runnerKey) => {
     }
     loggers_1.RunnerLogger.removeContainerSuccess(runnerKey);
 };
-exports.default = teardownSingle;
+exports.default = async (containerId, runnerKey) => {
+    if (!containerId) {
+        loggers_1.GlobalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`);
+        return;
+    }
+    loggers_1.RunnerLogger.teardown(runnerKey);
+    await stopContainerById(containerId, runnerKey);
+    await removeContainerById(containerId, runnerKey);
+    loggers_1.RunnerLogger.teardownSuccess(runnerKey);
+};
 //# sourceMappingURL=teardownSingle.js.map

@@ -5,7 +5,7 @@ import { RunnerLogger } from '../loggers'
 import { ExecOpts, RunnerConfigs } from './index'
 import { acquireConnection, getContainerId, sleep, teardownSingle } from './utils'
 
-class BaseExec {
+export default class BaseExec {
   private static instance: BaseExec
 
   constructor() {
@@ -31,11 +31,10 @@ class BaseExec {
   }
 
   public checkHealth = async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
-    // @ts-ignore TODO: Fix TS
     const { runnerKey } = execOpts
     RunnerLogger.checkHealth(runnerKey)
 
-    await this.checkConnection(runnerConfig)
+    await this.checkConnection(runnerConfig, execOpts)
     await this.checkResponsiveness(runnerConfig, execOpts)
 
     RunnerLogger.checkHealthSuccess(runnerKey)
@@ -46,8 +45,10 @@ class BaseExec {
     return teardownSingle(containerId, runnerKey)
   }
 
-  private checkConnection = async (runnerConfig: any): Promise<void> => {
-    const { runnerKey, service, connectionTimeout, host, port } = runnerConfig
+  // TODO: no-any
+  private checkConnection = async (runnerConfig: any, execOpts: ExecOpts): Promise<void> => {
+    const { service, connectionTimeout, host, port } = runnerConfig
+    const { runnerKey } = execOpts
 
     const recurse = async (connectionTimeout: number) => {
       RunnerLogger.checkConnection(runnerKey, connectionTimeout)
@@ -71,9 +72,11 @@ class BaseExec {
     await recurse(connectionTimeout)
   }
 
+  // TODO: no-any
   private checkResponsiveness = async (runnerConfig: any, execOpts: ExecOpts) => {
-    const { runnerKey, service, responsivenessTimeout } = runnerConfig
+    const { service, responsivenessTimeout } = runnerConfig
     const {
+      runnerKey,
       commandCreators: { createCheckResponsivenessCommand },
     } = execOpts
     if (!createCheckResponsivenessCommand) {
@@ -104,5 +107,3 @@ class BaseExec {
     await recurse(responsivenessTimeout)
   }
 }
-
-export default BaseExec

@@ -69,6 +69,5 @@ PostgresRunner.getHelpers = () => {
         runHelpCmd: async (cmd) => utils_1.runCustomCommand(PostgresRunner.name, cmd),
     };
 };
-exports.PostgresRunner = PostgresRunner;
 exports.default = PostgresRunner;
 //# sourceMappingURL=index.js.map
