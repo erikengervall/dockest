@@ -1,6 +1,6 @@
 import { ConfigurationError } from '../errors'
 import { RunnerLogger } from '../loggers'
-import BaseExec from './BaseExec'
+import { checkHealth, start, teardown } from './BaseExec'
 import { RunnerConfigs } from './index'
 import { runCustomCommand, validateTypes } from './utils'
 
@@ -18,7 +18,6 @@ export type ExecOpts = {
 export default class BaseRunner {
   public runnerConfig: RunnerConfigs
   public execOpts: ExecOpts
-  public exec: any
 
   constructor(runnerConfig: RunnerConfigs, commandCreators: CommandCreators) {
     this.runnerConfig = runnerConfig
@@ -27,7 +26,6 @@ export default class BaseRunner {
       containerId: '',
       runnerKey: '',
     }
-    this.exec = new BaseExec()
   }
 
   public validateConfig = (schema: { [key: string]: any }, config: RunnerConfigs) => {
@@ -42,10 +40,10 @@ export default class BaseRunner {
     this.execOpts.runnerKey = runnerKey
     RunnerLogger.setup(this.execOpts.runnerKey)
 
-    const containerId = await this.exec.start(this.runnerConfig, this.execOpts)
+    const containerId = await start(this.runnerConfig, this.execOpts)
     this.execOpts.containerId = containerId
 
-    await this.exec.checkHealth(this.runnerConfig, this.execOpts)
+    await checkHealth(this.runnerConfig, this.execOpts)
 
     const commands = this.runnerConfig.commands || []
     for (const cmd of commands) {
@@ -56,6 +54,6 @@ export default class BaseRunner {
   }
 
   public teardown = async () => {
-    return this.exec.teardown(this.execOpts)
+    return teardown(this.execOpts)
   }
 }
