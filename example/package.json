@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "ts-node -r tsconfig-paths/register ./dockest.ts"
+    "test": "ts-node ./dockest.ts"
   },
   "dependencies": {
     "dotenv": "^6.2.0",

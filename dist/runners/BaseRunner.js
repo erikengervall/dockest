@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const errors_1 = require("src/errors");
-const loggers_1 = require("src/loggers");
-const execs_1 = require("src/runners/execs");
-const utils_1 = require("src/runners/utils");
+const errors_1 = require("../errors");
+const loggers_1 = require("../loggers");
+const execs_1 = require("./execs");
+const utils_1 = require("./utils");
 class BaseRunner {
     constructor(runnerConfig, commandCreators) {
         this.validateConfig = (schema, config) => {

@@ -1,8 +1,8 @@
-import { ConfigurationError } from 'src/errors'
-import { runnerLogger, RunnerLogger } from 'src/loggers'
-import { checkConnection, checkResponsiveness, start, teardown } from 'src/runners/execs'
-import { RunnerConfigs } from 'src/runners/index'
-import { runCustomCommand, validateTypes } from 'src/runners/utils'
+import { ConfigurationError } from '../errors'
+import { runnerLogger, RunnerLogger } from '../loggers'
+import { checkConnection, checkResponsiveness, start, teardown } from './execs'
+import { RunnerConfigs } from './index'
+import { runCustomCommand, validateTypes } from './utils'
 
 type CommandCreators = {
   createStartCommand: (runnerConfig: any) => string // FIXME: no-any
