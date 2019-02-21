@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { RunnerLogger } from '../../loggers'
+import { runnerLogger } from '../../loggers'
 import getContainerId from './getContainerId'
 
 const serviceName = 'mockServiceName'
@@ -21,7 +21,7 @@ describe('getContainerId', () => {
   it('should work', async () => {
     const containerId = await getContainerId(serviceName)
 
-    expect(RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
+    expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
     expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
     expect(execa.shell).lastReturnedWith({ stdout })
     expect(containerId).toEqual(stdout)

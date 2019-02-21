@@ -1,8 +1,7 @@
 import { ConfigurationError } from '../errors'
-import { RunnerLogger } from '../loggers'
-import { checkHealth, start, teardown } from './BaseExec'
+import { runnerLogger, RunnerLogger } from '../loggers'
 import { RunnerConfigs } from './index'
-import { runCustomCommand, validateTypes } from './utils'
+import { execCheckHealth, execStart, execTeardown, runCustomCommand, validateTypes } from './utils'
 
 type CommandCreators = {
   createStartCommand: (runnerConfig: any) => string // TODO: no-any
@@ -37,23 +36,23 @@ export default class BaseRunner {
   }
 
   public setup = async (runnerKey: string) => {
-    this.execOpts.runnerKey = runnerKey
-    RunnerLogger.setup(this.execOpts.runnerKey)
+    RunnerLogger.setRunnerKey(runnerKey)
 
-    const containerId = await start(this.runnerConfig, this.execOpts)
+    this.execOpts.runnerKey = runnerKey
+    runnerLogger.setup(this.execOpts.runnerKey)
+
+    const containerId = await execStart(this.runnerConfig, this.execOpts)
     this.execOpts.containerId = containerId
 
-    await checkHealth(this.runnerConfig, this.execOpts)
+    await execCheckHealth(this.runnerConfig, this.execOpts)
 
     const commands = this.runnerConfig.commands || []
     for (const cmd of commands) {
       await runCustomCommand(this.execOpts.runnerKey, cmd)
     }
 
-    RunnerLogger.setupSuccess(this.execOpts.runnerKey)
+    runnerLogger.setupSuccess(this.execOpts.runnerKey)
   }
 
-  public teardown = async () => {
-    return teardown(this.execOpts)
-  }
+  public teardown = () => execTeardown(this.execOpts)
 }

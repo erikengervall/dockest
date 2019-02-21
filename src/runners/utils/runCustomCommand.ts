@@ -1,8 +1,8 @@
 import execa from 'execa'
-import { RunnerUtilsLogger } from '../../loggers'
+import { runnerUtilsLogger } from '../../loggers'
 
 export default async (runnerKey: string, command: string): Promise<void> => {
-  RunnerUtilsLogger.customShellCmd(runnerKey, command)
+  runnerUtilsLogger.customShellCmd(runnerKey, command)
   const { stdout: result } = await execa.shell(command)
-  RunnerUtilsLogger.customShellCmdSuccess(runnerKey, result)
+  runnerUtilsLogger.customShellCmdSuccess(runnerKey, result)
 }

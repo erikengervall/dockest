@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { GlobalLogger, RunnerLogger } from '../../loggers'
+import { globalLogger, runnerLogger } from '../../loggers'
 import teardownSingle from './teardownSingle'
 
 const runnerKey = 'mockRunnerKey'
@@ -37,11 +37,11 @@ describe('teardownSingle', () => {
     it('should work', async () => {
       await teardownSingle(containerId, runnerKey)
 
-      expect(RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
+      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
       expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
-      expect(RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
-      expect(GlobalLogger.error).not.toHaveBeenCalled()
+      expect(globalLogger.error).not.toHaveBeenCalled()
     })
   })
 
@@ -55,10 +55,10 @@ describe('teardownSingle', () => {
 
       await teardownSingle(containerId, runnerKey)
 
-      expect(RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
-      expect(GlobalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error)
-      expect(RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
-      expect(GlobalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error)
+      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
+      expect(globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error)
+      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error)
     })
   })
 })

@@ -1,41 +1,18 @@
 import execa from 'execa'
 
-import { DockestError } from '../errors'
-import { RunnerLogger } from '../loggers'
-import { ExecOpts, RunnerConfigs } from './index'
-import { acquireConnection, getContainerId, sleep, teardownSingle } from './utils'
+import { DockestError } from '../../errors'
+import { runnerLogger } from '../../loggers'
+import { ExecOpts, RunnerConfigs } from '../index'
+import { acquireConnection, sleep } from './index'
 
-const start = async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
-  const { service } = runnerConfig
-  const { runnerKey, commandCreators } = execOpts
-  const startCommand = commandCreators.createStartCommand(runnerConfig)
-  RunnerLogger.startContainer(runnerKey)
-
-  let containerId = await getContainerId(service)
-  if (!containerId) {
-    RunnerLogger.shellCmd(startCommand)
-    await execa.shell(startCommand)
-  }
-  containerId = await getContainerId(service)
-
-  RunnerLogger.startContainerSuccess(runnerKey)
-
-  return containerId
-}
-
-const checkHealth = async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
+export default async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
   const { runnerKey } = execOpts
-  RunnerLogger.checkHealth(runnerKey)
+  runnerLogger.checkHealth(runnerKey)
 
   await checkConnection(runnerConfig, execOpts)
   await checkResponsiveness(runnerConfig, execOpts)
 
-  RunnerLogger.checkHealthSuccess(runnerKey)
-}
-
-const teardown = async (execConfig: ExecOpts) => {
-  const { containerId, runnerKey } = execConfig
-  return teardownSingle(containerId, runnerKey)
+  runnerLogger.checkHealthSuccess(runnerKey)
 }
 
 // TODO: no-any
@@ -44,7 +21,7 @@ const checkConnection = async (runnerConfig: any, execOpts: ExecOpts): Promise<v
   const { runnerKey } = execOpts
 
   const recurse = async (connectionTimeout: number) => {
-    RunnerLogger.checkConnection(runnerKey, connectionTimeout)
+    runnerLogger.checkConnection(connectionTimeout)
 
     if (connectionTimeout <= 0) {
       throw new DockestError(`${service} connection timed out`)
@@ -53,7 +30,7 @@ const checkConnection = async (runnerConfig: any, execOpts: ExecOpts): Promise<v
     try {
       await acquireConnection(port, host)
 
-      RunnerLogger.checkConnectionSuccess(runnerKey)
+      runnerLogger.checkConnectionSuccess(runnerKey)
     } catch (error) {
       connectionTimeout--
 
@@ -78,17 +55,17 @@ const checkResponsiveness = async (runnerConfig: any, execOpts: ExecOpts) => {
   const cmd = createCheckResponsivenessCommand(runnerConfig, execOpts)
 
   const recurse = async (responsivenessTimeout: number): Promise<void> => {
-    RunnerLogger.checkResponsiveness(runnerKey, responsivenessTimeout)
+    runnerLogger.checkResponsiveness(responsivenessTimeout)
 
     if (responsivenessTimeout <= 0) {
       throw new DockestError(`${service} responsiveness timed out`)
     }
 
     try {
-      RunnerLogger.shellCmd(cmd)
+      runnerLogger.shellCmd(cmd)
       await execa.shell(cmd)
 
-      RunnerLogger.checkResponsivenessSuccess(runnerKey)
+      runnerLogger.checkResponsivenessSuccess(runnerKey)
     } catch (error) {
       responsivenessTimeout--
 
@@ -99,5 +76,3 @@ const checkResponsiveness = async (runnerConfig: any, execOpts: ExecOpts) => {
 
   await recurse(responsivenessTimeout)
 }
-
-export { start, checkHealth, teardown }

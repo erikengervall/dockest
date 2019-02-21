@@ -36,11 +36,11 @@ describe('teardownSingle', () => {
     describe('happy', () => {
         it('should work', async () => {
             await teardownSingle_1.default(containerId, runnerKey);
-            expect(loggers_1.RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
+            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
             expect(execa_1.default.shell).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
-            expect(loggers_1.RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
+            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
             expect(execa_1.default.shell).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
-            expect(loggers_1.GlobalLogger.error).not.toHaveBeenCalled();
+            expect(loggers_1.globalLogger.error).not.toHaveBeenCalled();
         });
     });
     describe('sad', () => {
@@ -51,10 +51,10 @@ describe('teardownSingle', () => {
                 throw error;
             });
             await teardownSingle_1.default(containerId, runnerKey);
-            expect(loggers_1.RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
-            expect(loggers_1.GlobalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error);
-            expect(loggers_1.RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
-            expect(loggers_1.GlobalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error);
+            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
+            expect(loggers_1.globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error);
+            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
+            expect(loggers_1.globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error);
         });
     });
 });

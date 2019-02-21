@@ -11,7 +11,7 @@ exports.default = async (serviceName) => {
                   --filter \
                   "name=${serviceName}" \
                   --latest`;
-    loggers_1.RunnerLogger.shellCmd(cmd);
+    loggers_1.runnerLogger.shellCmd(cmd);
     const { stdout: containerId } = await execa_1.default.shell(cmd);
     return containerId;
 };

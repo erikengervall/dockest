@@ -4,40 +4,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseLogger_1 = __importDefault(require("./BaseLogger"));
-class ExecLogger extends BaseLogger_1.default {
+class RunnerLogger extends BaseLogger_1.default {
     constructor() {
         super();
         /**
          * Setup
          */
-        this.setup = runnerKey => this.IS_NORMAL() && this.logLoading(`${runnerKey}: Setup initiated`);
-        this.setupSuccess = runnerKey => this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Setup successful`);
-        this.startContainer = runnerKey => this.IS_NORMAL() && this.logLoading(`${runnerKey}: Starting container`);
-        this.startContainerSuccess = runnerKey => this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Container running`);
-        this.checkHealth = runnerKey => this.IS_NORMAL() && this.logLoading(`${runnerKey}: Healthchecking container`);
-        this.checkHealthSuccess = runnerKey => this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Healthcheck successful`);
-        this.checkResponsiveness = (runnerKey, timeout) => this.IS_VERBOSE() &&
-            this.logLoading(`${runnerKey}: Checking container's responsiveness (Timeout in: ${timeout}s)`);
-        this.checkResponsivenessSuccess = runnerKey => this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container's responsiveness checked`);
-        this.checkConnection = (runnerKey, timeout) => this.IS_VERBOSE() &&
-            this.logLoading(`${runnerKey}: Checking container's connection (Timeout in: ${timeout}s)`);
-        this.checkConnectionSuccess = runnerKey => this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container's connection checked`);
+        this.setup = () => this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Setup initiated`);
+        this.setupSuccess = () => this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Setup successful`);
+        this.startContainer = () => this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Starting container`);
+        this.startContainerSuccess = () => this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Container running`);
+        this.checkHealth = () => this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Healthchecking container`);
+        this.checkHealthSuccess = () => this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Healthcheck successful`);
+        this.checkResponsiveness = (timeout) => this.IS_VERBOSE() &&
+            this.logLoading(`${RunnerLogger.runnerKey}Checking container's responsiveness (Timeout in: ${timeout}s)`);
+        this.checkResponsivenessSuccess = () => this.IS_VERBOSE() &&
+            this.logSuccess(`${RunnerLogger.runnerKey}Container's responsiveness checked`);
+        this.checkConnection = (timeout) => this.IS_VERBOSE() &&
+            this.logLoading(`${RunnerLogger.runnerKey}Checking container's connection (Timeout in: ${timeout}s)`);
+        this.checkConnectionSuccess = () => this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container's connection checked`);
         /**
          * Teardown
          */
-        this.teardown = runnerKey => this.IS_NORMAL() && this.logLoading(`${runnerKey}: Container being teared down`);
-        this.teardownSuccess = runnerKey => this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Container teared down`);
-        this.stopContainer = runnerKey => this.IS_VERBOSE() && this.logLoading(`${runnerKey}: Container being stopped`);
-        this.stopContainerSuccess = runnerKey => this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container stopped`);
-        this.removeContainer = runnerKey => this.IS_VERBOSE() && this.logLoading(`${runnerKey}: Container being removed`);
-        this.removeContainerSuccess = runnerKey => this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container removed`);
+        this.teardown = () => this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Container being teared down`);
+        this.teardownSuccess = () => this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Container teared down`);
+        this.stopContainer = () => this.IS_VERBOSE() && this.logLoading(`${RunnerLogger.runnerKey}Container being stopped`);
+        this.stopContainerSuccess = () => this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container stopped`);
+        this.removeContainer = () => this.IS_VERBOSE() && this.logLoading(`${RunnerLogger.runnerKey}Container being removed`);
+        this.removeContainerSuccess = () => this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container removed`);
         /**
          * Misc
          */
         this.shellCmd = (logData = '') => this.IS_VERBOSE() && this.logInfo(`Executed following shell script`, this.trim(logData));
-        return ExecLogger.execLoggerInstance || (ExecLogger.execLoggerInstance = this);
+        return RunnerLogger.runnerLoggerInstance || (RunnerLogger.runnerLoggerInstance = this);
     }
 }
-const execLogger = new ExecLogger();
-exports.default = execLogger;
+RunnerLogger.setRunnerKey = (runnerKey) => {
+    RunnerLogger.runnerKey = `${runnerKey}: `;
+};
+RunnerLogger.runnerKey = '';
+exports.RunnerLogger = RunnerLogger;
+const runnerLogger = new RunnerLogger();
+exports.default = runnerLogger;
 //# sourceMappingURL=RunnerLogger.js.map

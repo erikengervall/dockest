@@ -1,68 +1,78 @@
 import BaseLogger, { logMethod } from './BaseLogger'
 
-class ExecLogger extends BaseLogger {
-  private static execLoggerInstance: ExecLogger
+class RunnerLogger extends BaseLogger {
+  public static setRunnerKey = (runnerKey: string) => {
+    RunnerLogger.runnerKey = `${runnerKey}: `
+  }
+
+  private static runnerLoggerInstance: RunnerLogger
+  private static runnerKey: string = ''
 
   constructor() {
     super()
-    return ExecLogger.execLoggerInstance || (ExecLogger.execLoggerInstance = this)
+    return RunnerLogger.runnerLoggerInstance || (RunnerLogger.runnerLoggerInstance = this)
   }
 
   /**
    * Setup
    */
-  public setup: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Setup initiated`)
+  public setup: logMethod = () =>
+    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Setup initiated`)
 
-  public setupSuccess: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Setup successful`)
+  public setupSuccess: logMethod = () =>
+    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Setup successful`)
 
-  public startContainer: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Starting container`)
+  public startContainer: logMethod = () =>
+    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Starting container`)
 
-  public startContainerSuccess: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Container running`)
+  public startContainerSuccess: logMethod = () =>
+    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Container running`)
 
-  public checkHealth: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Healthchecking container`)
+  public checkHealth: logMethod = () =>
+    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Healthchecking container`)
 
-  public checkHealthSuccess: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Healthcheck successful`)
+  public checkHealthSuccess: logMethod = () =>
+    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Healthcheck successful`)
 
-  public checkResponsiveness = (runnerKey: string, timeout: number) =>
+  public checkResponsiveness = (timeout: number) =>
     this.IS_VERBOSE() &&
-    this.logLoading(`${runnerKey}: Checking container's responsiveness (Timeout in: ${timeout}s)`)
+    this.logLoading(
+      `${RunnerLogger.runnerKey}Checking container's responsiveness (Timeout in: ${timeout}s)`
+    )
 
-  public checkResponsivenessSuccess: logMethod = runnerKey =>
-    this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container's responsiveness checked`)
-
-  public checkConnection = (runnerKey: string, timeout: number) =>
+  public checkResponsivenessSuccess: logMethod = () =>
     this.IS_VERBOSE() &&
-    this.logLoading(`${runnerKey}: Checking container's connection (Timeout in: ${timeout}s)`)
+    this.logSuccess(`${RunnerLogger.runnerKey}Container's responsiveness checked`)
 
-  public checkConnectionSuccess: logMethod = runnerKey =>
-    this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container's connection checked`)
+  public checkConnection = (timeout: number) =>
+    this.IS_VERBOSE() &&
+    this.logLoading(
+      `${RunnerLogger.runnerKey}Checking container's connection (Timeout in: ${timeout}s)`
+    )
+
+  public checkConnectionSuccess: logMethod = () =>
+    this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container's connection checked`)
 
   /**
    * Teardown
    */
-  public teardown: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logLoading(`${runnerKey}: Container being teared down`)
+  public teardown: logMethod = () =>
+    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Container being teared down`)
 
-  public teardownSuccess: logMethod = runnerKey =>
-    this.IS_NORMAL() && this.logSuccess(`${runnerKey}: Container teared down`)
+  public teardownSuccess: logMethod = () =>
+    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Container teared down`)
 
-  public stopContainer: logMethod = runnerKey =>
-    this.IS_VERBOSE() && this.logLoading(`${runnerKey}: Container being stopped`)
+  public stopContainer: logMethod = () =>
+    this.IS_VERBOSE() && this.logLoading(`${RunnerLogger.runnerKey}Container being stopped`)
 
-  public stopContainerSuccess: logMethod = runnerKey =>
-    this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container stopped`)
+  public stopContainerSuccess: logMethod = () =>
+    this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container stopped`)
 
-  public removeContainer: logMethod = runnerKey =>
-    this.IS_VERBOSE() && this.logLoading(`${runnerKey}: Container being removed`)
+  public removeContainer: logMethod = () =>
+    this.IS_VERBOSE() && this.logLoading(`${RunnerLogger.runnerKey}Container being removed`)
 
-  public removeContainerSuccess: logMethod = runnerKey =>
-    this.IS_VERBOSE() && this.logSuccess(`${runnerKey}: Container removed`)
+  public removeContainerSuccess: logMethod = () =>
+    this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container removed`)
 
   /**
    * Misc
@@ -71,5 +81,6 @@ class ExecLogger extends BaseLogger {
     this.IS_VERBOSE() && this.logInfo(`Executed following shell script`, this.trim(logData))
 }
 
-const execLogger = new ExecLogger()
-export default execLogger
+const runnerLogger = new RunnerLogger()
+export default runnerLogger
+export { RunnerLogger }

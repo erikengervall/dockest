@@ -1,4 +1,7 @@
 export { default as acquireConnection } from './acquireConnection'
+export { default as execCheckHealth } from './execCheckHealth'
+export { default as execStart } from './execStart'
+export { default as execTeardown } from './execTeardown'
 export { default as getContainerId } from './getContainerId'
 export { default as runCustomCommand } from './runCustomCommand'
 export { default as sleep } from './sleep'
