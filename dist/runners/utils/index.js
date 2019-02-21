@@ -2,12 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var acquireConnection_1 = require("./acquireConnection");
 exports.acquireConnection = acquireConnection_1.default;
-var execCheckHealth_1 = require("./execCheckHealth");
-exports.execCheckHealth = execCheckHealth_1.default;
-var execStart_1 = require("./execStart");
-exports.execStart = execStart_1.default;
-var execTeardown_1 = require("./execTeardown");
-exports.execTeardown = execTeardown_1.default;
 var getContainerId_1 = require("./getContainerId");
 exports.getContainerId = getContainerId_1.default;
 var runCustomCommand_1 = require("./runCustomCommand");

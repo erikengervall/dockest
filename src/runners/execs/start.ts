@@ -2,7 +2,7 @@ import execa from 'execa'
 
 import { runnerLogger } from '../../loggers'
 import { ExecOpts, RunnerConfigs } from '../index'
-import { getContainerId } from './index'
+import { getContainerId } from '../utils'
 
 export default async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
   const { service } = runnerConfig

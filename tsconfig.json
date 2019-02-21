@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "src": ["./src"]
+    },
     "outDir": "dist",
     "allowJs": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "lib": ["es2015", "es2016", "es2017"],
     "module": "commonjs",

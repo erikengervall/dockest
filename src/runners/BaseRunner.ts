@@ -1,11 +1,12 @@
-import { ConfigurationError } from '../errors'
-import { runnerLogger, RunnerLogger } from '../loggers'
-import { RunnerConfigs } from './index'
-import { execCheckHealth, execStart, execTeardown, runCustomCommand, validateTypes } from './utils'
+import { ConfigurationError } from 'src/errors'
+import { runnerLogger, RunnerLogger } from 'src/loggers'
+import { checkConnection, checkResponsiveness, start, teardown } from 'src/runners/execs'
+import { RunnerConfigs } from 'src/runners/index'
+import { runCustomCommand, validateTypes } from 'src/runners/utils'
 
 type CommandCreators = {
-  createStartCommand: (runnerConfig: any) => string // TODO: no-any
-  createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // TODO: no-any
+  createStartCommand: (runnerConfig: any) => string // FIXME: no-any
+  createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // FIXME: no-any
 }
 
 export type ExecOpts = {
@@ -41,10 +42,11 @@ export default class BaseRunner {
     this.execOpts.runnerKey = runnerKey
     runnerLogger.setup(this.execOpts.runnerKey)
 
-    const containerId = await execStart(this.runnerConfig, this.execOpts)
+    const containerId = await start(this.runnerConfig, this.execOpts)
     this.execOpts.containerId = containerId
 
-    await execCheckHealth(this.runnerConfig, this.execOpts)
+    await checkResponsiveness(this.runnerConfig, this.execOpts)
+    await checkConnection(this.runnerConfig, this.execOpts)
 
     const commands = this.runnerConfig.commands || []
     for (const cmd of commands) {
@@ -54,5 +56,5 @@ export default class BaseRunner {
     runnerLogger.setupSuccess(this.execOpts.runnerKey)
   }
 
-  public teardown = () => execTeardown(this.execOpts)
+  public teardown = () => teardown(this.execOpts)
 }
