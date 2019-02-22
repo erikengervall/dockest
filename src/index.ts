@@ -2,6 +2,7 @@ import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
+import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
 
@@ -44,6 +45,7 @@ export default class Dockest {
       ...userConfig,
     }
 
+    BaseLogger.logLevel = Dockest.config.logLevel
     this.jestRunner = new JestRunner(Dockest.config.jest)
 
     this.validateConfig()

@@ -7,6 +7,7 @@ const constants_1 = require("./constants");
 const errors_1 = require("./errors");
 const exitHandler_1 = __importDefault(require("./exitHandler"));
 const jest_1 = __importDefault(require("./jest"));
+const loggers_1 = require("./loggers");
 const runners_1 = require("./runners");
 const utils_1 = require("./runners/utils");
 const DEFAULT_CONFIG = {
@@ -50,6 +51,7 @@ class Dockest {
             }
         };
         Dockest.config = Object.assign({}, DEFAULT_CONFIG, userConfig);
+        loggers_1.BaseLogger.logLevel = Dockest.config.logLevel;
         this.jestRunner = new jest_1.default(Dockest.config.jest);
         this.validateConfig();
         exitHandler_1.default(Dockest.config);

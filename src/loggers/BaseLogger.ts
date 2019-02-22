@@ -1,7 +1,6 @@
 // tslint:disable:no-console
 
 import { COLORS, ICONS, LOG_LEVEL } from '../constants'
-import Dockest from '../index'
 
 const { LOADING, SUCCESS, INFO, FAILED } = ICONS
 const {
@@ -12,6 +11,7 @@ const {
 type logMethod = (message: string, logData?: any) => void
 
 class BaseLogger {
+  public static logLevel: number = LOG_LEVEL.NORMAL
   private static baseLoggerInstance: BaseLogger
 
   constructor() {
@@ -38,7 +38,7 @@ class BaseLogger {
   public logError: logMethod = (m, d) =>
     console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n')
 
-  private getLogLevel = (): number => (Dockest.jestEnv ? LOG_LEVEL.NORMAL : Dockest.config.logLevel)
+  private getLogLevel = (): number => BaseLogger.logLevel
   private defaultD = (d?: object): object | string => d || ''
 }
 

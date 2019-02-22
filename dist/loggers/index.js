@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var BaseLogger_1 = require("./BaseLogger");
+exports.BaseLogger = BaseLogger_1.default;
 var GlobalLogger_1 = require("./GlobalLogger");
 exports.globalLogger = GlobalLogger_1.default;
 var RunnerLogger_1 = require("./RunnerLogger");
