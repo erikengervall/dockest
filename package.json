@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf ./dist && tsc",
+    "build:watch": "rimraf ./dist && tsc --watch",
     "test": "jest ./src",
     "test:example": "cd example && npm run test",
     "test:all": "npm run test && npm run test:example",

@@ -13,14 +13,14 @@ jest.mock('execa', () => ({
 }))
 
 jest.mock('../../loggers', () => ({
-  RunnerUtilsLogger: {
+  runnerUtilsLogger: {
     customShellCmd: jest.fn(),
     customShellCmdSuccess: jest.fn(),
   },
 }))
 
 describe('runCustomCommand', () => {
-  it('should work', async () => {
+  it('trabajo', async () => {
     await runCustomCommand(runnerKey, command)
 
     expect(runnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command)

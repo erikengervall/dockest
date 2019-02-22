@@ -13,10 +13,10 @@ jest.mock('execa', () => ({
 }))
 
 jest.mock('../../loggers', () => ({
-  GlobalLogger: {
+  globalLogger: {
     error: jest.fn(),
   },
-  RunnerLogger: {
+  runnerLogger: {
     shellCmd: jest.fn(),
     teardown: jest.fn(),
     teardownSuccess: jest.fn(),

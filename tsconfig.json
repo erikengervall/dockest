@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "src/*": ["./src/*"]
+      "src": ["./*"]
     },
     "outDir": "dist",
     "allowJs": true,

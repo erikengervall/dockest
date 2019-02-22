@@ -14,7 +14,7 @@ jest.mock('execa', () => ({
     })),
 }));
 jest.mock('../../loggers', () => ({
-    RunnerLogger: {
+    runnerLogger: {
         shellCmd: jest.fn(),
     },
 }));

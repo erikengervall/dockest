@@ -53,7 +53,7 @@ describe('validateTypes', () => {
       const failures = validateTypes(validationSchema, config)
 
       expect(failures.length).toEqual(1)
-      expect(failures[0]).toMatch(/service: Expected string | Received number/)
+      expect(failures[0]).toMatch('service: Expected string | Received 1 (number)')
     })
   })
 })
