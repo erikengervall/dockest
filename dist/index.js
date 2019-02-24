@@ -9,7 +9,6 @@ const exitHandler_1 = __importDefault(require("./exitHandler"));
 const jest_1 = __importDefault(require("./jest"));
 const loggers_1 = require("./loggers");
 const runners_1 = require("./runners");
-exports.runners = runners_1.runners;
 const utils_1 = require("./runners/utils");
 const DEFAULT_CONFIG = {
     logLevel: constants_1.LOG_LEVEL.NORMAL,
@@ -27,9 +26,7 @@ class Dockest {
             const { runners } = Dockest.config;
             await utils_1.runCustomCommand('Dockest', 'docker-compose pull');
             for (const runnerKey of Object.keys(runners)) {
-                loggers_1.RunnerLogger.setup(runnerKey);
                 await runners[runnerKey].setup(runnerKey);
-                loggers_1.RunnerLogger.setupSuccess(runnerKey);
             }
         };
         this.runJest = async () => {
@@ -54,6 +51,7 @@ class Dockest {
             }
         };
         Dockest.config = Object.assign({}, DEFAULT_CONFIG, userConfig);
+        loggers_1.BaseLogger.logLevel = Dockest.config.logLevel;
         this.jestRunner = new jest_1.default(Dockest.config.jest);
         this.validateConfig();
         exitHandler_1.default(Dockest.config);
@@ -61,14 +59,9 @@ class Dockest {
     }
 }
 Dockest.jestRanWithResult = false;
-/**
- * jestEnv
- * Dockest has been imported from a non-global node env (e.g. jest's node vm)
- * This means that the Dockest singleton is unretrievable
- * This variable is primarily used to default the logLevel to normal
- */
-Dockest.jestEnv = false;
+exports.default = Dockest;
 const logLevel = constants_1.LOG_LEVEL;
 exports.logLevel = logLevel;
-exports.default = Dockest;
+const runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, RedisRunner: runners_1.RedisRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
+exports.runners = runners;
 //# sourceMappingURL=index.js.map

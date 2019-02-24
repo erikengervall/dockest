@@ -12,7 +12,7 @@ const setupExitHandler = async (config) => {
             // Program ran as expected
             return;
         }
-        loggers_1.GlobalLogger.error('Exithandler invoced', errorPayload);
+        loggers_1.globalLogger.error('Exithandler invoced', errorPayload);
         if (config.exitHandler && typeof exitHandler === 'function') {
             const err = errorPayload.error || new Error('Failed to extract error');
             config.exitHandler(err);

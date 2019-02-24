@@ -2,36 +2,33 @@ import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
-import { RunnerLogger } from './loggers'
-import { runners, Runners } from './runners'
+import { BaseLogger } from './loggers'
+import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
 import { runCustomCommand, validateTypes } from './runners/utils'
+
+interface UserRunners {
+  [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner
+}
 
 interface RequiredConfigProps {
   jest: JestConfig
-  runners: Runners
+  runners: UserRunners
 }
 interface DefaultableConfigProps {
   logLevel: number
   exitHandler: (_: any) => void
 }
-export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   logLevel: LOG_LEVEL.NORMAL,
   exitHandler: (_: any) => undefined,
 }
 
-class Dockest {
+export default class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: DockestConfig
-  /**
-   * jestEnv
-   * Dockest has been imported from a non-global node env (e.g. jest's node vm)
-   * This means that the Dockest singleton is unretrievable
-   * This variable is primarily used to default the logLevel to normal
-   */
-  public static jestEnv: boolean = false
   private static instance: Dockest
   private jestRunner: JestRunner
 
@@ -41,6 +38,7 @@ class Dockest {
       ...userConfig,
     }
 
+    BaseLogger.logLevel = Dockest.config.logLevel
     this.jestRunner = new JestRunner(Dockest.config.jest)
 
     this.validateConfig()
@@ -63,9 +61,7 @@ class Dockest {
     await runCustomCommand('Dockest', 'docker-compose pull')
 
     for (const runnerKey of Object.keys(runners)) {
-      RunnerLogger.setup(runnerKey)
       await runners[runnerKey].setup(runnerKey)
-      RunnerLogger.setupSuccess(runnerKey)
     }
   }
 
@@ -99,5 +95,5 @@ class Dockest {
 }
 
 const logLevel = LOG_LEVEL
+const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
 export { logLevel, runners }
-export default Dockest

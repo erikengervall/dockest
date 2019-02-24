@@ -15,18 +15,18 @@ jest.mock('execa', () => ({
     })),
 }));
 jest.mock('../../loggers', () => ({
-    RunnerUtilsLogger: {
+    runnerUtilsLogger: {
         customShellCmd: jest.fn(),
         customShellCmdSuccess: jest.fn(),
     },
 }));
 describe('runCustomCommand', () => {
-    it('should work', async () => {
+    it('trabajo', async () => {
         await runCustomCommand_1.default(runnerKey, command);
-        expect(loggers_1.RunnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command);
+        expect(loggers_1.runnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command);
         expect(execa_1.default.shell).toHaveBeenCalledWith(command);
         expect(execa_1.default.shell).lastReturnedWith({ stdout });
-        expect(loggers_1.RunnerUtilsLogger.customShellCmdSuccess).toHaveBeenCalledWith(runnerKey, stdout);
+        expect(loggers_1.runnerUtilsLogger.customShellCmdSuccess).toHaveBeenCalledWith(runnerKey, stdout);
     });
 });
 //# sourceMappingURL=runCustomCommand.spec.js.map

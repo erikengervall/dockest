@@ -3,10 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const errors_1 = require("../../errors");
-const index_1 = __importDefault(require("../../index"));
+const constants_1 = require("../../constants");
+const BaseRunner_1 = __importDefault(require("../BaseRunner"));
 const utils_1 = require("../utils");
-const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
     host: 'localhost',
     port: 6379,
@@ -15,44 +14,49 @@ const DEFAULT_CONFIG = {
     connectionTimeout: 3,
     responsivenessTimeout: 10,
 };
-class RedisRunner {
+const createStartCommand = (runnerConfig) => {
+    const { port, service, password } = runnerConfig;
+    const portMapping = `--publish ${port}:6379`;
+    const auth = !!password ? `--requirepass ${password}` : '';
+    const cmd = `docker-compose run \
+                ${constants_1.defaultDockerComposeRunOpts} \
+                ${portMapping} \
+                ${service} \
+                ${auth}`;
+    return cmd.replace(/\s+/g, ' ').trim();
+};
+const createCheckResponsivenessCommand = (runnerConfig, execOpts) => {
+    const { host: runnerHost, password: runnerPassword } = runnerConfig;
+    const { containerId } = execOpts;
+    const host = `-h ${runnerHost}`;
+    const port = `-p 6379`;
+    const password = runnerPassword ? `-a ${runnerPassword}` : '';
+    const command = `PING`;
+    const redisCliOpts = `${host} \
+                        ${port} \
+                        ${password} \
+                        ${command}`;
+    const cmd = `docker exec ${containerId} redis-cli ${redisCliOpts}`;
+    return cmd.replace(/\s+/g, ' ').trim();
+};
+class RedisRunner extends BaseRunner_1.default {
     constructor(config) {
-        this.containerId = '';
-        this.runnerKey = '';
-        this.setRunnerKey = (runnerKey) => {
-            this.runnerKey = runnerKey;
+        const commandCreators = {
+            createStartCommand,
+            createCheckResponsivenessCommand,
         };
-        this.setup = async (runnerKey) => {
-            this.runnerKey = runnerKey;
-            const containerId = await this.redisExec.start(this.config, runnerKey);
-            this.containerId = containerId;
-            await this.redisExec.checkHealth(this.config, containerId, runnerKey);
-            const commands = this.config.commands || [];
-            for (const cmd of commands) {
-                await utils_1.runCustomCommand(runnerKey, cmd);
-            }
+        const runnerConfig = Object.assign({}, DEFAULT_CONFIG, config);
+        super(runnerConfig, commandCreators);
+        const schema = {
+            service: utils_1.validateTypes.isString,
         };
-        this.teardown = async () => this.redisExec.teardown(this.containerId, this.runnerKey);
-        this.validateConfig = () => {
-            const schema = {
-                service: utils_1.validateTypes.isString,
-            };
-            const failures = utils_1.validateTypes(schema, this.config);
-            if (failures.length > 0) {
-                throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
-            }
-        };
-        this.config = Object.assign({}, DEFAULT_CONFIG, config);
-        this.redisExec = new execs_1.default();
-        this.validateConfig();
+        this.validateConfig(schema, runnerConfig);
     }
 }
 RedisRunner.getHelpers = () => {
-    index_1.default.jestEnv = true;
     return {
         runHelpCmd: async (cmd) => utils_1.runCustomCommand(RedisRunner.name, cmd),
     };
 };
-exports.RedisRunner = RedisRunner;
 exports.default = RedisRunner;
 //# sourceMappingURL=index.js.map

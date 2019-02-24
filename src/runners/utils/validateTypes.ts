@@ -98,4 +98,5 @@ validateTypes.isAny = isAny
 validateTypes.isOneOf = isOneOf
 validateTypes.OR = OR
 validateTypes.AND = AND
+
 export default validateTypes

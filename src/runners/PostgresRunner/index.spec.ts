@@ -1,4 +1,4 @@
-import PostgresRunner from './index'
+import PostgresRunner from './'
 
 const config = {
   service: '_',

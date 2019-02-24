@@ -1,8 +1,6 @@
-import { ConfigurationError } from '../../errors'
-import Dockest from '../../index'
-import { BaseRunner } from '../index'
+import { defaultDockerComposeRunOpts } from '../../constants'
+import BaseRunner, { ExecOpts } from '../BaseRunner'
 import { runCustomCommand, validateTypes } from '../utils'
-import RedisExec from './execs'
 
 interface RequiredConfigProps {
   service: string
@@ -15,8 +13,8 @@ interface DefaultableConfigProps {
   connectionTimeout: number
   responsivenessTimeout: number
 }
-export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
-type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+type RedisRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
@@ -27,63 +25,59 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   responsivenessTimeout: 10,
 }
 
-export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+const createStartCommand = (runnerConfig: RedisRunnerConfig) => {
+  const { port, service, password } = runnerConfig
 
-export class RedisRunner implements BaseRunner {
+  const portMapping = `--publish ${port}:6379`
+  const auth = !!password ? `--requirepass ${password}` : ''
+  const cmd = `docker-compose run \
+                ${defaultDockerComposeRunOpts} \
+                ${portMapping} \
+                ${service} \
+                ${auth}`
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execOpts: ExecOpts) => {
+  const { host: runnerHost, password: runnerPassword } = runnerConfig
+  const { containerId } = execOpts
+
+  const host = `-h ${runnerHost}`
+  const port = `-p 6379`
+  const password = runnerPassword ? `-a ${runnerPassword}` : ''
+  const command = `PING`
+  const redisCliOpts = `${host} \
+                        ${port} \
+                        ${password} \
+                        ${command}`
+  const cmd = `docker exec ${containerId} redis-cli ${redisCliOpts}`
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+export default class RedisRunner extends BaseRunner {
   public static getHelpers = () => {
-    Dockest.jestEnv = true
-
     return {
       runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
     }
   }
 
-  public config: RedisRunnerConfig
-  public redisExec: RedisExec
-  public containerId: string = ''
-  public runnerKey: string = ''
-
-  constructor(config: PostgresRunnerConfigUserInput) {
-    this.config = {
+  constructor(config: RedisRunnerConfigUserInput) {
+    const commandCreators = {
+      createStartCommand,
+      createCheckResponsivenessCommand,
+    }
+    const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.redisExec = new RedisExec()
 
-    this.validateConfig()
-  }
+    super(runnerConfig, commandCreators)
 
-  public setRunnerKey = (runnerKey: string) => {
-    this.runnerKey = runnerKey
-  }
-
-  public setup = async (runnerKey: string) => {
-    this.runnerKey = runnerKey
-
-    const containerId = await this.redisExec.start(this.config, runnerKey)
-    this.containerId = containerId
-
-    await this.redisExec.checkHealth(this.config, containerId, runnerKey)
-
-    const commands = this.config.commands || []
-    for (const cmd of commands) {
-      await runCustomCommand(runnerKey, cmd)
-    }
-  }
-
-  public teardown = async () => this.redisExec.teardown(this.containerId, this.runnerKey)
-
-  private validateConfig = () => {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }
-
-    const failures = validateTypes(schema, this.config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+    this.validateConfig(schema, runnerConfig)
   }
 }
-
-export default RedisRunner

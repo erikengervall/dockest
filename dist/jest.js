@@ -11,20 +11,20 @@ class JestRunner {
             const jestOptions = JestRunner.config;
             const jest = JestRunner.config.lib;
             let success = false;
-            loggers_1.JestLogger.success(`Dependencies up and running, running Jest`);
+            loggers_1.jestLogger.success(`Dependencies up and running, running Jest`);
             try {
                 const jestResult = await jest.runCLI(jestOptions, jestOptions.projects);
                 if (!jestResult.results.success) {
-                    loggers_1.JestLogger.failed(`Jest test(s) failed`);
+                    loggers_1.jestLogger.failed(`Jest test(s) failed`);
                     success = false;
                 }
                 else {
-                    loggers_1.JestLogger.success(`Jest test(s) successful`);
+                    loggers_1.jestLogger.success(`Jest test(s) successful`);
                     success = true;
                 }
             }
             catch (error) {
-                loggers_1.JestLogger.error(`Failed to run Jest`, error);
+                loggers_1.jestLogger.error(`Failed to run Jest`, error);
                 success = false;
             }
             return {

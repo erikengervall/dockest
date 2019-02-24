@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { RunnerUtilsLogger } from '../../loggers'
+import { runnerUtilsLogger } from '../../loggers'
 import runCustomCommand from './runCustomCommand'
 
 const runnerKey = 'mockRunnerKey'
@@ -13,19 +13,19 @@ jest.mock('execa', () => ({
 }))
 
 jest.mock('../../loggers', () => ({
-  RunnerUtilsLogger: {
+  runnerUtilsLogger: {
     customShellCmd: jest.fn(),
     customShellCmdSuccess: jest.fn(),
   },
 }))
 
 describe('runCustomCommand', () => {
-  it('should work', async () => {
+  it('trabajo', async () => {
     await runCustomCommand(runnerKey, command)
 
-    expect(RunnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command)
+    expect(runnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command)
     expect(execa.shell).toHaveBeenCalledWith(command)
     expect(execa.shell).lastReturnedWith({ stdout })
-    expect(RunnerUtilsLogger.customShellCmdSuccess).toHaveBeenCalledWith(runnerKey, stdout)
+    expect(runnerUtilsLogger.customShellCmdSuccess).toHaveBeenCalledWith(runnerKey, stdout)
   })
 })
