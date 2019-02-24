@@ -15,9 +15,7 @@ describe('validateTypes', () => {
             port: 1337,
             ports: [1337, 1338],
             autoCreateTopics: true,
-            portMapping: {
-                '1337': '1338',
-            },
+            portMapping: { '1337': '1338' },
             logLevel: 1,
         };
     });
@@ -30,7 +28,7 @@ describe('validateTypes', () => {
                 port: validateTypes_1.default.isNumber,
                 ports: validateTypes_1.default.isArrayOfType(validateTypes_1.default.isNumber),
                 autoCreateTopics: validateTypes_1.default.isBoolean,
-                portMapping: validateTypes_1.default.isObjectOfType(validateTypes_1.default.isString),
+                portMapping: validateTypes_1.default.isObjectWithValuesOfType(validateTypes_1.default.isString),
                 logLevel: validateTypes_1.default.isOneOf(Object.values(constants_1.LOG_LEVEL)),
             };
             const failures = validateTypes_1.default(validationSchema, config);
@@ -50,7 +48,7 @@ describe('validateTypes', () => {
             };
             const failures = validateTypes_1.default(validationSchema, config);
             expect(failures.length).toEqual(1);
-            expect(failures[0]).toMatch(/service: Expected string | Received number/);
+            expect(failures[0]).toMatch('service: Expected string | Received 1 (number)');
         });
     });
 });

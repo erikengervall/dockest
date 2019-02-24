@@ -1,27 +1,13 @@
-import KafkaRunner from './KafkaRunner'
-import PostgresRunner from './PostgresRunner'
-import ZookeeperRunner from './ZookeeperRunner'
+import KafkaRunner, { KafkaRunnerConfig } from './KafkaRunner'
+import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
+import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
+import ZookeeperRunner, { ZookeeperRunnerConfig } from './ZookeeperRunner'
 
-export interface IBaseRunner {
-  /**
-   * Start containers
-   * Healthcheck containers
-   */
-  setup: (runnerKey: string) => Promise<void>
-  /**
-   * Teardown resources
-   * Stop containers
-   * Remove containers
-   */
-  teardown: () => Promise<void>
-}
-
-export interface IRunners {
-  /**
-   * `runnerKey` is a user-provided identifier for a runner instance
-   * it's relevant since a user can instantiate multiple runners of the same type
-   */
-  [runnerKey: string]: PostgresRunner | KafkaRunner | ZookeeperRunner
-}
-
-export { KafkaRunner, PostgresRunner, ZookeeperRunner }
+export { ExecOpts } from './BaseRunner'
+export type RunnerConfigs =
+  | KafkaRunnerConfig
+  | PostgresRunnerConfig
+  | RedisRunnerConfig
+  | ZookeeperRunnerConfig
+export { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
+export { KafkaRunnerConfig, PostgresRunnerConfig, RedisRunnerConfig, ZookeeperRunnerConfig }

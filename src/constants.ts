@@ -9,11 +9,7 @@ const ICONS: { [key: string]: string } = {
   INFO: 'ℹ️',
 }
 
-const COLORS: {
-  [key: string]: {
-    [key2: string]: string
-  }
-} = {
+const COLORS: { [key: string]: { [key: string]: string } } = {
   MISC: {
     RESET: '\x1b[0m',
     BRIGHT: '\x1b[1m',
@@ -45,8 +41,11 @@ const COLORS: {
   },
 }
 
-const dockerComposeRunOpts = { runInBackground: '--detach', doNotRunLinkedServices: '--no-deps' }
-const defaultDockerComposeRunOpts = Object.values(dockerComposeRunOpts).join(' ')
+const defaultDockerComposeRunOpts = Object.values({
+  // cleanUp: '--rm',
+  runInBackground: '--detach',
+  doNotRunLinkedServices: '--no-deps',
+}).join(' ')
 
 const LOG_LEVEL = {
   NOTHING: 0,

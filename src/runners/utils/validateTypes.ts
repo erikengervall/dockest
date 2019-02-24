@@ -5,7 +5,7 @@ const {
   MISC: { RESET },
 } = COLORS
 
-interface IObject {
+interface OObject {
   [key: string]: any
 }
 type isType = (_?: any) => boolean
@@ -16,7 +16,7 @@ const getExpected = (typeValidator: any): string =>
 const getReceived = (value: any): string =>
   isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`
 
-const validateTypes = (schema: IObject, config?: IObject): string[] => {
+const validateTypes = (schema: OObject, config?: OObject): string[] => {
   if (!config) {
     return [`${RED}No config found${RESET}`]
   }
@@ -28,6 +28,10 @@ const validateTypes = (schema: IObject, config?: IObject): string[] => {
 
     if (value) {
       const typeValidator = schema[schemaKey]
+
+      if (isArray(typeValidator)) {
+        // Allow sending multiple thangz
+      }
 
       if (!typeValidator(value)) {
         const testedSchemaKey = `${schemaKey}${RESET}`
@@ -54,11 +58,11 @@ const isArrayOfType = (fn: isType) => {
 }
 const isFunction: isType = _ => _ && typeof _ === 'function'
 const isObject: isType = _ => _ && typeof _ === 'object' && _.constructor === Object
-const isObjectOfType = (fn: isType) => {
-  const isObjectOfType = (_?: any): boolean =>
+const isObjectWithValuesOfType = (fn: isType) => {
+  const isObjectWithValuesOfType = (_?: any): boolean =>
     isObject(_) && !Object.values(_).some((_?: any) => !fn(_))
-  isObjectOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`
-  return isObjectOfType
+  isObjectWithValuesOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`
+  return isObjectWithValuesOfType
 }
 const isNull: isType = _ => _ === null
 const isUndefined: isType = _ => typeof _ === 'undefined'
@@ -73,6 +77,8 @@ const isOneOf = (haystack: any[]) => {
   isOneOf.expected = `oneOf [${haystack.join(', ')}]`
   return isOneOf
 }
+const OR = 'OR'
+const AND = 'AND'
 
 validateTypes.isString = isString
 validateTypes.isNumber = isNumber
@@ -80,7 +86,7 @@ validateTypes.isArray = isArray
 validateTypes.isArrayOfType = isArrayOfType
 validateTypes.isFunction = isFunction
 validateTypes.isObject = isObject
-validateTypes.isObjectOfType = isObjectOfType
+validateTypes.isObjectWithValuesOfType = isObjectWithValuesOfType
 validateTypes.isNull = isNull
 validateTypes.isUndefined = isUndefined
 validateTypes.isBoolean = isBoolean
@@ -90,4 +96,7 @@ validateTypes.isDate = isDate
 validateTypes.isSymbol = isSymbol
 validateTypes.isAny = isAny
 validateTypes.isOneOf = isOneOf
+validateTypes.OR = OR
+validateTypes.AND = AND
+
 export default validateTypes

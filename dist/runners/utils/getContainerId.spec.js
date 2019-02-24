@@ -14,14 +14,14 @@ jest.mock('execa', () => ({
     })),
 }));
 jest.mock('../../loggers', () => ({
-    RunnerLogger: {
+    runnerLogger: {
         shellCmd: jest.fn(),
     },
 }));
 describe('getContainerId', () => {
     it('should work', async () => {
         const containerId = await getContainerId_1.default(serviceName);
-        expect(loggers_1.RunnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker ps/));
+        expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker ps/));
         expect(execa_1.default.shell).toHaveBeenCalledWith(expect.stringMatching(/docker ps/));
         expect(execa_1.default.shell).lastReturnedWith({ stdout });
         expect(containerId).toEqual(stdout);

@@ -12,9 +12,7 @@ describe('validateTypes', () => {
       port: 1337,
       ports: [1337, 1338],
       autoCreateTopics: true,
-      portMapping: {
-        '1337': '1338',
-      },
+      portMapping: { '1337': '1338' },
       logLevel: 1,
     }
   })
@@ -28,7 +26,7 @@ describe('validateTypes', () => {
         port: validateTypes.isNumber,
         ports: validateTypes.isArrayOfType(validateTypes.isNumber),
         autoCreateTopics: validateTypes.isBoolean,
-        portMapping: validateTypes.isObjectOfType(validateTypes.isString),
+        portMapping: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
         logLevel: validateTypes.isOneOf(Object.values(LOG_LEVEL)),
       }
 
@@ -55,7 +53,7 @@ describe('validateTypes', () => {
       const failures = validateTypes(validationSchema, config)
 
       expect(failures.length).toEqual(1)
-      expect(failures[0]).toMatch(/service: Expected string | Received number/)
+      expect(failures[0]).toMatch('service: Expected string | Received 1 (number)')
     })
   })
 })

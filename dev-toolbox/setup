@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ln -sf $(pwd)/dev-toolbox/git-hooks/* .git/hooks/

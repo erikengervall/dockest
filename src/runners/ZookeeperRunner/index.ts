@@ -1,55 +1,51 @@
-import { ConfigurationError } from '../../errors'
-import { IBaseRunner } from '../index'
+import { defaultDockerComposeRunOpts } from '../../constants'
+import BaseRunner from '../BaseRunner'
 import { validateTypes } from '../utils'
-import ZookeeperExec from './execs'
 
-export interface IZookeeperRunnerConfig {
+interface RequiredConfigProps {
   service: string
+}
+interface DefaultableConfigProps {
   port: number
-  connectionTimeout?: number
+  commands: string[]
+  connectionTimeout: number
+}
+type ZookeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+export type ZookeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+
+const DEFAULT_CONFIG: DefaultableConfigProps = {
+  port: 2181,
+  commands: [],
+  connectionTimeout: 30,
 }
 
-const DEFAULT_CONFIG = {}
+const createStartCommand = (runnerConfig: ZookeeperRunnerConfig) => {
+  const { port, service } = runnerConfig
 
-export class ZookeeeperRunner implements IBaseRunner {
-  public config: IZookeeperRunnerConfig
-  public ZookeeperExec: ZookeeperExec
-  public containerId: string = ''
-  public runnerKey: string = ''
+  const portMapping = `--publish ${port}:2181`
+  const cmd = `docker-compose run \
+                ${defaultDockerComposeRunOpts} \
+                ${portMapping} \
+                ${service}`
 
-  constructor(config: IZookeeperRunnerConfig) {
-    this.config = {
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+export default class ZookeeeperRunner extends BaseRunner {
+  constructor(config: ZookeeperRunnerConfigUserInput) {
+    const commandCreators = {
+      createStartCommand,
+    }
+    const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.ZookeeperExec = new ZookeeperExec()
 
-    this.validateInput()
-  }
+    super(runnerConfig, commandCreators)
 
-  public setup = async (runnerKey: string) => {
-    this.runnerKey = runnerKey
-
-    const containerId = await this.ZookeeperExec.start(this.config, runnerKey)
-    this.containerId = containerId
-
-    await this.ZookeeperExec.checkHealth(this.config, runnerKey)
-  }
-
-  public teardown = async () => this.ZookeeperExec.teardown(this.containerId, this.runnerKey)
-
-  private validateInput = () => {
-    const schema = {
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      port: validateTypes.isNumber,
     }
-
-    const failures = validateTypes(schema, this.config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+    this.validateConfig(schema, runnerConfig)
   }
 }
-
-export default ZookeeeperRunner

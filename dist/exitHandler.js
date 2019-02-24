@@ -12,13 +12,13 @@ const setupExitHandler = async (config) => {
             // Program ran as expected
             return;
         }
-        loggers_1.GlobalLogger.error('Exithandler invoced', errorPayload);
-        if (config.dockest.exitHandler && typeof exitHandler === 'function') {
+        loggers_1.globalLogger.error('Exithandler invoced', errorPayload);
+        if (config.exitHandler && typeof exitHandler === 'function') {
             const err = errorPayload.error || new Error('Failed to extract error');
-            config.dockest.exitHandler(err);
+            config.exitHandler(err);
         }
         for (const runnerKey of Object.keys(runners)) {
-            await runners[runnerKey].teardown(runnerKey);
+            await runners[runnerKey].teardown();
         }
         process.exit(errorPayload.code || 1);
     };

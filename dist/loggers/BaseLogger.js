@@ -1,10 +1,6 @@
 "use strict";
 // tslint:disable:no-console
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = __importDefault(require(".."));
 const constants_1 = require("../constants");
 const { LOADING, SUCCESS, INFO, FAILED } = constants_1.ICONS;
 const { FG: { RED }, MISC: { RESET, BRIGHT }, } = constants_1.COLORS;
@@ -17,14 +13,14 @@ class BaseLogger {
         this.trim = (str = '') => typeof str === 'string' ? str.replace(/\s+/g, ' ').trim() : str;
         this.logSuccess = (m, d) => console.log(`${SUCCESS} ${BRIGHT}${m}${RESET}`, this.defaultD(d), `\n`);
         this.logLoading = (m, d) => console.log(`${LOADING} ${BRIGHT}${m}${RESET}`, this.defaultD(d));
-        this.logInfo = (m, d) => console.log(`${INFO} ${BRIGHT}${m}${RESET}`, this.defaultD(d));
+        this.logInfo = (m, d) => console.log(`${INFO}  ${BRIGHT}${m}${RESET}`, this.defaultD(d));
         this.logError = (m, d) => console.log(`${FAILED} ${RED}${m}${RESET}`, this.defaultD(d), '\n');
-        this.getLogLevel = () => __1.default.config.dockest.logLevel;
+        this.getLogLevel = () => BaseLogger.logLevel;
         this.defaultD = (d) => d || '';
         return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this);
     }
 }
-const baseLogger = new BaseLogger();
-exports.baseLogger = baseLogger;
+// Due to Jest running in a node VM, the logLevel has to be defaulted
+BaseLogger.logLevel = constants_1.LOG_LEVEL.NORMAL;
 exports.default = BaseLogger;
 //# sourceMappingURL=BaseLogger.js.map

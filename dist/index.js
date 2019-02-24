@@ -10,9 +10,9 @@ const jest_1 = __importDefault(require("./jest"));
 const loggers_1 = require("./loggers");
 const runners_1 = require("./runners");
 const utils_1 = require("./runners/utils");
-const DEFAULT_CONFIG_DOCKEST = {
+const DEFAULT_CONFIG = {
     logLevel: constants_1.LOG_LEVEL.NORMAL,
-    exitHandler: () => undefined,
+    exitHandler: (_) => undefined,
 };
 class Dockest {
     constructor(userConfig) {
@@ -24,41 +24,44 @@ class Dockest {
         };
         this.setupRunners = async () => {
             const { runners } = Dockest.config;
+            await utils_1.runCustomCommand('Dockest', 'docker-compose pull');
             for (const runnerKey of Object.keys(runners)) {
-                loggers_1.RunnerLogger.setup(runnerKey);
                 await runners[runnerKey].setup(runnerKey);
-                loggers_1.RunnerLogger.setupSuccess(runnerKey);
             }
         };
         this.runJest = async () => {
-            const result = await Dockest.jestRunner.run();
+            const result = await this.jestRunner.run();
             Dockest.jestRanWithResult = true;
             return result;
         };
         this.teardownRunners = async () => {
             const { runners } = Dockest.config;
             for (const runnerKey of Object.keys(runners)) {
-                await runners[runnerKey].teardown(runnerKey);
+                await runners[runnerKey].teardown();
             }
         };
         this.validateConfig = () => {
             const schema = {
-                logLevel: utils_1.validateTypes.isOneOf(Object.values(constants_1.LOG_LEVEL)),
+                jest: utils_1.validateTypes.isObject,
+                runners: utils_1.validateTypes.isObject,
             };
-            const failures = utils_1.validateTypes(schema, Dockest.config.dockest);
+            const failures = utils_1.validateTypes(schema, Dockest.config);
             if (failures.length > 0) {
                 throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
             }
         };
-        Dockest.config = Object.assign({}, userConfig, { dockest: Object.assign({}, DEFAULT_CONFIG_DOCKEST, userConfig.dockest) });
-        Dockest.jestRunner = new jest_1.default(Dockest.config.jest);
+        Dockest.config = Object.assign({}, DEFAULT_CONFIG, userConfig);
+        loggers_1.BaseLogger.logLevel = Dockest.config.logLevel;
+        this.jestRunner = new jest_1.default(Dockest.config.jest);
         this.validateConfig();
         exitHandler_1.default(Dockest.config);
         return Dockest.instance || (Dockest.instance = this);
     }
 }
 Dockest.jestRanWithResult = false;
-exports.runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
-exports.logLevel = constants_1.LOG_LEVEL;
 exports.default = Dockest;
+const logLevel = constants_1.LOG_LEVEL;
+exports.logLevel = logLevel;
+const runners = { KafkaRunner: runners_1.KafkaRunner, PostgresRunner: runners_1.PostgresRunner, RedisRunner: runners_1.RedisRunner, ZookeeperRunner: runners_1.ZookeeperRunner };
+exports.runners = runners;
 //# sourceMappingURL=index.js.map

@@ -1,21 +1,19 @@
 version: '3'
 services:
-  postgres1sequelize:
-    image: postgres:9.6.3
-    ports:
-      - '2181:2181'
+  postgres1sequelize: # https://hub.docker.com/_/postgres
+    image: postgres:9.6
     volumes:
       - postgres1Volume:/var/lib/postgresql/data
 
-  postgres2knex:
-    image: postgres:9.6.3
+  postgres2knex: # https://hub.docker.com/_/postgres
+    image: postgres:9.6
     volumes:
       - postgres2Volume:/var/lib/postgresql/data
 
-  zookeeper1wurstmeister:
+  zookeeper1wurstmeister: # https://hub.docker.com/r/wurstmeister/zookeeper/
     image: wurstmeister/zookeeper:latest
 
-  kafka1wurstmeister:
+  kafka1wurstmeister: # https://hub.docker.com/r/wurstmeister/kafka/
     image: wurstmeister/kafka:0.11.0.0
     ports:
       - '9092:9092'
@@ -28,6 +26,9 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_CREATE_TOPICS: 'dockest-topic:1:1'
       KAFKA_ZOOKEEPER_CONNECT: zookeeper1wurstmeister:2181
+
+  redis1ioredis: # https://hub.docker.com/_/redis
+    image: redis:5.0.3
 
 volumes:
   postgres1Volume:

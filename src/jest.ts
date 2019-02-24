@@ -1,11 +1,13 @@
 import { ConfigurationError } from './errors'
-import { JestLogger } from './loggers'
+import { jestLogger } from './loggers'
 
-interface IJestResult {
-  results: { success: true }
+interface JestResult {
+  results: {
+    success: true
+  }
 }
 
-interface IJestLib {
+interface JestLib {
   SearchSource: any
   TestScheduler: any
   TestWatcher: any
@@ -14,8 +16,8 @@ interface IJestLib {
   runCLI: any
 }
 
-export interface IJestConfig {
-  lib: IJestLib
+export type JestConfig = {
+  lib: JestLib
   projects?: string[]
   silent?: boolean
   verbose?: boolean
@@ -28,15 +30,18 @@ const DEFAULT_CONFIG = {
 }
 
 class JestRunner {
-  public static config: IJestConfig
+  public static config: JestConfig
   private static instance: JestRunner
 
-  constructor(config: IJestConfig) {
+  constructor(config: JestConfig) {
     if (JestRunner.instance) {
       return JestRunner.instance
     }
 
-    JestRunner.config = { ...DEFAULT_CONFIG, ...config }
+    JestRunner.config = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
 
     this.validateJestConfig()
 
@@ -48,22 +53,22 @@ class JestRunner {
     const jest = JestRunner.config.lib
     let success = false
 
-    JestLogger.success(`Dependencies up and running, running Jest`)
+    jestLogger.success(`Dependencies up and running, running Jest`)
 
     try {
-      const jestResult: IJestResult = await jest.runCLI(jestOptions, jestOptions.projects)
+      const jestResult: JestResult = await jest.runCLI(jestOptions, jestOptions.projects)
 
       if (!jestResult.results.success) {
-        JestLogger.failed(`Jest test(s) failed`)
+        jestLogger.failed(`Jest test(s) failed`)
 
         success = false
       } else {
-        JestLogger.success(`Jest test(s) successful`)
+        jestLogger.success(`Jest test(s) successful`)
 
         success = true
       }
     } catch (error) {
-      JestLogger.error(`Failed to run Jest`, error)
+      jestLogger.error(`Failed to run Jest`, error)
 
       success = false
     }

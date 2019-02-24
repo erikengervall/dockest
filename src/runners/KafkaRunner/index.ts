@@ -1,71 +1,69 @@
-import { ConfigurationError } from '../../errors'
-import { IBaseRunner } from '../index'
+import { defaultDockerComposeRunOpts } from '../../constants'
+import BaseRunner from '../BaseRunner'
 import { validateTypes } from '../utils'
-import KafkaExec from './execs'
 
-interface IPorts {
-  [key: string]: string | number
-}
-
-export interface IKafkaRunnerConfig {
+interface RequiredConfigProps {
   service: string
-  host: string
-  ports: IPorts
-  topics: string[]
   zookeepeerConnect: string
+  topics: string[]
+}
+interface DefaultableConfigProps {
+  host: string
+  ports: { [key: string]: string | number }
   autoCreateTopics: boolean
   connectionTimeout: number
+  commands: string[]
 }
+type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_CONFIG = {
-  topics: [],
+const DEFAULT_CONFIG: DefaultableConfigProps = {
+  host: 'localhost',
+  ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
   autoCreateTopics: true,
   connectionTimeout: 30,
+  commands: [],
 }
 
-export class KafkaRunner implements IBaseRunner {
-  public config: IKafkaRunnerConfig
-  public kafkaExec: KafkaExec
-  public containerId: string = ''
-  public runnerKey: string = ''
+const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
+  const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
 
-  constructor(config: IKafkaRunnerConfig) {
-    this.config = {
+  const portMapping = Object.keys(ports)
+    .map(port => `--publish ${ports[port]}:${port}`)
+    .join(' ')
+  const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
+              ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
+              ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
+              ${`-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`}`
+  const cmd = `docker-compose run \
+              ${defaultDockerComposeRunOpts} \
+              ${portMapping} \
+              ${env} \
+              ${service}`
+
+  return cmd.replace(/\s+/g, ' ').trim()
+}
+
+class KafkaRunner extends BaseRunner {
+  constructor(config: KafkaRunnerConfigUserInput) {
+    const commandCreators = {
+      createStartCommand,
+    }
+    const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.kafkaExec = new KafkaExec()
 
-    this.validateConfig()
-  }
+    super(runnerConfig, commandCreators)
 
-  public setup = async (runnerKey: string) => {
-    this.runnerKey = runnerKey
-
-    const containerId = await this.kafkaExec.start(this.config, runnerKey)
-    this.containerId = containerId
-
-    await this.kafkaExec.checkHealth(this.config, runnerKey)
-  }
-
-  public teardown = async () => this.kafkaExec.teardown(this.containerId, this.runnerKey)
-
-  private validateConfig = () => {
-    const schema = {
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      host: validateTypes.isString,
-      ports: validateTypes.isObjectOfType(validateTypes.isString),
-      topics: validateTypes.isArray,
       zookeepeerConnect: validateTypes.isString,
-      autoCreateTopics: validateTypes.isBoolean,
+      topics: validateTypes.isArrayOfType(validateTypes.isString),
     }
-
-    const failures = validateTypes(schema, this.config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+    this.validateConfig(schema, runnerConfig)
   }
 }
 
+export { KafkaRunnerConfig }
 export default KafkaRunner

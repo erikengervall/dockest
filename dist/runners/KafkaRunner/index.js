@@ -3,43 +3,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const errors_1 = require("../../errors");
+const constants_1 = require("../../constants");
+const BaseRunner_1 = __importDefault(require("../BaseRunner"));
 const utils_1 = require("../utils");
-const execs_1 = __importDefault(require("./execs"));
 const DEFAULT_CONFIG = {
-    topics: [],
+    host: 'localhost',
+    ports: { '9092': '9092', '9093': '9093', '9094': '9094' },
     autoCreateTopics: true,
+    connectionTimeout: 30,
+    commands: [],
 };
-class KafkaRunner {
+const createStartCommand = (runnerConfig) => {
+    const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig;
+    const portMapping = Object.keys(ports)
+        .map(port => `--publish ${ports[port]}:${port}`)
+        .join(' ');
+    const env = ` -e KAFKA_ADVERTISED_HOST_NAME="localhost" \
+              ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
+              ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
+              ${`-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"`}`;
+    const cmd = `docker-compose run \
+              ${constants_1.defaultDockerComposeRunOpts} \
+              ${portMapping} \
+              ${env} \
+              ${service}`;
+    return cmd.replace(/\s+/g, ' ').trim();
+};
+class KafkaRunner extends BaseRunner_1.default {
     constructor(config) {
-        this.setup = async (runnerKey) => {
-            this.runnerKey = runnerKey;
-            const containerId = await this.kafkaExec.start(this.config, runnerKey);
-            this.containerId = containerId;
-            await this.kafkaExec.checkHealth(this.config, runnerKey);
+        const commandCreators = {
+            createStartCommand,
         };
-        this.teardown = async (runnerKey) => this.kafkaExec.teardown(this.containerId, runnerKey);
-        this.validateConfig = () => {
-            const schema = {
-                service: utils_1.validateTypes.isString,
-                host: utils_1.validateTypes.isString,
-                ports: utils_1.validateTypes.isObjectOfType(utils_1.validateTypes.isString),
-                topics: utils_1.validateTypes.isArray,
-                zookeepeerConnect: utils_1.validateTypes.isString,
-                autoCreateTopics: utils_1.validateTypes.isBoolean,
-            };
-            const failures = utils_1.validateTypes(schema, this.config);
-            if (failures.length > 0) {
-                throw new errors_1.ConfigurationError(`${failures.join('\n')}`);
-            }
+        const runnerConfig = Object.assign({}, DEFAULT_CONFIG, config);
+        super(runnerConfig, commandCreators);
+        const schema = {
+            service: utils_1.validateTypes.isString,
+            zookeepeerConnect: utils_1.validateTypes.isString,
+            topics: utils_1.validateTypes.isArrayOfType(utils_1.validateTypes.isString),
         };
-        this.config = Object.assign({}, DEFAULT_CONFIG, config);
-        this.kafkaExec = new execs_1.default();
-        this.containerId = '';
-        this.runnerKey = '';
-        this.validateConfig();
+        this.validateConfig(schema, runnerConfig);
     }
 }
-exports.KafkaRunner = KafkaRunner;
 exports.default = KafkaRunner;
 //# sourceMappingURL=index.js.map

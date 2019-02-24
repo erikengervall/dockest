@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { runners } from '../../src/index'
+import { runners } from '../../src'
 import main from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
