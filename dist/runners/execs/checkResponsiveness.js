@@ -1,9 +1,5 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const execa_1 = __importDefault(require("execa"));
 const errors_1 = require("../../errors");
 const loggers_1 = require("../../loggers");
 const utils_1 = require("../utils");
@@ -20,8 +16,7 @@ exports.default = async (runnerConfig, execOpts) => {
             throw new errors_1.DockestError(`${service} responsiveness timed out`);
         }
         try {
-            loggers_1.runnerLogger.shellCmd(cmd);
-            await execa_1.default.shell(cmd);
+            await utils_1.execa(cmd);
             loggers_1.runnerLogger.checkResponsivenessSuccess(runnerKey);
         }
         catch (error) {

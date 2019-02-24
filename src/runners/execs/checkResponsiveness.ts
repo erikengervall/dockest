@@ -1,9 +1,7 @@
-import execa from 'execa'
-
 import { DockestError } from '../../errors'
 import { runnerLogger } from '../../loggers'
 import { ExecOpts } from '../index'
-import { sleep } from '../utils'
+import { execa, sleep } from '../utils'
 
 export default async (runnerConfig: any, execOpts: ExecOpts) => {
   const { service, responsivenessTimeout } = runnerConfig
@@ -24,8 +22,7 @@ export default async (runnerConfig: any, execOpts: ExecOpts) => {
     }
 
     try {
-      runnerLogger.shellCmd(cmd)
-      await execa.shell(cmd)
+      await execa(cmd)
 
       runnerLogger.checkResponsivenessSuccess(runnerKey)
     } catch (error) {

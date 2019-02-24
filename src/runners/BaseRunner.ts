@@ -1,5 +1,5 @@
 import { ConfigurationError } from '../errors'
-import { runnerLogger, RunnerLogger } from '../loggers'
+import { BaseLogger, runnerLogger } from '../loggers'
 import { checkConnection, checkResponsiveness, start, teardown } from './execs'
 import { RunnerConfigs } from './index'
 import { runCustomCommand, validateTypes } from './utils'
@@ -37,7 +37,7 @@ export default class BaseRunner {
   }
 
   public setup = async (runnerKey: string) => {
-    RunnerLogger.setRunnerKey(runnerKey)
+    BaseLogger.runnerKey = `${runnerKey}: `
 
     this.execOpts.runnerKey = runnerKey
     runnerLogger.setup(this.execOpts.runnerKey)
