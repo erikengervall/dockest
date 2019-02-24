@@ -20,6 +20,7 @@ class BaseLogger {
         return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this);
     }
 }
+// Due to Jest running in a node VM, the logLevel has to be defaulted
 BaseLogger.logLevel = constants_1.LOG_LEVEL.NORMAL;
 exports.default = BaseLogger;
 //# sourceMappingURL=BaseLogger.js.map

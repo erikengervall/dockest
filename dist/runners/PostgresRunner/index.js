@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
-const index_1 = __importDefault(require("../../index"));
 const BaseRunner_1 = __importDefault(require("../BaseRunner"));
 const utils_1 = require("../utils");
 const DEFAULT_CONFIG = {
@@ -64,7 +63,6 @@ class PostgresRunner extends BaseRunner_1.default {
     }
 }
 PostgresRunner.getHelpers = () => {
-    index_1.default.jestEnv = true;
     return {
         runHelpCmd: async (cmd) => utils_1.runCustomCommand(PostgresRunner.name, cmd),
     };

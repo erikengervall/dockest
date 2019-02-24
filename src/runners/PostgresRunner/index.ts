@@ -1,5 +1,4 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
-import Dockest from '../../index'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
 import { runCustomCommand, validateTypes } from '../utils'
 
@@ -68,8 +67,6 @@ const createCheckResponsivenessCommand = (
 
 export default class PostgresRunner extends BaseRunner {
   public static getHelpers = () => {
-    Dockest.jestEnv = true
-
     return {
       runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd),
     }

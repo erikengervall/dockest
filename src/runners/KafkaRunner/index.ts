@@ -14,7 +14,7 @@ interface DefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
 }
-export type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
@@ -44,7 +44,7 @@ const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
-export default class KafkaRunner extends BaseRunner {
+class KafkaRunner extends BaseRunner {
   constructor(config: KafkaRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
@@ -64,3 +64,6 @@ export default class KafkaRunner extends BaseRunner {
     this.validateConfig(schema, runnerConfig)
   }
 }
+
+export { KafkaRunnerConfig }
+export default KafkaRunner

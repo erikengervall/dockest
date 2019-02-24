@@ -1,5 +1,4 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
-import Dockest from '../../index'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
 import { runCustomCommand, validateTypes } from '../utils'
 
@@ -59,8 +58,6 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
 
 export default class RedisRunner extends BaseRunner {
   public static getHelpers = () => {
-    Dockest.jestEnv = true
-
     return {
       runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
     }

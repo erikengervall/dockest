@@ -59,13 +59,6 @@ class Dockest {
     }
 }
 Dockest.jestRanWithResult = false;
-/**
- * jestEnv
- * Dockest has been imported from a non-global node env (e.g. jest's node vm)
- * This means that the Dockest singleton is unretrievable
- * This variable is primarily used to default the logLevel to normal
- */
-Dockest.jestEnv = false;
 exports.default = Dockest;
 const logLevel = constants_1.LOG_LEVEL;
 exports.logLevel = logLevel;

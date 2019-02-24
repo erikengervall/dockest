@@ -11,6 +11,7 @@ const {
 type logMethod = (message: string, logData?: any) => void
 
 class BaseLogger {
+  // Due to Jest running in a node VM, the logLevel has to be defaulted
   public static logLevel: number = LOG_LEVEL.NORMAL
   private static baseLoggerInstance: BaseLogger
 
