@@ -7,9 +7,9 @@ const BaseLogger_1 = __importDefault(require("./BaseLogger"));
 class JestLogger extends BaseLogger_1.default {
     constructor() {
         super();
-        this.success = m => this.IS_ERROR() && this.logSuccess(m);
-        this.failed = m => this.IS_ERROR() && this.logError(m);
-        this.error = (m, e) => this.IS_NORMAL() && this.logError(m, e);
+        this.success = m => this.LOG_LEVEL_ERROR && this.logSuccess(m);
+        this.failed = m => this.LOG_LEVEL_ERROR && this.logError(m);
+        this.error = (m, e) => this.LOG_LEVEL_NORMAL && this.logError(m, e);
         return JestLogger.jestLoggerInstance || (JestLogger.jestLoggerInstance = this);
     }
 }

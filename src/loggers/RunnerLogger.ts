@@ -1,12 +1,7 @@
 import BaseLogger, { logMethod } from './BaseLogger'
 
 class RunnerLogger extends BaseLogger {
-  public static setRunnerKey = (runnerKey: string) => {
-    RunnerLogger.runnerKey = `${runnerKey}: `
-  }
-
   private static runnerLoggerInstance: RunnerLogger
-  private static runnerKey: string = ''
 
   constructor() {
     super()
@@ -16,69 +11,68 @@ class RunnerLogger extends BaseLogger {
   /**
    * Setup
    */
-  public setup: logMethod = () =>
-    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Setup initiated`)
+  public setup: logMethod = () => this.LOG_LEVEL_NORMAL && this.logLoading(`Setup initiated`)
 
   public setupSuccess: logMethod = () =>
-    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Setup successful`)
+    this.LOG_LEVEL_NORMAL && this.logSuccess(`Setup successful`)
 
   public startContainer: logMethod = () =>
-    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Starting container`)
+    this.LOG_LEVEL_NORMAL && this.logLoading(`Starting container`)
 
   public startContainerSuccess: logMethod = () =>
-    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Container running`)
+    this.LOG_LEVEL_NORMAL && this.logSuccess(`Container running`)
 
   public checkHealth: logMethod = () =>
-    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Healthchecking container`)
+    this.LOG_LEVEL_NORMAL && this.logLoading(`Healthchecking container`)
 
   public checkHealthSuccess: logMethod = () =>
-    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Healthcheck successful`)
+    this.LOG_LEVEL_NORMAL && this.logSuccess(`Healthcheck successful`)
 
   public checkResponsiveness = (timeout: number) =>
-    this.IS_VERBOSE() &&
-    this.logLoading(
-      `${RunnerLogger.runnerKey}Checking container's responsiveness (Timeout in: ${timeout}s)`
-    )
+    this.LOG_LEVEL_VERBOSE &&
+    this.logLoading(`Checking container's responsiveness (Timeout in: ${timeout}s)`)
 
   public checkResponsivenessSuccess: logMethod = () =>
-    this.IS_VERBOSE() &&
-    this.logSuccess(`${RunnerLogger.runnerKey}Container's responsiveness checked`)
+    this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container's responsiveness checked`)
 
   public checkConnection = (timeout: number) =>
-    this.IS_VERBOSE() &&
-    this.logLoading(
-      `${RunnerLogger.runnerKey}Checking container's connection (Timeout in: ${timeout}s)`
-    )
+    this.LOG_LEVEL_VERBOSE &&
+    this.logLoading(`Checking container's connection (Timeout in: ${timeout}s)`)
 
   public checkConnectionSuccess: logMethod = () =>
-    this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container's connection checked`)
+    this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container's connection checked`)
 
   /**
    * Teardown
    */
   public teardown: logMethod = () =>
-    this.IS_NORMAL() && this.logLoading(`${RunnerLogger.runnerKey}Container being teared down`)
+    this.LOG_LEVEL_NORMAL && this.logLoading(`Container being teared down`)
 
   public teardownSuccess: logMethod = () =>
-    this.IS_NORMAL() && this.logSuccess(`${RunnerLogger.runnerKey}Container teared down`)
+    this.LOG_LEVEL_NORMAL && this.logSuccess(`Container teared down`)
 
   public stopContainer: logMethod = () =>
-    this.IS_VERBOSE() && this.logLoading(`${RunnerLogger.runnerKey}Container being stopped`)
+    this.LOG_LEVEL_VERBOSE && this.logLoading(`Container being stopped`)
 
   public stopContainerSuccess: logMethod = () =>
-    this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container stopped`)
+    this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container stopped`)
 
   public removeContainer: logMethod = () =>
-    this.IS_VERBOSE() && this.logLoading(`${RunnerLogger.runnerKey}Container being removed`)
+    this.LOG_LEVEL_VERBOSE && this.logLoading(`Container being removed`)
 
   public removeContainerSuccess: logMethod = () =>
-    this.IS_VERBOSE() && this.logSuccess(`${RunnerLogger.runnerKey}Container removed`)
+    this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container removed`)
 
   /**
    * Misc
    */
   public shellCmd: logMethod = (logData = '') =>
-    this.IS_VERBOSE() && this.logInfo(`Executed following shell script`, this.trim(logData))
+    this.LOG_LEVEL_VERBOSE &&
+    this.logLoading(`Executing following shell script`, this.trim(logData))
+
+  public shellCmdSuccess: logMethod = (logData = '') =>
+    this.LOG_LEVEL_VERBOSE &&
+    this.logSuccess(`Executed shell script with result`, this.trim(logData))
 }
 
 const runnerLogger = new RunnerLogger()

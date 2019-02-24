@@ -19,13 +19,16 @@ jest.mock('../../loggers', () => ({
         error: jest.fn(),
     },
     runnerLogger: {
-        shellCmd: jest.fn(),
         teardown: jest.fn(),
         teardownSuccess: jest.fn(),
         stopContainer: jest.fn(),
         stopContainerSuccess: jest.fn(),
         removeContainer: jest.fn(),
         removeContainerSuccess: jest.fn(),
+    },
+    runnerUtilsLogger: {
+        shellCmd: jest.fn(),
+        shellCmdSuccess: jest.fn(),
     },
 }));
 describe('teardownSingle', () => {
@@ -36,9 +39,9 @@ describe('teardownSingle', () => {
     describe('happy', () => {
         it('should work', async () => {
             await teardownSingle_1.default(containerId, runnerKey);
-            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
+            expect(loggers_1.runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
             expect(execa_1.default.shell).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
-            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
+            expect(loggers_1.runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
             expect(execa_1.default.shell).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
             expect(loggers_1.globalLogger.error).not.toHaveBeenCalled();
         });
@@ -51,9 +54,9 @@ describe('teardownSingle', () => {
                 throw error;
             });
             await teardownSingle_1.default(containerId, runnerKey);
-            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
+            expect(loggers_1.runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/));
             expect(loggers_1.globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error);
-            expect(loggers_1.runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
+            expect(loggers_1.runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/));
             expect(loggers_1.globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error);
         });
     });

@@ -13,7 +13,7 @@ class BaseRunner {
             }
         };
         this.setup = async (runnerKey) => {
-            loggers_1.RunnerLogger.setRunnerKey(runnerKey);
+            loggers_1.BaseLogger.runnerKey = `${runnerKey}: `;
             this.execOpts.runnerKey = runnerKey;
             loggers_1.runnerLogger.setup(this.execOpts.runnerKey);
             const containerId = await execs_1.start(this.runnerConfig, this.execOpts);

@@ -1,6 +1,5 @@
-import execa from 'execa'
-
 import { globalLogger, runnerLogger } from '../../loggers'
+import { execa } from './index'
 
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
   runnerLogger.stopContainer(runnerKey)
@@ -8,8 +7,7 @@ const stopContainerById = async (containerId: string, runnerKey: string): Promis
   try {
     const cmd = `docker stop ${containerId}`
 
-    runnerLogger.shellCmd(cmd)
-    await execa.shell(cmd)
+    await execa(cmd)
   } catch (error) {
     globalLogger.error(`${runnerKey}: Failed to stop service container`, error)
     return
@@ -24,8 +22,7 @@ const removeContainerById = async (containerId: string, runnerKey: string): Prom
   try {
     const cmd = `docker rm ${containerId} --volumes`
 
-    runnerLogger.shellCmd(cmd)
-    await execa.shell(cmd)
+    await execa(cmd)
   } catch (error) {
     globalLogger.error(`${runnerKey}: Failed to remove service container`, error)
 

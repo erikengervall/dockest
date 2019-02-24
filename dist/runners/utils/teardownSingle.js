@@ -1,16 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const execa_1 = __importDefault(require("execa"));
 const loggers_1 = require("../../loggers");
+const index_1 = require("./index");
 const stopContainerById = async (containerId, runnerKey) => {
     loggers_1.runnerLogger.stopContainer(runnerKey);
     try {
         const cmd = `docker stop ${containerId}`;
-        loggers_1.runnerLogger.shellCmd(cmd);
-        await execa_1.default.shell(cmd);
+        await index_1.execa(cmd);
     }
     catch (error) {
         loggers_1.globalLogger.error(`${runnerKey}: Failed to stop service container`, error);
@@ -22,8 +18,7 @@ const removeContainerById = async (containerId, runnerKey) => {
     loggers_1.runnerLogger.removeContainer(runnerKey);
     try {
         const cmd = `docker rm ${containerId} --volumes`;
-        loggers_1.runnerLogger.shellCmd(cmd);
-        await execa_1.default.shell(cmd);
+        await index_1.execa(cmd);
     }
     catch (error) {
         loggers_1.globalLogger.error(`${runnerKey}: Failed to remove service container`, error);
