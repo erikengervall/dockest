@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { globalLogger, runnerLogger } from '../../loggers'
+import { globalLogger, runnerUtilsLogger } from '../../loggers'
 import teardownSingle from './teardownSingle'
 
 const runnerKey = 'mockRunnerKey'
@@ -17,13 +17,16 @@ jest.mock('../../loggers', () => ({
     error: jest.fn(),
   },
   runnerLogger: {
-    shellCmd: jest.fn(),
     teardown: jest.fn(),
     teardownSuccess: jest.fn(),
     stopContainer: jest.fn(),
     stopContainerSuccess: jest.fn(),
     removeContainer: jest.fn(),
     removeContainerSuccess: jest.fn(),
+  },
+  runnerUtilsLogger: {
+    shellCmd: jest.fn(),
+    shellCmdSuccess: jest.fn(),
   },
 }))
 
@@ -37,9 +40,9 @@ describe('teardownSingle', () => {
     it('should work', async () => {
       await teardownSingle(containerId, runnerKey)
 
-      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
+      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
       expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
-      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(globalLogger.error).not.toHaveBeenCalled()
     })
@@ -55,9 +58,9 @@ describe('teardownSingle', () => {
 
       await teardownSingle(containerId, runnerKey)
 
-      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
+      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
       expect(globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error)
-      expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error)
     })
   })
