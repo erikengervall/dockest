@@ -14,7 +14,7 @@
     "test:all": "npm run test && npm run test:example",
     "install:all": "npm install && cd example && npm install",
     "setup": "./dev-toolbox/setup",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "dependencies": {
     "execa": "^1.0.0"
