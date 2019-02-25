@@ -10,4 +10,3 @@ export type RunnerConfigs =
   | RedisRunnerConfig
   | ZookeeperRunnerConfig
 export { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
-export { KafkaRunnerConfig, PostgresRunnerConfig, RedisRunnerConfig, ZookeeperRunnerConfig }

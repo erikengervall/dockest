@@ -1,7 +1,7 @@
-import { DockestError } from '../../errors'
-import { runnerLogger } from '../../loggers'
-import { ExecOpts } from '../index'
-import { execa, sleep } from '../utils'
+import { DockestError } from '../../../errors'
+import { runnerLogger } from '../../../loggers'
+import { ExecOpts } from '../../index'
+import { execa, sleep } from '../../utils'
 
 export default async (runnerConfig: any, execOpts: ExecOpts) => {
   const { service, responsivenessTimeout } = runnerConfig

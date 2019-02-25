@@ -4,7 +4,9 @@
 ## If there's buildable updates, compile the code and add it to the commit
 ##
 
-## 
+# disabled
+exit 0
+
 buildableFilesTouched="$(git diff --cached --name-only | grep 'src/' | uniq)"
 
 ## In order to prevent infinite commit>post-commit>loop

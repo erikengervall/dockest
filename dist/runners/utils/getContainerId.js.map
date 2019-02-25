@@ -1,1 +1,0 @@
-{"version":3,"file":"getContainerId.js","sourceRoot":"","sources":["../../../src/runners/utils/getContainerId.ts"],"names":[],"mappings":";;AAAA,mCAA+B;AAE/B,kBAAe,KAAK,EAAE,WAAmB,EAAmB,EAAE;IAC5D,MAAM,GAAG,GAAG;;;0BAGY,WAAW;2BACV,CAAA;IACzB,MAAM,WAAW,GAAG,MAAM,aAAK,CAAC,GAAG,CAAC,CAAA;IAEpC,OAAO,WAAW,CAAA;AACpB,CAAC,CAAA"}

@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Docker + Jest integration testing",
   "main": "dist/index.js",
   "author": "Erik Engervall",
@@ -13,8 +13,8 @@
     "test:example": "cd example && npm run test",
     "test:all": "npm run test && npm run test:example",
     "install:all": "npm install && cd example && npm install",
-    "_postinstall": "npm run build",
-    "setup": "./dev-toolbox/setup"
+    "setup": "./dev-toolbox/setup",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "execa": "^1.0.0"
