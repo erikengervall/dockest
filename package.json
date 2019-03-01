@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Docker + Jest integration testing",
   "main": "dist/index.js",
   "author": "Erik Engervall",
