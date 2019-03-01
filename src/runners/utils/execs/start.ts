@@ -1,6 +1,6 @@
-import { runnerLogger } from '../../loggers'
-import { ExecOpts, RunnerConfigs } from '../index'
-import { execa, getContainerId } from '../utils'
+import { runnerLogger } from '../../../loggers'
+import { ExecOpts, RunnerConfigs } from '../../index'
+import { execa, getContainerId } from '../../utils'
 
 export default async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
   const { service } = runnerConfig

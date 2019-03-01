@@ -1,7 +1,7 @@
-import { DockestError } from '../../errors'
-import { runnerLogger } from '../../loggers'
-import { ExecOpts } from '../index'
-import { acquireConnection, sleep } from '../utils'
+import { DockestError } from '../../../errors'
+import { runnerLogger } from '../../../loggers'
+import { ExecOpts } from '../../index'
+import { acquireConnection, sleep } from '../../utils'
 
 export default async (runnerConfig: any, execOpts: ExecOpts): Promise<void> => {
   const { service, connectionTimeout, host, port } = runnerConfig

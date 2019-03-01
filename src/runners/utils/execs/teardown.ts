@@ -1,5 +1,5 @@
-import { ExecOpts } from '../index'
-import { teardownSingle } from '../utils'
+import { ExecOpts } from '../../index'
+import { teardownSingle } from '../../utils'
 
 export default async (execConfig: ExecOpts) => {
   const { containerId, runnerKey } = execConfig

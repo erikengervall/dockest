@@ -22,7 +22,7 @@ jestSetup.ts
 .tslint.json
 yarn-error.log
 
-assets/
 dev-toolbox/
 example/
+src/
 **/*.spec.js
