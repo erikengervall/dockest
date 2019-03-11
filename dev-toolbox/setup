@@ -1,3 +1,4 @@
 #!/bin/bash
 
+# Setup git hooks
 ln -sf $(pwd)/dev-toolbox/git-hooks/* .git/hooks/

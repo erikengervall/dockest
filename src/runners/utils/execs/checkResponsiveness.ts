@@ -6,7 +6,6 @@ import { execa, sleep } from '../../utils'
 export default async (runnerConfig: any, execOpts: ExecOpts) => {
   const { service, responsivenessTimeout } = runnerConfig
   const {
-    runnerKey,
     commandCreators: { createCheckResponsivenessCommand },
   } = execOpts
   if (!createCheckResponsivenessCommand) {
@@ -24,7 +23,7 @@ export default async (runnerConfig: any, execOpts: ExecOpts) => {
     try {
       await execa(cmd)
 
-      runnerLogger.checkResponsivenessSuccess(runnerKey)
+      runnerLogger.checkResponsivenessSuccess()
     } catch (error) {
       responsivenessTimeout--
 

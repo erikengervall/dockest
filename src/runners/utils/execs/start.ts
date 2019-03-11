@@ -4,9 +4,9 @@ import { execa, getContainerId } from '../../utils'
 
 export default async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
   const { service } = runnerConfig
-  const { runnerKey, commandCreators } = execOpts
+  const { commandCreators } = execOpts
   const startCommand = commandCreators.createStartCommand(runnerConfig)
-  runnerLogger.startContainer(runnerKey)
+  runnerLogger.startContainer()
 
   let containerId = await getContainerId(service)
   if (!containerId) {
@@ -14,7 +14,7 @@ export default async (runnerConfig: RunnerConfigs, execOpts: ExecOpts) => {
   }
   containerId = await getContainerId(service)
 
-  runnerLogger.startContainerSuccess(runnerKey)
+  runnerLogger.startContainerSuccess()
 
   return containerId
 }

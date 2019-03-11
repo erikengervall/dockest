@@ -5,10 +5,11 @@ import main from './app'
 import { seedUser } from './data.json'
 
 const env: any = dotenv.config().parsed
+const describeFn = env.postgres1sequelize_enabled === 'true' ? describe : describe.skip
 const { runHelpCmd } = runners.PostgresRunner.getHelpers()
 
 const test = async () => {
-  it('main', async () => {
+  it('trabajo', async () => {
     const result = await main()
 
     expect(result).toEqual(
@@ -36,8 +37,4 @@ beforeEach(async () => {
   await runHelpCmd('sequelize db:seed:all')
 })
 
-if (env.postgres1sequelize_enabled === 'true') {
-  describe('postgres-1-sequelize', test)
-} else {
-  describe.skip('', () => it.skip('', () => undefined))
-}
+describeFn('postgres-1-sequelize', test)

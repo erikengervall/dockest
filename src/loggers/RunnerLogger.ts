@@ -1,4 +1,4 @@
-import BaseLogger, { logMethod } from './BaseLogger'
+import BaseLogger from './BaseLogger'
 
 class RunnerLogger extends BaseLogger {
   private static runnerLoggerInstance: RunnerLogger
@@ -11,66 +11,58 @@ class RunnerLogger extends BaseLogger {
   /**
    * Setup
    */
-  public setup: logMethod = () => this.LOG_LEVEL_NORMAL && this.logLoading(`Setup initiated`)
+  public setup = () => this.LOG_LEVEL_NORMAL && this.logLoading(`Setup initiated`)
 
-  public setupSuccess: logMethod = () =>
-    this.LOG_LEVEL_NORMAL && this.logSuccess(`Setup successful`)
+  public setupSuccess = () => this.LOG_LEVEL_NORMAL && this.logSuccess(`Setup successful`)
 
-  public startContainer: logMethod = () =>
-    this.LOG_LEVEL_NORMAL && this.logLoading(`Starting container`)
+  public startContainer = () => this.LOG_LEVEL_NORMAL && this.logLoading(`Starting container`)
 
-  public startContainerSuccess: logMethod = () =>
-    this.LOG_LEVEL_NORMAL && this.logSuccess(`Container running`)
+  public startContainerSuccess = () => this.LOG_LEVEL_NORMAL && this.logSuccess(`Container running`)
 
-  public checkHealth: logMethod = () =>
-    this.LOG_LEVEL_NORMAL && this.logLoading(`Healthchecking container`)
+  public checkHealth = () => this.LOG_LEVEL_NORMAL && this.logLoading(`Healthchecking container`)
 
-  public checkHealthSuccess: logMethod = () =>
+  public checkHealthSuccess = () =>
     this.LOG_LEVEL_NORMAL && this.logSuccess(`Healthcheck successful`)
 
   public checkResponsiveness = (timeout: number) =>
     this.LOG_LEVEL_VERBOSE &&
     this.logLoading(`Checking container's responsiveness (Timeout in: ${timeout}s)`)
 
-  public checkResponsivenessSuccess: logMethod = () =>
+  public checkResponsivenessSuccess = () =>
     this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container's responsiveness checked`)
 
   public checkConnection = (timeout: number) =>
     this.LOG_LEVEL_VERBOSE &&
     this.logLoading(`Checking container's connection (Timeout in: ${timeout}s)`)
 
-  public checkConnectionSuccess: logMethod = () =>
+  public checkConnectionSuccess = () =>
     this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container's connection checked`)
 
   /**
    * Teardown
    */
-  public teardown: logMethod = () =>
-    this.LOG_LEVEL_NORMAL && this.logLoading(`Container being teared down`)
+  public teardown = () => this.LOG_LEVEL_NORMAL && this.logLoading(`Container being teared down`)
 
-  public teardownSuccess: logMethod = () =>
-    this.LOG_LEVEL_NORMAL && this.logSuccess(`Container teared down`)
+  public teardownSuccess = () => this.LOG_LEVEL_NORMAL && this.logSuccess(`Container teared down`)
 
-  public stopContainer: logMethod = () =>
-    this.LOG_LEVEL_VERBOSE && this.logLoading(`Container being stopped`)
+  public stopContainer = () => this.LOG_LEVEL_VERBOSE && this.logLoading(`Container being stopped`)
 
-  public stopContainerSuccess: logMethod = () =>
-    this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container stopped`)
+  public stopContainerSuccess = () => this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container stopped`)
 
-  public removeContainer: logMethod = () =>
+  public removeContainer = () =>
     this.LOG_LEVEL_VERBOSE && this.logLoading(`Container being removed`)
 
-  public removeContainerSuccess: logMethod = () =>
+  public removeContainerSuccess = () =>
     this.LOG_LEVEL_VERBOSE && this.logSuccess(`Container removed`)
 
   /**
    * Misc
    */
-  public shellCmd: logMethod = (logData = '') =>
+  public shellCmd = (logData = '') =>
     this.LOG_LEVEL_VERBOSE &&
     this.logLoading(`Executing following shell script`, this.trim(logData))
 
-  public shellCmdSuccess: logMethod = (logData = '') =>
+  public shellCmdSuccess = (logData = '') =>
     this.LOG_LEVEL_VERBOSE &&
     this.logSuccess(`Executed shell script with result`, this.trim(logData))
 }

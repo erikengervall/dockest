@@ -4,7 +4,7 @@ import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
-import { runCustomCommand, validateTypes } from './runners/utils'
+import { validateTypes } from './runners/utils'
 
 interface UserRunners {
   [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner
@@ -57,8 +57,6 @@ export default class Dockest {
 
   private setupRunners = async () => {
     const { runners } = Dockest.config
-
-    await runCustomCommand('Dockest', 'docker-compose pull')
 
     for (const runnerKey of Object.keys(runners)) {
       await runners[runnerKey].setup(runnerKey)

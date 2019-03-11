@@ -1,7 +1,14 @@
 {
   "name": "dockest",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Docker + Jest integration testing",
+  "keywords": [
+    "docker",
+    "docker-compose",
+    "jest",
+    "nodejs",
+    "integration-testing"
+  ],
   "main": "dist/index.js",
   "author": "Erik Engervall",
   "email": "erik.engervall@gmail.com",
@@ -16,6 +23,9 @@
     "setup": "./dev-toolbox/setup",
     "prepare": "npm run build"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "dependencies": {
     "execa": "^1.0.0"
   },

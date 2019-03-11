@@ -2,7 +2,7 @@ import { globalLogger, runnerLogger } from '../../loggers'
 import { execa } from './index'
 
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
-  runnerLogger.stopContainer(runnerKey)
+  runnerLogger.stopContainer()
 
   try {
     const cmd = `docker stop ${containerId}`
@@ -13,11 +13,11 @@ const stopContainerById = async (containerId: string, runnerKey: string): Promis
     return
   }
 
-  runnerLogger.stopContainerSuccess(runnerKey)
+  runnerLogger.stopContainerSuccess()
 }
 
 const removeContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
-  runnerLogger.removeContainer(runnerKey)
+  runnerLogger.removeContainer()
 
   try {
     const cmd = `docker rm ${containerId} --volumes`
@@ -29,7 +29,7 @@ const removeContainerById = async (containerId: string, runnerKey: string): Prom
     return
   }
 
-  runnerLogger.removeContainerSuccess(runnerKey)
+  runnerLogger.removeContainerSuccess()
 }
 
 export default async (containerId: string, runnerKey: string): Promise<void> => {
@@ -38,8 +38,8 @@ export default async (containerId: string, runnerKey: string): Promise<void> => 
     return
   }
 
-  runnerLogger.teardown(runnerKey)
+  runnerLogger.teardown()
   await stopContainerById(containerId, runnerKey)
   await removeContainerById(containerId, runnerKey)
-  runnerLogger.teardownSuccess(runnerKey)
+  runnerLogger.teardownSuccess()
 }

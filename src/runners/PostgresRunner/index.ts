@@ -66,9 +66,9 @@ const createCheckResponsivenessCommand = (
 }
 
 export default class PostgresRunner extends BaseRunner {
-  public static getHelpers = () => {
+  public static getHelpers = (silent: boolean) => {
     return {
-      runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd),
+      runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd, silent),
     }
   }
 

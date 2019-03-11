@@ -7,5 +7,5 @@ module.exports = {
     },
   },
   testPathIgnorePatterns: ['/node_modules/'],
-  setupFiles: ['./jestSetup.ts'],
+  setupFiles: ['./jest.setup.ts'],
 }

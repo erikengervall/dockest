@@ -46,20 +46,20 @@ export default class BaseRunner {
     BaseLogger.runnerKey = `${runnerKey}: `
 
     this.execOpts.runnerKey = runnerKey
-    runnerLogger.setup(this.execOpts.runnerKey)
+    runnerLogger.setup()
 
     const containerId = await start(this.runnerConfig, this.execOpts)
     this.execOpts.containerId = containerId
 
     await checkResponsiveness(this.runnerConfig, this.execOpts)
-    await checkConnection(this.runnerConfig, this.execOpts)
+    await checkConnection(this.runnerConfig)
 
     const commands = this.runnerConfig.commands || []
     for (const cmd of commands) {
       await runCustomCommand(this.execOpts.runnerKey, cmd)
     }
 
-    runnerLogger.setupSuccess(this.execOpts.runnerKey)
+    runnerLogger.setupSuccess()
   }
 
   public teardown = () => teardown(this.execOpts)
