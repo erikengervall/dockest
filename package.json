@@ -1,7 +1,7 @@
 {
   "name": "dockest",
-  "version": "0.3.5",
-  "description": "Docker + Jest integration testing",
+  "version": "0.3.6",
+  "description": "Dockest is a small library that executes Jest alongside your application's dependencies.",
   "keywords": [
     "docker",
     "docker-compose",

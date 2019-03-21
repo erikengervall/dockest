@@ -1,6 +1,6 @@
 # Dockest
 
-`Dockest` is a small library that executes Jest alongside with your application's dependencies.
+`Dockest` is a small library that executes Jest alongside your application's dependencies.
 
 <p align="center">
   <img alt="dockest logo" src="./dev-toolbox/logo/pinterest_profile_image.png">
