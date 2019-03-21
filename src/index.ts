@@ -4,7 +4,7 @@ import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
-import { validateTypes } from './runners/utils'
+import { sleepWithLog, validateTypes } from './runners/utils'
 
 interface UserRunners {
   [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner
@@ -15,15 +15,17 @@ interface RequiredConfigProps {
   runners: UserRunners
 }
 interface DefaultableConfigProps {
-  logLevel: number
+  afterSetupSleep: number
   exitHandler: (_: any) => void
+  logLevel: number
 }
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
+  afterSetupSleep: 20,
+  exitHandler: _ => undefined,
   logLevel: LOG_LEVEL.NORMAL,
-  exitHandler: (_: any) => undefined,
 }
 
 export default class Dockest {
@@ -37,7 +39,6 @@ export default class Dockest {
       ...DEFAULT_CONFIG,
       ...userConfig,
     }
-
     BaseLogger.logLevel = Dockest.config.logLevel
     this.jestRunner = new JestRunner(Dockest.config.jest)
 
@@ -49,9 +50,15 @@ export default class Dockest {
 
   public run = async (): Promise<void> => {
     await this.setupRunners()
+    if (
+      Dockest.config.afterSetupSleep !== 0 &&
+      Object.values(Dockest.config.runners).find(runner => runner instanceof KafkaRunner)
+    ) {
+      await sleepWithLog('After setup sleep progress', Dockest.config.afterSetupSleep)
+    }
+
     const result = await this.runJest()
     await this.teardownRunners()
-
     result.success ? process.exit(0) : process.exit(1)
   }
 

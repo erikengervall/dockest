@@ -30,7 +30,7 @@ const validateTypes = (schema: OObject, config?: OObject): string[] => {
       const typeValidator = schema[schemaKey]
 
       if (isArray(typeValidator)) {
-        // Allow sending multiple thangz
+        // TODO: Allow sending multiple things
       }
 
       if (!typeValidator(value)) {

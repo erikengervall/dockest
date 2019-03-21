@@ -60,6 +60,7 @@ export default class BaseRunner {
     }
 
     runnerLogger.setupSuccess()
+    BaseLogger.runnerKey = ''
   }
 
   public teardown = () => teardown(this.execOpts)
