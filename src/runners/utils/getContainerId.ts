@@ -1,6 +1,6 @@
 import { execa } from './index'
 
-export default async (serviceName: string): Promise<string> => {
+const getContainerId = async (serviceName: string): Promise<string> => {
   const cmd = `docker ps \
                   --quiet \
                   --filter \
@@ -10,3 +10,5 @@ export default async (serviceName: string): Promise<string> => {
 
   return containerId
 }
+
+export default getContainerId

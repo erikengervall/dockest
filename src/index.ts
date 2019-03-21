@@ -28,7 +28,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   logLevel: LOG_LEVEL.NORMAL,
 }
 
-export default class Dockest {
+class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: DockestConfig
   private static instance: Dockest
@@ -102,3 +102,4 @@ export default class Dockest {
 const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
 export { logLevel, runners }
+export default Dockest

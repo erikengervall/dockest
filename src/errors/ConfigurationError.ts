@@ -1,13 +1,8 @@
-import { ICONS } from '../constants'
+import BaseError from './BaseError'
 
-export class ConfigurationError extends Error {
+class ConfigurationError extends BaseError {
   constructor(message: string) {
-    super(`${ICONS.ERROR} Invalid configuration: ${message}}`)
-
-    // Maintains proper stack trace for where our error was thrown (only available on V8)
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, ConfigurationError)
-    }
+    super(`Invalid configuration: ${message}}`)
   }
 }
 

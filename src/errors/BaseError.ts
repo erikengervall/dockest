@@ -1,6 +1,6 @@
 import { ICONS } from '../constants'
 
-export class BaseError extends Error {
+class BaseError extends Error {
   payload: object
   timestamp: Date
 

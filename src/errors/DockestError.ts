@@ -1,19 +1,8 @@
-import { ICONS } from '../constants'
+import BaseError from './BaseError'
 
-export class DockestError extends Error {
-  payload: object
-  timestamp: Date
-
+class DockestError extends BaseError {
   constructor(message: string, payload: object = {}) {
-    super(`${ICONS.ERROR} ${message}`)
-
-    // Maintains proper stack trace for where our error was thrown (only available on V8)
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, DockestError)
-    }
-
-    this.payload = payload
-    this.timestamp = new Date()
+    super(message, payload)
   }
 }
 

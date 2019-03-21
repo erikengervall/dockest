@@ -13,10 +13,10 @@ const start = async (runnerConfig: RunnerConfigs, execOpts: ExecOpts): Promise<s
     await execa(startCommand)
   } else {
     await teardown({ ...execOpts, containerId })
+
     return start(runnerConfig, execOpts)
   }
   containerId = await getContainerId(service)
-
   runnerLogger.startContainerSuccess()
 
   return containerId

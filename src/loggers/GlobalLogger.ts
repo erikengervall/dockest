@@ -5,6 +5,7 @@ class GlobalLogger extends BaseLogger {
 
   constructor() {
     super()
+
     return GlobalLogger.globalLoggerInstance || (GlobalLogger.globalLoggerInstance = this)
   }
 
@@ -19,5 +20,5 @@ class GlobalLogger extends BaseLogger {
   public loading: logMethod = (m, d) => this.LOG_LEVEL_NORMAL() && this.logLoading(m, d)
 }
 
-const globalLogger = new GlobalLogger()
-export default globalLogger
+const singleton = new GlobalLogger()
+export default singleton

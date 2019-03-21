@@ -1,31 +1,41 @@
 {
   "name": "dockest",
-  "version": "0.3.6",
-  "description": "Dockest is a small library that executes Jest alongside your application's dependencies.",
+  "version": "0.3.7",
+  "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
   "keywords": [
     "docker",
     "docker-compose",
     "jest",
     "nodejs",
-    "integration-testing"
+    "node",
+    "integration testing"
   ],
-  "main": "dist/index.js",
-  "author": "Erik Engervall",
-  "email": "erik.engervall@gmail.com",
-  "license": "MIT",
-  "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "build:watch": "rimraf ./dist && tsc --watch",
-    "test": "jest ./src",
-    "test:example": "cd example && npm run test",
-    "test:all": "npm run test && npm run test:example",
-    "install:all": "npm install && cd example && npm install",
-    "setup": "./dev-toolbox/setup",
-    "prepare": "npm run build"
+  "homepage": "https://github.com/erikengervall/dockest#readme",
+  "bugs": {
+    "url": "https://github.com/erikengervall/dockest/issues"
   },
+  "license": "MIT",
+  "author": "Erik Engervall <erik@engervall.com> (http://engervall.com)",
   "files": [
     "dist/**/*"
   ],
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikengervall/dockest.git"
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "rimraf ./dist && tsc",
+    "build:watch": "rimraf ./dist && tsc --watch",
+    "test:unit:dockest": "jest ./src",
+    "test:integration:example": "cd example && npm run test:integration && cd ..",
+    "test:all": "npm run test:unit:dockest && npm run test:integration:example",
+    "dev:setup": "./dev-toolbox/setup && npm run install:all",
+    "install:all": "npm install && cd example && npm install",
+    "travis:install": "npm run install:all",
+    "travis:script": "npm run test:all"
+  },
   "dependencies": {
     "execa": "^1.0.0",
     "ip": "^1.1.5"

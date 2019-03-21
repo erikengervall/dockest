@@ -10,6 +10,7 @@ const stopContainerById = async (containerId: string, runnerKey: string): Promis
     await execa(cmd)
   } catch (error) {
     globalLogger.error(`${runnerKey}: Failed to stop service container`, error)
+
     return
   }
 
@@ -32,9 +33,10 @@ const removeContainerById = async (containerId: string, runnerKey: string): Prom
   runnerLogger.removeContainerSuccess()
 }
 
-export default async (containerId: string, runnerKey: string): Promise<void> => {
+const teardownSingle = async (containerId: string, runnerKey: string): Promise<void> => {
   if (!containerId) {
     globalLogger.error(`${runnerKey}: Cannot teardown container without a containerId`)
+
     return
   }
 
@@ -43,3 +45,5 @@ export default async (containerId: string, runnerKey: string): Promise<void> => 
   await removeContainerById(containerId, runnerKey)
   runnerLogger.teardownSuccess()
 }
+
+export default teardownSingle
