@@ -26,13 +26,13 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 ## Usage
 
-Check out `example/dockest.ts` for an example usage.
+Check out `example/dockest.ts` for an example usage implemented in TypeScript.
 
-### Typescript
+### TypeScript
 
 `jest.config.js`
 
-```js
+```JavaScript
 module.exports = {
   preset: 'ts-jest',
 }
@@ -40,7 +40,7 @@ module.exports = {
 
 `package.json`
 
-```json
+```JSON
 {
   "scripts": {
     "test": "ts-node ./dockest.ts"
@@ -54,7 +54,7 @@ module.exports = {
 
 `dockest.ts`
 
-```typescript
+```TypeScript
 import Dockest, { runners } from 'dockest'
 
 const { PostgresRunner } = runners
@@ -80,7 +80,7 @@ dockest.run()
 
 `dockest.js`
 
-```javascript
+```JavaScript
 const {
   default: Dockest,
   runners: { PostgresRunner },
@@ -105,7 +105,7 @@ dockest.run()
 
 # Dockest constructor
 
-```typescript
+```TypeScript
 const docker = new Dockest({
   ...opts,
   jest,
@@ -142,7 +142,7 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### [Postgres](https://hub.docker.com/_/postgres)
 
-```typescript
+```TypeScript
 new PostgresRunner({
   service: 'insert-docker-compose-service-name-here',
   database: 'insert-database-here',
@@ -167,7 +167,7 @@ new PostgresRunner({
 
 ### [Redis](https://hub.docker.com/_/redis)
 
-```typescript
+```TypeScript
 new RedisRunner({
   service: 'insert-docker-compose-service-name-here',
 })
@@ -187,7 +187,7 @@ new RedisRunner({
 
 ### (WIP) [Zookeeper](https://hub.docker.com/r/wurstmeister/zookeeper/) & [Kafka](https://hub.docker.com/r/wurstmeister/kafka)
 
-```typescript
+```TypeScript
 const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
 new ZookeeperRunner({
@@ -230,10 +230,28 @@ new KafkaRunner({
 
 ## Contributing
 
+### Setup and running tests
+
 - `yarn dev:setup`: Installs all dependencies and necessary git-hooks
 - `yarn test:all`: Runs `yarn test:unit:dockest` and `yarn test:integration:example`
   - `yarn test:unit:dockest`: Trivial unit tests for the library itself
   - `yarn test:integration:example`: Runs Dockest from the example
+
+### Overview
+
+When calling Dockest, the following chain of events occur
+
+- `index.ts`: Setup each Runner
+  - `BaseRunner.ts`: Start the container
+  - `BaseRunner.ts`: Healthcheck the container (connectivity and/or responsiveness)
+- `index.ts`: Call the Jest Runner
+  - `jest.ts` Run Jest programmatically from its CLI interface
+- `index.ts`: Teardown each container
+  - `BaseRunner.ts`: Stop container
+  - `BaseRunner.ts`: Remove container
+- `index.ts` Exit process with an exit code corresponding to the result from Jest
+
+The BaseRunner contains all the methods required in order to start, healthcheck and teardown containers. The Runners' transform the configuration provided by the users and, by extending from the BaseRunner, calls its methods with arguments constructed with the supplied configuration. This way, the Runners' responsibilities are limited to constructing arguments to be interpreted by the BaseRunner, which makes the implementation of future Runners easier.
 
 ## License
 
