@@ -27,10 +27,12 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "execa": "^1.0.0"
+    "execa": "^1.0.0",
+    "ip": "^1.1.5"
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
+    "@types/ip": "^1.1.0",
     "@types/jest": "^24.0.0",
     "@types/sequelize": "^4.27.32",
     "jest": "^23.6.0",
