@@ -16,14 +16,14 @@ class BaseLogger {
   public static runnerKey: string = ''
   private static baseLoggerInstance: BaseLogger
 
-  public LOG_LEVEL_NOTHING = BaseLogger.logLevel >= LOG_LEVEL.NOTHING
-  public LOG_LEVEL_ERROR = BaseLogger.logLevel >= LOG_LEVEL.ERROR
-  public LOG_LEVEL_NORMAL = BaseLogger.logLevel >= LOG_LEVEL.NORMAL
-  public LOG_LEVEL_VERBOSE = BaseLogger.logLevel >= LOG_LEVEL.VERBOSE
-
   constructor() {
     return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this)
   }
+
+  public LOG_LEVEL_NOTHING = () => BaseLogger.logLevel >= LOG_LEVEL.NOTHING
+  public LOG_LEVEL_ERROR = () => BaseLogger.logLevel >= LOG_LEVEL.ERROR
+  public LOG_LEVEL_NORMAL = () => BaseLogger.logLevel >= LOG_LEVEL.NORMAL
+  public LOG_LEVEL_VERBOSE = () => BaseLogger.logLevel >= LOG_LEVEL.VERBOSE
 
   public trim = (str: any = ''): any =>
     typeof str === 'string' ? str.replace(/\s+/g, ' ').trim() : str
