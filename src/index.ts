@@ -54,7 +54,7 @@ export default class Dockest {
       Dockest.config.afterSetupSleep !== 0 &&
       Object.values(Dockest.config.runners).find(runner => runner instanceof KafkaRunner)
     ) {
-      await sleepWithLog('Waiting for kafka', 20)
+      await sleepWithLog('After setup sleep progress', Dockest.config.afterSetupSleep)
     }
 
     const result = await this.runJest()
