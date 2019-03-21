@@ -6,7 +6,7 @@ export default async (runnerConfig: any): Promise<void> => {
   const { service, connectionTimeout, host, port } = runnerConfig
 
   const recurse = async (connectionTimeout: number) => {
-    runnerLogger.checkConnection(connectionTimeout)
+    runnerLogger.checkConnection(connectionTimeout, port, host)
 
     if (connectionTimeout <= 0) {
       throw new DockestError(`${service} connection timed out`)

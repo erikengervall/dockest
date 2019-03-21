@@ -59,18 +59,16 @@ const createCheckResponsivenessCommand = (
                 -h ${host} \
                 -d ${database} \
                 -U ${username} \
-                -c 'select 1'"
+                -c 'select 1'" \
               `
 
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
 export default class PostgresRunner extends BaseRunner {
-  public static getHelpers = (silent: boolean) => {
-    return {
-      runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd, silent),
-    }
-  }
+  public static getHelpers = (silent?: boolean) => ({
+    runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd, silent),
+  })
 
   constructor(configUserInput: PostgresRunnerConfigUserInput) {
     const commandCreators = {

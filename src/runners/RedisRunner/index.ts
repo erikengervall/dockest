@@ -28,13 +28,16 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 const createStartCommand = (runnerConfig: RedisRunnerConfig) => {
   const { port, service, password } = runnerConfig
 
-  const portMapping = `--publish ${port}:6379`
-  const auth = !!password ? `--requirepass ${password}` : ''
-  const cmd = `docker-compose run \
+  const portMapping = ` \
+                  --publish ${port}:6379 \
+                `
+  const cmd = ` \
+                docker-compose run \
                 ${defaultDockerComposeRunOpts} \
                 ${portMapping} \
                 ${service} \
-                ${auth}`
+                ${!!password ? `--requirepass ${password}` : ''} \
+              `
 
   return cmd.replace(/\s+/g, ' ').trim()
 }
@@ -43,25 +46,21 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
   const { host: runnerHost, password: runnerPassword } = runnerConfig
   const { containerId } = execOpts
 
-  const host = `-h ${runnerHost}`
-  const port = `-p 6379`
-  const password = runnerPassword ? `-a ${runnerPassword}` : ''
-  const command = `PING`
-  const redisCliOpts = `${host} \
-                        ${port} \
-                        ${password} \
-                        ${command}`
-  const cmd = `docker exec ${containerId} redis-cli ${redisCliOpts}`
+  const redisCliPingOpts = ` \
+                          -h ${runnerHost} \
+                          -p 6379 \
+                          ${!!runnerPassword ? `-a ${runnerPassword}` : ''} \
+                          PING \
+                        `
+  const cmd = `docker exec ${containerId} redis-cli ${redisCliPingOpts}`
 
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
 export default class RedisRunner extends BaseRunner {
-  public static getHelpers = () => {
-    return {
-      runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
-    }
-  }
+  public static getHelpers = () => ({
+    runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
+  })
 
   constructor(config: RedisRunnerConfigUserInput) {
     const commandCreators = {
