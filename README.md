@@ -117,10 +117,11 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### Interface
 
-| Prop        | Required | Type     | Default             | Description                                                    |
-| ----------- | -------- | -------- | ------------------- | -------------------------------------------------------------- |
-| logLevel    | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                             |
-| exitHandler | false    | function | () => void          | Custom function which will be invoced upon exiting the process |
+| Prop            | Required | Type     | Default             | Description                                                                                                               |
+| --------------- | -------- | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                        |
+| exitHandler     | false    | function | () => void          | Custom function which will be invoced upon exiting the process                                                            |
+| afterSetupSleep | false    | number   | 20                  | Additional sleep after initial setup. Will only be executed if there's at least one KafkaRunner present. Set to 0 to skip |
 
 ## Jest
 
@@ -220,15 +221,15 @@ new KafkaRunner({
 
 #### Kafka Interface
 
-| Prop                  | Required | Type                  | Default                                            | Desciption                                                |
-| --------------------- | -------- | --------------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| service               | true     | string                | -                                                  | Should match designated docker-compose resource           |
-| zookeepeerConnect     | true     | string                | -                                                  | host:port connection configuration towards your Zookeeper |
-| topics                | true     | string[]              | -                                                  | Topics for testing                                        |
-| host                  | false    | string                | 'localhost'                                        | Hostname                                                  |
-| ports                 | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container`     |
-| autoCreateTopics      | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics            |
-| responsivenessTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable         |
+| Prop              | Required | Type                  | Default                                            | Desciption                                                         |
+| ----------------- | -------- | --------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
+| service           | true     | string                | -                                                  | Should match designated docker-compose resource                    |
+| topics            | true     | string[]              | -                                                  | Topics for testing                                                 |
+| zookeepeerConnect | false    | string                | -                                                  | host:port connection configuration towards your Zookeeper instance |
+| host              | false    | string                | 'localhost'                                        | Hostname                                                           |
+| ports             | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container`              |
+| autoCreateTopics  | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics                     |
+| connectionTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable                  |
 
 ## Contributing
 
