@@ -2,7 +2,7 @@ import { DockestError } from '../../../errors'
 import { runnerLogger } from '../../../loggers'
 import { acquireConnection, sleep } from '../../utils'
 
-export default async (runnerConfig: any): Promise<void> => {
+const checkConnection = async (runnerConfig: any): Promise<void> => {
   const { service, connectionTimeout, host, port } = runnerConfig
 
   const recurse = async (connectionTimeout: number) => {
@@ -26,3 +26,5 @@ export default async (runnerConfig: any): Promise<void> => {
 
   await recurse(connectionTimeout)
 }
+
+export default checkConnection

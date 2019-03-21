@@ -21,7 +21,7 @@ export type ExecOpts = {
   runnerKey: string
 }
 
-export default class BaseRunner {
+class BaseRunner {
   public runnerConfig: RunnerConfigs
   public execOpts: ExecOpts
 
@@ -65,3 +65,5 @@ export default class BaseRunner {
 
   public teardown = () => teardown(this.execOpts)
 }
+
+export default BaseRunner

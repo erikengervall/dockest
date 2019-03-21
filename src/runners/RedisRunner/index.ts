@@ -52,12 +52,14 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
                           ${!!runnerPassword ? `-a ${runnerPassword}` : ''} \
                           PING \
                         `
-  const cmd = `docker exec ${containerId} redis-cli ${redisCliPingOpts}`
+  const cmd = ` \
+                docker exec ${containerId} redis-cli ${redisCliPingOpts} \
+              `
 
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
-export default class RedisRunner extends BaseRunner {
+class RedisRunner extends BaseRunner {
   public static getHelpers = () => ({
     runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
   })
@@ -80,3 +82,5 @@ export default class RedisRunner extends BaseRunner {
     this.validateConfig(schema, runnerConfig)
   }
 }
+
+export default RedisRunner

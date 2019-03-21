@@ -1,6 +1,6 @@
 import net from 'net'
 
-export default (port: number, host: string = 'localhost'): Promise<void> =>
+const acquireConnection = (port: number, host: string = 'localhost'): Promise<void> =>
   new Promise((resolve, reject) => {
     let connected: boolean = false
     let timeoutId: any = null
@@ -22,3 +22,5 @@ export default (port: number, host: string = 'localhost'): Promise<void> =>
       1000
     )
   })
+
+export default acquireConnection

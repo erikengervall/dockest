@@ -1,7 +1,7 @@
 import execa from 'execa'
 import { runnerUtilsLogger } from '../../loggers'
 
-export default async (
+const runCustomCommand = async (
   runnerKey: string,
   command: string,
   silent: boolean = false
@@ -16,3 +16,5 @@ export default async (
     runnerUtilsLogger.customShellCmdSuccess(runnerKey, result)
   }
 }
+
+export default runCustomCommand

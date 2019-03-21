@@ -31,7 +31,7 @@ const createStartCommand = (runnerConfig: ZookeeperRunnerConfig) => {
   return cmd.replace(/\s+/g, ' ').trim()
 }
 
-export default class ZookeeeperRunner extends BaseRunner {
+class ZookeeeperRunner extends BaseRunner {
   constructor(config: ZookeeperRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
@@ -49,3 +49,5 @@ export default class ZookeeeperRunner extends BaseRunner {
     this.validateConfig(schema, runnerConfig)
   }
 }
+
+export default ZookeeeperRunner

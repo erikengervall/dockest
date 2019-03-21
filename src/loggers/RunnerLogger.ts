@@ -5,6 +5,7 @@ class RunnerLogger extends BaseLogger {
 
   constructor() {
     super()
+
     return RunnerLogger.runnerLoggerInstance || (RunnerLogger.runnerLoggerInstance = this)
   }
 
@@ -70,6 +71,6 @@ class RunnerLogger extends BaseLogger {
     this.logSuccess(`Executed shell script with result`, this.trim(logData))
 }
 
-const runnerLogger = new RunnerLogger()
-export default runnerLogger
+const singleton = new RunnerLogger()
 export { RunnerLogger }
+export default singleton
