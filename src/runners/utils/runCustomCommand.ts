@@ -4,15 +4,17 @@ import { runnerUtilsLogger } from '../../loggers'
 const runCustomCommand = async (
   runnerKey: string,
   command: string,
-  silent: boolean = false
+  opts: { verbose?: boolean } = {}
 ): Promise<void> => {
-  if (!silent) {
+  const { verbose = false } = opts
+
+  if (verbose) {
     runnerUtilsLogger.customShellCmd(runnerKey, command)
   }
 
   const { stdout: result } = await execa.shell(command)
 
-  if (!silent) {
+  if (verbose) {
     runnerUtilsLogger.customShellCmdSuccess(runnerKey, result)
   }
 }

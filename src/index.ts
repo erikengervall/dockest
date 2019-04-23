@@ -23,7 +23,7 @@ type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigPro
 export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  afterSetupSleep: 20,
+  afterSetupSleep: 0,
   exitHandler: _ => undefined,
   logLevel: LOG_LEVEL.NORMAL,
 }
@@ -50,10 +50,7 @@ class Dockest {
 
   public run = async (): Promise<void> => {
     await this.setupRunners()
-    if (
-      Dockest.config.afterSetupSleep !== 0 &&
-      Object.values(Dockest.config.runners).find(runner => runner instanceof KafkaRunner)
-    ) {
+    if (Dockest.config.afterSetupSleep > 0) {
       await sleepWithLog('After setup sleep progress', Dockest.config.afterSetupSleep)
     }
 

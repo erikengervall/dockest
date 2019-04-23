@@ -21,7 +21,7 @@ jest.mock('../../loggers', () => ({
 
 describe('runCustomCommand', () => {
   it('trabajo', async () => {
-    await runCustomCommand(runnerKey, command)
+    await runCustomCommand(runnerKey, command, { verbose: true })
 
     expect(runnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command)
     expect(execa.shell).toHaveBeenCalledWith(command)

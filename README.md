@@ -165,6 +165,25 @@ new PostgresRunner({
 | connectionTimeout     | false    | number   | 3           | How long to wait for the resource to be reachable       |
 | responsivenessTimeout | false    | number   | 10          | How long to wait for the resource to be reachable       |
 
+#### Helpers
+
+Available helpers
+
+- runHelpCmd: Runs a custom command
+
+Example
+
+```JavaScript
+const {
+  runners: { PostgresRunner },
+} = require('dockest')
+const postgresHelpers = PostgresRunner.getHelpers({ verbose: true })
+
+beforeAll(async () => {
+  await postgresHelpers.runHelpCmd('yarn sequelize db:seed:undo:all && yarn sequelize db:seed --seed 20180101133337-seed-name')
+})
+```
+
 ### [Redis](https://hub.docker.com/_/redis)
 
 ```TypeScript

@@ -4,7 +4,7 @@ const sleep = (ms: number = 1000): Promise<void> => new Promise(resolve => setTi
 
 const sleepWithLog = async (reason = '', secondsToSleep: number = 30): Promise<void> => {
   for (let i = 0; i < secondsToSleep; i++) {
-    RunnerUtilsLogger.sleepWithLog(reason, `${Math.floor(((i + 1) / secondsToSleep) * 100)}%`)
+    RunnerUtilsLogger.sleepWithLog(reason, `${i + 1}/${secondsToSleep}`)
 
     await sleep()
   }

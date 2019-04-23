@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
   "keywords": [
     "docker",
@@ -43,17 +43,17 @@
   "devDependencies": {
     "@types/execa": "^0.9.0",
     "@types/ip": "^1.1.0",
-    "@types/jest": "^24.0.0",
-    "@types/sequelize": "^4.27.32",
-    "jest": "^23.6.0",
-    "prettier": "^1.15.3",
+    "@types/jest": "^24.0.11",
+    "@types/sequelize": "^4.27.48",
+    "jest": "^24.7.1",
+    "prettier": "^1.17.0",
     "rimraf": "^2.6.2",
-    "sequelize": "^4.41.2",
+    "sequelize": "^5.7.4",
     "sequelize-cli": "^5.3.0",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.2.4"
+    "typescript": "^3.4.4"
   }
 }
