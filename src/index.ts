@@ -24,7 +24,7 @@ export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   afterSetupSleep: 0,
-  exitHandler: _ => undefined,
+  exitHandler: () => undefined,
   logLevel: LOG_LEVEL.NORMAL,
 }
 

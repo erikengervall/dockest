@@ -119,11 +119,11 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### Interface
 
-| Prop            | Required | Type     | Default             | Description                                                                                                               |
-| --------------- | -------- | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                        |
-| exitHandler     | false    | function | () => void          | Custom function which will be invoced upon exiting the process                                                            |
-| afterSetupSleep | false    | number   | 20                  | Additional sleep after initial setup. Will only be executed if there's at least one KafkaRunner present. Set to 0 to skip |
+| Prop            | Required | Type     | Default             | Description                                                    |
+| --------------- | -------- | -------- | ------------------- | -------------------------------------------------------------- |
+| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                             |
+| exitHandler     | false    | function | () => void          | Custom function which will be invoced upon exiting the process |
+| afterSetupSleep | false    | number   | 0                   | Additional sleep after initial setup                           |
 
 ## Jest
 
