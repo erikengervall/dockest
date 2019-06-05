@@ -28,7 +28,6 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
     '9093': '9093', // --||--
     '9094': '9094', // --||--
     '8081': `9082`, // Schema registry: https://hub.docker.com/r/confluentinc/cp-schema-registry
-    '2181': '2181', // Zookeeper: https://hub.docker.com/_/zookeeper
   },
 }
 

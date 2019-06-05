@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 
 const env: any = dotenv.config().parsed
-const { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } = runners
+const { KafkaRunner, PostgresRunner, RedisRunner } = runners
 
 const postgres1sequelize = new PostgresRunner({
   username: env.postgres1sequelize_username,
@@ -35,25 +35,15 @@ const postgres2knex = new PostgresRunner({
   ],
 })
 
-const zookeeperService = env.zookeeper_service
-const zookeeperPort = Number(env.zookeeper_port)
-const zookeepeerConnect = `${zookeeperService}:${zookeeperPort}`
-const zookeeper = new ZookeeperRunner({
-  service: zookeeperService,
-  port: zookeeperPort,
-})
-
 const kafka1kafkajs = new KafkaRunner({
   service: env.kafka_service,
   host: env.kafka_host,
   topics: [env.kafka_topic],
-  zookeepeerConnect,
   autoCreateTopics: true,
   ports: {
     [env.kafka_port1]: env.kafka_port1,
     [env.kafka_port2]: env.kafka_port2,
     [env.kafka_port3]: env.kafka_port3,
-    zookeeperPort: `${zookeeperPort}`,
   },
 })
 
@@ -77,7 +67,6 @@ const dockest = new Dockest({
       ? { postgres1sequelize }
       : {}),
     ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knex } : {}),
-    ...(env.zookeeper_enabled === 'true' ? { zookeeper } : {}),
     ...(env.kafka_enabled === 'true' ? { kafka1kafkajs } : {}),
     ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredis } : {}),
   },

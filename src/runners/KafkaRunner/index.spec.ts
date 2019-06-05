@@ -2,7 +2,6 @@ import KafkaRunner from './index'
 
 const config = {
   service: '_',
-  zookeepeerConnect: '_',
   topics: ['_'],
   host: '_',
 }

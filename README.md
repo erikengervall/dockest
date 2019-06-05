@@ -231,15 +231,14 @@ new KafkaRunner({
 
 #### Kafka Interface
 
-| Prop              | Required | Type                  | Default                                            | Desciption                                                         |
-| ----------------- | -------- | --------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
-| service           | true     | string                | -                                                  | Should match designated docker-compose resource                    |
-| topics            | true     | string[]              | -                                                  | Topics for testing                                                 |
-| zookeeperConnect  | false    | string                | -                                                  | host:port connection configuration towards your Zookeeper instance |
-| host              | false    | string                | 'localhost'                                        | Hostname                                                           |
-| ports             | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container`              |
-| autoCreateTopics  | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics                     |
-| connectionTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable                  |
+| Prop              | Required | Type                  | Default                                            | Desciption                                            |
+| ----------------- | -------- | --------------------- | -------------------------------------------------- | ----------------------------------------------------- |
+| service           | true     | string                | -                                                  | Should match designated docker-compose resource       |
+| topics            | true     | string[]              | -                                                  | Topics for testing                                    |
+| host              | false    | string                | 'localhost'                                        | Hostname                                              |
+| ports             | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container` |
+| autoCreateTopics  | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics        |
+| connectionTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable     |
 
 ## Contributing
 
