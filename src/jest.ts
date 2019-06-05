@@ -19,6 +19,7 @@ interface JestLib {
 export type JestConfig = {
   lib: JestLib
   projects?: string[]
+  runInBand?: boolean
   silent?: boolean
   verbose?: boolean
   forceExit?: boolean
@@ -26,6 +27,7 @@ export type JestConfig = {
 }
 
 const DEFAULT_CONFIG = {
+  runInBand: true,
   projects: ['.'],
 }
 

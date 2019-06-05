@@ -13,7 +13,6 @@ interface DefaultableConfigProps {
   host: string
   port: number
   ports: { [key: string]: string | number }
-  zookeepeerConnect: string
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
@@ -31,11 +30,10 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
     '8081': `9082`, // Schema registry: https://hub.docker.com/r/confluentinc/cp-schema-registry
     '2181': '2181', // Zookeeper: https://hub.docker.com/_/zookeeper
   },
-  zookeepeerConnect: '',
 }
 
 const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
-  const { ports, service, topics, autoCreateTopics, zookeepeerConnect } = runnerConfig
+  const { ports, service, topics, autoCreateTopics } = runnerConfig
 
   const portMapping = Object.keys(ports).reduce(
     (acc, port) => `${acc} --publish ${ports[port]}:${port}`,
@@ -45,7 +43,6 @@ const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
                 -e KAFKA_ADVERTISED_HOST_NAME=${ip.address()} \
                 ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
                 ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
-                ${!!zookeepeerConnect ? `-e KAFKA_ZOOKEEPER_CONNECT="${zookeepeerConnect}"` : ''} \
               `
   const cmd = ` \
                 docker-compose run \

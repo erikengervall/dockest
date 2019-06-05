@@ -1,7 +1,8 @@
 import Dockest, { DockestConfig } from './index'
 import { globalLogger } from './loggers'
 
-interface ErrorPayload {
+export interface ErrorPayload {
+  type: string
   code?: number
   signal?: any
   error?: Error
@@ -21,8 +22,8 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
     globalLogger.error('Exithandler invoced', errorPayload)
 
     if (config.exitHandler && typeof exitHandler === 'function') {
-      const err = errorPayload.error || new Error('Failed to extract error')
-      config.exitHandler(err)
+      const error = errorPayload || new Error('Failed to extract error')
+      config.exitHandler(error)
     }
 
     for (const runnerKey of Object.keys(runners)) {
@@ -36,20 +37,22 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
   process.stdin.resume()
 
   // do something when app is closing
-  process.on('exit', async code => exitHandler({ code }))
+  process.on('exit', async code => exitHandler({ type: 'exit', code }))
 
   // catches ctrl+c event
-  process.on('SIGINT', async signal => exitHandler({ signal }))
+  process.on('SIGINT', async signal => exitHandler({ type: 'SIGINT', signal }))
 
   // catches "kill pid" (for example: nodemon restart)
-  process.on('SIGUSR1', async () => exitHandler({}))
-  process.on('SIGUSR2', async () => exitHandler({}))
+  process.on('SIGUSR1', async () => exitHandler({ type: 'SIGUSR1' }))
+  process.on('SIGUSR2', async () => exitHandler({ type: 'SIGUSR2' }))
 
   // catches uncaught exceptions
-  process.on('uncaughtException', async error => exitHandler({ error }))
+  process.on('uncaughtException', async error => exitHandler({ type: 'uncaughtException', error }))
 
   // catches unhandled promise rejections
-  process.on('unhandledRejection', async (reason, p) => exitHandler({ reason, p }))
+  process.on('unhandledRejection', async (reason, p) =>
+    exitHandler({ type: 'unhandledRejection', reason, p })
+  )
 }
 
 export default setupExitHandler

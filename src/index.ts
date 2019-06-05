@@ -1,6 +1,6 @@
 import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
-import setupExitHandler from './exitHandler'
+import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
@@ -16,7 +16,7 @@ interface RequiredConfigProps {
 }
 interface DefaultableConfigProps {
   afterSetupSleep: number
-  exitHandler: (_: any) => void
+  exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
 }
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
@@ -24,7 +24,7 @@ export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   afterSetupSleep: 0,
-  exitHandler: () => undefined,
+  exitHandler: null,
   logLevel: LOG_LEVEL.NORMAL,
 }
 

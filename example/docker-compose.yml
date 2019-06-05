@@ -10,25 +10,11 @@ services:
     volumes:
       - postgres2Volume:/var/lib/postgresql/data
 
-  zookeeper1wurstmeister: # https://hub.docker.com/r/wurstmeister/zookeeper/
-    image: wurstmeister/zookeeper:latest
-
-  kafka1wurstmeister: # https://hub.docker.com/r/wurstmeister/kafka/
-    image: wurstmeister/kafka:0.11.0.0
-    ports:
-      - '9092:9092'
-      - '9093:9093'
-      - '9094:9094'
-    links:
-      - zookeeper1wurstmeister
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: 'localhost:9092'
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      KAFKA_CREATE_TOPICS: 'dockest-topic:1:1'
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper1wurstmeister:2181
-
   redis1ioredis: # https://hub.docker.com/_/redis
     image: redis:5.0.3
+
+  kafka1confluentinc: # https://hub.docker.com/r/confluentinc/cp-kafka
+    image: confluentinc/cp-E
 
 volumes:
   postgres1Volume:

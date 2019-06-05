@@ -119,11 +119,11 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### Interface
 
-| Prop            | Required | Type     | Default             | Description                                                    |
-| --------------- | -------- | -------- | ------------------- | -------------------------------------------------------------- |
-| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                             |
-| exitHandler     | false    | function | () => void          | Custom function which will be invoced upon exiting the process |
-| afterSetupSleep | false    | number   | 0                   | Additional sleep after initial setup                           |
+| Prop            | Required | Type     | Default             | Description                                                                                                                                                                       |
+| --------------- | -------- | -------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                                                                                |
+| exitHandler     | false    | function | null                | Custom function which will be invoced upon exiting the process with an error payload of type: { type: string, code?: number, signal?: any, error?: Error, reason?: any, p?: any } |
+| afterSetupSleep | false    | number   | 0                   | Additional sleep after initial setup                                                                                                                                              |
 
 ## Jest
 
@@ -133,10 +133,13 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 | --------- | -------- | -------- | --------- | -------------------------------------------------------- |
 | lib       | true     | object   | -         | The Jest library itself                                  |
 | projects  | false    | string[] | ['.']     | https://jestjs.io/docs/en/cli.html#projects-path1-pathn- |
+| runInBand | false    | boolean  | true      | https://jestjs.io/docs/en/cli.html#runinband             |
 | silent    | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#silent                |
 | verbose   | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#verbose               |
 | forceExit | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#forceexit             |
 | watchAll  | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#watchall              |
+
+Note that due to Jest running all tests in parallel per default, Dockest defaults the `runInBand` option to `true`. This'll cause jest to run its tests sequentially and thus avoid potential race conditions if tests perform read/write operations on the same entry. The downside of this is an overall longer runtime.
 
 ## Runners
 
@@ -204,25 +207,16 @@ new RedisRunner({
 | connectionTimeout     | false    | number   | 3           | How long to wait for the resource to be reachable       |
 | responsivenessTimeout | false    | number   | 10          | How long to wait for the resource to be reachable       |
 
-### (WIP) [Zookeeper](https://hub.docker.com/r/wurstmeister/zookeeper/) & [Kafka](https://hub.docker.com/r/wurstmeister/kafka)
+### (WIP) [Kafka](https://hub.docker.com/r/confluentinc/cp-kafka)
 
 ```TypeScript
-const zookeeperService = 'zookeeper1wurstmeister'
-const zookeeperPort = 2181
-new ZookeeperRunner({
-  service: zookeeperService,
-  port: zookeeperPort,
-})
-
 new KafkaRunner({
-  service: 'kafka1wurstmeister',
+  service: 'kafka1confluentinc',
   topics: ['topic:1:1'], // topicName:partitions:replicas
-  zookeeperConnect: `${zookeeperService}:${zookeeperPort}`,
   ports: {
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
-    [zookeeperPort]: `${zookeeperPort}`, // zookeeper
   },
 })
 ```
