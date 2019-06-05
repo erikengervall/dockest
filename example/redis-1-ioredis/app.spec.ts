@@ -4,9 +4,10 @@ import main from './app'
 import { seedCake } from './data.json'
 
 const env: any = dotenv.config().parsed
+const describeFn = env.redis1ioredis_enabled === 'true' ? describe : describe.skip
 
 const test = async () => {
-  it('main', async () => {
+  it('trabajo', async () => {
     const { redis } = main()
 
     const value = await redis.get(seedCake.key)
@@ -19,8 +20,4 @@ const test = async () => {
   })
 }
 
-if (env.redis1ioredis_enabled === 'true') {
-  describe('redis-1-ioredis', test)
-} else {
-  describe.skip('', () => it.skip('', () => undefined))
-}
+describeFn('redis-1-ioredis', test)

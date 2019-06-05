@@ -4,7 +4,7 @@ import setupExitHandler from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
-import { runCustomCommand, validateTypes } from './runners/utils'
+import { sleepWithLog, validateTypes } from './runners/utils'
 
 interface UserRunners {
   [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner
@@ -15,18 +15,20 @@ interface RequiredConfigProps {
   runners: UserRunners
 }
 interface DefaultableConfigProps {
-  logLevel: number
+  afterSetupSleep: number
   exitHandler: (_: any) => void
+  logLevel: number
 }
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
+  afterSetupSleep: 0,
+  exitHandler: () => undefined,
   logLevel: LOG_LEVEL.NORMAL,
-  exitHandler: (_: any) => undefined,
 }
 
-export default class Dockest {
+class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: DockestConfig
   private static instance: Dockest
@@ -37,7 +39,6 @@ export default class Dockest {
       ...DEFAULT_CONFIG,
       ...userConfig,
     }
-
     BaseLogger.logLevel = Dockest.config.logLevel
     this.jestRunner = new JestRunner(Dockest.config.jest)
 
@@ -49,16 +50,17 @@ export default class Dockest {
 
   public run = async (): Promise<void> => {
     await this.setupRunners()
+    if (Dockest.config.afterSetupSleep > 0) {
+      await sleepWithLog('After setup sleep progress', Dockest.config.afterSetupSleep)
+    }
+
     const result = await this.runJest()
     await this.teardownRunners()
-
     result.success ? process.exit(0) : process.exit(1)
   }
 
   private setupRunners = async () => {
     const { runners } = Dockest.config
-
-    await runCustomCommand('Dockest', 'docker-compose pull')
 
     for (const runnerKey of Object.keys(runners)) {
       await runners[runnerKey].setup(runnerKey)
@@ -97,3 +99,4 @@ export default class Dockest {
 const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
 export { logLevel, runners }
+export default Dockest

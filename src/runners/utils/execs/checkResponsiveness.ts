@@ -1,14 +1,11 @@
-import execa from 'execa'
+import { DockestError } from '../../../errors'
+import { runnerLogger } from '../../../loggers'
+import { ExecOpts } from '../../index'
+import { execa, sleep } from '../../utils'
 
-import { DockestError } from '../../errors'
-import { runnerLogger } from '../../loggers'
-import { ExecOpts } from '../index'
-import { sleep } from '../utils'
-
-export default async (runnerConfig: any, execOpts: ExecOpts) => {
+const checkResponsiveness = async (runnerConfig: any, execOpts: ExecOpts) => {
   const { service, responsivenessTimeout } = runnerConfig
   const {
-    runnerKey,
     commandCreators: { createCheckResponsivenessCommand },
   } = execOpts
   if (!createCheckResponsivenessCommand) {
@@ -24,10 +21,9 @@ export default async (runnerConfig: any, execOpts: ExecOpts) => {
     }
 
     try {
-      runnerLogger.shellCmd(cmd)
-      await execa.shell(cmd)
+      await execa(cmd)
 
-      runnerLogger.checkResponsivenessSuccess(runnerKey)
+      runnerLogger.checkResponsivenessSuccess()
     } catch (error) {
       responsivenessTimeout--
 
@@ -38,3 +34,5 @@ export default async (runnerConfig: any, execOpts: ExecOpts) => {
 
   await recurse(responsivenessTimeout)
 }
+
+export default checkResponsiveness

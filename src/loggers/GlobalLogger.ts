@@ -5,18 +5,20 @@ class GlobalLogger extends BaseLogger {
 
   constructor() {
     super()
+
     return GlobalLogger.globalLoggerInstance || (GlobalLogger.globalLoggerInstance = this)
   }
 
-  public error: logMethod = (message, logData) => this.IS_ERROR() && this.logError(message, logData)
+  public error: logMethod = (message, logData) =>
+    this.LOG_LEVEL_ERROR() && this.logError(message, logData)
 
   /**
    * Dockest
    */
-  public info: logMethod = (m, d) => this.IS_VERBOSE() && this.logInfo(m, d)
+  public info: logMethod = (m, d) => this.LOG_LEVEL_VERBOSE() && this.logInfo(m, d)
 
-  public loading: logMethod = (m, d) => this.IS_NORMAL() && this.logLoading(m, d)
+  public loading: logMethod = (m, d) => this.LOG_LEVEL_NORMAL() && this.logLoading(m, d)
 }
 
-const globalLogger = new GlobalLogger()
-export default globalLogger
+const singleton = new GlobalLogger()
+export default singleton

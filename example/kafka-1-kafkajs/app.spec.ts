@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import main from './app'
 
 const env: any = dotenv.config().parsed
+const describeFn = env.kafka_enabled === 'true' ? describe : describe.skip
 
 const test = () => {
   it('trabajo', async () => {
@@ -15,8 +16,4 @@ const test = () => {
   })
 }
 
-if (env.kafka_enabled === 'true') {
-  describe('kafka-1-kafkajs', test)
-} else {
-  describe.skip('', () => it.skip('', () => undefined))
-}
+describeFn('kafka-1-kafkajs', test)

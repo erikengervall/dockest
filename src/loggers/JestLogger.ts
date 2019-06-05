@@ -5,15 +5,16 @@ class JestLogger extends BaseLogger {
 
   constructor() {
     super()
+
     return JestLogger.jestLoggerInstance || (JestLogger.jestLoggerInstance = this)
   }
 
-  public success: logMethod = m => this.IS_ERROR() && this.logSuccess(m)
+  public success: logMethod = m => this.LOG_LEVEL_ERROR() && this.logSuccess(m)
 
-  public failed: logMethod = m => this.IS_ERROR() && this.logError(m)
+  public failed: logMethod = m => this.LOG_LEVEL_ERROR() && this.logError(m)
 
-  public error: logMethod = (m, e) => this.IS_NORMAL() && this.logError(m, e)
+  public error: logMethod = (m, e) => this.LOG_LEVEL_NORMAL() && this.logError(m, e)
 }
 
-const jestLogger = new JestLogger()
-export default jestLogger
+const singleton = new JestLogger()
+export default singleton

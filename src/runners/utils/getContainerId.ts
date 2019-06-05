@@ -1,14 +1,14 @@
-import execa from 'execa'
-import { runnerLogger } from '../../loggers'
+import { execa } from './index'
 
-export default async (serviceName: string): Promise<string> => {
+const getContainerId = async (serviceName: string): Promise<string> => {
   const cmd = `docker ps \
                   --quiet \
                   --filter \
                   "name=${serviceName}" \
                   --latest`
-  runnerLogger.shellCmd(cmd)
-  const { stdout: containerId } = await execa.shell(cmd)
+  const containerId = await execa(cmd)
 
   return containerId
 }
+
+export default getContainerId

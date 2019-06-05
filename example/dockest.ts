@@ -66,6 +66,7 @@ const redis1ioredis = new RedisRunner({
 
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
+  afterSetupSleep: 5,
   jest: {
     // tslint:disable-next-line
     lib: require('jest'),

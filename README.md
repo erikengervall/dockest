@@ -1,9 +1,9 @@
 # Dockest
 
-`Dockest` is a small library that executes Jest alongside with your application's dependencies.
+Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.
 
 <p align="center">
-  <img alt="dockest logo" src="./dev-toolbox/logo/pinterest_profile_image.png">
+  <img alt="dockest logo" src="https://raw.githubusercontent.com/erikengervall/dockest/master/dev-toolbox/logo/pinterest_profile_image.png">
 </p>
 
 <p align="center">
@@ -20,17 +20,19 @@
 
 ## Requirements
 
-`Dockest` requires at least Jest **v20.0.0** in order to ensure Jest's [CLI interface](https://github.com/facebook/jest/blob/master/packages/jest-cli/src/cli/index.js#L62).
+- At least Jest **v20.0.0** because Dockest calls Jest's CLI programmatically
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs."_)
 
-## Basic usage
+## Usage
 
-Check out `/example/dockest.ts` for a more extensive example.
+Check out `example/dockest.ts` for an example usage implemented in TypeScript.
 
-### Typescript
+### TypeScript
 
 `jest.config.js`
 
-```js
+```JavaScript
 module.exports = {
   preset: 'ts-jest',
 }
@@ -38,7 +40,7 @@ module.exports = {
 
 `package.json`
 
-```json
+```JSON
 {
   "scripts": {
     "test": "ts-node ./dockest.ts"
@@ -52,24 +54,24 @@ module.exports = {
 
 `dockest.ts`
 
-```typescript
+```TypeScript
 import Dockest, { runners } from 'dockest'
 
 const { PostgresRunner } = runners
 
-const postgres = new PostgresRunner({
-  service: 'insert-docker-compose-service-name-here',
-  username: 'insert-username-here',
-  password: 'insert-password-here',
-  database: 'insert-database-here',
+const dockest = new Dockest({
+  jest: {
+    lib: require('jest'),
+  },
+  runners: {
+    postgres: new PostgresRunner({
+      service: 'insert-docker-compose-service-name-here',
+      database: 'insert-database-here',
+      username: 'insert-username-here',
+      password: 'insert-password-here',
+    }),
+  },
 })
-const runners = {
-  postgres,
-}
-const jest = {
-  lib: require('jest'),
-}
-const dockest = new Dockest({ jest, runners })
 
 dockest.run()
 ```
@@ -78,32 +80,32 @@ dockest.run()
 
 `dockest.js`
 
-```javascript
+```JavaScript
 const {
   default: Dockest,
   runners: { PostgresRunner },
 } = require('dockest')
 
-const postgres = new PostgresRunner({
-  service: 'insert-docker-compose-service-name-here',
-  username: 'insert-username-here',
-  password: 'insert-password-here',
-  database: 'insert-database-here',
+const dockest = new Dockest({
+  jest: {
+    lib: require('jest'),
+  },
+  runners: {
+    postgres: new PostgresRunner({
+      service: 'insert-docker-compose-service-name-here',
+      database: 'insert-database-here',
+      username: 'insert-username-here',
+      password: 'insert-password-here',
+    }),
+  },
 })
-const runners = {
-  postgres,
-}
-const jest = {
-  lib: require('jest'),
-}
-const dockest = new Dockest({ jest, runners })
 
 dockest.run()
 ```
 
 # Dockest constructor
 
-```typescript
+```TypeScript
 const docker = new Dockest({
   ...opts,
   jest,
@@ -117,16 +119,15 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### Interface
 
-| Prop        | Required | Type     | Default             | Description                                                    |
-| ----------- | -------- | -------- | ------------------- | -------------------------------------------------------------- |
-| logLevel    | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                             |
-| exitHandler | false    | function | () => void          | Custom function which will be invoced upon exiting the process |
+| Prop            | Required | Type     | Default             | Description                                                    |
+| --------------- | -------- | -------- | ------------------- | -------------------------------------------------------------- |
+| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                             |
+| exitHandler     | false    | function | () => void          | Custom function which will be invoced upon exiting the process |
+| afterSetupSleep | false    | number   | 0                   | Additional sleep after initial setup                           |
 
 ## Jest
 
 ### Interface
-
-[Jest CLI Docs](https://jestjs.io/docs/en/cli.html)
 
 | Prop      | Required | Type     | Default   | Description                                              |
 | --------- | -------- | -------- | --------- | -------------------------------------------------------- |
@@ -141,12 +142,12 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### [Postgres](https://hub.docker.com/_/postgres)
 
-```typescript
+```TypeScript
 new PostgresRunner({
-  service: 'postgres',
-  database: 'database',
-  username: 'username',
-  password: 'password',
+  service: 'insert-docker-compose-service-name-here',
+  database: 'insert-database-here',
+  username: 'insert-username-here',
+  password: 'insert-password-here',
 })
 ```
 
@@ -164,11 +165,30 @@ new PostgresRunner({
 | connectionTimeout     | false    | number   | 3           | How long to wait for the resource to be reachable       |
 | responsivenessTimeout | false    | number   | 10          | How long to wait for the resource to be reachable       |
 
+#### Helpers
+
+Available helpers
+
+- runHelpCmd: Runs a custom command
+
+Example
+
+```JavaScript
+const {
+  runners: { PostgresRunner },
+} = require('dockest')
+const postgresHelpers = PostgresRunner.getHelpers({ verbose: true })
+
+beforeAll(async () => {
+  await postgresHelpers.runHelpCmd('yarn sequelize db:seed:undo:all && yarn sequelize db:seed --seed 20180101133337-seed-name')
+})
+```
+
 ### [Redis](https://hub.docker.com/_/redis)
 
-```typescript
+```TypeScript
 new RedisRunner({
-  service: 'redis',
+  service: 'insert-docker-compose-service-name-here',
 })
 ```
 
@@ -186,10 +206,9 @@ new RedisRunner({
 
 ### (WIP) [Zookeeper](https://hub.docker.com/r/wurstmeister/zookeeper/) & [Kafka](https://hub.docker.com/r/wurstmeister/kafka)
 
-```typescript
+```TypeScript
 const zookeeperService = 'zookeeper1wurstmeister'
 const zookeeperPort = 2181
-const zookeeperConnect = `${zookeeperService}:${zookeeperPort}`
 new ZookeeperRunner({
   service: zookeeperService,
   port: zookeeperPort,
@@ -197,15 +216,13 @@ new ZookeeperRunner({
 
 new KafkaRunner({
   service: 'kafka1wurstmeister',
-  host: 'localhost',
-  topics: ['topic:1:1'], // topicname:partitions:replicas
-  zookeeperConnect,
-  autoCreateTopics: true,
+  topics: ['topic:1:1'], // topicName:partitions:replicas
+  zookeeperConnect: `${zookeeperService}:${zookeeperPort}`,
   ports: {
     '9092': '9092', // kafka
     '9093': '9093', // kafka
     '9094': '9094', // kafka
-    zookeeperPort: `${zookeeperPort}`, // zookeeper
+    [zookeeperPort]: `${zookeeperPort}`, // zookeeper
   },
 })
 ```
@@ -220,22 +237,40 @@ new KafkaRunner({
 
 #### Kafka Interface
 
-| Prop                  | Required | Type                  | Default                                            | Desciption                                                |
-| --------------------- | -------- | --------------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| service               | true     | string                | -                                                  | Should match designated docker-compose resource           |
-| zookeepeerConnect     | true     | string                | -                                                  | host:port connection configuration towards your Zookeeper |
-| topics                | true     | string[]              | -                                                  | Topics for testing                                        |
-| host                  | false    | string                | 'localhost'                                        | Hostname                                                  |
-| ports                 | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container`     |
-| autoCreateTopics      | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics            |
-| responsivenessTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable         |
+| Prop              | Required | Type                  | Default                                            | Desciption                                                         |
+| ----------------- | -------- | --------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
+| service           | true     | string                | -                                                  | Should match designated docker-compose resource                    |
+| topics            | true     | string[]              | -                                                  | Topics for testing                                                 |
+| zookeeperConnect  | false    | string                | -                                                  | host:port connection configuration towards your Zookeeper instance |
+| host              | false    | string                | 'localhost'                                        | Hostname                                                           |
+| ports             | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container`              |
+| autoCreateTopics  | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics                     |
+| connectionTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable                  |
 
 ## Contributing
 
-- `yarn install:all`: Installs all dependencies and necessary git-hooks
-- `yarn test:all`: Runs `yarn test` and `yarn test:example`
-  - `yarn test`: Runs jest for _./Dockest/src_
-  - `yarn test:example`: Runs `yarn test` from _./example_
+### Setup and running tests
+
+- `yarn dev:setup`: Installs all dependencies and necessary git-hooks
+- `yarn test:all`: Runs `yarn test:unit:dockest` and `yarn test:integration:example`
+  - `yarn test:unit:dockest`: Trivial unit tests for the library itself
+  - `yarn test:integration:example`: Runs Dockest from the example
+
+### Overview
+
+When calling Dockest, the following chain of events occur
+
+- `index.ts`: Setup each Runner
+  - `BaseRunner.ts`: Start the container
+  - `BaseRunner.ts`: Healthcheck the container (connectivity and/or responsiveness)
+- `index.ts`: Call the Jest Runner
+  - `jest.ts` Run Jest programmatically from its CLI interface
+- `index.ts`: Teardown each container
+  - `BaseRunner.ts`: Stop container
+  - `BaseRunner.ts`: Remove container
+- `index.ts` Exit process with an exit code corresponding to the result from Jest
+
+The BaseRunner contains all the methods required in order to start, healthcheck and teardown containers. The Runners' transform the configuration provided by the users and, by extending from the BaseRunner, calls its methods with arguments constructed with the supplied configuration. This way, the Runners' responsibilities are limited to constructing arguments to be interpreted by the BaseRunner, which makes the implementation of future Runners easier.
 
 ## License
 

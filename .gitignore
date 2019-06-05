@@ -21,6 +21,4 @@ trash
 
 # Dockest dev
 #
-dockest
-src/dockest
-dist/dockest
+dist

@@ -1,37 +1,59 @@
 {
   "name": "dockest",
-  "version": "0.3.2",
-  "description": "Docker + Jest integration testing",
-  "main": "dist/index.js",
-  "author": "Erik Engervall",
-  "email": "erik.engervall@gmail.com",
+  "version": "0.3.8",
+  "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
+  "keywords": [
+    "docker",
+    "docker-compose",
+    "jest",
+    "nodejs",
+    "node",
+    "integration testing"
+  ],
+  "homepage": "https://github.com/erikengervall/dockest#readme",
+  "bugs": {
+    "url": "https://github.com/erikengervall/dockest/issues"
+  },
   "license": "MIT",
+  "author": "Erik Engervall <erik@engervall.com> (http://engervall.com)",
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikengervall/dockest.git"
+  },
   "scripts": {
+    "prepare": "npm run build",
     "build": "rimraf ./dist && tsc",
     "build:watch": "rimraf ./dist && tsc --watch",
-    "test": "jest ./src",
-    "test:example": "cd example && npm run test",
-    "test:all": "npm run test && npm run test:example",
+    "test:unit:dockest": "jest ./src",
+    "test:integration:example": "cd example && npm run test:integration && cd ..",
+    "test:all": "npm run test:unit:dockest && npm run test:integration:example",
+    "dev:setup": "./dev-toolbox/setup && npm run install:all",
     "install:all": "npm install && cd example && npm install",
-    "_postinstall": "npm run build",
-    "setup": "./dev-toolbox/setup"
+    "travis:install": "npm run install:all",
+    "travis:script": "npm run test:all"
   },
   "dependencies": {
-    "execa": "^1.0.0"
+    "execa": "^1.0.0",
+    "ip": "^1.1.5"
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
-    "@types/jest": "^24.0.0",
-    "@types/sequelize": "^4.27.32",
-    "jest": "^23.6.0",
-    "prettier": "^1.15.3",
+    "@types/ip": "^1.1.0",
+    "@types/jest": "^24.0.11",
+    "@types/sequelize": "^4.27.48",
+    "jest": "^24.7.1",
+    "prettier": "^1.17.0",
     "rimraf": "^2.6.2",
-    "sequelize": "^4.41.2",
+    "sequelize": "^5.7.4",
     "sequelize-cli": "^5.3.0",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.2.4"
+    "typescript": "^3.4.4"
   }
 }

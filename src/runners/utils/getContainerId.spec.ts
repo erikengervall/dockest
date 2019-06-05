@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { runnerLogger } from '../../loggers'
+import { runnerUtilsLogger } from '../../loggers'
 import getContainerId from './getContainerId'
 
 const serviceName = 'mockServiceName'
@@ -12,8 +12,9 @@ jest.mock('execa', () => ({
 }))
 
 jest.mock('../../loggers', () => ({
-  runnerLogger: {
+  runnerUtilsLogger: {
     shellCmd: jest.fn(),
+    shellCmdSuccess: jest.fn(),
   },
 }))
 
@@ -21,7 +22,7 @@ describe('getContainerId', () => {
   it('should work', async () => {
     const containerId = await getContainerId(serviceName)
 
-    expect(runnerLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
+    expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
     expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
     expect(execa.shell).lastReturnedWith({ stdout })
     expect(containerId).toEqual(stdout)
