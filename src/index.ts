@@ -3,7 +3,7 @@ import { ConfigurationError } from './errors'
 import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
-import { KafkaRunner, PostgresRunner, RedisRunner } from './runners'
+import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { sleepWithLog, validateTypes } from './runners/utils'
 
 interface UserRunners {
@@ -106,6 +106,6 @@ class Dockest {
 }
 
 const logLevel = LOG_LEVEL
-const runners = { KafkaRunner, PostgresRunner, RedisRunner }
+const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
 export { logLevel, runners }
 export default Dockest

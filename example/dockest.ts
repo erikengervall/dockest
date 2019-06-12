@@ -4,9 +4,9 @@ import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 
 const env: any = dotenv.config().parsed
-const { KafkaRunner, PostgresRunner, RedisRunner } = runners
+const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
-const postgres1sequelize = new PostgresRunner({
+const postgres1sequelizeRunner = new PostgresRunner({
   username: env.postgres1sequelize_username,
   password: env.postgres1sequelize_password,
   database: env.postgres1sequelize_database,
@@ -21,7 +21,7 @@ const postgres1sequelize = new PostgresRunner({
   ],
 })
 
-const postgres2knex = new PostgresRunner({
+const postgres2knexRunner = new PostgresRunner({
   username: env.postgres2knex_username,
   password: env.postgres2knex_password,
   database: env.postgres2knex_database,
@@ -35,28 +35,41 @@ const postgres2knex = new PostgresRunner({
   ],
 })
 
-const redis1ioredis = new RedisRunner({
+const redis1ioredisRunner = new RedisRunner({
   service: env.redis1ioredis_service,
   host: env.redis1ioredis_host,
   port: Number(env.redis1ioredis_port),
   password: env.redis1ioredis_password,
 })
 
-const kafka1kafkajs = new KafkaRunner({
+// ZooKeeper must run before Kafka since Kafka depends on it
+const ZookeeperService = env.zookeeper1confluentinc_service
+// const ZookeeperHost = env.zookeeper1confluentinc_host
+const ZookeeperPort = Number(env.zookeeper1confluentinc_port)
+const KAFKA_ZOOKEEPER_CONNECT = `${ZookeeperService}:${ZookeeperPort}`
+
+const zookeeper1confluentincRunner = new ZooKeeperRunner({
+  service: ZookeeperService,
+  port: ZookeeperPort,
+})
+
+const kafka1confluentincRunner = new KafkaRunner({
   service: env.kafka1confluentinc_service,
-  host: env.kafka_host,
-  topics: [env.kafka_topic],
-  autoCreateTopics: true,
+  topics: [env.kafka1confluentinc_topic],
   ports: {
-    [env.kafka_port1]: env.kafka_port1,
-    [env.kafka_port2]: env.kafka_port2,
-    [env.kafka_port3]: env.kafka_port3,
+    [env.kafka1confluentinc_port1]: env.kafka1confluentinc_port1,
+    [env.kafka1confluentinc_port2]: env.kafka1confluentinc_port2,
+    [env.kafka1confluentinc_port3]: env.kafka1confluentinc_port3,
   },
+  KAFKA_ZOOKEEPER_CONNECT,
 })
 
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
+  dev: {
+    idling: true,
+  },
   jest: {
     // tslint:disable-next-line
     lib: require('jest'),
@@ -64,11 +77,12 @@ const dockest = new Dockest({
   },
   runners: {
     ...(env.postgres1sequelize_enabled === 'true' || env.CI === 'true'
-      ? { postgres1sequelize }
+      ? { postgres1sequelizeRunner }
       : {}),
-    ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knex } : {}),
-    ...(env.kafka_enabled === 'true' ? { kafka1kafkajs } : {}),
-    ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredis } : {}),
+    ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knexRunner } : {}),
+    ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredisRunner } : {}),
+    ...(env.zookeeper1confluentinc_enabled === 'true' ? { zookeeper1confluentincRunner } : {}),
+    ...(env.kafka1confluentinc_enabled === 'true' ? { kafka1confluentincRunner } : {}),
   },
 })
 

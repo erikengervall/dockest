@@ -6,6 +6,7 @@ interface RequiredConfigProps {
   service: string
 }
 interface DefaultableConfigProps {
+  connectionTimeout: number
   host: string
   port: number
   commands: [] // FIXME: Figure out how to remove this without upsetting `BaseRunner.ts`
@@ -14,6 +15,7 @@ type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type ZooKeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
+  connectionTimeout: 30,
   host: 'localhost',
   port: 2181,
   commands: [],
@@ -24,9 +26,15 @@ const createStartCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
 
   const portMapping = `--publish ${port}:2181`
 
+  // https://docs.confluent.io/current/installation/docker/config-reference.html#required-zk-settings
+  const env = ` \
+                -e ZOOKEEPER_CLIENT_PORT=${port} \
+              `
+
   const cmd = ` \
                 ${defaultDockerComposeRunOpts} \
                 ${portMapping} \
+                ${env} \
                 ${service} \
               `
 

@@ -3,7 +3,7 @@ import KafkaRunner from './index'
 const config = {
   service: '_',
   topics: ['_'],
-  host: '_',
+  KAFKA_ZOOKEEPER_CONNECT: '_',
 }
 const KafkaRunner1 = new KafkaRunner(config)
 const KafkaRunner2 = new KafkaRunner(config)

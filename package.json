@@ -38,11 +38,10 @@
   },
   "dependencies": {
     "execa": "^1.0.0",
-    "ip": "^1.1.5"
+    "js-yaml": "^3.13.1"
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
-    "@types/ip": "^1.1.0",
     "@types/jest": "^24.0.11",
     "@types/sequelize": "^4.27.48",
     "jest": "^24.7.1",
