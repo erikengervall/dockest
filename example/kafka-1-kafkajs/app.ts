@@ -6,54 +6,54 @@ const { Kafka } = require('kafkajs')
 
 const env: any = dotenv.config().parsed
 
-const setup = async () => {
-  const kafka = new Kafka({
-    clientId: 'dockest/example',
-    brokers: [env.kafka_host],
-    retry: {
-      initialRetryTime: 137,
-      retries: 3,
+const createConsumer = async ({ kafka }) => {
+  const consumer = kafka.consumer({ groupId: env.kafka_consumer_group_id })
+
+  await consumer.connect()
+  await consumer.subscribe({ topic: env.kafka_topic })
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log({
+        topic,
+        partition,
+        messageKey: message.key.toString(),
+        messageValue: message.value.toString(),
+        messageHeaders: message.headers,
+      })
     },
   })
 
-  const setupConsumer = async () => {
-    const consumer = kafka.consumer({ groupId: 'groupdId:1  ' })
+  return consumer
+}
 
-    await consumer.connect()
-    await consumer.subscribe({ topic: env.kafka_topic })
-    await consumer.run({
-      eachMessage: async ({
-        topic,
-        partition,
-        message,
-      }: {
-        topic: any
-        partition: any
-        message: any
-      }) => {
-        console.log({
-          topic,
-          partition,
-          messageKey: message.key.toString(),
-          messageValue: message.value.toString(),
-          messageHeaders: message.headers,
-        })
-      },
-    })
+const createMessageProducer = ({ kafka }) => async ({ message }) => {
+  const producer = kafka.producer()
+  await producer.connect()
+  await producer.send({
+    topic: env.kafka_topic,
+    messages: [{ key: 'arbitrary', value: message }],
+  })
+  await producer.disconnect()
+}
+
+const setup = async () => {
+  const kafka = new Kafka({
+    clientId: env.kafka_client_id,
+    brokers: [env.kafka_broker1],
+    retry: {
+      initialRetryTime: 1000,
+      retries: 10,
+    },
+  })
+
+  const consumer = await createConsumer({ kafka })
+  const messageProducer = await createMessageProducer({ kafka })
+
+  return {
+    kafka,
+    consumer,
+    messageProducer,
   }
-  setupConsumer()
-
-  const produceMessage = async (message: any) => {
-    const producer = kafka.producer()
-    await producer.connect()
-    await producer.send({
-      topic: env.kafka_topic,
-      messages: [{ key: 'arbitrary', value: message }],
-    })
-    await producer.disconnect()
-  }
-
-  return produceMessage
 }
 
 const main = async () => {

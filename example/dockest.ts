@@ -35,8 +35,15 @@ const postgres2knex = new PostgresRunner({
   ],
 })
 
+const redis1ioredis = new RedisRunner({
+  service: env.redis1ioredis_service,
+  host: env.redis1ioredis_host,
+  port: Number(env.redis1ioredis_port),
+  password: env.redis1ioredis_password,
+})
+
 const kafka1kafkajs = new KafkaRunner({
-  service: env.kafka_service,
+  service: env.kafka1confluentinc_service,
   host: env.kafka_host,
   topics: [env.kafka_topic],
   autoCreateTopics: true,
@@ -45,13 +52,6 @@ const kafka1kafkajs = new KafkaRunner({
     [env.kafka_port2]: env.kafka_port2,
     [env.kafka_port3]: env.kafka_port3,
   },
-})
-
-const redis1ioredis = new RedisRunner({
-  service: env.redis1ioredis_service,
-  host: env.redis1ioredis_host,
-  port: Number(env.redis1ioredis_port),
-  password: env.redis1ioredis_password,
 })
 
 const dockest = new Dockest({

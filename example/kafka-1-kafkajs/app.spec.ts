@@ -6,7 +6,7 @@ const describeFn = env.kafka_enabled === 'true' ? describe : describe.skip
 
 const test = () => {
   it('trabajo', async () => {
-    const result = main()
+    const result = await main()
 
     expect(result).toEqual(
       expect.objectContaining({

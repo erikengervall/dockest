@@ -13,8 +13,17 @@ services:
   redis1ioredis: # https://hub.docker.com/_/redis
     image: redis:5.0.3
 
+  zookeeper1confluentinc: # https://hub.docker.com/r/confluentinc/cp-zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka1confluentinc: # https://hub.docker.com/r/confluentinc/cp-kafka
-    image: confluentinc/cp-E
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1confluentinc:2181
 
 volumes:
   postgres1Volume:

@@ -18,6 +18,9 @@ interface DefaultableConfigProps {
   afterSetupSleep: number
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
+  dev: {
+    idling?: boolean
+  }
 }
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
@@ -26,6 +29,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   afterSetupSleep: 0,
   exitHandler: null,
   logLevel: LOG_LEVEL.NORMAL,
+  dev: {},
 }
 
 class Dockest {
@@ -50,6 +54,11 @@ class Dockest {
 
   public run = async (): Promise<void> => {
     await this.setupRunners()
+
+    if (Dockest.config.dev.idling) {
+      return
+    }
+
     if (Dockest.config.afterSetupSleep > 0) {
       await sleepWithLog('After setup sleep progress', Dockest.config.afterSetupSleep)
     }

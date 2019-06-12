@@ -13,6 +13,7 @@ interface DefaultableConfigProps {
   host: string
   port: number
   ports: { [key: string]: string | number }
+  commands?: string[]
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
@@ -24,25 +25,29 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   port: 9092,
   ports: {
     // exposed : internal
-    '9092': '9092', // Kafka: https://hub.docker.com/r/wurstmeister/kafka
-    '9093': '9093', // --||--
-    '9094': '9094', // --||--
-    '8081': `9082`, // Schema registry: https://hub.docker.com/r/confluentinc/cp-schema-registry
+    '9092': '9092', // Kafka
+    // '9093': '9093', // Kafka
+    // '9094': '9094', // Kafka
+    // '8081': `9082`, // Schema registry
+    '2181': `2181`, // Zookeeper
   },
 }
 
 const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
-  const { ports, service, topics, autoCreateTopics } = runnerConfig
+  const { ports, service } = runnerConfig
 
   const portMapping = Object.keys(ports).reduce(
     (acc, port) => `${acc} --publish ${ports[port]}:${port}`,
     ''
   )
   const env = ` \
-                -e KAFKA_ADVERTISED_HOST_NAME=${ip.address()} \
-                ${`-e KAFKA_AUTO_CREATE_TOPICS_ENABLE=${autoCreateTopics}`} \
-                ${topics.length ? `-e KAFKA_CREATE_TOPICS="${topics.join(',')}"` : ''} \
+                -e ADVERTISED_HOST=${ip.address()} \
+                -e ADVERTISED_PORT=${'9092'} \
+                -e TOPICS=mytopic \
               `
+
+  // docker run -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=`docker-machine ip \`docker-machine active\`` --env ADVERTISED_PORT=9092 spotify/kafka
+
   const cmd = ` \
                 docker-compose run \
                 ${defaultDockerComposeRunOpts} \
