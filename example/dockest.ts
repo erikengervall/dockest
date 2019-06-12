@@ -67,9 +67,9 @@ const kafka1confluentincRunner = new KafkaRunner({
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
-  dev: {
-    idling: true,
-  },
+  // dev: {
+  //   idling: true,
+  // },
   jest: {
     // tslint:disable-next-line
     lib: require('jest'),
