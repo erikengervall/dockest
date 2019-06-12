@@ -32,7 +32,6 @@ const createStartCommand = (runnerConfig: RedisRunnerConfig) => {
                   --publish ${port}:6379 \
                 `
   const cmd = ` \
-                docker-compose run \
                 ${defaultDockerComposeRunOpts} \
                 ${portMapping} \
                 ${service} \

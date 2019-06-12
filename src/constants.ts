@@ -42,6 +42,7 @@ const COLORS: { [key: string]: { [key: string]: string } } = {
 }
 
 const defaultDockerComposeRunOpts = Object.values({
+  run: 'docker-compose run',
   // cleanUp: '--rm',
   runInBackground: '--detach',
   doNotRunLinkedServices: '--no-deps',

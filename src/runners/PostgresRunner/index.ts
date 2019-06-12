@@ -37,7 +37,6 @@ const createStartCommand = (runnerConfig: PostgresRunnerConfig) => {
                 -e POSTGRES_PASSWORD=${password} \
               `
   const cmd = ` \
-                docker-compose run \
                 ${defaultDockerComposeRunOpts} \
                 ${portMapping} \
                 ${env} \

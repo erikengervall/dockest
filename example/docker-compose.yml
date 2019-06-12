@@ -21,7 +21,7 @@ services:
   kafka1confluentinc: # https://hub.docker.com/r/confluentinc/cp-kafka
     image: confluentinc/cp-kafka:latest
     depends_on:
-      - zookeeper
+      - zookeeper1confluentinc
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper1confluentinc:2181
 
