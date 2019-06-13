@@ -1,4 +1,3 @@
-import { ConfigurationError } from '../errors'
 import { BaseLogger, runnerLogger } from '../loggers'
 import { RunnerConfigs } from './index'
 import {
@@ -7,7 +6,6 @@ import {
   resolveContainerId,
   runCustomCommand,
   teardownSingle,
-  validateTypes,
 } from './utils'
 
 type runnerCommandFactories = {
