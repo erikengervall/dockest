@@ -3,12 +3,12 @@ import { runnerLogger } from '../../../loggers'
 import { RunnerConfigs } from '../../index'
 import { getContainerId, sleep } from '../index'
 
-const start = async (runnerConfig: RunnerConfigs): Promise<string> => {
+const resolveContainerId = async (runnerConfig: RunnerConfigs): Promise<string> => {
   const { service } = runnerConfig
   const timeout = 30
 
   const recurse = async (timeout: number): Promise<string> => {
-    runnerLogger.startContainer(service)
+    runnerLogger.resolveContainerId(service)
 
     if (timeout <= 0) {
       throw new DockestError(`${service} getContainerId timed out`)
@@ -22,7 +22,7 @@ const start = async (runnerConfig: RunnerConfigs): Promise<string> => {
         throw new Error('no bueno')
       }
 
-      runnerLogger.startContainerSuccess(service, containerId)
+      runnerLogger.resolveContainerIdSuccess(service, containerId)
     } catch (error) {
       timeout--
 
@@ -36,4 +36,4 @@ const start = async (runnerConfig: RunnerConfigs): Promise<string> => {
   return recurse(timeout)
 }
 
-export default start
+export default resolveContainerId

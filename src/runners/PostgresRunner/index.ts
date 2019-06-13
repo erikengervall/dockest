@@ -27,12 +27,15 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   responsivenessTimeout: 10,
 }
 
-const createComposeFileService = (runnerConfig: PostgresRunnerConfig): object => {
+const createComposeFileService = (
+  runnerConfig: PostgresRunnerConfig,
+  dockerComposeFileName: string
+): object => {
   const { service, port, database, username, password } = runnerConfig
 
   return {
     [service]: {
-      image: getImage(service),
+      image: getImage(service, dockerComposeFileName),
       ports: [`${port}:${INTERNAL_PORT}`],
       environment: {
         POSTGRES_DB: database,

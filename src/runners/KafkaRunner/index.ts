@@ -32,7 +32,10 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   },
 }
 
-const createComposeFileService = (runnerConfig: KafkaRunnerConfig): object => {
+const createComposeFileService = (
+  runnerConfig: KafkaRunnerConfig,
+  dockerComposeFileName: string
+): object => {
   const {
     service,
     ports,
@@ -43,7 +46,7 @@ const createComposeFileService = (runnerConfig: KafkaRunnerConfig): object => {
 
   return {
     [service]: {
-      image: getImage(service),
+      image: getImage(service, dockerComposeFileName),
       depends_on: [depService],
       ports: [`${ports[INTERNAL_PORT_PLAINTEXT]}:${INTERNAL_PORT_PLAINTEXT}`],
       environment: {

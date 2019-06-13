@@ -40,10 +40,10 @@ const teardownSingle = async (containerId: string, runnerKey: string): Promise<v
     return
   }
 
-  runnerLogger.teardown()
+  runnerLogger.teardownSingle()
   await stopContainerById(containerId, runnerKey)
   await removeContainerById(containerId, runnerKey)
-  runnerLogger.teardownSuccess()
+  runnerLogger.teardownSingleSuccess()
 }
 
 export default teardownSingle

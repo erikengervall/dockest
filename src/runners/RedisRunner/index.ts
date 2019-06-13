@@ -26,12 +26,15 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   responsivenessTimeout: 10,
 }
 
-const createComposeFileService = (runnerConfig: RedisRunnerConfig): object => {
+const createComposeFileService = (
+  runnerConfig: RedisRunnerConfig,
+  dockerComposeFileName: string
+): object => {
   const { service, port } = runnerConfig
 
   return {
     [service]: {
-      image: getImage(service),
+      image: getImage(service, dockerComposeFileName),
       ports: [`${port}:${INTERNAL_PORT}`],
     },
   }

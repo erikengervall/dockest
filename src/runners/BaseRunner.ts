@@ -4,14 +4,14 @@ import { RunnerConfigs } from './index'
 import {
   checkConnection,
   checkResponsiveness,
+  resolveContainerId,
   runCustomCommand,
-  start,
-  teardown,
+  teardownSingle,
   validateTypes,
 } from './utils'
 
 type CommandCreators = {
-  createComposeFileService: (runnerConfig: any) => any // FIXME: no-any
+  createComposeFileService: (runnerConfig: any, dockerComposeFileName: string) => any // FIXME: no-any
   createComposeRunCmd?: (runnerConfig: any) => string // FIXME: no-any
   createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // FIXME: no-any
 }
@@ -51,7 +51,7 @@ class BaseRunner {
     this.execOpts.runnerKey = runnerKey
 
     // resolve containerIds
-    const containerId = await start(this.runnerConfig)
+    const containerId = await resolveContainerId(this.runnerConfig)
     this.execOpts.containerId = containerId
 
     // perform healthchecks
@@ -67,7 +67,11 @@ class BaseRunner {
     BaseLogger.runnerKey = ''
   }
 
-  public teardown = () => teardown(this.execOpts)
+  public teardown = async () => {
+    const { containerId, runnerKey } = this.execOpts
+
+    await teardownSingle(containerId, runnerKey)
+  }
 }
 
 export default BaseRunner

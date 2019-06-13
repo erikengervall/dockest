@@ -57,8 +57,6 @@ class Dockest {
   }
 
   public run = async (): Promise<void> => {
-    this.createComposeFileAndRun()
-
     await this.setupRunners()
 
     if (Dockest.config.dev.idling) {
@@ -80,7 +78,7 @@ class Dockest {
     const { runners } = Dockest.config
 
     let composeFile = {
-      version: '2',
+      version: '3',
       services: {},
     }
 
@@ -88,7 +86,8 @@ class Dockest {
       const runner = runners[runnerKey]
 
       const composeServiceFromRunner = runner.execOpts.commandCreators.createComposeFileService(
-        runner.runnerConfig
+        runner.runnerConfig,
+        Dockest.config.dockerComposeFileName
       )
 
       composeFile = {
@@ -117,12 +116,14 @@ class Dockest {
       up \
       --no-recreate \
       --detach \
-    `)
+      `)
 
-    sleep(100)
+    sleep(500)
   }
 
   private setupRunners = async () => {
+    this.createComposeFileAndRun()
+
     const { runners } = Dockest.config
 
     for (const runnerKey of Object.keys(runners)) {

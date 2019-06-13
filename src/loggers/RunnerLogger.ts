@@ -16,10 +16,10 @@ class RunnerLogger extends BaseLogger {
 
   public setupSuccess = () => this.LOG_LEVEL_NORMAL() && this.logSuccess(`Setup successful`)
 
-  public startContainer = (service: string) =>
+  public resolveContainerId = (service: string) =>
     this.LOG_LEVEL_NORMAL() && this.logLoading(`Resolving ${service}'s containerId`)
 
-  public startContainerSuccess = (service: string, containerId: string) =>
+  public resolveContainerIdSuccess = (service: string, containerId: string) =>
     this.LOG_LEVEL_NORMAL() && this.logSuccess(`${service}'s containerId: ${containerId}`)
 
   public checkHealth = () => this.LOG_LEVEL_NORMAL() && this.logLoading(`Healthchecking container`)
@@ -44,9 +44,11 @@ class RunnerLogger extends BaseLogger {
   /**
    * Teardown
    */
-  public teardown = () => this.LOG_LEVEL_NORMAL() && this.logLoading(`Container being teared down`)
+  public teardownSingle = () =>
+    this.LOG_LEVEL_NORMAL() && this.logLoading(`Container being teared down`)
 
-  public teardownSuccess = () => this.LOG_LEVEL_NORMAL() && this.logSuccess(`Container teared down`)
+  public teardownSingleSuccess = () =>
+    this.LOG_LEVEL_NORMAL() && this.logSuccess(`Container teared down`)
 
   public stopContainer = () =>
     this.LOG_LEVEL_VERBOSE() && this.logLoading(`Container being stopped`)

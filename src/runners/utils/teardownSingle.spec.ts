@@ -17,8 +17,8 @@ jest.mock('../../loggers', () => ({
     error: jest.fn(),
   },
   runnerLogger: {
-    teardown: jest.fn(),
-    teardownSuccess: jest.fn(),
+    teardownSingle: jest.fn(),
+    teardownSingleSuccess: jest.fn(),
     stopContainer: jest.fn(),
     stopContainerSuccess: jest.fn(),
     removeContainer: jest.fn(),

@@ -21,12 +21,15 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
 }
 
-const createComposeFileService = (runnerConfig: ZooKeeperRunnerConfig): object => {
+const createComposeFileService = (
+  runnerConfig: ZooKeeperRunnerConfig,
+  dockerComposeFileName: string
+): object => {
   const { service, port } = runnerConfig
 
   return {
     [service]: {
-      image: getImage(service),
+      image: getImage(service, dockerComposeFileName),
       ports: [`${port}:${port}`],
       environment: {
         ZOOKEEPER_CLIENT_PORT: port,
@@ -62,8 +65,8 @@ class ZooKeeperRunner extends BaseRunner {
       ...config,
     }
     const commandCreators = {
-      createComposeRunCmd,
       createComposeFileService,
+      createComposeRunCmd,
     }
 
     super(runnerConfig, commandCreators)
