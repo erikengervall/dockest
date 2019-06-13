@@ -12,7 +12,7 @@ jest.mock('execa', () => ({
   })),
 }))
 
-jest.mock('../../loggers', () => ({
+jest.mock('../loggers', () => ({
   globalLogger: {
     error: jest.fn(),
   },

@@ -12,7 +12,7 @@ jest.mock('execa', () => ({
   })),
 }))
 
-jest.mock('../../loggers', () => ({
+jest.mock('../../../loggers', () => ({
   runnerUtilsLogger: {
     customShellCmd: jest.fn(),
     customShellCmdSuccess: jest.fn(),
