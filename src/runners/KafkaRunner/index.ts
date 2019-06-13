@@ -63,31 +63,33 @@ const getComposeService = (
   }
 }
 
-// Deprecated
-const getComposeRunCommand = (runnerConfig: KafkaRunnerConfig): string => {
-  const { host, ports, service } = runnerConfig
+/**
+ * DEPRECATED
+ */
+// const getComposeRunCommand = (runnerConfig: KafkaRunnerConfig): string => {
+//   const { host, ports, service } = runnerConfig
 
-  const portMapping = Object.keys(ports).reduce((acc, port) => {
-    const external = ports[port]
-    const internal = port
+//   const portMapping = Object.keys(ports).reduce((acc, port) => {
+//     const external = ports[port]
+//     const internal = port
 
-    return `${acc} --publish ${external}:${internal}`
-  }, '')
+//     return `${acc} --publish ${external}:${internal}`
+//   }, '')
 
-  const env = ` \
-                -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT \
-                -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${service}:29092,PLAINTEXT_HOST://${host}:9092 \
-              `
+//   const env = ` \
+//                 -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT \
+//                 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${service}:29092,PLAINTEXT_HOST://${host}:9092 \
+//               `
 
-  const cmd = ` \
-                ${defaultDockerComposeRunOpts} \
-                ${portMapping} \
-                ${env}
-                ${service} \
-              `
+//   const cmd = ` \
+//                 ${defaultDockerComposeRunOpts} \
+//                 ${portMapping} \
+//                 ${env}
+//                 ${service} \
+//               `
 
-  return trimmer(cmd)
-}
+//   return trimmer(cmd)
+// }
 
 class KafkaRunner extends BaseRunner {
   constructor(config: KafkaRunnerConfigUserInput) {
@@ -96,7 +98,6 @@ class KafkaRunner extends BaseRunner {
       ...config,
     }
     const runnerCommandFactories = {
-      getComposeRunCommand,
       getComposeService,
     }
 

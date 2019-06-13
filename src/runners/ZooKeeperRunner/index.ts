@@ -39,26 +39,28 @@ const getComposeService = (
   }
 }
 
-// Deprecated
-const getComposeRunCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
-  const { port, service } = runnerConfig
+/**
+ * DEPRECATED
+ */
+// const getComposeRunCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
+//   const { port, service } = runnerConfig
 
-  const portMapping = `--publish ${port}:${DEFAULT_INTERNAL_PORT}`
+//   const portMapping = `--publish ${port}:${DEFAULT_INTERNAL_PORT}`
 
-  // https://docs.confluent.io/current/installation/docker/config-reference.html#required-zk-settings
-  const env = ` \
-                -e ZOOKEEPER_CLIENT_PORT=${port} \
-              `
+//   // https://docs.confluent.io/current/installation/docker/config-reference.html#required-zk-settings
+//   const env = ` \
+//                 -e ZOOKEEPER_CLIENT_PORT=${port} \
+//               `
 
-  const cmd = ` \
-                ${defaultDockerComposeRunOpts} \
-                ${portMapping} \
-                ${env} \
-                ${service} \
-              `
+//   const cmd = ` \
+//                 ${defaultDockerComposeRunOpts} \
+//                 ${portMapping} \
+//                 ${env} \
+//                 ${service} \
+//               `
 
-  return trimmer(cmd)
-}
+//   return trimmer(cmd)
+// }
 
 class ZooKeeperRunner extends BaseRunner {
   constructor(config: ZooKeeperRunnerConfigUserInput) {
@@ -68,7 +70,6 @@ class ZooKeeperRunner extends BaseRunner {
     }
     const runnerCommandFactories = {
       getComposeService,
-      getComposeRunCommand,
     }
 
     super(runnerConfig, runnerCommandFactories)

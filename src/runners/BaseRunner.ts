@@ -10,7 +10,6 @@ import {
 
 type runnerCommandFactories = {
   getComposeService: (runnerConfig: any, dockerComposeFileName: string) => any // FIXME: no-any
-  getComposeRunCommand?: (runnerConfig: any) => string // FIXME: no-any
   createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // FIXME: no-any
 }
 
@@ -48,8 +47,8 @@ class BaseRunner {
   }
 
   public performHealthchecks = async (): Promise<void> => {
-    await checkResponsiveness(this.runnerConfig, this.execOpts)
     await checkConnection(this.runnerConfig)
+    await checkResponsiveness(this.runnerConfig, this.execOpts)
   }
 
   public runCustomCommands = async (): Promise<void> => {

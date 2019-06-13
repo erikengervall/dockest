@@ -40,28 +40,11 @@ const getComposeService = (
   }
 }
 
-// Deprecated
-const getComposeRunCommand = (runnerConfig: RedisRunnerConfig) => {
-  const { port, service, password } = runnerConfig
-
-  const portMapping = ` \
-                  --publish ${port}:${DEFAULT_INTERNAL_PORT} \
-                `
-  const cmd = ` \
-                ${defaultDockerComposeRunOpts} \
-                ${portMapping} \
-                ${service} \
-                ${!!password ? `--requirepass ${password}` : ''} \
-              `
-
-  return trimmer(cmd)
-}
-
 const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execOpts: ExecOpts) => {
   const { host: runnerHost, password: runnerPassword } = runnerConfig
   const { containerId } = execOpts
 
-  // TODO: Should `-p` be DEFAULT_INTERNAL_PORT or runnerConfig's port?
+  // FIXME: Should `-p` be DEFAULT_INTERNAL_PORT or runnerConfig's port?
   const redisCliPingOpts = ` \
                           -h ${runnerHost} \
                           -p ${DEFAULT_INTERNAL_PORT} \
@@ -75,6 +58,25 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
   return trimmer(cmd)
 }
 
+/**
+ * DEPRECATED
+ */
+// const getComposeRunCommand = (runnerConfig: RedisRunnerConfig) => {
+//   const { port, service, password } = runnerConfig
+
+//   const portMapping = ` \
+//                   --publish ${port}:${DEFAULT_INTERNAL_PORT} \
+//                 `
+//   const cmd = ` \
+//                 ${defaultDockerComposeRunOpts} \
+//                 ${portMapping} \
+//                 ${service} \
+//                 ${!!password ? `--requirepass ${password}` : ''} \
+//               `
+
+//   return trimmer(cmd)
+// }
+
 class RedisRunner extends BaseRunner {
   constructor(config: RedisRunnerConfigUserInput) {
     const runnerConfig = {
@@ -82,7 +84,6 @@ class RedisRunner extends BaseRunner {
       ...config,
     }
     const runnerCommandFactories = {
-      getComposeRunCommand,
       getComposeService,
       createCheckResponsivenessCommand,
     }

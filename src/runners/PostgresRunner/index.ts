@@ -46,26 +46,28 @@ const getComposeService = (
   }
 }
 
-// Deprecated
-const getComposeRunCommand = (runnerConfig: PostgresRunnerConfig): string => {
-  const { port, service, database, username, password } = runnerConfig
-  const portMapping = ` \ 
-                --publish ${port}:${DEFAULT_INTERNAL_PORT} \
-                `
-  const env = ` \
-                -e POSTGRES_DB=${database} \
-                -e POSTGRES_USER=${username} \
-                -e POSTGRES_PASSWORD=${password} \
-              `
-  const cmd = ` \
-                ${defaultDockerComposeRunOpts} \
-                ${portMapping} \
-                ${env} \
-                ${service} \
-              `
+/**
+ * DEPRECATED
+ */
+// const getComposeRunCommand = (runnerConfig: PostgresRunnerConfig): string => {
+//   const { port, service, database, username, password } = runnerConfig
+//   const portMapping = ` \
+//                 --publish ${port}:${DEFAULT_INTERNAL_PORT} \
+//                 `
+//   const env = ` \
+//                 -e POSTGRES_DB=${database} \
+//                 -e POSTGRES_USER=${username} \
+//                 -e POSTGRES_PASSWORD=${password} \
+//               `
+//   const cmd = ` \
+//                 ${defaultDockerComposeRunOpts} \
+//                 ${portMapping} \
+//                 ${env} \
+//                 ${service} \
+//               `
 
-  return trimmer(cmd)
-}
+//   return trimmer(cmd)
+// }
 
 const createCheckResponsivenessCommand = (
   runnerConfig: PostgresRunnerConfig,
@@ -92,7 +94,6 @@ class PostgresRunner extends BaseRunner {
       ...configUserInput,
     }
     const runnerCommandFactories = {
-      getComposeRunCommand,
       createCheckResponsivenessCommand,
       getComposeService,
     }
