@@ -43,8 +43,8 @@ class BaseRunner {
     }
   }
 
-  public setup = async (runnerKey: string) => {
-    runnerLogger.setup()
+  public runTimeSetup = async (runnerKey: string) => {
+    runnerLogger.runTimeSetup()
 
     // inject runtimeOpts
     BaseLogger.runnerKey = `${runnerKey}: ` // FIXME: Consider initializing a logger per runner instead
@@ -63,7 +63,7 @@ class BaseRunner {
       await runCustomCommand(this.execOpts.runnerKey, cmd)
     }
 
-    runnerLogger.setupSuccess()
+    runnerLogger.runTimeSetupSuccess()
     BaseLogger.runnerKey = ''
   }
 

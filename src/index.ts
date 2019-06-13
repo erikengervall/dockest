@@ -57,7 +57,7 @@ class Dockest {
   }
 
   public run = async (): Promise<void> => {
-    await this.setupRunners()
+    await this.runTimeSetup()
 
     if (Dockest.config.dev.idling) {
       // Will keep the docker containers running
@@ -121,13 +121,13 @@ class Dockest {
     sleep(500)
   }
 
-  private setupRunners = async () => {
+  private runTimeSetup = async () => {
     this.createComposeFileAndRun()
 
     const { runners } = Dockest.config
 
     for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].setup(runnerKey)
+      await runners[runnerKey].runTimeSetup(runnerKey)
     }
   }
 

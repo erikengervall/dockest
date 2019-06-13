@@ -58,8 +58,8 @@ const kafka1confluentincRunner = new KafkaRunner({
   topics: [env.kafka1confluentinc_topic],
   ports: {
     '9092': env.kafka1confluentinc_port1,
-    '9093': env.kafka1confluentinc_port2,
-    '9094': env.kafka1confluentinc_port3,
+    // '9093': env.kafka1confluentinc_port2,
+    // '9094': env.kafka1confluentinc_port3,
   },
   // KAFKA_ZOOKEEPER_CONNECT,
   dependsOn: zookeeper1confluentincRunner,
