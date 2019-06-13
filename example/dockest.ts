@@ -69,7 +69,7 @@ const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
   dev: {
-    idling: env.CI === 'true' ? false : true,
+    idling: env.CI === 'true' ? false : false,
   },
   jest: {
     // tslint:disable-next-line
