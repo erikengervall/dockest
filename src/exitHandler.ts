@@ -1,5 +1,6 @@
 import Dockest, { DockestConfig } from './index'
 import { globalLogger } from './loggers'
+import { teardownSingle } from './runners/utils'
 
 export interface ErrorPayload {
   type: string
@@ -33,7 +34,10 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
     }
 
     for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown()
+      const runner = runners[runnerKey]
+      const { containerId } = runner
+
+      await teardownSingle(containerId, runnerKey)
     }
 
     process.exit(errorPayload.code || 1)

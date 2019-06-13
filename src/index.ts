@@ -6,10 +6,11 @@ import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
-import { execa, sleep, sleepWithLog, validateTypes } from './runners/utils'
+import createSetupHelpers from './runners/createSetupHelpers'
+import { execa, sleep, sleepWithLog, teardownSingle, validateTypes } from './runners/utils'
 
 interface UserRunners {
-  [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner
+  [runnerKey: string]: PostgresRunner | RedisRunner | KafkaRunner | ZooKeeperRunner
 }
 
 interface RequiredConfigProps {
@@ -42,6 +43,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 class Dockest {
   public static jestRanWithResult: boolean = false
   public static config: DockestConfig
+  public static logLevel: number
   private static instance: Dockest
   private jestRunner: JestRunner
 
@@ -88,14 +90,14 @@ class Dockest {
       const runner = runners[runnerKey]
       const {
         setupStarted,
-        resolveRunTimeParameters,
+        getRunTimeParameters,
         performHealthchecks,
         runCustomCommands,
         setupCompleted,
-      } = runner
+      } = createSetupHelpers(runner, runnerKey)
 
       setupStarted()
-      await resolveRunTimeParameters(runnerKey)
+      await getRunTimeParameters()
       await performHealthchecks()
       await runCustomCommands()
       setupCompleted()
@@ -111,8 +113,7 @@ class Dockest {
     for (const runnerKey of Object.keys(runners)) {
       const runner = runners[runnerKey]
 
-      const composeServiceFromRunner = runner.execOpts.runnerCommandFactories.getComposeService(
-        runner.runnerConfig,
+      const composeServiceFromRunner = runner.runnerMethods.getComposeService(
         Dockest.config.dockerComposeFileName
       )
 
@@ -158,7 +159,10 @@ class Dockest {
 
   private teardownRunners = async (runners: UserRunners) => {
     for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown()
+      const runner = runners[runnerKey]
+      const { containerId } = runner
+
+      await teardownSingle(containerId, runnerKey)
     }
   }
 

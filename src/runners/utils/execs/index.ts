@@ -1,3 +1,3 @@
 export { default as checkConnection } from './checkConnection'
-export { default as checkResponsiveness } from './checkResponsiveness'
+export { default as createCheckResponsiveness } from './createCheckResponsiveness'
 export { default as resolveContainerId } from './resolveContainerId'

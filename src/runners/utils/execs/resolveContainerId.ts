@@ -1,10 +1,8 @@
 import { DockestError } from '../../../errors'
 import { runnerLogger } from '../../../loggers'
-import { RunnerConfigs } from '../../index'
 import { getContainerId, sleep } from '../index'
 
-const resolveContainerId = async (runnerConfig: RunnerConfigs): Promise<string> => {
-  const { service } = runnerConfig
+const resolveContainerId = async (service: string): Promise<string> => {
   const timeout = 30
 
   let containerId = ''

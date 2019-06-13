@@ -1,6 +1,5 @@
-import { defaultDockerComposeRunOpts } from '../../constants'
-import BaseRunner from '../BaseRunner'
-import { getImage, trimmer, validateConfig, validateTypes } from '../utils'
+import BaseRunner, { runnerMethods } from '../BaseRunner'
+import { getImage, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -9,7 +8,7 @@ interface DefaultableConfigProps {
   connectionTimeout: number
   host: string
   port: number
-  commands: [] // FIXME: Figure out how to remove this without upsetting `BaseRunner.ts`
+  commands: []
 }
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type ZooKeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
@@ -22,22 +21,44 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
 }
 
-const getComposeService = (
-  runnerConfig: ZooKeeperRunnerConfig,
-  dockerComposeFileName: string
-): object => {
-  const { service, port } = runnerConfig
+class ZooKeeperRunner extends BaseRunner {
+  public runnerConfig: ZooKeeperRunnerConfig
+  public runnerMethods: runnerMethods
 
-  return {
-    [service]: {
-      image: getImage(service, dockerComposeFileName),
-      ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
-      environment: {
-        ZOOKEEPER_CLIENT_PORT: port,
+  constructor(config: ZooKeeperRunnerConfigUserInput) {
+    super()
+
+    this.runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
+    this.runnerMethods = {
+      getComposeService: this.getComposeService,
+    }
+
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
+      service: validateTypes.isString,
+    }
+    validateConfig(schema, this.runnerConfig)
+  }
+
+  public getComposeService = (dockerComposeFileName: string) => {
+    const { service, port } = this.runnerConfig
+
+    return {
+      [service]: {
+        image: getImage(service, dockerComposeFileName),
+        ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
+        environment: {
+          ZOOKEEPER_CLIENT_PORT: port,
+        },
       },
-    },
+    }
   }
 }
+
+export { ZooKeeperRunnerConfig }
+export default ZooKeeperRunner
 
 /**
  * DEPRECATED
@@ -61,25 +82,3 @@ const getComposeService = (
 
 //   return trimmer(cmd)
 // }
-
-class ZooKeeperRunner extends BaseRunner {
-  constructor(config: ZooKeeperRunnerConfigUserInput) {
-    const runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...config,
-    }
-    const runnerCommandFactories = {
-      getComposeService,
-    }
-
-    super(runnerConfig, runnerCommandFactories)
-
-    const schema: { [key in keyof RequiredConfigProps]: any } = {
-      service: validateTypes.isString,
-    }
-    validateConfig(schema, runnerConfig)
-  }
-}
-
-export { ZooKeeperRunnerConfig }
-export default ZooKeeperRunner

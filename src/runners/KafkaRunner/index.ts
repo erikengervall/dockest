@@ -1,6 +1,5 @@
-import { defaultDockerComposeRunOpts } from '../../constants'
-import BaseRunner from '../BaseRunner'
-import { getImage, trimmer, validateConfig, validateTypes } from '../utils'
+import BaseRunner, { runnerMethods } from '../BaseRunner'
+import { getImage, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -9,12 +8,74 @@ interface RequiredConfigProps {
 interface DefaultableConfigProps {
   connectionTimeout: number
   host: string
-  ports: { [key: string]: string | number }
+  port: number
+  ports: { [key: string]: number }
   commands?: string[]
   dependsOn?: any
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
+
+const DEFAULT_INTERNAL_PORT_PLAINTEXT = 9092
+const DEFAULT_CONFIG: DefaultableConfigProps = {
+  connectionTimeout: 30,
+  host: 'localhost',
+  port: DEFAULT_INTERNAL_PORT_PLAINTEXT,
+  ports: {
+    [DEFAULT_INTERNAL_PORT_PLAINTEXT]: DEFAULT_INTERNAL_PORT_PLAINTEXT,
+  },
+}
+
+class KafkaRunner extends BaseRunner {
+  public runnerConfig: KafkaRunnerConfig
+  public runnerMethods: runnerMethods
+
+  constructor(config: KafkaRunnerConfigUserInput) {
+    super()
+
+    this.runnerMethods = {
+      getComposeService: this.getComposeService,
+    }
+    this.runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
+
+    const schema: { [key in keyof RequiredConfigProps]: any } = {
+      service: validateTypes.isString,
+      topics: validateTypes.isArrayOfType(validateTypes.isString),
+    }
+    validateConfig(schema, this.runnerConfig)
+  }
+
+  public getComposeService = (dockerComposeFileName: string) => {
+    const {
+      service,
+      ports,
+      dependsOn: {
+        runnerConfig: { service: depService, port: depPort },
+      },
+    } = this.runnerConfig
+
+    return {
+      [service]: {
+        image: getImage(service, dockerComposeFileName),
+        depends_on: [depService],
+        ports: [`${ports[DEFAULT_INTERNAL_PORT_PLAINTEXT]}:${DEFAULT_INTERNAL_PORT_PLAINTEXT}`],
+        environment: {
+          // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
+          KAFKA_ZOOKEEPER_CONNECT: `${depService}:${depPort}`,
+          KAFKA_ADVERTISED_LISTENERS: `PLAINTEXT://${service}:29092,PLAINTEXT_HOST://localhost:${DEFAULT_INTERNAL_PORT_PLAINTEXT}`,
+
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT',
+        },
+      },
+    }
+  }
+}
+
+export { KafkaRunnerConfig }
+export default KafkaRunner
 
 /**
  * TODO: SSL & SASL_SSL
@@ -25,43 +86,6 @@ type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfi
 // const DEFAULT_INTERNAL_PORT_SASL_SSL = 9094
 // SSL://${service}:29093,SSL_HOST://${host}:${DEFAULT_INTERNAL_PORT_SSL},\
 // SASL_SSL://${service}:29094,SASL_SSL_HOST://${host}:${DEFAULT_INTERNAL_PORT_SASL_SSL" \
-
-const DEFAULT_INTERNAL_PORT_PLAINTEXT = 9092
-const DEFAULT_CONFIG: DefaultableConfigProps = {
-  connectionTimeout: 30,
-  host: 'localhost',
-  ports: {
-    [DEFAULT_INTERNAL_PORT_PLAINTEXT]: DEFAULT_INTERNAL_PORT_PLAINTEXT,
-  },
-}
-
-const getComposeService = (
-  runnerConfig: KafkaRunnerConfig,
-  dockerComposeFileName: string
-): object => {
-  const {
-    service,
-    ports,
-    dependsOn: {
-      runnerConfig: { service: depService, port: depPort },
-    },
-  } = runnerConfig
-
-  return {
-    [service]: {
-      image: getImage(service, dockerComposeFileName),
-      depends_on: [depService],
-      ports: [`${ports[DEFAULT_INTERNAL_PORT_PLAINTEXT]}:${DEFAULT_INTERNAL_PORT_PLAINTEXT}`],
-      environment: {
-        // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
-        KAFKA_ZOOKEEPER_CONNECT: `${depService}:${depPort}`,
-        KAFKA_ADVERTISED_LISTENERS: `PLAINTEXT://${service}:29092,PLAINTEXT_HOST://localhost:${DEFAULT_INTERNAL_PORT_PLAINTEXT}`,
-
-        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT',
-      },
-    },
-  }
-}
 
 /**
  * DEPRECATED
@@ -82,7 +106,6 @@ const getComposeService = (
 //               `
 
 //   const cmd = ` \
-//                 ${defaultDockerComposeRunOpts} \
 //                 ${portMapping} \
 //                 ${env}
 //                 ${service} \
@@ -90,27 +113,3 @@ const getComposeService = (
 
 //   return trimmer(cmd)
 // }
-
-class KafkaRunner extends BaseRunner {
-  constructor(config: KafkaRunnerConfigUserInput) {
-    const runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...config,
-    }
-    const runnerCommandFactories = {
-      getComposeService,
-    }
-
-    super(runnerConfig, runnerCommandFactories)
-
-    const schema: { [key in keyof RequiredConfigProps]: any } = {
-      service: validateTypes.isString,
-      topics: validateTypes.isArrayOfType(validateTypes.isString),
-      // KAFKA_ZOOKEEPER_CONNECT: validateTypes.isString,
-    }
-    validateConfig(schema, runnerConfig)
-  }
-}
-
-export { KafkaRunnerConfig }
-export default KafkaRunner

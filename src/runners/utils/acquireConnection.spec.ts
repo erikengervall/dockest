@@ -1,6 +1,7 @@
 import net from 'net'
 import acquireConnection from './acquireConnection'
 
+const host = 'localhost'
 const port = 1337
 
 jest.mock('net', () => ({
@@ -23,7 +24,7 @@ jest.mock('net', () => ({
 // TODO:
 describe.skip('acquireConnection', () => {
   it('should acquire connection', async () => {
-    await acquireConnection(port)
+    await acquireConnection(host, port)
 
     expect(net.createConnection).toHaveBeenCalled()
   })
