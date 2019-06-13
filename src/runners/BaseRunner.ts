@@ -10,14 +10,14 @@ import {
   validateTypes,
 } from './utils'
 
-type CommandCreators = {
-  createComposeFileService: (runnerConfig: any, dockerComposeFileName: string) => any // FIXME: no-any
-  createComposeRunCmd?: (runnerConfig: any) => string // FIXME: no-any
+type runnerCommandFactories = {
+  getComposeService: (runnerConfig: any, dockerComposeFileName: string) => any // FIXME: no-any
+  getComposeRunCommand?: (runnerConfig: any) => string // FIXME: no-any
   createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // FIXME: no-any
 }
 
 export type ExecOpts = {
-  commandCreators: CommandCreators
+  runnerCommandFactories: runnerCommandFactories
   containerId: string
   runnerKey: string
 }
@@ -26,10 +26,10 @@ class BaseRunner {
   public runnerConfig: RunnerConfigs
   public execOpts: ExecOpts
 
-  constructor(runnerConfig: RunnerConfigs, commandCreators: CommandCreators) {
+  constructor(runnerConfig: RunnerConfigs, runnerCommandFactories: runnerCommandFactories) {
     this.runnerConfig = runnerConfig
     this.execOpts = {
-      commandCreators,
+      runnerCommandFactories,
       containerId: '',
       runnerKey: '',
     }

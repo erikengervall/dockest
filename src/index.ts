@@ -85,7 +85,7 @@ class Dockest {
     for (const runnerKey of Object.keys(runners)) {
       const runner = runners[runnerKey]
 
-      const composeServiceFromRunner = runner.execOpts.commandCreators.createComposeFileService(
+      const composeServiceFromRunner = runner.execOpts.runnerCommandFactories.getComposeService(
         runner.runnerConfig,
         Dockest.config.dockerComposeFileName
       )

@@ -18,16 +18,16 @@ interface DefaultableConfigProps {
 type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const INTERNAL_PORT: number = 5432
+const DEFAULT_INTERNAL_PORT: number = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  port: INTERNAL_PORT,
+  port: DEFAULT_INTERNAL_PORT,
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-const createComposeFileService = (
+const getComposeService = (
   runnerConfig: PostgresRunnerConfig,
   dockerComposeFileName: string
 ): object => {
@@ -36,7 +36,7 @@ const createComposeFileService = (
   return {
     [service]: {
       image: getImage(service, dockerComposeFileName),
-      ports: [`${port}:${INTERNAL_PORT}`],
+      ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
       environment: {
         POSTGRES_DB: database,
         POSTGRES_USER: username,
@@ -46,10 +46,11 @@ const createComposeFileService = (
   }
 }
 
-const createComposeRunCmd = (runnerConfig: PostgresRunnerConfig): string => {
+// Deprecated
+const getComposeRunCommand = (runnerConfig: PostgresRunnerConfig): string => {
   const { port, service, database, username, password } = runnerConfig
   const portMapping = ` \ 
-                --publish ${port}:${INTERNAL_PORT} \
+                --publish ${port}:${DEFAULT_INTERNAL_PORT} \
                 `
   const env = ` \
                 -e POSTGRES_DB=${database} \
@@ -90,13 +91,13 @@ class PostgresRunner extends BaseRunner {
       ...DEFAULT_CONFIG,
       ...configUserInput,
     }
-    const commandCreators = {
-      createComposeRunCmd,
+    const runnerCommandFactories = {
+      getComposeRunCommand,
       createCheckResponsivenessCommand,
-      createComposeFileService,
+      getComposeService,
     }
 
-    super(runnerConfig, commandCreators)
+    super(runnerConfig, runnerCommandFactories)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,

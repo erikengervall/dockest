@@ -6,7 +6,7 @@ import { execa, sleep } from '../../utils'
 const checkResponsiveness = async (runnerConfig: any, execOpts: ExecOpts) => {
   const { service, responsivenessTimeout } = runnerConfig
   const {
-    commandCreators: { createCheckResponsivenessCommand },
+    runnerCommandFactories: { createCheckResponsivenessCommand },
   } = execOpts
   if (!createCheckResponsivenessCommand) {
     return Promise.resolve()

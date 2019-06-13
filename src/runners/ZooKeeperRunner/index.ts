@@ -14,14 +14,15 @@ interface DefaultableConfigProps {
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type ZooKeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
+const DEFAULT_INTERNAL_PORT: number = 2181
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   connectionTimeout: 30,
   host: 'localhost',
-  port: 2181,
+  port: DEFAULT_INTERNAL_PORT,
   commands: [],
 }
 
-const createComposeFileService = (
+const getComposeService = (
   runnerConfig: ZooKeeperRunnerConfig,
   dockerComposeFileName: string
 ): object => {
@@ -30,7 +31,7 @@ const createComposeFileService = (
   return {
     [service]: {
       image: getImage(service, dockerComposeFileName),
-      ports: [`${port}:${port}`],
+      ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
       environment: {
         ZOOKEEPER_CLIENT_PORT: port,
       },
@@ -38,10 +39,11 @@ const createComposeFileService = (
   }
 }
 
-const createComposeRunCmd = (runnerConfig: ZooKeeperRunnerConfig): string => {
+// Deprecated
+const getComposeRunCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
   const { port, service } = runnerConfig
 
-  const portMapping = `--publish ${port}:2181`
+  const portMapping = `--publish ${port}:${DEFAULT_INTERNAL_PORT}`
 
   // https://docs.confluent.io/current/installation/docker/config-reference.html#required-zk-settings
   const env = ` \
@@ -64,12 +66,12 @@ class ZooKeeperRunner extends BaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    const commandCreators = {
-      createComposeFileService,
-      createComposeRunCmd,
+    const runnerCommandFactories = {
+      getComposeService,
+      getComposeRunCommand,
     }
 
-    super(runnerConfig, commandCreators)
+    super(runnerConfig, runnerCommandFactories)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,

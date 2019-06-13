@@ -16,17 +16,17 @@ interface DefaultableConfigProps {
 type RedisRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const INTERNAL_PORT: number = 6379
+const DEFAULT_INTERNAL_PORT: number = 6379
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  port: INTERNAL_PORT,
+  port: DEFAULT_INTERNAL_PORT,
   password: '',
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-const createComposeFileService = (
+const getComposeService = (
   runnerConfig: RedisRunnerConfig,
   dockerComposeFileName: string
 ): object => {
@@ -35,16 +35,17 @@ const createComposeFileService = (
   return {
     [service]: {
       image: getImage(service, dockerComposeFileName),
-      ports: [`${port}:${INTERNAL_PORT}`],
+      ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
     },
   }
 }
 
-const createComposeRunCmd = (runnerConfig: RedisRunnerConfig) => {
+// Deprecated
+const getComposeRunCommand = (runnerConfig: RedisRunnerConfig) => {
   const { port, service, password } = runnerConfig
 
   const portMapping = ` \
-                  --publish ${port}:${INTERNAL_PORT} \
+                  --publish ${port}:${DEFAULT_INTERNAL_PORT} \
                 `
   const cmd = ` \
                 ${defaultDockerComposeRunOpts} \
@@ -60,10 +61,10 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
   const { host: runnerHost, password: runnerPassword } = runnerConfig
   const { containerId } = execOpts
 
-  // TODO: Should `-p` be INTERNAL_PORT or runnerConfig's port?
+  // TODO: Should `-p` be DEFAULT_INTERNAL_PORT or runnerConfig's port?
   const redisCliPingOpts = ` \
                           -h ${runnerHost} \
-                          -p ${INTERNAL_PORT} \
+                          -p ${DEFAULT_INTERNAL_PORT} \
                           ${!!runnerPassword ? `-a ${runnerPassword}` : ''} \
                           PING \
                         `
@@ -80,13 +81,13 @@ class RedisRunner extends BaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    const commandCreators = {
-      createComposeRunCmd,
-      createComposeFileService,
+    const runnerCommandFactories = {
+      getComposeRunCommand,
+      getComposeService,
       createCheckResponsivenessCommand,
     }
 
-    super(runnerConfig, commandCreators)
+    super(runnerConfig, runnerCommandFactories)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
