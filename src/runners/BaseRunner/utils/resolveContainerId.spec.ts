@@ -1,6 +1,8 @@
 import execa from 'execa'
-import { runnerUtilsLogger } from '../../loggers'
-import getContainerId from './getContainerId'
+import { runnerUtilsLogger } from '../../../loggers'
+import { testables } from './resolveContainerId'
+
+const { getContainerId } = testables
 
 const serviceName = 'mockServiceName'
 const stdout = `mockStdout`

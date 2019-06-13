@@ -1,6 +1,6 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import { ConfigurationError } from '../../errors'
+import { ConfigurationError } from '../errors'
 
 const getImage = (service: string, dockerComposeFileName: string): string => {
   // TODO: Make a util out of this

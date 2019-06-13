@@ -1,4 +1,4 @@
-import { LOG_LEVEL } from '../../constants'
+import { LOG_LEVEL } from '../constants'
 import validateTypes from './validateTypes'
 
 let config: any

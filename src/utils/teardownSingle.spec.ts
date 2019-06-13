@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { globalLogger, runnerUtilsLogger } from '../../loggers'
+import { globalLogger, runnerUtilsLogger } from '../loggers'
 import teardownSingle from './teardownSingle'
 
 const runnerKey = 'mockRunnerKey'

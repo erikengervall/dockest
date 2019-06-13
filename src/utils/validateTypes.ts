@@ -1,4 +1,4 @@
-import { COLORS } from '../../constants'
+import { COLORS } from '../constants'
 
 const {
   FG: { RED, GREEN },

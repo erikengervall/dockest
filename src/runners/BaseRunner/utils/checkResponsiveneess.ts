@@ -1,8 +1,8 @@
 import { DockestError } from '../../../errors'
 import { runnerLogger } from '../../../loggers'
-import { execa, sleep } from '../../utils'
+import { execa, sleep } from '../../../utils/index'
 
-const createCheckResponsiveness = async (cmd: string, responsivenessTimeout: number) => {
+const checkResponsiveneess = async (cmd: string, responsivenessTimeout: number) => {
   const recurse = async (responsivenessTimeout: number): Promise<void> => {
     runnerLogger.checkResponsiveness(responsivenessTimeout)
 
@@ -25,4 +25,4 @@ const createCheckResponsiveness = async (cmd: string, responsivenessTimeout: num
   await recurse(responsivenessTimeout)
 }
 
-export default createCheckResponsiveness
+export default checkResponsiveneess

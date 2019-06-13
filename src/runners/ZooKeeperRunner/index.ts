@@ -1,5 +1,5 @@
+import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
-import { getImage, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string

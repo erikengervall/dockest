@@ -1,6 +1,6 @@
 import Dockest, { DockestConfig } from './index'
 import { globalLogger } from './loggers'
-import { teardownSingle } from './runners/utils'
+import { teardownSingle } from './utils'
 
 export interface ErrorPayload {
   type: string

@@ -1,6 +1,6 @@
 import { DockestError } from '../../../errors'
 import { runnerLogger } from '../../../loggers'
-import { getContainerId, sleep } from '../index'
+import { execa, sleep } from '../../../utils/index'
 
 const resolveContainerId = async (service: string): Promise<string> => {
   const timeout = 30
@@ -37,4 +37,17 @@ const resolveContainerId = async (service: string): Promise<string> => {
   return recurse(timeout)
 }
 
+const getContainerId = async (serviceName: string): Promise<string> => {
+  const cmd = `docker ps \
+                  --quiet \
+                  --filter \
+                  "name=${serviceName}" \
+                  --latest`
+  const containerId = await execa(cmd)
+
+  return containerId
+}
+
+const testables = { getContainerId }
+export { testables }
 export default resolveContainerId

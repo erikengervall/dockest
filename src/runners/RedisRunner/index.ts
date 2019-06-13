@@ -1,5 +1,5 @@
+import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
-import { createCheckResponsiveness, getImage, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -38,7 +38,7 @@ class RedisRunner extends BaseRunner {
     }
     this.runnerMethods = {
       getComposeService: this.getComposeService,
-      checkResponsiveness: this.checkResponsiveness,
+      createResponsivenessCheckCmd: this.createResponsivenessCheckCmd,
     }
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
@@ -58,8 +58,8 @@ class RedisRunner extends BaseRunner {
     }
   }
 
-  public checkResponsiveness = () => {
-    const { host: runnerHost, password: runnerPassword, responsivenessTimeout } = this.runnerConfig
+  public createResponsivenessCheckCmd = () => {
+    const { host: runnerHost, password: runnerPassword } = this.runnerConfig
     const containerId = this.containerId
 
     // FIXME: Should `-p` be DEFAULT_INTERNAL_PORT or runnerConfig's port?
@@ -73,7 +73,7 @@ class RedisRunner extends BaseRunner {
                   docker exec ${containerId} redis-cli ${redisCliPingOpts} \
                 `
 
-    return createCheckResponsiveness(cmd, responsivenessTimeout)
+    return cmd
   }
 }
 

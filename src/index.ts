@@ -6,8 +6,8 @@ import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
-import createSetupHelpers from './runners/createSetupHelpers'
-import { execa, sleep, sleepWithLog, teardownSingle, validateTypes } from './runners/utils'
+import BaseRunner from './runners/BaseRunner'
+import { execa, sleep, sleepWithLog, teardownSingle, validateTypes } from './utils'
 
 interface UserRunners {
   [runnerKey: string]: PostgresRunner | RedisRunner | KafkaRunner | ZooKeeperRunner
@@ -22,6 +22,7 @@ interface DefaultableConfigProps {
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
   dockerComposeFileName: string
+  // runInBand: boolean // TODO: This'll be possible once logging is seperated between the runners
   dev: {
     idling?: boolean
   }
@@ -88,19 +89,8 @@ class Dockest {
   private sequentialRunnerSetup = async (runners: UserRunners) => {
     for (const runnerKey of Object.keys(runners)) {
       const runner = runners[runnerKey]
-      const {
-        setupStarted,
-        getRunTimeParameters,
-        performHealthchecks,
-        runCustomCommands,
-        setupCompleted,
-      } = createSetupHelpers(runner, runnerKey)
 
-      setupStarted()
-      await getRunTimeParameters()
-      await performHealthchecks()
-      await runCustomCommands()
-      setupCompleted()
+      await BaseRunner.setup(runner, runnerKey)
     }
   }
 
@@ -112,17 +102,16 @@ class Dockest {
 
     for (const runnerKey of Object.keys(runners)) {
       const runner = runners[runnerKey]
-
-      const composeServiceFromRunner = runner.runnerMethods.getComposeService(
-        Dockest.config.dockerComposeFileName
-      )
+      const {
+        runnerMethods: { getComposeService },
+      } = runner
 
       composeFile = {
         ...composeFile,
 
         services: {
           ...composeFile.services,
-          ...composeServiceFromRunner,
+          ...getComposeService(Dockest.config.dockerComposeFileName),
         },
       }
     }

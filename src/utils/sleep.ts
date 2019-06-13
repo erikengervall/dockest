@@ -1,4 +1,4 @@
-import RunnerUtilsLogger from '../../loggers/RunnerUtilsLogger'
+import RunnerUtilsLogger from '../loggers/RunnerUtilsLogger'
 
 const sleep = (ms: number = 1000): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
 

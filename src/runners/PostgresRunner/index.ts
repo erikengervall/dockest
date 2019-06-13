@@ -1,5 +1,5 @@
+import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
-import { createCheckResponsiveness, getImage, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -39,7 +39,7 @@ class PostgresRunner extends BaseRunner {
     }
     this.runnerMethods = {
       getComposeService: this.getComposeService,
-      checkResponsiveness: this.checkResponsiveness,
+      createResponsivenessCheckCmd: this.createResponsivenessCheckCmd,
     }
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
@@ -67,8 +67,8 @@ class PostgresRunner extends BaseRunner {
     }
   }
 
-  public checkResponsiveness = () => {
-    const { host, database, username, responsivenessTimeout } = this.runnerConfig
+  public createResponsivenessCheckCmd = () => {
+    const { host, database, username } = this.runnerConfig
     const containerId = this.containerId
     const cmd = ` \
                   docker exec ${containerId} \
@@ -79,7 +79,7 @@ class PostgresRunner extends BaseRunner {
                   -c 'select 1'" \
                 `
 
-    return createCheckResponsiveness(cmd, responsivenessTimeout)
+    return cmd
   }
 }
 

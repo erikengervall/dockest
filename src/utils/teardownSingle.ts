@@ -1,4 +1,4 @@
-import { globalLogger, runnerLogger } from '../../loggers'
+import { globalLogger, runnerLogger } from '../loggers'
 import { execa } from './index'
 
 const stopContainerById = async (containerId: string, runnerKey: string): Promise<void> => {
