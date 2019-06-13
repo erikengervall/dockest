@@ -1,6 +1,6 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { getImage, validateTypes } from '../utils'
+import { getImage, trimmer, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -50,7 +50,7 @@ const createComposeRunCmd = (runnerConfig: RedisRunnerConfig) => {
                 ${!!password ? `--requirepass ${password}` : ''} \
               `
 
-  return cmd.replace(/\s+/g, ' ').trim()
+  return trimmer(cmd)
 }
 
 const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execOpts: ExecOpts) => {
@@ -68,19 +68,19 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
                 docker exec ${containerId} redis-cli ${redisCliPingOpts} \
               `
 
-  return cmd.replace(/\s+/g, ' ').trim()
+  return trimmer(cmd)
 }
 
 class RedisRunner extends BaseRunner {
   constructor(config: RedisRunnerConfigUserInput) {
+    const runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
     const commandCreators = {
       createComposeRunCmd,
       createComposeFileService,
       createCheckResponsivenessCommand,
-    }
-    const runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...config,
     }
 
     super(runnerConfig, commandCreators)

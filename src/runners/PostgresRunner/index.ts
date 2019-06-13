@@ -1,6 +1,6 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { getImage, validateTypes } from '../utils'
+import { getImage, trimmer, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -43,7 +43,7 @@ const createComposeFileService = (runnerConfig: PostgresRunnerConfig): object =>
   }
 }
 
-const createComposeRunCmd = (runnerConfig: PostgresRunnerConfig) => {
+const createComposeRunCmd = (runnerConfig: PostgresRunnerConfig): string => {
   const { port, service, database, username, password } = runnerConfig
   const portMapping = ` \ 
                 --publish ${port}:${INTERNAL_PORT} \
@@ -60,7 +60,7 @@ const createComposeRunCmd = (runnerConfig: PostgresRunnerConfig) => {
                 ${service} \
               `
 
-  return cmd.replace(/\s+/g, ' ').trim()
+  return trimmer(cmd)
 }
 
 const createCheckResponsivenessCommand = (
@@ -78,19 +78,19 @@ const createCheckResponsivenessCommand = (
                 -c 'select 1'" \
               `
 
-  return cmd.replace(/\s+/g, ' ').trim()
+  return trimmer(cmd)
 }
 
 class PostgresRunner extends BaseRunner {
   constructor(configUserInput: PostgresRunnerConfigUserInput) {
+    const runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...configUserInput,
+    }
     const commandCreators = {
       createComposeRunCmd,
       createCheckResponsivenessCommand,
       createComposeFileService,
-    }
-    const runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...configUserInput,
     }
 
     super(runnerConfig, commandCreators)

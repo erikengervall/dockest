@@ -1,6 +1,6 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner from '../BaseRunner'
-import { getImage, validateTypes } from '../utils'
+import { getImage, trimmer, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -80,18 +80,18 @@ const createComposeRunCmd = (runnerConfig: KafkaRunnerConfig): string => {
                 ${service} \
               `
 
-  return cmd.replace(/\s+/g, ' ').trim()
+  return trimmer(cmd)
 }
 
 class KafkaRunner extends BaseRunner {
   constructor(config: KafkaRunnerConfigUserInput) {
-    const commandCreators = {
-      createComposeRunCmd,
-      createComposeFileService,
-    }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
+    }
+    const commandCreators = {
+      createComposeRunCmd,
+      createComposeFileService,
     }
 
     super(runnerConfig, commandCreators)
