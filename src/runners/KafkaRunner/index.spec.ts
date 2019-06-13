@@ -2,6 +2,7 @@ import KafkaRunner from './index'
 
 const config = {
   service: '_',
+  image: '_',
   topics: ['_'],
   KAFKA_ZOOKEEPER_CONNECT: '_',
 }

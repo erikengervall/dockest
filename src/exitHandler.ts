@@ -10,10 +10,16 @@ export interface ErrorPayload {
   p?: any
 }
 
+let exitInProgress = false
 const setupExitHandler = async (config: DockestConfig): Promise<void> => {
   const { runners } = config
 
   const exitHandler = async (errorPayload: ErrorPayload): Promise<void> => {
+    if (exitInProgress) {
+      return
+    }
+
+    exitInProgress = true
     if (Dockest.jestRanWithResult) {
       // Program ran as expected
       return

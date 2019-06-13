@@ -1,10 +1,12 @@
+import fs from 'fs'
+import yaml from 'js-yaml'
 import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
-import { sleepWithLog, validateTypes } from './runners/utils'
+import { execa, sleep, sleepWithLog, validateTypes } from './runners/utils'
 
 interface UserRunners {
   [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner
@@ -53,9 +55,12 @@ class Dockest {
   }
 
   public run = async (): Promise<void> => {
+    this.createComposeFileAndRun()
+
     await this.setupRunners()
 
     if (Dockest.config.dev.idling) {
+      // For testing the docker file
       return
     }
 
@@ -66,6 +71,51 @@ class Dockest {
     const result = await this.runJest()
     await this.teardownRunners()
     result.success ? process.exit(0) : process.exit(1)
+  }
+
+  private createComposeFileAndRun = () => {
+    const { runners } = Dockest.config
+
+    let composeFile = {
+      version: '2',
+      services: {},
+    }
+
+    for (const runnerKey of Object.keys(runners)) {
+      const runner = runners[runnerKey]
+
+      const composeServiceFromRunner = runner.execOpts.commandCreators.createComposeService(
+        runner.runnerConfig
+      )
+
+      composeFile = {
+        ...composeFile,
+
+        services: {
+          ...composeFile.services,
+          ...composeServiceFromRunner,
+        },
+      }
+    }
+
+    // console.log('***', JSON.stringify(composeFile, null, 2))
+    const yml = yaml.safeDump(composeFile)
+
+    fs.writeFile(`${__dirname}/composeFiles/docker-compose-generated.yml`, yml, err => {
+      if (err) {
+        throw new Error(`Something went horribly wrong: ${err.message}`)
+      }
+    })
+
+    execa(`\ 
+      docker-compose \
+      -f ${__dirname}/composeFiles/docker-compose-generated.yml \
+      up \
+      --no-recreate \
+      --detach \
+    `)
+
+    sleep(500)
   }
 
   private setupRunners = async () => {
@@ -107,5 +157,5 @@ class Dockest {
 
 const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
-export { logLevel, runners }
+export { logLevel, execa, runners }
 export default Dockest

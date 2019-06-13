@@ -22,3 +22,4 @@ trash
 # Dockest dev
 #
 dist
+src/composeFiles/docker*

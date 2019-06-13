@@ -2,6 +2,7 @@ import ZooKeeperRunner from './index'
 
 const config = {
   service: '_',
+  image: '_',
   host: '_',
 }
 const ZooKeeperRunner1 = new ZooKeeperRunner(config)

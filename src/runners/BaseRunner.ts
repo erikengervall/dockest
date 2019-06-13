@@ -12,6 +12,7 @@ import {
 
 type CommandCreators = {
   createStartCommand: (runnerConfig: any) => string // FIXME: no-any
+  createComposeService: (runnerConfig: any) => any // FIXME: no-any
   createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // FIXME: no-any
 }
 
@@ -43,14 +44,17 @@ class BaseRunner {
   }
 
   public setup = async (runnerKey: string) => {
-    BaseLogger.runnerKey = `${runnerKey}: `
-
-    this.execOpts.runnerKey = runnerKey
     runnerLogger.setup()
 
-    const containerId = await start(this.runnerConfig, this.execOpts)
+    // inject runtimeOpts
+    BaseLogger.runnerKey = `${runnerKey}: ` // FIXME: Initialize a logger per runner instead
+    this.execOpts.runnerKey = runnerKey
+
+    // resolve containerIds
+    const containerId = await start(this.runnerConfig)
     this.execOpts.containerId = containerId
 
+    // perform healthchecks
     await checkResponsiveness(this.runnerConfig, this.execOpts)
     await checkConnection(this.runnerConfig)
 

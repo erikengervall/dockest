@@ -4,6 +4,7 @@ import { validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
+  image: string
 }
 interface DefaultableConfigProps {
   connectionTimeout: number
@@ -19,6 +20,20 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
   port: 2181,
   commands: [],
+}
+
+const createComposeService = (runnerConfig: ZooKeeperRunnerConfig): object => {
+  const { service, image, port } = runnerConfig
+
+  return {
+    [service]: {
+      image,
+      ports: [`${port}:${port}`],
+      environment: {
+        ZOOKEEPER_CLIENT_PORT: port,
+      },
+    },
+  }
 }
 
 const createStartCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
@@ -45,6 +60,7 @@ class ZooKeeperRunner extends BaseRunner {
   constructor(config: ZooKeeperRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
+      createComposeService,
     }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
@@ -54,6 +70,7 @@ class ZooKeeperRunner extends BaseRunner {
     super(runnerConfig, commandCreators)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
+      image: validateTypes.isString,
       service: validateTypes.isString,
     }
     this.validateConfig(schema, runnerConfig)

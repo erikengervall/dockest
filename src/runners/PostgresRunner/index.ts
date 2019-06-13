@@ -1,9 +1,10 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { runCustomCommand, validateTypes } from '../utils'
+import { validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
+  image: string
   database: string
   username: string
   password: string
@@ -24,6 +25,22 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
+}
+
+const createComposeService = (runnerConfig: PostgresRunnerConfig): object => {
+  const { service, image, port, database, username, password } = runnerConfig
+
+  return {
+    [service]: {
+      image,
+      ports: [`${port}:5432`],
+      environment: {
+        POSTGRES_DB: database,
+        POSTGRES_USER: username,
+        POSTGRES_PASSWORD: password,
+      },
+    },
+  }
 }
 
 const createStartCommand = (runnerConfig: PostgresRunnerConfig) => {
@@ -65,14 +82,11 @@ const createCheckResponsivenessCommand = (
 }
 
 class PostgresRunner extends BaseRunner {
-  public static getHelpers = (opts?: { verbose?: boolean }) => ({
-    runHelpCmd: async (cmd: string) => runCustomCommand(PostgresRunner.name, cmd, opts),
-  })
-
   constructor(configUserInput: PostgresRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
       createCheckResponsivenessCommand,
+      createComposeService,
     }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
@@ -83,6 +97,7 @@ class PostgresRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
+      image: validateTypes.isString,
       database: validateTypes.isString,
       password: validateTypes.isString,
       username: validateTypes.isString,

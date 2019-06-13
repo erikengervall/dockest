@@ -43,6 +43,7 @@
   "devDependencies": {
     "@types/execa": "^0.9.0",
     "@types/jest": "^24.0.11",
+    "@types/js-yaml": "^3.12.1",
     "@types/sequelize": "^4.27.48",
     "jest": "^24.7.1",
     "prettier": "^1.17.0",

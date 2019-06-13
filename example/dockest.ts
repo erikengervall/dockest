@@ -13,6 +13,7 @@ const postgres1sequelizeRunner = new PostgresRunner({
   host: env.postgres1sequelize_host,
   port: Number(env.postgres1sequelize_port),
   service: env.postgres1sequelize_service,
+  image: env.postgres1sequelize_image,
   commands: [
     'sequelize db:migrate:undo:all',
     'sequelize db:migrate',
@@ -28,6 +29,7 @@ const postgres2knexRunner = new PostgresRunner({
   host: env.postgres2knex_host,
   port: Number(env.postgres2knex_port),
   service: env.postgres2knex_service,
+  image: env.postgres2knex_image,
   commands: [
     './node_modules/knex/bin/cli.js migrate:rollback',
     './node_modules/knex/bin/cli.js migrate:latest',
@@ -37,6 +39,7 @@ const postgres2knexRunner = new PostgresRunner({
 
 const redis1ioredisRunner = new RedisRunner({
   service: env.redis1ioredis_service,
+  image: env.redis1ioredis_image,
   host: env.redis1ioredis_host,
   port: Number(env.redis1ioredis_port),
   password: env.redis1ioredis_password,
@@ -46,14 +49,16 @@ const redis1ioredisRunner = new RedisRunner({
 const ZookeeperService = env.zookeeper1confluentinc_service
 // const ZookeeperHost = env.zookeeper1confluentinc_host
 const ZookeeperPort = Number(env.zookeeper1confluentinc_port)
-const KAFKA_ZOOKEEPER_CONNECT = `${ZookeeperService}:${ZookeeperPort}`
+// const KAFKA_ZOOKEEPER_CONNECT = `${ZookeeperService}:${ZookeeperPort}`
 
 const zookeeper1confluentincRunner = new ZooKeeperRunner({
+  image: env.zookeeper1confluentinc_image,
   service: ZookeeperService,
   port: ZookeeperPort,
 })
 
 const kafka1confluentincRunner = new KafkaRunner({
+  image: env.kafka1confluentinc_image,
   service: env.kafka1confluentinc_service,
   topics: [env.kafka1confluentinc_topic],
   ports: {
@@ -61,7 +66,8 @@ const kafka1confluentincRunner = new KafkaRunner({
     [env.kafka1confluentinc_port2]: env.kafka1confluentinc_port2,
     [env.kafka1confluentinc_port3]: env.kafka1confluentinc_port3,
   },
-  KAFKA_ZOOKEEPER_CONNECT,
+  // KAFKA_ZOOKEEPER_CONNECT,
+  dependsOn: zookeeper1confluentincRunner,
 })
 
 const dockest = new Dockest({

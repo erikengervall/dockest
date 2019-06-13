@@ -2,6 +2,7 @@ import RedisRunner from './index'
 
 const config = {
   service: '_',
+  image: '_',
 }
 const RedisRunner1 = new RedisRunner(config)
 const RedisRunner2 = new RedisRunner(config)

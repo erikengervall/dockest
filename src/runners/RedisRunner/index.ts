@@ -1,9 +1,10 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { runCustomCommand, validateTypes } from '../utils'
+import { validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
+  image: string
 }
 interface DefaultableConfigProps {
   host: string
@@ -23,6 +24,17 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
+}
+
+const createComposeService = (runnerConfig: RedisRunnerConfig): object => {
+  const { service, image, port } = runnerConfig
+
+  return {
+    [service]: {
+      image,
+      ports: [`${port}:6379`],
+    },
+  }
 }
 
 const createStartCommand = (runnerConfig: RedisRunnerConfig) => {
@@ -59,13 +71,10 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
 }
 
 class RedisRunner extends BaseRunner {
-  public static getHelpers = () => ({
-    runHelpCmd: async (cmd: string) => runCustomCommand(RedisRunner.name, cmd),
-  })
-
   constructor(config: RedisRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
+      createComposeService,
       createCheckResponsivenessCommand,
     }
     const runnerConfig = {
@@ -77,6 +86,7 @@ class RedisRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
+      image: validateTypes.isString,
     }
     this.validateConfig(schema, runnerConfig)
   }

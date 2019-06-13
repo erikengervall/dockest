@@ -4,8 +4,8 @@ import { validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
+  image: string
   topics: string[]
-  KAFKA_ZOOKEEPER_CONNECT: string
 }
 interface DefaultableConfigProps {
   connectionTimeout: number
@@ -13,6 +13,7 @@ interface DefaultableConfigProps {
   port: number
   ports: { [key: string]: string | number }
   commands?: string[]
+  dependsOn?: any
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
@@ -29,8 +30,31 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   },
 }
 
+const createComposeService = (runnerConfig: KafkaRunnerConfig): object => {
+  const {
+    service,
+    image,
+    dependsOn: {
+      runnerConfig: { service: depService, port: depPort },
+    },
+  } = runnerConfig
+
+  return {
+    [service]: {
+      image,
+      depends_on: [depService],
+      ports: ['9092:9092', '9093:9093', '9094:9094'],
+      environment: {
+        KAFKA_ZOOKEEPER_CONNECT: `${depService}:${depPort}`,
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT',
+        KAFKA_ADVERTISED_LISTENERS: `PLAINTEXT://${service}:29092,PLAINTEXT_HOST://localhost:9092`,
+      },
+    },
+  }
+}
+
 const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
-  const { host, ports, service, KAFKA_ZOOKEEPER_CONNECT } = runnerConfig
+  const { host, ports, service } = runnerConfig
 
   const portMapping = Object.keys(ports).reduce((acc, port) => {
     const external = ports[port]
@@ -41,7 +65,6 @@ const createStartCommand = (runnerConfig: KafkaRunnerConfig): string => {
 
   // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
   const env = ` \
-                -e KAFKA_ZOOKEEPER_CONNECT=${KAFKA_ZOOKEEPER_CONNECT} \
                 -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT \
                 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${service}:29092,PLAINTEXT_HOST://${host}:9092 \
               `
@@ -62,6 +85,7 @@ class KafkaRunner extends BaseRunner {
   constructor(config: KafkaRunnerConfigUserInput) {
     const commandCreators = {
       createStartCommand,
+      createComposeService,
     }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
@@ -72,8 +96,9 @@ class KafkaRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
+      image: validateTypes.isString,
       topics: validateTypes.isArrayOfType(validateTypes.isString),
-      KAFKA_ZOOKEEPER_CONNECT: validateTypes.isString,
+      // KAFKA_ZOOKEEPER_CONNECT: validateTypes.isString,
     }
     this.validateConfig(schema, runnerConfig)
   }
