@@ -1,10 +1,9 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { validateTypes } from '../utils'
+import { getImage, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
-  image: string
   database: string
   username: string
   password: string
@@ -19,21 +18,22 @@ interface DefaultableConfigProps {
 type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
+const INTERNAL_PORT: number = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  port: 5432,
+  port: INTERNAL_PORT,
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-const createComposeService = (runnerConfig: PostgresRunnerConfig): object => {
-  const { service, image, port, database, username, password } = runnerConfig
+const createComposeFileService = (runnerConfig: PostgresRunnerConfig): object => {
+  const { service, port, database, username, password } = runnerConfig
 
   return {
     [service]: {
-      image,
-      ports: [`${port}:5432`],
+      image: getImage(service),
+      ports: [`${port}:${INTERNAL_PORT}`],
       environment: {
         POSTGRES_DB: database,
         POSTGRES_USER: username,
@@ -43,10 +43,10 @@ const createComposeService = (runnerConfig: PostgresRunnerConfig): object => {
   }
 }
 
-const createStartCommand = (runnerConfig: PostgresRunnerConfig) => {
+const createComposeRunCmd = (runnerConfig: PostgresRunnerConfig) => {
   const { port, service, database, username, password } = runnerConfig
   const portMapping = ` \ 
-                --publish ${port}:5432 \
+                --publish ${port}:${INTERNAL_PORT} \
                 `
   const env = ` \
                 -e POSTGRES_DB=${database} \
@@ -84,9 +84,9 @@ const createCheckResponsivenessCommand = (
 class PostgresRunner extends BaseRunner {
   constructor(configUserInput: PostgresRunnerConfigUserInput) {
     const commandCreators = {
-      createStartCommand,
+      createComposeRunCmd,
       createCheckResponsivenessCommand,
-      createComposeService,
+      createComposeFileService,
     }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
@@ -97,7 +97,6 @@ class PostgresRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      image: validateTypes.isString,
       database: validateTypes.isString,
       password: validateTypes.isString,
       username: validateTypes.isString,

@@ -1,6 +1,7 @@
 export { default as acquireConnection } from './acquireConnection'
 export { default as execa } from './execa'
 export { default as getContainerId } from './getContainerId'
+export { default as getImage } from './getImage'
 export { default as runCustomCommand } from './runCustomCommand'
 export { default as sleep, sleepWithLog } from './sleep'
 export { default as teardownSingle } from './teardownSingle'

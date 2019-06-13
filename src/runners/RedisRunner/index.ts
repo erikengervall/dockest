@@ -1,10 +1,9 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { validateTypes } from '../utils'
+import { getImage, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
-  image: string
 }
 interface DefaultableConfigProps {
   host: string
@@ -17,31 +16,32 @@ interface DefaultableConfigProps {
 type RedisRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
+const INTERNAL_PORT: number = 6379
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   host: 'localhost',
-  port: 6379,
+  port: INTERNAL_PORT,
   password: '',
   commands: [],
   connectionTimeout: 3,
   responsivenessTimeout: 10,
 }
 
-const createComposeService = (runnerConfig: RedisRunnerConfig): object => {
-  const { service, image, port } = runnerConfig
+const createComposeFileService = (runnerConfig: RedisRunnerConfig): object => {
+  const { service, port } = runnerConfig
 
   return {
     [service]: {
-      image,
-      ports: [`${port}:6379`],
+      image: getImage(service),
+      ports: [`${port}:${INTERNAL_PORT}`],
     },
   }
 }
 
-const createStartCommand = (runnerConfig: RedisRunnerConfig) => {
+const createComposeRunCmd = (runnerConfig: RedisRunnerConfig) => {
   const { port, service, password } = runnerConfig
 
   const portMapping = ` \
-                  --publish ${port}:6379 \
+                  --publish ${port}:${INTERNAL_PORT} \
                 `
   const cmd = ` \
                 ${defaultDockerComposeRunOpts} \
@@ -57,9 +57,10 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
   const { host: runnerHost, password: runnerPassword } = runnerConfig
   const { containerId } = execOpts
 
+  // TODO: Should `-p` be INTERNAL_PORT or runnerConfig's port?
   const redisCliPingOpts = ` \
                           -h ${runnerHost} \
-                          -p 6379 \
+                          -p ${INTERNAL_PORT} \
                           ${!!runnerPassword ? `-a ${runnerPassword}` : ''} \
                           PING \
                         `
@@ -73,8 +74,8 @@ const createCheckResponsivenessCommand = (runnerConfig: RedisRunnerConfig, execO
 class RedisRunner extends BaseRunner {
   constructor(config: RedisRunnerConfigUserInput) {
     const commandCreators = {
-      createStartCommand,
-      createComposeService,
+      createComposeRunCmd,
+      createComposeFileService,
       createCheckResponsivenessCommand,
     }
     const runnerConfig = {
@@ -86,7 +87,6 @@ class RedisRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      image: validateTypes.isString,
     }
     this.validateConfig(schema, runnerConfig)
   }

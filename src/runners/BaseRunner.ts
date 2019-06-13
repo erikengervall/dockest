@@ -11,8 +11,8 @@ import {
 } from './utils'
 
 type CommandCreators = {
-  createStartCommand: (runnerConfig: any) => string // FIXME: no-any
-  createComposeService: (runnerConfig: any) => any // FIXME: no-any
+  createComposeFileService: (runnerConfig: any) => any // FIXME: no-any
+  createComposeRunCmd?: (runnerConfig: any) => string // FIXME: no-any
   createCheckResponsivenessCommand?: (runnerConfig: any, execOpts: ExecOpts) => string // FIXME: no-any
 }
 
@@ -47,7 +47,7 @@ class BaseRunner {
     runnerLogger.setup()
 
     // inject runtimeOpts
-    BaseLogger.runnerKey = `${runnerKey}: ` // FIXME: Initialize a logger per runner instead
+    BaseLogger.runnerKey = `${runnerKey}: ` // FIXME: Consider initializing a logger per runner instead
     this.execOpts.runnerKey = runnerKey
 
     // resolve containerIds

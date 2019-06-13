@@ -2,7 +2,6 @@ import PostgresRunner from './'
 
 const config = {
   service: '_',
-  image: '_',
   database: '_',
   password: '_',
   username: '_',

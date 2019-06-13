@@ -1,10 +1,9 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner from '../BaseRunner'
-import { validateTypes } from '../utils'
+import { getImage, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
-  image: string
 }
 interface DefaultableConfigProps {
   connectionTimeout: number
@@ -22,12 +21,12 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
 }
 
-const createComposeService = (runnerConfig: ZooKeeperRunnerConfig): object => {
-  const { service, image, port } = runnerConfig
+const createComposeFileService = (runnerConfig: ZooKeeperRunnerConfig): object => {
+  const { service, port } = runnerConfig
 
   return {
     [service]: {
-      image,
+      image: getImage(service),
       ports: [`${port}:${port}`],
       environment: {
         ZOOKEEPER_CLIENT_PORT: port,
@@ -36,7 +35,7 @@ const createComposeService = (runnerConfig: ZooKeeperRunnerConfig): object => {
   }
 }
 
-const createStartCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
+const createComposeRunCmd = (runnerConfig: ZooKeeperRunnerConfig): string => {
   const { port, service } = runnerConfig
 
   const portMapping = `--publish ${port}:2181`
@@ -59,8 +58,8 @@ const createStartCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
 class ZooKeeperRunner extends BaseRunner {
   constructor(config: ZooKeeperRunnerConfigUserInput) {
     const commandCreators = {
-      createStartCommand,
-      createComposeService,
+      createComposeRunCmd,
+      createComposeFileService,
     }
     const runnerConfig = {
       ...DEFAULT_CONFIG,
@@ -70,7 +69,6 @@ class ZooKeeperRunner extends BaseRunner {
     super(runnerConfig, commandCreators)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
-      image: validateTypes.isString,
       service: validateTypes.isString,
     }
     this.validateConfig(schema, runnerConfig)

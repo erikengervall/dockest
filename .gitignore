@@ -22,4 +22,4 @@ trash
 # Dockest dev
 #
 dist
-src/composeFiles/docker*
+docker-compose-generated.yml

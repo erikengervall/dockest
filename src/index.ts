@@ -20,6 +20,7 @@ interface DefaultableConfigProps {
   afterSetupSleep: number
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
+  dockerComposeFileName: string
   dev: {
     idling?: boolean
   }
@@ -31,6 +32,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   afterSetupSleep: 0,
   exitHandler: null,
   logLevel: LOG_LEVEL.NORMAL,
+  dockerComposeFileName: 'docker-compose.yml',
   dev: {},
 }
 
@@ -60,7 +62,8 @@ class Dockest {
     await this.setupRunners()
 
     if (Dockest.config.dev.idling) {
-      // For testing the docker file
+      // Will keep the docker containers running
+      // Useful for testing
       return
     }
 
@@ -84,7 +87,7 @@ class Dockest {
     for (const runnerKey of Object.keys(runners)) {
       const runner = runners[runnerKey]
 
-      const composeServiceFromRunner = runner.execOpts.commandCreators.createComposeService(
+      const composeServiceFromRunner = runner.execOpts.commandCreators.createComposeFileService(
         runner.runnerConfig
       )
 
@@ -98,24 +101,25 @@ class Dockest {
       }
     }
 
-    // console.log('***', JSON.stringify(composeFile, null, 2))
     const yml = yaml.safeDump(composeFile)
 
-    fs.writeFile(`${__dirname}/composeFiles/docker-compose-generated.yml`, yml, err => {
+    const dockerComposeGeneratedPath = `${__dirname}/docker-compose-generated.yml`
+
+    fs.writeFile(`${dockerComposeGeneratedPath}`, yml, err => {
       if (err) {
         throw new Error(`Something went horribly wrong: ${err.message}`)
       }
     })
 
-    execa(`\ 
+    execa(`\
       docker-compose \
-      -f ${__dirname}/composeFiles/docker-compose-generated.yml \
+      -f ${dockerComposeGeneratedPath} \
       up \
       --no-recreate \
       --detach \
     `)
 
-    sleep(500)
+    sleep(100)
   }
 
   private setupRunners = async () => {
