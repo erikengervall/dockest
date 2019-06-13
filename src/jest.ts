@@ -50,7 +50,7 @@ class JestRunner {
     JestRunner.instance = this
   }
 
-  public run = async () => {
+  public run = async (): Promise<{ success: boolean }> => {
     const jestOptions = JestRunner.config
     const jest = JestRunner.config.lib
     let success = false
@@ -85,18 +85,18 @@ class JestRunner {
 
     // Validate jest
     if (!config) {
-      throw new ConfigurationError('jest')
+      throw new ConfigurationError('Missing jest configuration object')
     }
 
     // Validate jest.lib
     if (!config.lib) {
-      throw new ConfigurationError('jest.lib')
+      throw new ConfigurationError('Missing jest.lib')
     }
 
     // Validate jest version
     const MINIMUM_JEST_VERSION = '20.0.0' // Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
     if (config.lib.getVersion() < MINIMUM_JEST_VERSION) {
-      throw new ConfigurationError('Jest version not supported')
+      throw new ConfigurationError('Jest version too low, please update')
     }
   }
 }

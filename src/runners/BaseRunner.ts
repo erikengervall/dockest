@@ -35,35 +35,36 @@ class BaseRunner {
     }
   }
 
-  public validateConfig = (schema: { [key: string]: any }, config: RunnerConfigs) => {
-    const failures = validateTypes(schema, config)
-
-    if (failures.length > 0) {
-      throw new ConfigurationError(`${failures.join('\n')}`)
-    }
+  public setupStarted = (): void => {
+    runnerLogger.runnerSetup()
   }
 
-  public runTimeSetup = async (runnerKey: string) => {
-    runnerLogger.runTimeSetup()
-
-    // inject runtimeOpts
+  public resolveRunTimeParameters = async (runnerKey: string): Promise<void> => {
+    // set runnerKey
     BaseLogger.runnerKey = `${runnerKey}: ` // FIXME: Consider initializing a logger per runner instead
     this.execOpts.runnerKey = runnerKey
 
-    // resolve containerIds
+    // set containerId
     const containerId = await resolveContainerId(this.runnerConfig)
     this.execOpts.containerId = containerId
+  }
 
-    // perform healthchecks
+  public performHealthchecks = async (): Promise<void> => {
     await checkResponsiveness(this.runnerConfig, this.execOpts)
     await checkConnection(this.runnerConfig)
+  }
 
+  public runCustomCommands = async (): Promise<void> => {
     const commands = this.runnerConfig.commands || []
+
     for (const cmd of commands) {
       await runCustomCommand(this.execOpts.runnerKey, cmd)
     }
+  }
 
-    runnerLogger.runTimeSetupSuccess()
+  public setupCompleted = (): void => {
+    runnerLogger.runnerSetupSuccess()
+
     BaseLogger.runnerKey = ''
   }
 

@@ -1,6 +1,6 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { getImage, trimmer, validateTypes } from '../utils'
+import { getImage, trimmer, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -105,7 +105,7 @@ class PostgresRunner extends BaseRunner {
       password: validateTypes.isString,
       username: validateTypes.isString,
     }
-    this.validateConfig(schema, runnerConfig)
+    validateConfig(schema, runnerConfig)
   }
 }
 

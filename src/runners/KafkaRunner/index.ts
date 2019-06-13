@@ -1,6 +1,6 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner from '../BaseRunner'
-import { getImage, trimmer, validateTypes } from '../utils'
+import { getImage, trimmer, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -107,7 +107,7 @@ class KafkaRunner extends BaseRunner {
       topics: validateTypes.isArrayOfType(validateTypes.isString),
       // KAFKA_ZOOKEEPER_CONNECT: validateTypes.isString,
     }
-    this.validateConfig(schema, runnerConfig)
+    validateConfig(schema, runnerConfig)
   }
 }
 

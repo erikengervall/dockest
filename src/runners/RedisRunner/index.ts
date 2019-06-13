@@ -1,6 +1,6 @@
 import { defaultDockerComposeRunOpts } from '../../constants'
 import BaseRunner, { ExecOpts } from '../BaseRunner'
-import { getImage, trimmer, validateTypes } from '../utils'
+import { getImage, trimmer, validateConfig, validateTypes } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -92,7 +92,7 @@ class RedisRunner extends BaseRunner {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }
-    this.validateConfig(schema, runnerConfig)
+    validateConfig(schema, runnerConfig)
   }
 }
 

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
 import { LOG_LEVEL } from './constants'
-import { ConfigurationError } from './errors'
+import { ConfigurationError, DockestError } from './errors'
 import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
@@ -28,12 +28,15 @@ interface DefaultableConfigProps {
 type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
 
+const DOCKER_COMPOSE_GENERATED_PATH = `${__dirname}/docker-compose-generated.yml`
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   afterSetupSleep: 0,
   exitHandler: null,
   logLevel: LOG_LEVEL.NORMAL,
   dockerComposeFileName: 'docker-compose.yml',
-  dev: {},
+  dev: {
+    idling: false,
+  },
 }
 
 class Dockest {
@@ -57,11 +60,15 @@ class Dockest {
   }
 
   public run = async (): Promise<void> => {
-    await this.runTimeSetup()
+    const { runners } = Dockest.config
+
+    this.generateComposeFile(runners)
+    this.runDockerComposeUp()
+
+    await this.sequentialRunnerSetup(runners)
 
     if (Dockest.config.dev.idling) {
-      // Will keep the docker containers running
-      // Useful for testing
+      // Will keep the docker containers running indefinitely
       return
     }
 
@@ -70,13 +77,32 @@ class Dockest {
     }
 
     const result = await this.runJest()
-    await this.teardownRunners()
+
+    await this.teardownRunners(runners)
+
     result.success ? process.exit(0) : process.exit(1)
   }
 
-  private createComposeFileAndRun = () => {
-    const { runners } = Dockest.config
+  private sequentialRunnerSetup = async (runners: UserRunners) => {
+    for (const runnerKey of Object.keys(runners)) {
+      const runner = runners[runnerKey]
+      const {
+        setupStarted,
+        resolveRunTimeParameters,
+        performHealthchecks,
+        runCustomCommands,
+        setupCompleted,
+      } = runner
 
+      setupStarted()
+      await resolveRunTimeParameters(runnerKey)
+      await performHealthchecks()
+      await runCustomCommands()
+      setupCompleted()
+    }
+  }
+
+  private generateComposeFile = (runners: UserRunners) => {
     let composeFile = {
       version: '3',
       services: {},
@@ -102,33 +128,25 @@ class Dockest {
 
     const yml = yaml.safeDump(composeFile)
 
-    const dockerComposeGeneratedPath = `${__dirname}/docker-compose-generated.yml`
-
-    fs.writeFile(`${dockerComposeGeneratedPath}`, yml, err => {
-      if (err) {
-        throw new Error(`Something went horribly wrong: ${err.message}`)
-      }
-    })
-
-    execa(`\
-      docker-compose \
-      -f ${dockerComposeGeneratedPath} \
-      up \
-      --no-recreate \
-      --detach \
-      `)
-
-    sleep(500)
+    try {
+      fs.writeFileSync(`${DOCKER_COMPOSE_GENERATED_PATH}`, yml)
+    } catch (error) {
+      throw new DockestError(
+        `Something went wrong when generating the docker-compose file: ${error.message}`
+      )
+    }
   }
 
-  private runTimeSetup = async () => {
-    this.createComposeFileAndRun()
+  private runDockerComposeUp = () => {
+    execa(` \
+          docker-compose \
+          -f ${DOCKER_COMPOSE_GENERATED_PATH} \
+          up \
+          --no-recreate \
+          --detach \
+        `)
 
-    const { runners } = Dockest.config
-
-    for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].runTimeSetup(runnerKey)
-    }
+    sleep(100)
   }
 
   private runJest = async () => {
@@ -138,9 +156,7 @@ class Dockest {
     return result
   }
 
-  private teardownRunners = async () => {
-    const { runners } = Dockest.config
-
+  private teardownRunners = async (runners: UserRunners) => {
     for (const runnerKey of Object.keys(runners)) {
       await runners[runnerKey].teardown()
     }

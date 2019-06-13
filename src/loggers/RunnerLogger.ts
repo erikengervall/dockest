@@ -12,10 +12,9 @@ class RunnerLogger extends BaseLogger {
   /**
    * Setup
    */
-  public runTimeSetup = () => this.LOG_LEVEL_NORMAL() && this.logLoading(`Runtime setup initiated`)
+  public runnerSetup = () => this.LOG_LEVEL_NORMAL() && this.logLoading(`Setup initiated`)
 
-  public runTimeSetupSuccess = () =>
-    this.LOG_LEVEL_NORMAL() && this.logSuccess(`Runtime setup successful`)
+  public runnerSetupSuccess = () => this.LOG_LEVEL_NORMAL() && this.logSuccess(`Setup successful`)
 
   public resolveContainerId = (service: string) =>
     this.LOG_LEVEL_NORMAL() && this.logLoading(`Resolving ${service}'s containerId`)
