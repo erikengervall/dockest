@@ -2,7 +2,6 @@ import execa from 'execa'
 import { runnerUtilsLogger } from '../../../loggers'
 import runRunnerCommand from './runRunnerCommand'
 
-const runnerKey = 'mockRunnerKey'
 const command = 'mockCommand'
 const stdout = `mockStdout`
 
@@ -21,11 +20,11 @@ jest.mock('../../../loggers', () => ({
 
 describe('runRunnerCommand', () => {
   it('trabajo', async () => {
-    await runRunnerCommand(runnerKey, command)
+    await runRunnerCommand(command)
 
-    expect(runnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(runnerKey, command)
+    expect(runnerUtilsLogger.customShellCmd).toHaveBeenCalledWith(command)
     expect(execa.shell).toHaveBeenCalledWith(command)
     expect(execa.shell).lastReturnedWith({ stdout })
-    expect(runnerUtilsLogger.customShellCmdSuccess).toHaveBeenCalledWith(runnerKey, stdout)
+    expect(runnerUtilsLogger.customShellCmdSuccess).toHaveBeenCalledWith(stdout)
   })
 })

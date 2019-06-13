@@ -40,7 +40,7 @@ class BaseRunner {
     // Run custom runner commands
     const commands = runner.runnerConfig.commands || []
     for (const cmd of commands) {
-      await runRunnerCommand(runnerKey, cmd)
+      await runRunnerCommand(cmd)
     }
 
     // Round up

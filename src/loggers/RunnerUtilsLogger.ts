@@ -15,12 +15,12 @@ class RunnerUtilsLogger extends BaseLogger {
   public sleepWithLog: logMethod = (reason, progress) =>
     this.LOG_LEVEL_VERBOSE() && this.logLoading(`${reason || 'Sleeping'}: ${progress}`)
 
-  public customShellCmd: logMethod = (runnerKey, cmd) =>
-    this.LOG_LEVEL_NORMAL() && this.logLoading(`${runnerKey}: Executed custom command`, cmd)
+  public customShellCmd: logMethod = cmd =>
+    this.LOG_LEVEL_NORMAL() && this.logLoading(`Executed custom command`, cmd)
 
-  public customShellCmdSuccess: logMethod = (runnerKey, logData) =>
+  public customShellCmdSuccess: logMethod = logData =>
     this.LOG_LEVEL_NORMAL() &&
-    this.logSuccess(`${runnerKey}: Executed custom command successfully with result\n`, logData)
+    this.logSuccess(`Executed custom command successfully with result\n`, logData)
 
   public shellCmd: logMethod = (logData = '') =>
     this.LOG_LEVEL_VERBOSE() &&
