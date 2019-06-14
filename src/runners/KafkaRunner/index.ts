@@ -1,36 +1,41 @@
+import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_HOST } from '../../constants'
 import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
+import { Runner, ZooKeeperRunner } from '../index'
 
 interface RequiredConfigProps {
   service: string
-  topics: string[]
+  dependsOn: Runner[]
 }
 interface DefaultableConfigProps {
-  connectionTimeout: number
   host: string
   port: number
-  ports: { [key: string]: number }
-  commands?: string[]
-  dependsOn?: any
+  ports: { [key: number]: number }
+  commands: string[]
+  connectionTimeout: number
+  autoCreateTopic: boolean
+  deleteTopic: boolean
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
-type KafkaRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
-const DEFAULT_INTERNAL_PORT_PLAINTEXT = 9092
+const DEFAULT_PORT_PLAINTEXT = 9092
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  connectionTimeout: 30,
-  host: 'localhost',
-  port: DEFAULT_INTERNAL_PORT_PLAINTEXT,
+  host: DEFAULT_HOST,
+  port: DEFAULT_PORT_PLAINTEXT,
   ports: {
-    [DEFAULT_INTERNAL_PORT_PLAINTEXT]: DEFAULT_INTERNAL_PORT_PLAINTEXT,
+    [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
   },
+  commands: [],
+  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
+  autoCreateTopic: true,
+  deleteTopic: true,
 }
 
 class KafkaRunner extends BaseRunner {
   public runnerConfig: KafkaRunnerConfig
   public runnerMethods: runnerMethods
 
-  constructor(config: KafkaRunnerConfigUserInput) {
+  constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     super()
 
     this.runnerMethods = {
@@ -43,31 +48,36 @@ class KafkaRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      topics: validateTypes.isArrayOfType(validateTypes.isString),
+      dependsOn: validateTypes.isObject,
     }
     validateConfig(schema, this.runnerConfig)
   }
 
   public getComposeService = (dockerComposeFileName: string) => {
+    const { service, ports, dependsOn, autoCreateTopic, deleteTopic } = this.runnerConfig
+
+    const zkDep = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
+    if (!zkDep) {
+      throw new Error('Gotta have that zookeeperdep') // TODO: Proper naming
+    }
     const {
-      service,
-      ports,
-      dependsOn: {
-        runnerConfig: { service: depService, port: depPort },
-      },
-    } = this.runnerConfig
+      runnerConfig: { service: zkService, port: zkPort },
+    } = zkDep
 
     return {
       [service]: {
         image: getImage(service, dockerComposeFileName),
-        depends_on: [depService],
-        ports: [`${ports[DEFAULT_INTERNAL_PORT_PLAINTEXT]}:${DEFAULT_INTERNAL_PORT_PLAINTEXT}`],
+        depends_on: dependsOn.map(({ runnerConfig: { service } }) => service),
+        ports: [`${ports[DEFAULT_PORT_PLAINTEXT]}:${DEFAULT_PORT_PLAINTEXT}`],
         environment: {
           // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
-          KAFKA_ZOOKEEPER_CONNECT: `${depService}:${depPort}`,
-          KAFKA_ADVERTISED_LISTENERS: `PLAINTEXT://${service}:29092,PLAINTEXT_HOST://localhost:${DEFAULT_INTERNAL_PORT_PLAINTEXT}`,
+          KAFKA_ZOOKEEPER_CONNECT: `${zkService}:${zkPort}`,
+          KAFKA_ADVERTISED_LISTENERS: `PLAINTEXT://${service}:29092,PLAINTEXT_HOST://localhost:${DEFAULT_PORT_PLAINTEXT}`,
 
           KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT',
+
+          KAFKA_AUTO_CREATE_TOPICS_ENABLE: !!autoCreateTopic ? 'true' : 'false',
+          KAFKA_DELETE_TOPIC_ENABLE: !!deleteTopic ? 'true' : 'false',
         },
       },
     }

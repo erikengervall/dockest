@@ -1,5 +1,11 @@
+import {
+  DEFAULT_CONNECTION_TIMEOUT,
+  DEFAULT_HOST,
+  DEFAULT_RESPONSIVENESS_TIMEOUT,
+} from '../../constants'
 import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
+import { Runner } from '../index'
 
 interface RequiredConfigProps {
   service: string
@@ -8,28 +14,29 @@ interface DefaultableConfigProps {
   host: string
   port: number
   password: string
+  dependsOn: Runner[]
   commands: string[]
   connectionTimeout: number
   responsivenessTimeout: number
 }
-type RedisRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_INTERNAL_PORT: number = 6379
+const DEFAULT_PORT: number = 6379
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: 'localhost',
-  port: DEFAULT_INTERNAL_PORT,
+  host: DEFAULT_HOST,
+  port: DEFAULT_PORT,
   password: '',
+  dependsOn: [],
   commands: [],
-  connectionTimeout: 3,
-  responsivenessTimeout: 10,
+  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
+  responsivenessTimeout: DEFAULT_RESPONSIVENESS_TIMEOUT,
 }
 
 class RedisRunner extends BaseRunner {
   public runnerConfig: RedisRunnerConfig
   public runnerMethods: runnerMethods
 
-  constructor(config: RedisRunnerConfigUserInput) {
+  constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     super()
 
     this.runnerConfig = {
@@ -53,7 +60,7 @@ class RedisRunner extends BaseRunner {
     return {
       [service]: {
         image: getImage(service, dockerComposeFileName),
-        ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
+        ports: [`${port}:${DEFAULT_PORT}`],
       },
     }
   }
@@ -62,10 +69,10 @@ class RedisRunner extends BaseRunner {
     const { host: runnerHost, password: runnerPassword } = this.runnerConfig
     const containerId = this.containerId
 
-    // FIXME: Should `-p` be DEFAULT_INTERNAL_PORT or runnerConfig's port?
+    // FIXME: Should `-p` be DEFAULT_PORT or runnerConfig's port?
     const redisCliPingOpts = ` \
                             -h ${runnerHost} \
-                            -p ${DEFAULT_INTERNAL_PORT} \
+                            -p ${DEFAULT_PORT} \
                             ${!!runnerPassword ? `-a ${runnerPassword}` : ''} \
                             PING \
                           `
@@ -86,7 +93,7 @@ export default RedisRunner
 //   const { port, service, password } = runnerConfig
 
 //   const portMapping = ` \
-//                   --publish ${port}:${DEFAULT_INTERNAL_PORT} \
+//                   --publish ${port}:${DEFAULT_PORT} \
 //                 `
 //   const cmd = ` \
 //                 ${defaultDockerComposeRunOpts} \

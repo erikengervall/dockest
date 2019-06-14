@@ -20,6 +20,7 @@ export type runnerMethods = {
 
 class BaseRunner {
   public static setup = async (runner: any, runnerKey: string) => {
+    // Set initial values
     runnerLogger.runnerSetup()
     BaseLogger.runnerKey = `${runnerKey}: ` // FIXME: Consider initializing a logger per runner instead
     runner.runnerKey = runnerKey

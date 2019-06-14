@@ -1,12 +1,15 @@
 import dotenv from 'dotenv'
 import main from './app'
 
-const env: any = dotenv.config().parsed
+const env = dotenv.config().parsed
 const describeFn = env.kafka_enabled === 'true' ? describe : describe.skip
 
 const test = () => {
   it('trabajo', async () => {
-    const result = await main()
+    const indicateConsumption = jest.fn()
+    const indicateProduction = jest.fn()
+
+    const result = await main({ indicateConsumption, indicateProduction })
 
     expect(result).toEqual(
       expect.objectContaining({

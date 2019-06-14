@@ -1,5 +1,11 @@
+import {
+  DEFAULT_CONNECTION_TIMEOUT,
+  DEFAULT_HOST,
+  DEFAULT_RESPONSIVENESS_TIMEOUT,
+} from '../../constants'
 import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
+import { Runner } from '../index'
 
 interface RequiredConfigProps {
   service: string
@@ -10,27 +16,28 @@ interface RequiredConfigProps {
 interface DefaultableConfigProps {
   host: string
   port: number
+  dependsOn: Runner[]
   commands: string[]
   connectionTimeout: number
   responsivenessTimeout: number
 }
-type PostgresRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_INTERNAL_PORT: number = 5432
+const DEFAULT_PORT: number = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: 'localhost',
-  port: DEFAULT_INTERNAL_PORT,
+  host: DEFAULT_HOST,
+  port: DEFAULT_PORT,
+  dependsOn: [],
   commands: [],
-  connectionTimeout: 3,
-  responsivenessTimeout: 10,
+  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
+  responsivenessTimeout: DEFAULT_RESPONSIVENESS_TIMEOUT,
 }
 
 class PostgresRunner extends BaseRunner {
   public runnerConfig: PostgresRunnerConfig
   public runnerMethods: runnerMethods
 
-  constructor(configUserInput: PostgresRunnerConfigUserInput) {
+  constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     super()
 
     this.runnerConfig = {
@@ -57,7 +64,7 @@ class PostgresRunner extends BaseRunner {
     return {
       [service]: {
         image: getImage(service, dockerComposeFileName),
-        ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
+        ports: [`${port}:${DEFAULT_PORT}`],
         environment: {
           POSTGRES_DB: database,
           POSTGRES_USER: username,
@@ -91,7 +98,7 @@ export default PostgresRunner
 // const getComposeRunCommand = (runnerConfig: PostgresRunnerConfig): string => {
 //   const { port, service, database, username, password } = runnerConfig
 //   const portMapping = ` \
-//                 --publish ${port}:${DEFAULT_INTERNAL_PORT} \
+//                 --publish ${port}:${DEFAULT_PORT} \
 //                 `
 //   const env = ` \
 //                 -e POSTGRES_DB=${database} \

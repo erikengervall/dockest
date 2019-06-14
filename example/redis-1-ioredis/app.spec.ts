@@ -3,7 +3,7 @@ import main from './app'
 // @ts-ignore
 import { seedCake } from './data.json'
 
-const env: any = dotenv.config().parsed
+const env = dotenv.config().parsed
 const describeFn = env.redis1ioredis_enabled === 'true' ? describe : describe.skip
 
 const test = async () => {

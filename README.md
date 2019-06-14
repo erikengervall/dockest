@@ -193,11 +193,9 @@ new RedisRunner({
 ```TypeScript
 new KafkaRunner({
   service: 'kafka1confluentinc',
-  topics: ['topic:1:1'], // topicName:partitions:replicas
+  dependsOn, // TODO:
   ports: {
     '9092': '9092', // kafka
-    '9093': '9093', // kafka
-    '9094': '9094', // kafka
   },
 })
 ```

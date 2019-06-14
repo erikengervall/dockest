@@ -4,7 +4,7 @@ import main from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
 
-const env: any = dotenv.config().parsed
+const env = dotenv.config().parsed
 const describeFn = env.postgres1sequelize_enabled === 'true' ? describe : describe.skip
 
 const test = async () => {

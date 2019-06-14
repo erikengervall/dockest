@@ -42,34 +42,26 @@ const redis1ioredisRunner = new RedisRunner({
   password: env.redis1ioredis_password,
 })
 
-// ZooKeeper must run before Kafka since Kafka depends on it
-const ZookeeperService = env.zookeeper1confluentinc_service
-// const ZookeeperHost = env.zookeeper1confluentinc_host
-const ZookeeperPort = Number(env.zookeeper1confluentinc_port)
-// const KAFKA_ZOOKEEPER_CONNECT = `${ZookeeperService}:${ZookeeperPort}`
-
 const zookeeper1confluentincRunner = new ZooKeeperRunner({
-  service: ZookeeperService,
-  port: ZookeeperPort,
+  service: env.zookeeper1confluentinc_service,
+  port: Number(env.zookeeper1confluentinc_port),
 })
 
 const kafka1confluentincRunner = new KafkaRunner({
   service: env.kafka1confluentinc_service,
-  topics: [env.kafka1confluentinc_topic],
   ports: {
-    '9092': env.kafka1confluentinc_port1,
-    // '9093': env.kafka1confluentinc_port2,
-    // '9094': env.kafka1confluentinc_port3,
+    9092: Number(env.kafka1confluentinc_port1),
+    // 9093: Number(env.kafka1confluentinc_port2),
+    // 9094: Number(env.kafka1confluentinc_port3),
   },
-  // KAFKA_ZOOKEEPER_CONNECT,
-  dependsOn: zookeeper1confluentincRunner,
+  dependsOn: [zookeeper1confluentincRunner],
 })
 
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
   dev: {
-    idling: env.CI === 'true' ? false : false,
+    idling: env.CI === 'true' || false, // Shouldn't idle in the pipeline
   },
   jest: {
     // tslint:disable-next-line
@@ -82,7 +74,6 @@ const dockest = new Dockest({
       : {}),
     ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knexRunner } : {}),
     ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredisRunner } : {}),
-    ...(env.zookeeper1confluentinc_enabled === 'true' ? { zookeeper1confluentincRunner } : {}),
     ...(env.kafka1confluentinc_enabled === 'true' ? { kafka1confluentincRunner } : {}),
   },
 })

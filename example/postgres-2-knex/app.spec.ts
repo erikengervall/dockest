@@ -3,7 +3,7 @@ import main from './app'
 // @ts-ignore
 import { seedBanana } from './data.json'
 
-const env: any = dotenv.config().parsed
+const env = dotenv.config().parsed
 const describeFn = env.postgres2knex_enabled === 'true' ? describe : describe.skip
 
 const test = () => {

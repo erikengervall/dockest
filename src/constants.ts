@@ -1,4 +1,4 @@
-const ICONS: { [key: string]: string } = {
+export const ICONS: { [key: string]: string } = {
   VERBOSE: '🗣 ',
   LOADING: '⏳',
   SUCCESS: '✅',
@@ -9,7 +9,7 @@ const ICONS: { [key: string]: string } = {
   INFO: 'ℹ️',
 }
 
-const COLORS: { [key: string]: { [key: string]: string } } = {
+export const COLORS: { [key: string]: { [key: string]: string } } = {
   MISC: {
     RESET: '\x1b[0m',
     BRIGHT: '\x1b[1m',
@@ -41,18 +41,20 @@ const COLORS: { [key: string]: { [key: string]: string } } = {
   },
 }
 
-const defaultDockerComposeRunOpts = Object.values({
+export const DEFAULT_CONNECTION_TIMEOUT = 5
+export const DEFAULT_RESPONSIVENESS_TIMEOUT = 30
+export const DEFAULT_HOST = 'localhost'
+
+export const defaultDockerComposeRunOpts = Object.values({
   run: 'docker-compose run',
   // cleanUp: '--rm',
   runInBackground: '--detach',
   doNotRunLinkedServices: '--no-deps',
 }).join(' ')
 
-const LOG_LEVEL = {
+export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,
   NORMAL: 2,
   VERBOSE: 3,
 }
-
-export { ICONS, COLORS, defaultDockerComposeRunOpts, LOG_LEVEL }

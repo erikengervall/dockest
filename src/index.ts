@@ -5,12 +5,12 @@ import { ConfigurationError, DockestError } from './errors'
 import setupExitHandler, { ErrorPayload } from './exitHandler'
 import JestRunner, { JestConfig } from './jest'
 import { BaseLogger } from './loggers'
-import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
+import { KafkaRunner, PostgresRunner, RedisRunner, Runner, ZooKeeperRunner } from './runners'
 import BaseRunner from './runners/BaseRunner'
 import { execa, sleep, sleepWithLog, teardownSingle, validateTypes } from './utils'
 
 interface UserRunners {
-  [runnerKey: string]: PostgresRunner | RedisRunner | KafkaRunner | ZooKeeperRunner
+  [runnerKey: string]: Runner
 }
 
 interface RequiredConfigProps {
@@ -95,24 +95,22 @@ class Dockest {
   }
 
   private generateComposeFile = (runners: UserRunners) => {
-    let composeFile = {
+    const composeFile = {
       version: '3',
       services: {},
     }
 
-    for (const runnerKey of Object.keys(runners)) {
-      const runner = runners[runnerKey]
+    for (const runner of Object.values(runners)) {
       const {
+        runnerConfig: { dependsOn },
         runnerMethods: { getComposeService },
       } = runner
+      const service = getComposeService(Dockest.config.dockerComposeFileName)
+      const depService = dependsOn
 
-      composeFile = {
-        ...composeFile,
-
-        services: {
-          ...composeFile.services,
-          ...getComposeService(Dockest.config.dockerComposeFileName),
-        },
+      composeFile.services = {
+        ...composeFile.services,
+        ...service,
       }
     }
 

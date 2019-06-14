@@ -2,9 +2,9 @@ import net from 'net'
 import { DockestError } from '../../../errors'
 import { runnerLogger } from '../../../loggers'
 import { sleep } from '../../../utils/index'
-import { Runners } from '../../index'
+import { Runner } from '../../index'
 
-const checkConnection = async (runner: Runners): Promise<void> => {
+const checkConnection = async (runner: Runner): Promise<void> => {
   const {
     runnerConfig: { service, connectionTimeout, host, port },
   } = runner

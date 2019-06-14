@@ -1,23 +1,26 @@
+import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_HOST } from '../../constants'
 import { getImage, validateConfig, validateTypes } from '../../utils'
 import BaseRunner, { runnerMethods } from '../BaseRunner'
+import { Runner } from '../index'
 
 interface RequiredConfigProps {
   service: string
 }
 interface DefaultableConfigProps {
-  connectionTimeout: number
   host: string
   port: number
-  commands: []
+  connectionTimeout: number
+  dependsOn: Runner[]
+  commands: string[]
 }
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
-type ZooKeeperRunnerConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
 
 const DEFAULT_INTERNAL_PORT: number = 2181
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  connectionTimeout: 30,
-  host: 'localhost',
+  host: DEFAULT_HOST,
   port: DEFAULT_INTERNAL_PORT,
+  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
+  dependsOn: [],
   commands: [],
 }
 
@@ -25,7 +28,7 @@ class ZooKeeperRunner extends BaseRunner {
   public runnerConfig: ZooKeeperRunnerConfig
   public runnerMethods: runnerMethods
 
-  constructor(config: ZooKeeperRunnerConfigUserInput) {
+  constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     super()
 
     this.runnerConfig = {

@@ -2,7 +2,6 @@ import ZooKeeperRunner from './index'
 
 const config = {
   service: '_',
-  host: '_',
 }
 const ZooKeeperRunner1 = new ZooKeeperRunner(config)
 const ZooKeeperRunner2 = new ZooKeeperRunner(config)
