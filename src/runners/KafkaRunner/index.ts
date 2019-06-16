@@ -48,7 +48,7 @@ class KafkaRunner extends BaseRunner {
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
-      dependsOn: validateTypes.isObject,
+      dependsOn: validateTypes.isArray,
     }
     validateConfig(schema, this.runnerConfig)
   }
@@ -78,6 +78,9 @@ class KafkaRunner extends BaseRunner {
 
           KAFKA_AUTO_CREATE_TOPICS_ENABLE: !!autoCreateTopic ? 'true' : 'false',
           KAFKA_DELETE_TOPIC_ENABLE: !!deleteTopic ? 'true' : 'false',
+
+          KAFKA_BROKER_ID: 1,
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
         },
       },
     }

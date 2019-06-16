@@ -15,12 +15,13 @@ const resolveContainerId = async (service: string): Promise<string> => {
 
     try {
       containerId = await getContainerId(service)
+      console.log({ typeof: typeof containerId !== 'string', containerId, len: containerId.length })
 
       if (
         typeof containerId !== 'string' ||
         (typeof containerId === 'string' && containerId.length === 0)
       ) {
-        throw new Error('no bueno')
+        throw new Error('Could not resolve')
       }
 
       runnerLogger.resolveContainerIdSuccess(service, containerId)

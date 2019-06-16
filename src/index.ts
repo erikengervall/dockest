@@ -106,11 +106,21 @@ class Dockest {
         runnerMethods: { getComposeService },
       } = runner
       const service = getComposeService(Dockest.config.dockerComposeFileName)
-      const depService = dependsOn
+
+      const depServices = dependsOn.reduce((acc: { [key: string]: object }, runner: Runner) => {
+        const {
+          runnerConfig: { service },
+          runnerMethods: { getComposeService },
+        } = runner
+        acc[service] = getComposeService(Dockest.config.dockerComposeFileName)[service]
+
+        return acc
+      }, {})
 
       composeFile.services = {
         ...composeFile.services,
         ...service,
+        ...depServices,
       }
     }
 
@@ -147,7 +157,16 @@ class Dockest {
   private teardownRunners = async (runners: UserRunners) => {
     for (const runnerKey of Object.keys(runners)) {
       const runner = runners[runnerKey]
-      const { containerId } = runner
+      const {
+        containerId,
+        runnerConfig: { dependsOn },
+      } = runner
+
+      for (const depService of dependsOn) {
+        const { containerId, runnerKey } = depService
+
+        await teardownSingle(containerId, runnerKey)
+      }
 
       await teardownSingle(containerId, runnerKey)
     }

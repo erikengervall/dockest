@@ -17,7 +17,7 @@ class RunnerLogger extends BaseLogger {
   public runnerSetupSuccess = () => this.LOG_LEVEL_NORMAL() && this.logSuccess(`Setup successful`)
 
   public resolveContainerId = (service: string) =>
-    this.LOG_LEVEL_NORMAL() && this.logLoading(`Resolving ${service}'s containerId`)
+    this.LOG_LEVEL_NORMAL() && this.logLoading(`Attempting to resolve ${service}'s containerId`)
 
   public resolveContainerIdSuccess = (service: string, containerId: string) =>
     this.LOG_LEVEL_NORMAL() && this.logSuccess(`${service}'s containerId: ${containerId}`)
@@ -66,12 +66,11 @@ class RunnerLogger extends BaseLogger {
    * Misc
    */
   public shellCmd = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() &&
-    this.logLoading(`Executing following shell script`, this.trim(logData))
+    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, this.trim(logData))
 
   public shellCmdSuccess = (logData = '') =>
     this.LOG_LEVEL_VERBOSE() &&
-    this.logSuccess(`Executed shell script with result`, this.trim(logData))
+    this.logSuccess(`Executed shell script with result:`, this.trim(logData))
 }
 
 const singleton = new RunnerLogger()

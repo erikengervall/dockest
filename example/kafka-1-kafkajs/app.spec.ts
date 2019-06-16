@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import main from './app'
 
 const env = dotenv.config().parsed
-const describeFn = env.kafka_enabled === 'true' ? describe : describe.skip
+const describeFn = env.kafka1confluentinc_enabled === 'true' ? describe : describe.skip
 
 const test = () => {
   it('trabajo', async () => {

@@ -2,33 +2,26 @@ import dotenv from 'dotenv'
 
 /* tslint:disable */
 // @ts-ignore
-const { Kafka } = require('kafkajs')
+const { Kafka, logLevel } = require('kafkajs')
 
 const env: any = dotenv.config().parsed
 
 const createConsumer = async ({ kafka, indicateConsumption }) => {
-  const consumer = kafka.consumer({ groupId: env.kafka_consumer_group_id })
+  const consumer = kafka.consumer({ groupId: env.kafka1confluentinc_consumer_group_id })
 
   await consumer.connect()
-  await consumer.subscribe({ topic: env.kafka_topic })
+  await consumer.subscribe({ topic: env.kafka1confluentinc_topic, fromBeginning: true })
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      console.log('eachMessage ran', {
+      const payload = {
         topic,
         partition,
         messageKey: message.key.toString(),
         messageValue: message.value.toString(),
         messageHeaders: message.headers,
-      })
-
-      indicateConsumption({
-        indicateConsumption: true,
-        topic,
-        partition,
-        messageKey: message.key.toString(),
-        messageValue: message.value.toString(),
-        messageHeaders: message.headers,
-      })
+      }
+      console.log('eachMessage ran with payload:', payload)
+      indicateConsumption(payload)
     },
   })
 
@@ -38,26 +31,25 @@ const createConsumer = async ({ kafka, indicateConsumption }) => {
 const createMessageProducer = ({ kafka, indicateProduction }) => async ({ message }) => {
   const producer = kafka.producer()
   await producer.connect()
-  await producer.send({
-    topic: env.kafka_topic,
+  const payload = {
+    topic: env.kafka1confluentinc_topic,
     messages: [{ key: 'arbitrary', value: message }],
-  })
+  }
+  await producer.send(payload)
   await producer.disconnect()
 
-  indicateProduction({
-    indicateProduction: true,
-    topic: env.kafka_topic,
-    messages: [{ key: 'arbitrary', value: message }],
-  })
+  console.log('produced message with payload:', payload)
+  indicateProduction(payload)
 }
 
 const setup = async ({ indicateConsumption, indicateProduction }) => {
   const kafka = new Kafka({
-    clientId: env.kafka_client_id,
-    brokers: [env.kafka_broker1],
+    logLevel: logLevel.DEBUG,
+    clientId: env.kafka1confluentinc_client_id,
+    brokers: [env.kafka1confluentinc_broker1],
     retry: {
-      initialRetryTime: 1000,
-      retries: 10,
+      initialRetryTime: 1200,
+      retries: 100,
     },
   })
 

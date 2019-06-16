@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 
 const env: any = dotenv.config().parsed
+const IS_CLI = env.CI === 'true'
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
 const postgres1sequelizeRunner = new PostgresRunner({
@@ -61,7 +62,7 @@ const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
   dev: {
-    idling: env.CI === 'true' || false, // Shouldn't idle in the pipeline
+    idling: IS_CLI || true,
   },
   jest: {
     // tslint:disable-next-line
@@ -69,10 +70,8 @@ const dockest = new Dockest({
     verbose: true,
   },
   runners: {
-    ...(env.postgres1sequelize_enabled === 'true' || env.CI === 'true'
-      ? { postgres1sequelizeRunner }
-      : {}),
-    ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knexRunner } : {}),
+    ...(env.postgres1sequelize_enabled === 'true' || IS_CLI ? { postgres1sequelizeRunner } : {}),
+    ...(env.postgres2knex_enabled === 'true' || IS_CLI ? { postgres2knexRunner } : {}),
     ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredisRunner } : {}),
     ...(env.kafka1confluentinc_enabled === 'true' ? { kafka1confluentincRunner } : {}),
   },
