@@ -1,12 +1,12 @@
 import net from 'net'
-import { DockestError } from '../../../errors'
-import { runnerLogger } from '../../../loggers'
-import { sleep } from '../../../utils/index'
-import { Runner } from '../../index'
+import { DockestError } from '../errors'
+import { Runner } from '../runners'
+import { sleep } from './index'
 
-const checkConnection = async (runner: Runner): Promise<void> => {
+const checkConnection = async (runner: Runner) => {
   const {
     runnerConfig: { service, connectionTimeout, host, port },
+    runnerLogger,
   } = runner
 
   const recurse = async (connectionTimeout: number) => {

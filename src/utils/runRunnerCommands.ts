@@ -1,0 +1,19 @@
+import execa from 'execa'
+import { Runner } from '../runners/index'
+
+const runRunnerCommands = async (runner: Runner): Promise<void> => {
+  const {
+    runnerConfig: { commands = [] },
+    runnerLogger,
+  } = runner
+
+  for (const cmd of commands) {
+    runnerLogger.customShellCmd(cmd)
+
+    const { stdout: result } = await execa.shell(cmd)
+
+    runnerLogger.customShellCmdSuccess(result)
+  }
+}
+
+export default runRunnerCommands

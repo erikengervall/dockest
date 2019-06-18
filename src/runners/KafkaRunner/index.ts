@@ -1,7 +1,9 @@
 import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_HOST } from '../../constants'
+import { ConfigurationError } from '../../errors'
+import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import BaseRunner, { runnerMethods } from '../BaseRunner'
 import { Runner, ZooKeeperRunner } from '../index'
+import { GetComposeService } from '../types'
 
 interface RequiredConfigProps {
   service: string
@@ -31,20 +33,15 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   deleteTopic: true,
 }
 
-class KafkaRunner extends BaseRunner {
+class KafkaRunner {
   public runnerConfig: KafkaRunnerConfig
-  public runnerMethods: runnerMethods
+  public runnerLogger: RunnerLogger
+  public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    super()
-
-    this.runnerMethods = {
-      getComposeService: this.getComposeService,
-    }
-    this.runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...config,
-    }
+    this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
+    this.runnerLogger = new RunnerLogger(this)
+    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
@@ -53,12 +50,12 @@ class KafkaRunner extends BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService = (dockerComposeFileName: string) => {
+  public getComposeService: GetComposeService = dockerComposeFileName => {
     const { service, ports, dependsOn, autoCreateTopic, deleteTopic } = this.runnerConfig
 
     const zkDep = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
     if (!zkDep) {
-      throw new Error('Gotta have that zookeeperdep') // TODO: Proper naming
+      throw new ConfigurationError('Could not find ZooKeeper dependency')
     }
     const {
       runnerConfig: { service: zkService, port: zkPort },
@@ -99,30 +96,3 @@ export default KafkaRunner
 // const DEFAULT_INTERNAL_PORT_SASL_SSL = 9094
 // SSL://${service}:29093,SSL_HOST://${host}:${DEFAULT_INTERNAL_PORT_SSL},\
 // SASL_SSL://${service}:29094,SASL_SSL_HOST://${host}:${DEFAULT_INTERNAL_PORT_SASL_SSL" \
-
-/**
- * DEPRECATED
- */
-// const getComposeRunCommand = (runnerConfig: KafkaRunnerConfig): string => {
-//   const { host, ports, service } = runnerConfig
-
-//   const portMapping = Object.keys(ports).reduce((acc, port) => {
-//     const external = ports[port]
-//     const internal = port
-
-//     return `${acc} --publish ${external}:${internal}`
-//   }, '')
-
-//   const env = ` \
-//                 -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT \
-//                 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${service}:29092,PLAINTEXT_HOST://${host}:9092 \
-//               `
-
-//   const cmd = ` \
-//                 ${portMapping} \
-//                 ${env}
-//                 ${service} \
-//               `
-
-//   return trimmer(cmd)
-// }

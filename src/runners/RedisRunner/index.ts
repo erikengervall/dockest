@@ -3,8 +3,8 @@ import {
   DEFAULT_HOST,
   DEFAULT_RESPONSIVENESS_TIMEOUT,
 } from '../../constants'
+import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import BaseRunner, { runnerMethods } from '../BaseRunner'
 import { Runner } from '../index'
 
 interface RequiredConfigProps {
@@ -15,6 +15,7 @@ interface DefaultableConfigProps {
   port: number
   password: string
   dependsOn: Runner[]
+  image: string
   commands: string[]
   connectionTimeout: number
   responsivenessTimeout: number
@@ -27,26 +28,21 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   port: DEFAULT_PORT,
   password: '',
   dependsOn: [],
+  image: '',
   commands: [],
   connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
   responsivenessTimeout: DEFAULT_RESPONSIVENESS_TIMEOUT,
 }
 
-class RedisRunner extends BaseRunner {
+class RedisRunner {
   public runnerConfig: RedisRunnerConfig
-  public runnerMethods: runnerMethods
+  public runnerLogger: RunnerLogger
+  public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    super()
-
-    this.runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...config,
-    }
-    this.runnerMethods = {
-      getComposeService: this.getComposeService,
-      createResponsivenessCheckCmd: this.createResponsivenessCheckCmd,
-    }
+    this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
+    this.runnerLogger = new RunnerLogger(this)
+    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
@@ -85,22 +81,3 @@ class RedisRunner extends BaseRunner {
 }
 
 export default RedisRunner
-
-/**
- * DEPRECATED
- */
-// const getComposeRunCommand = (runnerConfig: RedisRunnerConfig) => {
-//   const { port, service, password } = runnerConfig
-
-//   const portMapping = ` \
-//                   --publish ${port}:${DEFAULT_PORT} \
-//                 `
-//   const cmd = ` \
-//                 ${defaultDockerComposeRunOpts} \
-//                 ${portMapping} \
-//                 ${service} \
-//                 ${!!password ? `--requirepass ${password}` : ''} \
-//               `
-
-//   return trimmer(cmd)
-// }

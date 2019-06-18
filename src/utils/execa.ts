@@ -1,14 +1,15 @@
 import execa from 'execa'
-import { runnerUtilsLogger } from '../loggers'
+import { globalLogger } from '../loggers'
 
-const execaWithLogging = async (cmd: string): Promise<string> => {
+const execaWrapper = async (cmd: string): Promise<string> => {
   const trimmedCmd = cmd.replace(/\s+/g, ' ').trim()
+  globalLogger.shellCmd(trimmedCmd)
 
-  runnerUtilsLogger.shellCmd(trimmedCmd)
   const { stdout: result } = await execa.shell(trimmedCmd)
-  runnerUtilsLogger.shellCmdSuccess(result)
+
+  globalLogger.shellCmdSuccess(result)
 
   return result
 }
 
-export default execaWithLogging
+export default execaWrapper

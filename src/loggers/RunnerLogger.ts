@@ -1,12 +1,9 @@
-import BaseLogger from './BaseLogger'
+import { Runner } from '../runners/index'
+import BaseLogger, { logMethod } from './BaseLogger'
 
 class RunnerLogger extends BaseLogger {
-  private static runnerLoggerInstance: RunnerLogger
-
-  constructor() {
-    super()
-
-    return RunnerLogger.runnerLoggerInstance || (RunnerLogger.runnerLoggerInstance = this)
+  constructor(runner: Runner) {
+    super(runner)
   }
 
   /**
@@ -65,14 +62,13 @@ class RunnerLogger extends BaseLogger {
   /**
    * Misc
    */
-  public shellCmd = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, this.trim(logData))
 
-  public shellCmdSuccess = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() &&
-    this.logSuccess(`Executed shell script with result:`, this.trim(logData))
+  public customShellCmd: logMethod = cmd =>
+    this.LOG_LEVEL_NORMAL() && this.logLoading(`Executed custom command`, cmd)
+
+  public customShellCmdSuccess: logMethod = logData =>
+    this.LOG_LEVEL_NORMAL() &&
+    this.logSuccess(`Executed custom command successfully with result\n`, logData)
 }
 
-const singleton = new RunnerLogger()
-export { RunnerLogger }
-export default singleton
+export default RunnerLogger

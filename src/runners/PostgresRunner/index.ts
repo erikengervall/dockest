@@ -3,9 +3,10 @@ import {
   DEFAULT_HOST,
   DEFAULT_RESPONSIVENESS_TIMEOUT,
 } from '../../constants'
+import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import BaseRunner, { runnerMethods } from '../BaseRunner'
 import { Runner } from '../index'
+import { GetComposeService } from '../types'
 
 interface RequiredConfigProps {
   service: string
@@ -33,21 +34,15 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   responsivenessTimeout: DEFAULT_RESPONSIVENESS_TIMEOUT,
 }
 
-class PostgresRunner extends BaseRunner {
+class PostgresRunner {
   public runnerConfig: PostgresRunnerConfig
-  public runnerMethods: runnerMethods
+  public runnerLogger: RunnerLogger
+  public containerId: string
 
   constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    super()
-
-    this.runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...configUserInput,
-    }
-    this.runnerMethods = {
-      getComposeService: this.getComposeService,
-      createResponsivenessCheckCmd: this.createResponsivenessCheckCmd,
-    }
+    this.runnerConfig = { ...DEFAULT_CONFIG, ...configUserInput }
+    this.runnerLogger = new RunnerLogger(this)
+    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
@@ -58,7 +53,7 @@ class PostgresRunner extends BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService = (dockerComposeFileName: string) => {
+  public getComposeService: GetComposeService = dockerComposeFileName => {
     const { service, port, database, username, password } = this.runnerConfig
 
     return {
@@ -91,26 +86,3 @@ class PostgresRunner extends BaseRunner {
 }
 
 export default PostgresRunner
-
-/**
- * DEPRECATED
- */
-// const getComposeRunCommand = (runnerConfig: PostgresRunnerConfig): string => {
-//   const { port, service, database, username, password } = runnerConfig
-//   const portMapping = ` \
-//                 --publish ${port}:${DEFAULT_PORT} \
-//                 `
-//   const env = ` \
-//                 -e POSTGRES_DB=${database} \
-//                 -e POSTGRES_USER=${username} \
-//                 -e POSTGRES_PASSWORD=${password} \
-//               `
-//   const cmd = ` \
-//                 ${defaultDockerComposeRunOpts} \
-//                 ${portMapping} \
-//                 ${env} \
-//                 ${service} \
-//               `
-
-//   return trimmer(cmd)
-// }

@@ -3,6 +3,8 @@ import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
 import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
 
+export { ComposeFile, GetComposeService } from './types'
+
 export type RunnerConfig =
   | KafkaRunnerConfig
   | PostgresRunnerConfig

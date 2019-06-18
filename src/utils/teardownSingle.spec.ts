@@ -1,10 +1,16 @@
 import execa from 'execa'
-import { globalLogger, runnerUtilsLogger } from '../loggers'
+import { globalLogger } from '../loggers'
+import PostgresRunner from '../runners/PostgresRunner'
 import teardownSingle from './teardownSingle'
 
-const runnerKey = 'mockRunnerKey'
-const containerId = 'mockContainerId'
 const stdout = `mockStdout`
+const postgresRunner = new PostgresRunner({
+  service: '_',
+  username: '_',
+  password: '_',
+  database: '_',
+})
+postgresRunner.containerId = 'mockContainerId'
 
 jest.mock('execa', () => ({
   shell: jest.fn(() => ({
@@ -15,6 +21,8 @@ jest.mock('execa', () => ({
 jest.mock('../loggers', () => ({
   globalLogger: {
     error: jest.fn(),
+    shellCmd: jest.fn(),
+    shellCmdSuccess: jest.fn(),
   },
   runnerLogger: {
     teardownSingle: jest.fn(),
@@ -23,10 +31,6 @@ jest.mock('../loggers', () => ({
     stopContainerSuccess: jest.fn(),
     removeContainer: jest.fn(),
     removeContainerSuccess: jest.fn(),
-  },
-  runnerUtilsLogger: {
-    shellCmd: jest.fn(),
-    shellCmdSuccess: jest.fn(),
   },
 }))
 
@@ -38,11 +42,11 @@ describe('teardownSingle', () => {
 
   describe('happy', () => {
     it('should work', async () => {
-      await teardownSingle(containerId, runnerKey)
+      await teardownSingle(postgresRunner)
 
-      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
+      expect(globalLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
       expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
-      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(globalLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(globalLogger.error).not.toHaveBeenCalled()
     })
@@ -56,11 +60,11 @@ describe('teardownSingle', () => {
         throw error
       })
 
-      await teardownSingle(containerId, runnerKey)
+      await teardownSingle(postgresRunner)
 
-      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
+      expect(globalLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
       expect(globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/stop/), error)
-      expect(runnerUtilsLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(globalLogger.shellCmd).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
       expect(globalLogger.error).toHaveBeenCalledWith(expect.stringMatching(/remove/), error)
     })
   })

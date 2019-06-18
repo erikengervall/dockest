@@ -1,5 +1,5 @@
 import { ConfigurationError } from './errors'
-import { jestLogger } from './loggers'
+import { globalLogger } from './loggers'
 
 interface JestResult {
   results: {
@@ -55,22 +55,22 @@ class JestRunner {
     const jest = JestRunner.config.lib
     let success = false
 
-    jestLogger.success(`Dependencies up and running, running Jest`)
+    globalLogger.jestSuccess(`Dependencies up and running, running Jest`)
 
     try {
       const jestResult: JestResult = await jest.runCLI(jestOptions, jestOptions.projects)
 
       if (!jestResult.results.success) {
-        jestLogger.failed(`Jest test(s) failed`)
+        globalLogger.jestFailed(`Jest test(s) failed`)
 
         success = false
       } else {
-        jestLogger.success(`Jest test(s) successful`)
+        globalLogger.jestSuccess(`Jest test(s) successful`)
 
         success = true
       }
     } catch (error) {
-      jestLogger.error(`Failed to run Jest`, error)
+      globalLogger.jestError(`Failed to run Jest`, error)
 
       success = false
     }

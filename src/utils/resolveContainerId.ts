@@ -1,12 +1,16 @@
-import { DockestError } from '../../../errors'
-import { runnerLogger } from '../../../loggers'
-import { execa, sleep } from '../../../utils/index'
+import { DockestError } from '../errors'
+import { Runner } from '../runners'
+import { execa, sleep } from './index'
 
-const resolveContainerId = async (service: string): Promise<string> => {
+const resolveContainerId = async (runner: Runner): Promise<void> => {
+  const {
+    runnerConfig: { service },
+    runnerLogger,
+  } = runner
   const timeout = 30
-
   let containerId = ''
-  const recurse = async (timeout: number): Promise<string> => {
+
+  const recurse = async (timeout: number): Promise<void> => {
     runnerLogger.resolveContainerId(service)
 
     if (timeout <= 0) {
@@ -15,7 +19,6 @@ const resolveContainerId = async (service: string): Promise<string> => {
 
     try {
       containerId = await getContainerId(service)
-      console.log({ typeof: typeof containerId !== 'string', containerId, len: containerId.length })
 
       if (
         typeof containerId !== 'string' ||
@@ -32,10 +35,10 @@ const resolveContainerId = async (service: string): Promise<string> => {
       await recurse(timeout)
     }
 
-    return containerId
+    runner.containerId = containerId
   }
 
-  return recurse(timeout)
+  recurse(timeout)
 }
 
 const getContainerId = async (serviceName: string): Promise<string> => {

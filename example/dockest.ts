@@ -69,12 +69,12 @@ const dockest = new Dockest({
     lib: require('jest'),
     verbose: true,
   },
-  runners: {
-    ...(env.postgres1sequelize_enabled === 'true' || IS_CLI ? { postgres1sequelizeRunner } : {}),
-    ...(env.postgres2knex_enabled === 'true' || IS_CLI ? { postgres2knexRunner } : {}),
-    ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredisRunner } : {}),
-    ...(env.kafka1confluentinc_enabled === 'true' ? { kafka1confluentincRunner } : {}),
-  },
+  runners: [
+    ...(env.postgres1sequelize_enabled === 'true' || IS_CLI ? [postgres1sequelizeRunner] : []),
+    ...(env.postgres2knex_enabled === 'true' || IS_CLI ? [postgres2knexRunner] : []),
+    ...(env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
+    ...(env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
+  ],
 })
 
 dockest.run()

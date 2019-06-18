@@ -1,6 +1,6 @@
 import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_HOST } from '../../constants'
+import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import BaseRunner, { runnerMethods } from '../BaseRunner'
 import { Runner } from '../index'
 
 interface RequiredConfigProps {
@@ -24,20 +24,15 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
 }
 
-class ZooKeeperRunner extends BaseRunner {
+class ZooKeeperRunner {
   public runnerConfig: ZooKeeperRunnerConfig
-  public runnerMethods: runnerMethods
+  public runnerLogger: RunnerLogger
+  public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    super()
-
-    this.runnerConfig = {
-      ...DEFAULT_CONFIG,
-      ...config,
-    }
-    this.runnerMethods = {
-      getComposeService: this.getComposeService,
-    }
+    this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
+    this.runnerLogger = new RunnerLogger(this)
+    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
@@ -62,26 +57,3 @@ class ZooKeeperRunner extends BaseRunner {
 
 export { ZooKeeperRunnerConfig }
 export default ZooKeeperRunner
-
-/**
- * DEPRECATED
- */
-// const getComposeRunCommand = (runnerConfig: ZooKeeperRunnerConfig): string => {
-//   const { port, service } = runnerConfig
-
-//   const portMapping = `--publish ${port}:${DEFAULT_INTERNAL_PORT}`
-
-//   // https://docs.confluent.io/current/installation/docker/config-reference.html#required-zk-settings
-//   const env = ` \
-//                 -e ZOOKEEPER_CLIENT_PORT=${port} \
-//               `
-
-//   const cmd = ` \
-//                 ${defaultDockerComposeRunOpts} \
-//                 ${portMapping} \
-//                 ${env} \
-//                 ${service} \
-//               `
-
-//   return trimmer(cmd)
-// }

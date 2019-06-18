@@ -33,11 +33,8 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
       config.exitHandler(error)
     }
 
-    for (const runnerKey of Object.keys(runners)) {
-      const runner = runners[runnerKey]
-      const { containerId } = runner
-
-      await teardownSingle(containerId, runnerKey)
+    for (const runner of runners) {
+      await teardownSingle(runner)
     }
 
     process.exit(errorPayload.code || 1)

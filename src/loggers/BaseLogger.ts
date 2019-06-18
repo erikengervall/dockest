@@ -1,6 +1,7 @@
 // tslint:disable:no-console
 
 import { COLORS, ICONS, LOG_LEVEL } from '../constants'
+import { Runner } from '../runners/index'
 
 const { LOADING, SUCCESS, INFO, FAILED } = ICONS
 const {
@@ -13,11 +14,10 @@ type logMethod = (message: string, logData?: any) => void
 class BaseLogger {
   // Due to Jest running in a node VM, the logLevel has to be defaulted
   public static logLevel: number = LOG_LEVEL.NORMAL
-  public static runnerKey: string = ''
-  private static baseLoggerInstance: BaseLogger
+  private service: string = ''
 
-  constructor() {
-    return BaseLogger.baseLoggerInstance || (BaseLogger.baseLoggerInstance = this)
+  constructor(runner?: Runner) {
+    this.service = runner ? runner.runnerConfig.service : ''
   }
 
   public LOG_LEVEL_NOTHING = () => BaseLogger.logLevel >= LOG_LEVEL.NOTHING
@@ -29,16 +29,16 @@ class BaseLogger {
     typeof str === 'string' ? str.replace(/\s+/g, ' ').trim() : str
 
   public logSuccess: logMethod = (m, d) =>
-    console.log(`${SUCCESS} ${BRIGHT}${BaseLogger.runnerKey}${m}${RESET}`, this.defaultD(d), `\n`)
+    console.log(`${SUCCESS} ${BRIGHT}${this.service}${m}${RESET}`, this.defaultD(d), `\n`)
 
   public logLoading: logMethod = (m, d) =>
-    console.log(`${LOADING} ${BRIGHT}${BaseLogger.runnerKey}${m}${RESET}`, this.defaultD(d))
+    console.log(`${LOADING} ${BRIGHT}${this.service}${m}${RESET}`, this.defaultD(d))
 
   public logInfo: logMethod = (m, d) =>
-    console.log(`${INFO}  ${BRIGHT}${BaseLogger.runnerKey}${m}${RESET}`, this.defaultD(d))
+    console.log(`${INFO}  ${BRIGHT}${this.service}${m}${RESET}`, this.defaultD(d))
 
   public logError: logMethod = (m, d) =>
-    console.log(`${FAILED} ${RED}${BaseLogger.runnerKey}${m}${RESET}`, this.defaultD(d), '\n')
+    console.log(`${FAILED} ${RED}${this.service}${m}${RESET}`, this.defaultD(d), '\n')
 
   private defaultD = (d?: object): object | string => d || ''
 }
