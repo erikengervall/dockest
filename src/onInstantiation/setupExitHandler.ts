@@ -1,6 +1,6 @@
-import Dockest, { DockestConfig } from './index'
-import { globalLogger } from './loggers'
-import { teardownSingle } from './utils'
+import Dockest, { DockestConfig } from '../'
+import { globalLogger } from '../loggers'
+import { teardownSingle } from '../utils'
 
 export interface ErrorPayload {
   type: string
@@ -12,6 +12,7 @@ export interface ErrorPayload {
 }
 
 let exitInProgress = false
+
 const setupExitHandler = async (config: DockestConfig): Promise<void> => {
   const { runners } = config
 

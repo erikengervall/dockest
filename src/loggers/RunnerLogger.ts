@@ -13,11 +13,11 @@ class RunnerLogger extends BaseLogger {
 
   public runnerSetupSuccess = () => this.LOG_LEVEL_NORMAL() && this.logSuccess(`Setup successful`)
 
-  public resolveContainerId = (service: string) =>
-    this.LOG_LEVEL_NORMAL() && this.logLoading(`Attempting to resolve ${service}'s containerId`)
+  public resolveContainerId = () =>
+    this.LOG_LEVEL_NORMAL() && this.logLoading(`Attempting to resolve containerId`)
 
-  public resolveContainerIdSuccess = (service: string, containerId: string) =>
-    this.LOG_LEVEL_NORMAL() && this.logSuccess(`${service}'s containerId: ${containerId}`)
+  public resolveContainerIdSuccess = (containerId: string) =>
+    this.LOG_LEVEL_NORMAL() && this.logSuccess(`containerId: ${containerId}`)
 
   public checkHealth = () => this.LOG_LEVEL_NORMAL() && this.logLoading(`Healthchecking container`)
 

@@ -45,13 +45,6 @@ export const DEFAULT_CONNECTION_TIMEOUT = 5
 export const DEFAULT_RESPONSIVENESS_TIMEOUT = 30
 export const DEFAULT_HOST = 'localhost'
 
-export const defaultDockerComposeRunOpts = Object.values({
-  run: 'docker-compose run',
-  // cleanUp: '--rm',
-  runInBackground: '--detach',
-  doNotRunLinkedServices: '--no-deps',
-}).join(' ')
-
 export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,

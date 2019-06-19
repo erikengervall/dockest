@@ -11,7 +11,7 @@ const resolveContainerId = async (runner: Runner): Promise<void> => {
   let containerId = ''
 
   const recurse = async (timeout: number): Promise<void> => {
-    runnerLogger.resolveContainerId(service)
+    runnerLogger.resolveContainerId()
 
     if (timeout <= 0) {
       throw new DockestError(`${service} getContainerId timed out`)
@@ -27,7 +27,7 @@ const resolveContainerId = async (runner: Runner): Promise<void> => {
         throw new Error('Could not resolve')
       }
 
-      runnerLogger.resolveContainerIdSuccess(service, containerId)
+      runnerLogger.resolveContainerIdSuccess(containerId)
     } catch (error) {
       timeout--
 

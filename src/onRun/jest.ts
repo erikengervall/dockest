@@ -1,5 +1,5 @@
-import { ConfigurationError } from './errors'
-import { globalLogger } from './loggers'
+import { ConfigurationError } from '../errors'
+import { globalLogger } from '../loggers'
 
 interface JestResult {
   results: {
@@ -36,18 +36,10 @@ class JestRunner {
   private static instance: JestRunner
 
   constructor(config: JestConfig) {
-    if (JestRunner.instance) {
-      return JestRunner.instance
-    }
-
-    JestRunner.config = {
-      ...DEFAULT_CONFIG,
-      ...config,
-    }
-
+    JestRunner.config = { ...DEFAULT_CONFIG, ...config }
     this.validateJestConfig()
 
-    JestRunner.instance = this
+    return JestRunner.instance || (JestRunner.instance = this)
   }
 
   public run = async (): Promise<{ success: boolean }> => {
