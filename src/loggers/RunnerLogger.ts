@@ -62,13 +62,22 @@ class RunnerLogger extends BaseLogger {
   /**
    * Misc
    */
-
   public customShellCmd: logMethod = cmd =>
     this.LOG_LEVEL_NORMAL() && this.logLoading(`Executed custom command`, cmd)
 
   public customShellCmdSuccess: logMethod = logData =>
     this.LOG_LEVEL_NORMAL() &&
     this.logSuccess(`Executed custom command successfully with result\n`, logData)
+
+  /**
+   * Execa
+   */
+  public shellCmd = (logData = '') =>
+    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, this.trim(logData))
+
+  public shellCmdSuccess = (logData = '') =>
+    this.LOG_LEVEL_VERBOSE() &&
+    this.logSuccess(`Executed shell script with result:`, this.trim(logData))
 }
 
 export default RunnerLogger

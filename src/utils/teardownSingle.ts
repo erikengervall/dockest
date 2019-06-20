@@ -1,6 +1,6 @@
 import { globalLogger } from '../loggers'
 import { Runner } from '../runners/index'
-import { execa } from './index'
+import { execaWrapper } from './index'
 
 const teardownSingle = async (runner: Runner): Promise<void> => {
   const {
@@ -31,7 +31,7 @@ const stopContainerById = async (runner: Runner): Promise<void> => {
   try {
     const cmd = `docker stop ${containerId}`
 
-    await execa(cmd)
+    await execaWrapper(cmd, runner)
   } catch (error) {
     globalLogger.error(`${service}: Failed to stop service container`, error)
 
@@ -52,7 +52,7 @@ const removeContainerById = async (runner: Runner): Promise<void> => {
   try {
     const cmd = `docker rm ${containerId} --volumes`
 
-    await execa(cmd)
+    await execaWrapper(cmd, runner)
   } catch (error) {
     globalLogger.error(`${service}: Failed to remove service container`, error)
 

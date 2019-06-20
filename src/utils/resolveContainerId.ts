@@ -1,6 +1,6 @@
 import { DockestError } from '../errors'
 import { Runner } from '../runners'
-import { execa, sleep } from './index'
+import { execaWrapper, sleep } from './index'
 
 const resolveContainerId = async (runner: Runner): Promise<void> => {
   const {
@@ -18,7 +18,7 @@ const resolveContainerId = async (runner: Runner): Promise<void> => {
     }
 
     try {
-      containerId = await getContainerId(service)
+      containerId = await getContainerId(runner)
 
       if (
         typeof containerId !== 'string' ||
@@ -41,13 +41,17 @@ const resolveContainerId = async (runner: Runner): Promise<void> => {
   recurse(timeout)
 }
 
-const getContainerId = async (serviceName: string): Promise<string> => {
+const getContainerId = async (runner: Runner): Promise<string> => {
+  const {
+    runnerConfig: { service },
+  } = runner
   const cmd = `docker ps \
                   --quiet \
                   --filter \
-                  "name=${serviceName}" \
+                  "name=${service}" \
                   --latest`
-  const containerId = await execa(cmd)
+
+  const containerId = await execaWrapper(cmd, runner)
 
   return containerId
 }

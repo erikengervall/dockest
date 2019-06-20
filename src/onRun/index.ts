@@ -38,28 +38,29 @@ const onRun = async (config: DockestConfig) => {
 }
 
 const preperation = async (config: DockestConfig) => {
-  const promises = []
+  const parallelPromises = []
+
   for (const runner of config.runners) {
-    runner.runnerLogger.runnerSetup()
+    const work = async () => {
+      runner.runnerLogger.runnerSetup()
 
-    promises.push(resolveContainerId(runner))
-    promises.push(checkConnection(runner))
-    promises.push(checkResponsiveness(runner))
-    promises.push(runRunnerCommands(runner))
+      await resolveContainerId(runner)
+      await checkConnection(runner)
+      await checkResponsiveness(runner)
+      await runRunnerCommands(runner)
 
-    if (config.runInBand === true) {
-      Promise.all(promises)
-      promises.length = 0
+      runner.runnerLogger.runnerSetupSuccess()
     }
 
-    runner.runnerLogger.runnerSetupSuccess()
+    !!config.runInBand ? await work() : parallelPromises.push(work)
   }
 
-  await Promise.all(promises)
+  await Promise.all(parallelPromises)
 }
 
 const finalResult = (allTestsPassed: boolean) =>
-  allTestsPassed ? process.exit(0) : process.exit(1)
+  allTestsPassed ? (process.exitCode = 0) : (process.exitCode = 1)
+// allTestsPassed ? process.exit(0) : process.exit(1)
 
 export { JestConfig }
 export default onRun

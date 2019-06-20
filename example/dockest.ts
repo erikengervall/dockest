@@ -61,6 +61,11 @@ const kafka1confluentincRunner = new KafkaRunner({
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
+  runInBand: true,
+  exitHandler: () => {
+    // tslint:disable-next-line
+    console.log('👋🏼 from custom exitHandler')
+  },
   dev: {
     // idling: IS_CLI || true,
   },

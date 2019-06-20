@@ -4,7 +4,7 @@ import { BaseLogger } from './loggers'
 import onInstantiation, { ErrorPayload } from './onInstantiation'
 import onRun, { JestConfig } from './onRun'
 import { KafkaRunner, PostgresRunner, RedisRunner, Runner, ZooKeeperRunner } from './runners'
-import { execa, validateTypes } from './utils'
+import { execaWrapper, validateTypes } from './utils'
 
 interface RequiredConfigProps {
   jest: JestConfig
@@ -77,5 +77,5 @@ class Dockest {
 
 const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
-export { logLevel, execa, runners }
+export { logLevel, execaWrapper as execa, runners }
 export default Dockest

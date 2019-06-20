@@ -1,6 +1,6 @@
 import { DockestError } from '../errors'
 import { Runner } from '../runners'
-import { execa, sleep } from './index'
+import { execaWrapper, sleep } from './index'
 
 const checkResponsiveness = async (runner: Runner) => {
   const {
@@ -25,7 +25,7 @@ const checkResponsiveness = async (runner: Runner) => {
     }
 
     try {
-      await execa(responsivenessCheckCmd)
+      await execaWrapper(responsivenessCheckCmd, runner)
 
       runner.runnerLogger.checkResponsivenessSuccess()
     } catch (error) {

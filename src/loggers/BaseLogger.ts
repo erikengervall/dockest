@@ -29,16 +29,30 @@ class BaseLogger {
     typeof str === 'string' ? str.replace(/\s+/g, ' ').trim() : str
 
   public logSuccess: logMethod = (m, d) =>
-    console.log(`${SUCCESS} ${BRIGHT}${this.service}${m}${RESET}`, this.defaultD(d), `\n`)
+    console.log(
+      `${SUCCESS} ${BRIGHT}${this.service}${this.service && ': '}${m}${RESET}`,
+      this.defaultD(d),
+      `\n`
+    )
 
   public logLoading: logMethod = (m, d) =>
-    console.log(`${LOADING} ${BRIGHT}${this.service}${m}${RESET}`, this.defaultD(d))
+    console.log(
+      `${LOADING} ${BRIGHT}${this.service}${this.service && ': '}${m}${RESET}`,
+      this.defaultD(d)
+    )
 
   public logInfo: logMethod = (m, d) =>
-    console.log(`${INFO}  ${BRIGHT}${this.service}${m}${RESET}`, this.defaultD(d))
+    console.log(
+      `${INFO}  ${BRIGHT}${this.service}${this.service && ': '}${m}${RESET}`,
+      this.defaultD(d)
+    )
 
   public logError: logMethod = (m, d) =>
-    console.log(`${FAILED} ${RED}${this.service}${m}${RESET}`, this.defaultD(d), '\n')
+    console.log(
+      `${FAILED} ${RED}${this.service}${this.service && ': '}${m}${RESET}`,
+      this.defaultD(d),
+      '\n'
+    )
 
   private defaultD = (d?: object): object | string => d || ''
 }

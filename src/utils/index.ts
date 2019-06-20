@@ -1,6 +1,6 @@
 export { default as checkConnection } from './checkConnection'
 export { default as checkResponsiveness } from './checkResponsiveness'
-export { default as execa } from './execa'
+export { default as execaWrapper } from './execaWrapper'
 export { default as getImage } from './getImage'
 export { default as resolveContainerId } from './resolveContainerId'
 export { default as runRunnerCommands } from './runRunnerCommands'
