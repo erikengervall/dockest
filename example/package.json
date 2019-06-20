@@ -7,22 +7,22 @@
     "test": "ts-node ./dockest.ts"
   },
   "dependencies": {
-    "dotenv": "^6.2.0",
+    "dotenv": "^8.0.0",
     "ioredis": "^4.3.0",
     "kafkajs": "^1.4.7",
-    "knex": "^0.16.3",
+    "knex": "^0.17.6",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.42.0",
+    "sequelize": "^5.8.10",
     "sequelize-cli": "^5.4.0"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.0",
-    "@types/jest": "^23.3.13",
-    "@types/knex": "^0.15.1",
+    "@types/jest": "^24.0.15",
+    "@types/knex": "^0.16.1",
     "@types/sequelize": "^4.27.36",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.1"
   }

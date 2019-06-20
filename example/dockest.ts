@@ -62,7 +62,7 @@ const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
   afterSetupSleep: 5,
   dev: {
-    idling: IS_CLI || true,
+    // idling: IS_CLI || true,
   },
   jest: {
     // tslint:disable-next-line

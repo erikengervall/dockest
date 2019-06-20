@@ -42,18 +42,18 @@
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^24.0.15",
     "@types/js-yaml": "^3.12.1",
-    "@types/sequelize": "^4.27.48",
-    "jest": "^24.7.1",
-    "prettier": "^1.17.0",
+    "@types/sequelize": "^4.28.3",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
     "rimraf": "^2.6.2",
-    "sequelize": "^5.7.4",
-    "sequelize-cli": "^5.3.0",
+    "sequelize": "^5.8.10",
+    "sequelize-cli": "^5.5.0",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
+    "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.4.4"
+    "typescript": "^3.5.2"
   }
 }
