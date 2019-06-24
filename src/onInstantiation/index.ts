@@ -1,4 +1,4 @@
-import { DockestConfig } from '..'
+import { DockestConfig } from '../index'
 import flattenRunners from './flattenRunners'
 import generateComposeFile from './generateComposeFile'
 import setupExitHandler, { ErrorPayload } from './setupExitHandler'

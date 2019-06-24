@@ -1,4 +1,4 @@
-import Dockest, { DockestConfig } from '..'
+import Dockest, { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
 import {
   checkConnection,

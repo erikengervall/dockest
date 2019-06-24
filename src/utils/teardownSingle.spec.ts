@@ -1,6 +1,6 @@
 import execa from 'execa'
 import { globalLogger } from '../loggers'
-import PostgresRunner from '../runners/PostgresRunner'
+import { PostgresRunner } from '../runners'
 import teardownSingle from './teardownSingle'
 
 const stdout = `mockStdout`

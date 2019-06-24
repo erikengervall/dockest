@@ -1,14 +1,14 @@
 import { COLORS } from '../constants'
 
+type _object = {
+  [key: string]: any
+}
+type isType = (_?: any) => boolean
+
 const {
   FG: { RED, GREEN },
   MISC: { RESET },
 } = COLORS
-
-interface OObject {
-  [key: string]: any
-}
-type isType = (_?: any) => boolean
 
 const getExpected = (typeValidator: any): string =>
   typeValidator.expected || typeValidator.name.substring(2).toLowerCase()
@@ -16,29 +16,34 @@ const getExpected = (typeValidator: any): string =>
 const getReceived = (value: any): string =>
   isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`
 
-const validateTypes = (schema: OObject, config?: OObject): string[] => {
-  if (!config) {
-    return [`${RED}No config found${RESET}`]
+const validateTypes = (schema?: _object, config?: _object): string[] => {
+  const failures: string[] = []
+
+  if (!schema) {
+    failures.push(`${RED}Missing validation schema${RESET}`)
+    return failures
   }
 
-  const failures: string[] = []
+  if (!config) {
+    failures.push(`${RED}Missing config to validate${RESET}`)
+    return failures
+  }
 
   Object.keys(schema).forEach(schemaKey => {
     const value = config[schemaKey]
 
     if (value) {
-      const typeValidator = schema[schemaKey]
+      const typeValidatorFn = schema[schemaKey]
 
-      if (isArray(typeValidator)) {
-        // TODO: Allow sending multiple things
-      }
+      // TODO: Allow sending multiple things
+      // if (isArray(typeValidatorFn)) {
+      // }
 
-      if (!typeValidator(value)) {
-        const testedSchemaKey = `${schemaKey}${RESET}`
-        const expected = `${RED}Expected${RESET} ${getExpected(typeValidator)}`
+      if (typeValidatorFn(value) === false) {
+        const expected = `${RED}Expected${RESET} ${getExpected(typeValidatorFn)}`
         const received = `${GREEN}Received${RESET} ${getReceived(value)}`
 
-        failures.push(`${testedSchemaKey}: ${expected} | ${received}`)
+        failures.push(`${schemaKey}${RESET}: ${expected} | ${received}`)
       }
     } else {
       failures.push(`${RED}${schemaKey}${RESET}: Schema-key missing in config`)

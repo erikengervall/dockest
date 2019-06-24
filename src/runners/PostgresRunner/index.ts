@@ -44,7 +44,8 @@ class PostgresRunner {
     this.runnerLogger = new RunnerLogger(this)
     this.containerId = ''
 
-    const schema: { [key in keyof RequiredConfigProps]: any } = {
+    // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
+    const schema: { [key in keyof RequiredConfigProps]: () => void } = {
       service: validateTypes.isString,
       database: validateTypes.isString,
       password: validateTypes.isString,

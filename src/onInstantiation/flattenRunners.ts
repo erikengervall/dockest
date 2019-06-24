@@ -1,4 +1,4 @@
-import { DockestConfig } from '..'
+import { DockestConfig } from '../index'
 
 const flattenRunners = (config: DockestConfig) => {
   for (const runner of config.runners) {

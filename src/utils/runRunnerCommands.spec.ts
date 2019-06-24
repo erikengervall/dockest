@@ -1,5 +1,5 @@
 import execa from 'execa'
-import PostgresRunner from '../runners/PostgresRunner'
+import { PostgresRunner } from '../runners'
 import runRunnerCommands from './runRunnerCommands'
 
 const command = 'mockCommand'

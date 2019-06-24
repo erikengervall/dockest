@@ -1,10 +1,9 @@
 import execa from 'execa'
-import PostgresRunner from '../runners/PostgresRunner'
+import { PostgresRunner } from '../runners'
 import { testables } from './resolveContainerId'
 
 const { getContainerId } = testables
 
-const serviceName = 'mockServiceName'
 const stdout = `mockStdout`
 const postgresRunner = new PostgresRunner({
   service: '_',
@@ -24,7 +23,7 @@ describe('getContainerId', () => {
     // @ts-ignore
     postgresRunner.runnerLogger = jest.fn()
 
-    const containerId = await getContainerId(serviceName)
+    const containerId = await getContainerId(postgresRunner)
 
     expect(postgresRunner.runnerLogger.shellCmd).toHaveBeenCalledWith(
       expect.stringMatching(/docker ps/)

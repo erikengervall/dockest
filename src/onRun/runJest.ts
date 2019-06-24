@@ -1,5 +1,5 @@
-import { DockestConfig } from '..'
 import { ConfigurationError } from '../errors'
+import { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
 
 interface JestLib {
