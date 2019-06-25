@@ -1,12 +1,7 @@
-import {
-  DEFAULT_CONNECTION_TIMEOUT,
-  DEFAULT_HOST,
-  DEFAULT_RESPONSIVENESS_TIMEOUT,
-} from '../../constants'
+import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import { Runner } from '../index'
-import { GetComposeService } from '../types'
+import { GetComposeService, Runner } from '../@types'
 
 interface RequiredConfigProps {
   service: string
@@ -26,12 +21,12 @@ export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT: number = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_HOST,
+  host: DEFAULT_CONFIG_VALUES.HOST,
   port: DEFAULT_PORT,
   dependsOn: [],
   commands: [],
-  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
-  responsivenessTimeout: DEFAULT_RESPONSIVENESS_TIMEOUT,
+  connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
+  responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
 }
 
 class PostgresRunner {

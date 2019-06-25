@@ -1,9 +1,9 @@
-import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_HOST } from '../../constants'
+import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { ConfigurationError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import { Runner, ZooKeeperRunner } from '../index'
-import { GetComposeService } from '../types'
+import { GetComposeService, Runner } from '../@types'
+import { ZooKeeperRunner } from '../index'
 
 interface RequiredConfigProps {
   service: string
@@ -22,13 +22,13 @@ type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT_PLAINTEXT = 9092
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_HOST,
+  host: DEFAULT_CONFIG_VALUES.HOST,
   port: DEFAULT_PORT_PLAINTEXT,
   ports: {
     [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
   },
   commands: [],
-  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
+  connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   autoCreateTopic: true,
   deleteTopic: true,
 }

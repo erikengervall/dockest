@@ -1,15 +1,4 @@
-import KafkaRunner, { KafkaRunnerConfig } from './KafkaRunner'
-import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
-import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
-import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
-
-export { ComposeFile, GetComposeService } from './types'
-
-export type RunnerConfig =
-  | KafkaRunnerConfig
-  | PostgresRunnerConfig
-  | RedisRunnerConfig
-  | ZooKeeperRunnerConfig
-export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner
-
-export { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
+export { default as KafkaRunner } from './KafkaRunner'
+export { default as PostgresRunner } from './PostgresRunner'
+export { default as RedisRunner } from './RedisRunner'
+export { default as ZooKeeperRunner } from './ZooKeeperRunner'

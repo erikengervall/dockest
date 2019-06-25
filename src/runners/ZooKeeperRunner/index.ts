@@ -1,7 +1,7 @@
-import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_HOST } from '../../constants'
+import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
 import { getImage, validateConfig, validateTypes } from '../../utils'
-import { Runner } from '../index'
+import { Runner } from '../@types'
 
 interface RequiredConfigProps {
   service: string
@@ -17,9 +17,9 @@ type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_INTERNAL_PORT: number = 2181
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_HOST,
+  host: DEFAULT_CONFIG_VALUES.HOST,
   port: DEFAULT_INTERNAL_PORT,
-  connectionTimeout: DEFAULT_CONNECTION_TIMEOUT,
+  connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   dependsOn: [],
   commands: [],
 }

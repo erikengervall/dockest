@@ -41,9 +41,11 @@ export const COLORS: { [key: string]: { [key: string]: string } } = {
   },
 }
 
-export const DEFAULT_CONNECTION_TIMEOUT = 5
-export const DEFAULT_RESPONSIVENESS_TIMEOUT = 30
-export const DEFAULT_HOST = 'localhost'
+export const DEFAULT_CONFIG_VALUES = {
+  CONNECTION_TIMEOUT: 5,
+  RESPONSIVENESS_TIMEOUT: 30,
+  HOST: 'localhost',
+}
 
 export const LOG_LEVEL = {
   NOTHING: 0,

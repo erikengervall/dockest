@@ -1,5 +1,5 @@
 import { ConfigurationError } from '../errors'
-import { RunnerConfig } from '../runners/index'
+import { RunnerConfig } from '../runners/@types'
 import { validateTypes } from './index'
 
 const validateConfig = (schema: { [key: string]: any }, config: RunnerConfig) => {

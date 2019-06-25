@@ -3,7 +3,8 @@ import { ConfigurationError } from './errors'
 import { BaseLogger } from './loggers'
 import onInstantiation, { ErrorPayload } from './onInstantiation'
 import onRun, { JestConfig } from './onRun'
-import { KafkaRunner, PostgresRunner, RedisRunner, Runner, ZooKeeperRunner } from './runners'
+import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
+import { Runner } from './runners/@types'
 import { execaWrapper, validateTypes } from './utils'
 
 interface RequiredConfigProps {
