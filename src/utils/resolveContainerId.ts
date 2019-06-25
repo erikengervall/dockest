@@ -1,5 +1,5 @@
 import { DockestError } from '../errors'
-import { Runner } from '../runners'
+import { Runner } from '../runners/@types'
 import { execaWrapper, sleep } from './index'
 
 const resolveContainerId = async (runner: Runner): Promise<void> => {

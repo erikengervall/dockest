@@ -1,4 +1,6 @@
-export const ICONS: { [key: string]: string } = {
+export const ICONS: {
+  [key: string]: string
+} = {
   VERBOSE: '🗣 ',
   LOADING: '⏳',
   SUCCESS: '✅',
@@ -9,7 +11,11 @@ export const ICONS: { [key: string]: string } = {
   INFO: 'ℹ️',
 }
 
-export const COLORS: { [key: string]: { [key: string]: string } } = {
+export const COLORS: {
+  [key: string]: {
+    [key: string]: string
+  }
+} = {
   MISC: {
     RESET: '\x1b[0m',
     BRIGHT: '\x1b[1m',
@@ -41,13 +47,17 @@ export const COLORS: { [key: string]: { [key: string]: string } } = {
   },
 }
 
-export const DEFAULT_CONFIG_VALUES = {
+export const DEFAULT_CONFIG_VALUES: {
+  [key: string]: number | string
+} = {
   CONNECTION_TIMEOUT: 5,
   RESPONSIVENESS_TIMEOUT: 30,
   HOST: 'localhost',
 }
 
-export const LOG_LEVEL = {
+export const LOG_LEVEL: {
+  [key: string]: number
+} = {
   NOTHING: 0,
   ERROR: 1,
   NORMAL: 2,

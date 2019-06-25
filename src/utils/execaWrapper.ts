@@ -1,6 +1,6 @@
 import execa from 'execa'
 import { globalLogger } from '../loggers'
-import { Runner } from '../runners'
+import { Runner } from '../runners/@types'
 
 const execaWrapper = async (cmd: string, runner?: Runner): Promise<string> => {
   const trimmedCmd = cmd.replace(/\s+/g, ' ').trim()

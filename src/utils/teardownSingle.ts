@@ -1,5 +1,5 @@
 import { globalLogger } from '../loggers'
-import { Runner } from '../runners/index'
+import { Runner } from '../runners/@types'
 import { execaWrapper } from './index'
 
 const teardownSingle = async (runner: Runner): Promise<void> => {
