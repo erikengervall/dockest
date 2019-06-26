@@ -10,7 +10,7 @@ const runRunnerCommands = async (runner: Runner): Promise<void> => {
   for (const cmd of commands) {
     runnerLogger.customShellCmd(cmd)
 
-    const { stdout: result } = await execa.shell(cmd)
+    const { stdout: result } = await execa(cmd, { shell: true })
 
     runnerLogger.customShellCmdSuccess(result)
   }

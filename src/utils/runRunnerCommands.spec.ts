@@ -28,8 +28,8 @@ describe('runRunnerCommands', () => {
     await runRunnerCommands(postgresRunner)
 
     expect(postgresRunner.runnerLogger.customShellCmd).toHaveBeenCalledWith(command)
-    expect(execa.shell).toHaveBeenCalledWith(command)
-    expect(execa.shell).lastReturnedWith({ stdout })
+    expect(execa).toHaveBeenCalledWith(command, { shell: true })
+    expect(execa).lastReturnedWith({ stdout })
     expect(postgresRunner.runnerLogger.customShellCmdSuccess).toHaveBeenCalledWith(stdout)
   })
 })

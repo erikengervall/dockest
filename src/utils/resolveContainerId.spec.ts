@@ -30,8 +30,8 @@ describe('getContainerId', () => {
     expect(postgresRunner.runnerLogger.shellCmd).toHaveBeenCalledWith(
       expect.stringMatching(/docker ps/)
     )
-    expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker ps/))
-    expect(execa.shell).lastReturnedWith({ stdout })
+    expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker ps/), { shell: true })
+    expect(execa).lastReturnedWith({ stdout })
     expect(containerId).toEqual(stdout)
   })
 })

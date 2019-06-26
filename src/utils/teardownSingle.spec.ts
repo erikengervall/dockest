@@ -21,7 +21,7 @@ jest.mock('execa', () => ({
 describe('teardownSingle', () => {
   beforeEach(() => {
     // @ts-ignore
-    execa.shell.mockClear()
+    execa.mockClear()
     postgresRunner.runnerLogger = createMockProxy()
   })
 
@@ -29,8 +29,8 @@ describe('teardownSingle', () => {
     it('should work', async () => {
       await teardownSingle(postgresRunner)
 
-      expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker stop/))
-      expect(execa.shell).toHaveBeenCalledWith(expect.stringMatching(/docker rm/))
+      expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker stop/), { shell: true })
+      expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker rm/), { shell: true })
     })
   })
 
@@ -38,7 +38,7 @@ describe('teardownSingle', () => {
     it('should log and swallow teardown errors', async () => {
       const error = new Error('Unexpected teardown error')
       // @ts-ignore
-      execa.shell.mockImplementation(() => {
+      execa.mockImplementation(() => {
         throw error
       })
 
