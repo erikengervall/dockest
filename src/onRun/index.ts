@@ -59,8 +59,8 @@ const preperation = async (config: DockestConfig) => {
 }
 
 const finalResult = (allTestsPassed: boolean) =>
-  allTestsPassed ? (process.exitCode = 0) : (process.exitCode = 1)
-// allTestsPassed ? process.exit(0) : process.exit(1)
+  allTestsPassed ? process.exit(0) : process.exit(1)
+// allTestsPassed ? (process.exitCode = 0) : (process.exitCode = 1)
 
 export { JestConfig }
 export default onRun

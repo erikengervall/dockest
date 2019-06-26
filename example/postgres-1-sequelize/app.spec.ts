@@ -1,39 +1,39 @@
 import dotenv from 'dotenv'
 import { execa } from '../../src'
+import { runOrSkip } from '../testUtils'
 import main from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
 
-const env = dotenv.config().parsed
-const describeFn = env.postgres1sequelize_enabled === 'true' ? describe : describe.skip
-
-const test = async () => {
-  it('trabajo', async () => {
-    const result = await main()
-
-    expect(result).toEqual(
-      expect.objectContaining({
-        firstEntry: expect.objectContaining(seedUser),
-      })
-    )
+const specWrapper = () => {
+  beforeEach(async () => {
+    await execa('sequelize db:seed:undo:all')
+    await execa('sequelize db:seed:all')
   })
 
-  it('execa', async () => {
-    await execa('sequelize db:seed:undo:all')
+  describe('postgres-1-sequelize', () => {
+    it('should get first entry', async () => {
+      const result = await main()
 
-    const result = await main()
+      expect(result).toEqual(
+        expect.objectContaining({
+          firstEntry: expect.objectContaining(seedUser),
+        })
+      )
+    })
 
-    expect(result).toEqual(
-      expect.objectContaining({
-        firstEntry: null,
-      })
-    )
+    it('execa', async () => {
+      await execa('sequelize db:seed:undo:all')
+
+      const result = await main()
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          firstEntry: null,
+        })
+      )
+    })
   })
 }
 
-beforeEach(async () => {
-  await execa('sequelize db:seed:undo:all')
-  await execa('sequelize db:seed:all')
-})
-
-describeFn('postgres-1-sequelize', test)
+runOrSkip(dotenv.config().parsed.postgres1sequelize_enabled, specWrapper)

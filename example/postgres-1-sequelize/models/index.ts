@@ -5,10 +5,8 @@ import postgresConfig from '../config/postgresConfig.js'
 const config = postgresConfig.test
 const db: any = {}
 
-const sequelize = new Sequelize({
-  ...config,
-  operatorsAliases: false,
-})
+// @ts-ignore
+const sequelize = new Sequelize(config)
 
 const UserModel = sequelize.define(
   'User',

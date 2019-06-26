@@ -1,23 +1,22 @@
 import dotenv from 'dotenv'
+import { runOrSkip } from '../testUtils'
 import main from './app'
 // @ts-ignore
 import { seedCake } from './data.json'
 
-const env = dotenv.config().parsed
-const describeFn = env.redis1ioredis_enabled === 'true' ? describe : describe.skip
+const specWrapper = () =>
+  describe('redis-1-ioredis', () => {
+    it('trabajo', async () => {
+      const { redis } = main()
 
-const test = async () => {
-  it('trabajo', async () => {
-    const { redis } = main()
+      const value = await redis.get(seedCake.key)
+      expect(value).toEqual(seedCake.value)
 
-    const value = await redis.get(seedCake.key)
-    expect(value).toEqual(seedCake.value)
+      await redis.flushall()
 
-    await redis.flushall()
-
-    const flushedValue = await redis.get(seedCake.key)
-    expect(flushedValue).toEqual(null)
+      const flushedValue = await redis.get(seedCake.key)
+      expect(flushedValue).toEqual(null)
+    })
   })
-}
 
-describeFn('redis-1-ioredis', test)
+runOrSkip(dotenv.config().parsed.redis1ioredis_enabled, specWrapper)

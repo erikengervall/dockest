@@ -345,6 +345,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/ioredis@^4.0.12":
+  version "4.0.12"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.0.12.tgz#f0d1a723a7ec2ba3d22aabe5a808e6e4548281ed"
+  integrity sha512-3Nd9RQlU7GfkiaByJQWJ4Q8brQXTpDRgwm7/oFXwDX24hw8awliKwf3cbuIHMyQPvYNEFw1LrmllZ3qTKglDGg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.1.tgz#42995b446db9a48a11a07ec083499a860e9138ff"
@@ -377,6 +384,13 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/kafkajs@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@types/kafkajs/-/kafkajs-1.8.2.tgz#9bc9c006a2184defe712db250f5a66083629d63d"
+  integrity sha512-2s4zlRg+BiN/RsFBDBrguIZtC52lRbsufj/8afl/S6GMHn+3KN9AVf59Wg96F9pugJZX7E1P4PcGXSnxNPmBXg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/knex@^0.16.1":
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/@types/knex/-/knex-0.16.1.tgz#619678407265c675463c563ed38323461a49515d"
@@ -393,6 +407,21 @@
   version "12.0.8"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.8.tgz#551466be11b2adc3f3d47156758f610bd9f6b1d8"
   integrity sha512-b8bbUOTwzIY3V5vDTY1fIJ+ePKDUBqt2hC2woVGotdQQhG/2Sh62HOKHrT7ab+VerXAcPyAiTEipPu/FsreUtg==
+
+"@types/pg-types@*":
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/@types/pg-types/-/pg-types-1.11.4.tgz#8d7c59fb509ce3dca3f8bae589252051c639a9a8"
+  integrity sha512-WdIiQmE347LGc1Vq3Ki8sk3iyCuLgnccqVzgxek6gEHp2H0p3MQ3jniIHt+bRODXKju4kNQ+mp53lmP5+/9moQ==
+  dependencies:
+    moment ">=2.14.0"
+
+"@types/pg@^7.4.14":
+  version "7.4.14"
+  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.4.14.tgz#8235910120e81ca671e0e62b7de77d048b9a22b2"
+  integrity sha512-2e4XapP9V/X42IGByC5IHzCzHqLLCNJid8iZBbkk6lkaDMvli8Rk62YE9wjGcLD5Qr5Zaw1ShkQyXy91PI8C0Q==
+  dependencies:
+    "@types/node" "*"
+    "@types/pg-types" "*"
 
 "@types/sequelize@^4.27.36":
   version "4.28.3"
@@ -2818,7 +2847,7 @@ moment-timezone@^0.5.21:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.24.0:
+"moment@>= 2.9.0", moment@>=2.14.0, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==

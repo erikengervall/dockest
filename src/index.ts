@@ -73,6 +73,10 @@ class Dockest {
     if (failures.length > 0) {
       throw new ConfigurationError(`${failures.join('\n')}`)
     }
+
+    if (Dockest.config.runners.length <= 0) {
+      throw new ConfigurationError('Missing runners')
+    }
   }
 }
 

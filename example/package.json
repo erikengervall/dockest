@@ -18,8 +18,11 @@
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.0",
+    "@types/ioredis": "^4.0.12",
     "@types/jest": "^24.0.15",
+    "@types/kafkajs": "^1.8.2",
     "@types/knex": "^0.16.1",
+    "@types/pg": "^7.4.14",
     "@types/sequelize": "^4.27.36",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
