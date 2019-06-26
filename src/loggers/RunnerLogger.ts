@@ -1,4 +1,4 @@
-import { Runner } from '../runners/index'
+import { Runner } from '../runners/@types'
 import BaseLogger, { logMethod } from './BaseLogger'
 
 class RunnerLogger extends BaseLogger {
@@ -53,11 +53,17 @@ class RunnerLogger extends BaseLogger {
   public stopContainerSuccess = () =>
     this.LOG_LEVEL_VERBOSE() && this.logSuccess(`Container stopped`)
 
+  public stopContainerFailed = () =>
+    this.LOG_LEVEL_VERBOSE() && this.logError(`Unexpected error when stopping container`)
+
   public removeContainer = () =>
     this.LOG_LEVEL_VERBOSE() && this.logLoading(`Container being removed`)
 
   public removeContainerSuccess = () =>
     this.LOG_LEVEL_VERBOSE() && this.logSuccess(`Container removed`)
+
+  public removeContainerFailed = () =>
+    this.LOG_LEVEL_VERBOSE() && this.logError(`Unexpected error when removing container`)
 
   /**
    * Misc

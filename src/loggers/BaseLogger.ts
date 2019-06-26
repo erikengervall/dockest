@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 
 import { COLORS, ICONS, LOG_LEVEL } from '../constants'
-import { Runner } from '../runners/index'
+import { Runner } from '../runners/@types'
 
 const { LOADING, SUCCESS, INFO, FAILED } = ICONS
 const {

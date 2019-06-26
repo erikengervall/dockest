@@ -2,7 +2,7 @@ import fs from 'fs'
 import yaml from 'js-yaml'
 import { DockestError } from '../errors'
 import { DockestConfig } from '../index'
-import { ComposeFile, Runner } from '../runners'
+import { ComposeFile, Runner } from '../runners/@types'
 
 const generateComposeFile = (config: DockestConfig) => {
   const composeFile = {

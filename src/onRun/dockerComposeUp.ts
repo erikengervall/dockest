@@ -1,4 +1,4 @@
-import { Runner } from '../runners'
+import { Runner } from '../runners/@types'
 import { execaWrapper } from '../utils'
 
 const dockerComposeUp = (DOCKER_COMPOSE_GENERATED_PATH: string, runner?: Runner) => {

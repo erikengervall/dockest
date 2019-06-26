@@ -16,7 +16,8 @@
     "max-line-length": false,
     "interface-over-type-literal": false,
     "no-submodule-imports": [true, ["src"]],
-    "no-implicit-dependencies": [true, ["src"]]
+    "no-implicit-dependencies": [true, "dev"]
+    // "no-implicit-dependencies": [true, ["src"]],
   },
   "rulesDirectory": [],
   "linterOptions": {

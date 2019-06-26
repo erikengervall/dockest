@@ -41,7 +41,7 @@ describe('validateTypes', () => {
       const failures = validateTypes({}, undefined)
 
       expect(failures.length).toEqual(1)
-      expect(failures[0]).toMatch(/No config found/)
+      expect(failures[0]).toMatch('Missing config to validate')
     })
 
     it(`should return a failure for invalid config`, () => {

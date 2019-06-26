@@ -15,16 +15,15 @@ const teardownSingle = async (runner: Runner): Promise<void> => {
   }
 
   runner.runnerLogger.teardownSingle()
+
   await stopContainerById(runner)
   await removeContainerById(runner)
+
   runner.runnerLogger.teardownSingleSuccess()
 }
 
 const stopContainerById = async (runner: Runner): Promise<void> => {
-  const {
-    containerId,
-    runnerConfig: { service },
-  } = runner
+  const { containerId } = runner
 
   runner.runnerLogger.stopContainer()
 
@@ -33,7 +32,7 @@ const stopContainerById = async (runner: Runner): Promise<void> => {
 
     await execaWrapper(cmd, runner)
   } catch (error) {
-    globalLogger.error(`${service}: Failed to stop service container`, error)
+    runner.runnerLogger.stopContainerFailed()
 
     return
   }
@@ -42,10 +41,7 @@ const stopContainerById = async (runner: Runner): Promise<void> => {
 }
 
 const removeContainerById = async (runner: Runner): Promise<void> => {
-  const {
-    containerId,
-    runnerConfig: { service },
-  } = runner
+  const { containerId } = runner
 
   runner.runnerLogger.removeContainer()
 
@@ -54,7 +50,7 @@ const removeContainerById = async (runner: Runner): Promise<void> => {
 
     await execaWrapper(cmd, runner)
   } catch (error) {
-    globalLogger.error(`${service}: Failed to remove service container`, error)
+    runner.runnerLogger.removeContainerFailed()
 
     return
   }

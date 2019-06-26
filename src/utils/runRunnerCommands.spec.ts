@@ -1,4 +1,5 @@
 import execa from 'execa'
+import { createMockProxy } from 'jest-mock-proxy'
 import { PostgresRunner } from '../runners'
 import runRunnerCommands from './runRunnerCommands'
 
@@ -9,6 +10,7 @@ const postgresRunner = new PostgresRunner({
   username: '_',
   password: '_',
   database: '_',
+  commands: [command],
 })
 
 jest.mock('execa', () => ({
@@ -17,11 +19,12 @@ jest.mock('execa', () => ({
   })),
 }))
 
+beforeEach(() => {
+  postgresRunner.runnerLogger = createMockProxy()
+})
+
 describe('runRunnerCommands', () => {
   it('trabajo', async () => {
-    // @ts-ignore
-    postgresRunner.runnerLogger = jest.fn()
-
     await runRunnerCommands(postgresRunner)
 
     expect(postgresRunner.runnerLogger.customShellCmd).toHaveBeenCalledWith(command)

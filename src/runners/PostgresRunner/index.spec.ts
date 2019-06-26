@@ -24,6 +24,6 @@ describe('PostgresRunner', () => {
           password: '_',
           username: '_',
         })
-    ).toThrow('hello')
+    ).toThrow(/service: Schema-key missing in config/)
   })
 })

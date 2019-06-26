@@ -1,4 +1,5 @@
 import execa from 'execa'
+import { createMockProxy } from 'jest-mock-proxy'
 import { PostgresRunner } from '../runners'
 import { testables } from './resolveContainerId'
 
@@ -18,11 +19,12 @@ jest.mock('execa', () => ({
   })),
 }))
 
+beforeEach(() => {
+  postgresRunner.runnerLogger = createMockProxy()
+})
+
 describe('getContainerId', () => {
   it('should work', async () => {
-    // @ts-ignore
-    postgresRunner.runnerLogger = jest.fn()
-
     const containerId = await getContainerId(postgresRunner)
 
     expect(postgresRunner.runnerLogger.shellCmd).toHaveBeenCalledWith(
