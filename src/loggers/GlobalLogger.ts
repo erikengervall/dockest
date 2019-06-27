@@ -12,6 +12,11 @@ class GlobalLogger extends BaseLogger {
   public error: logMethod = (message, logData) =>
     this.LOG_LEVEL_ERROR() && this.logError(message, logData)
 
+  public exitHandler: logMethod = (message, logData) =>
+    this.LOG_LEVEL_ERROR && logData.code === 0
+      ? this.logSuccess(message, logData)
+      : this.logError(message, logData)
+
   /**
    * Dockest
    */

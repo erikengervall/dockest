@@ -14,12 +14,8 @@ const teardownSingle = async (runner: Runner): Promise<void> => {
     return
   }
 
-  runner.runnerLogger.teardownSingle()
-
   await stopContainerById(runner)
   await removeContainerById(runner)
-
-  runner.runnerLogger.teardownSingleSuccess()
 }
 
 const stopContainerById = async (runner: Runner): Promise<void> => {
