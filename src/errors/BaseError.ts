@@ -5,7 +5,7 @@ class BaseError extends Error {
   timestamp: Date
 
   constructor(message: string, payload: object = {}) {
-    super(`${ICONS.ERROR} ${message}`)
+    super(`${ICONS.ERROR} ${message} \n${JSON.stringify(payload, null, 2)}`)
 
     // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {

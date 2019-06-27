@@ -1,5 +1,6 @@
 import Dockest, { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
+import { Runner } from '../runners/@types'
 import {
   checkConnection,
   checkResponsiveness,
@@ -34,14 +35,14 @@ const onRun = async (config: DockestConfig) => {
     await teardownSingle(runner)
   }
 
-  finalResult(allTestsPassed)
+  exitProcessWithCode(allTestsPassed)
 }
 
 const preperation = async (config: DockestConfig) => {
   const parallelPromises = []
 
   for (const runner of config.runners) {
-    const work = async () => {
+    const work = (runner: Runner) => async () => {
       runner.runnerLogger.runnerSetup()
 
       await resolveContainerId(runner)
@@ -52,15 +53,14 @@ const preperation = async (config: DockestConfig) => {
       runner.runnerLogger.runnerSetupSuccess()
     }
 
-    !!config.runInBand ? await work() : parallelPromises.push(work)
+    !!config.runInBand ? await work(runner)() : parallelPromises.push(work(runner))
   }
 
   await Promise.all(parallelPromises)
 }
 
-const finalResult = (allTestsPassed: boolean) =>
+const exitProcessWithCode = (allTestsPassed: boolean) =>
   allTestsPassed ? process.exit(0) : process.exit(1)
-// allTestsPassed ? (process.exitCode = 0) : (process.exitCode = 1)
 
 export { JestConfig }
 export default onRun

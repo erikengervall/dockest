@@ -4,17 +4,19 @@ import { execaWrapper, sleep } from './index'
 
 const resolveContainerId = async (runner: Runner): Promise<void> => {
   const {
-    runnerConfig: { service },
     runnerLogger,
+    runnerConfig: { service },
   } = runner
-  const timeout = 30
+  const resolveContainerIdTimeout = 10
   let containerId = ''
 
-  const recurse = async (timeout: number): Promise<void> => {
+  const recurse = async (resolveContainerIdTimeout: number): Promise<void> => {
     runnerLogger.resolveContainerId()
 
-    if (timeout <= 0) {
-      throw new DockestError(`${service} getContainerId timed out`)
+    if (resolveContainerIdTimeout <= 0) {
+      throw new DockestError(
+        `${service}: Timed out (${resolveContainerIdTimeout}s) while trying to resolve containerId`
+      )
     }
 
     try {
@@ -24,32 +26,34 @@ const resolveContainerId = async (runner: Runner): Promise<void> => {
         typeof containerId !== 'string' ||
         (typeof containerId === 'string' && containerId.length === 0)
       ) {
-        throw new Error('Could not resolve')
+        throw new Error(`Invalid containerId: ${containerId}`)
       }
 
       runnerLogger.resolveContainerIdSuccess(containerId)
     } catch (error) {
-      timeout--
+      resolveContainerIdTimeout--
 
       await sleep(1000)
-      await recurse(timeout)
+      await recurse(resolveContainerIdTimeout)
     }
 
     runner.containerId = containerId
   }
 
-  recurse(timeout)
+  await recurse(resolveContainerIdTimeout)
 }
 
 const getContainerId = async (runner: Runner): Promise<string> => {
   const {
     runnerConfig: { service },
   } = runner
-  const cmd = `docker ps \
+  const cmd = ` \
+                docker ps \
                   --quiet \
                   --filter \
                   "name=${service}" \
-                  --latest`
+                --latest \
+              `
 
   const containerId = await execaWrapper(cmd, runner)
 

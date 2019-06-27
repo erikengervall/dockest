@@ -17,7 +17,7 @@ class RunnerLogger extends BaseLogger {
     this.LOG_LEVEL_NORMAL() && this.logLoading(`Attempting to resolve containerId`)
 
   public resolveContainerIdSuccess = (containerId: string) =>
-    this.LOG_LEVEL_NORMAL() && this.logSuccess(`containerId: ${containerId}`)
+    this.LOG_LEVEL_NORMAL() && this.logSuccess(`Found containerId: ${containerId}`)
 
   public checkHealth = () => this.LOG_LEVEL_NORMAL() && this.logLoading(`Healthchecking container`)
 
