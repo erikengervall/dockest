@@ -11,10 +11,12 @@ const env = dotenv.config().parsed
 const waitForEventConsumption = async (
   targetCount: number,
   listener: (args: { counter: number }) => void,
+  produce: () => void,
   timeout: number = 15
 ): Promise<void> => {
   const opts = { counter: 0 }
   listener(opts)
+  await produce()
 
   const recurse = async (): Promise<void> => {
     timeout--
@@ -45,19 +47,23 @@ const specWrapper = () =>
       const messages = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
       const key = 'arbitrary 🤷🏼‍♂️'
 
-      const { consumer } = await main(
+      const { consumer, produce } = await main(
         key,
         messages,
         mockConsumptionCallback,
         mockProductionCallback
       )
 
-      await waitForEventConsumption(messages.length, args => {
-        consumer.on(
-          consumer.events.END_BATCH_PROCESS,
-          ({ payload: { batchSize } }) => (args.counter += batchSize)
-        )
-      })
+      await waitForEventConsumption(
+        messages.length,
+        args => {
+          consumer.on(
+            consumer.events.END_BATCH_PROCESS,
+            ({ payload: { batchSize } }) => (args.counter += batchSize)
+          )
+        },
+        produce
+      )
 
       expect(mockProductionCallback).toHaveBeenCalledWith({
         acks: 1,

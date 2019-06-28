@@ -54,12 +54,13 @@ const main = async (
   messages: string[],
   mockConsumptionCallback: JestFn,
   mockProductionCallback: JestFn
-): Promise<{ consumer: any }> => {
+): Promise<{ consumer: any; produce: any }> => {
   const consumer = await createConsumer(mockConsumptionCallback)
-  await produceMessage(key, messages, mockProductionCallback)
+  const produce = async () => await produceMessage(key, messages, mockProductionCallback)
 
   return {
     consumer,
+    produce,
   }
 }
 
