@@ -13,8 +13,9 @@ export interface ErrorPayload {
 
 const setupExitHandler = async (config: DockestConfig): Promise<void> => {
   const {
-    runners,
+    $: { perfStart },
     opts: { exitHandler: customExitHandler },
+    runners,
   } = config
   let exitInProgress = false
 
@@ -39,6 +40,7 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
       await teardownSingle(runner)
     }
 
+    globalLogger.perf(perfStart)
     process.exit(errorPayload.code || 1)
   }
 

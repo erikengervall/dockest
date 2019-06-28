@@ -20,8 +20,9 @@ interface DefaultableUserConfig {
   runInBand: boolean
 }
 interface InternalConfig {
-  DOCKER_COMPOSE_GENERATED_PATH: string
+  dockerComposeGeneratedPath: string
   jestRanWithResult: boolean
+  perfStart: number
 }
 export type DockestConfig = RequiredConfig & { opts: DefaultableUserConfig } & { $: InternalConfig }
 
@@ -34,8 +35,9 @@ const DEFAULT_CONFIG: DefaultableUserConfig = {
   runInBand: true,
 }
 const INTERNAL_CONFIG = {
-  DOCKER_COMPOSE_GENERATED_PATH: `${__dirname}/docker-compose-generated.yml`,
+  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
   jestRanWithResult: false,
+  perfStart: Date.now(),
 }
 
 class Dockest {
@@ -46,7 +48,7 @@ class Dockest {
   constructor(jest: JestConfig, runners: Runner[], opts: Partial<DefaultableUserConfig> = {}) {
     // @ts-ignore
     Dockest.config = {}
-    Dockest.config.$ = INTERNAL_CONFIG
+    Dockest.config.$ = { ...INTERNAL_CONFIG }
     Dockest.config.jest = jest
     Dockest.config.opts = { ...DEFAULT_CONFIG, ...opts, ...INTERNAL_CONFIG }
     Dockest.config.runners = runners
@@ -59,6 +61,7 @@ class Dockest {
   }
 
   public run = async (): Promise<void> => {
+    Dockest.config.$.perfStart = new Date()
     await onRun(Dockest.config)
   }
 

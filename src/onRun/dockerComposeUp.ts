@@ -1,10 +1,10 @@
 import { Runner } from '../runners/@types'
 import { execaWrapper } from '../utils'
 
-const dockerComposeUp = (DOCKER_COMPOSE_GENERATED_PATH: string, runner?: Runner) => {
+const dockerComposeUp = (dockerComposeGeneratedPath: string, runner?: Runner) => {
   const cmd = ` \
               docker-compose \
-              -f ${DOCKER_COMPOSE_GENERATED_PATH} \
+              -f ${dockerComposeGeneratedPath} \
               up \
               --no-recreate \
               --detach \

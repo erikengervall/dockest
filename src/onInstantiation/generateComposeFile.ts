@@ -6,7 +6,7 @@ import { ComposeFile, Runner } from '../runners/@types'
 
 const generateComposeFile = (config: DockestConfig) => {
   const {
-    $: { DOCKER_COMPOSE_GENERATED_PATH },
+    $: { dockerComposeGeneratedPath },
     opts: { dockerComposeFileName },
   } = config
   const composeFile = {
@@ -44,7 +44,7 @@ const generateComposeFile = (config: DockestConfig) => {
   const yml = yaml.safeDump(composeFile)
 
   try {
-    fs.writeFileSync(`${DOCKER_COMPOSE_GENERATED_PATH}`, yml)
+    fs.writeFileSync(`${dockerComposeGeneratedPath}`, yml)
   } catch (error) {
     throw new DockestError(
       `Something went wrong when generating the docker-compose file: ${error.message}`

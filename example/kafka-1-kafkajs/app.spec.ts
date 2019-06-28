@@ -56,11 +56,10 @@ const specWrapper = () =>
 
       await waitForEventConsumption(
         messages.length,
-        args => {
-          consumer.on(
-            consumer.events.END_BATCH_PROCESS,
-            ({ payload: { batchSize } }) => (args.counter += batchSize)
-          )
+        opts => {
+          consumer.on(consumer.events.END_BATCH_PROCESS, ({ payload: { batchSize } }) => {
+            opts.counter += batchSize
+          })
         },
         produce
       )

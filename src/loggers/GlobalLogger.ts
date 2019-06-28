@@ -30,6 +30,9 @@ class GlobalLogger extends BaseLogger {
   public sleepWithLog: logMethod = (reason, progress) =>
     this.LOG_LEVEL_VERBOSE() && this.logLoading(`${reason || 'Sleeping'}: ${progress}`)
 
+  public perf = (perfStart: number) =>
+    this.LOG_LEVEL_NORMAL() && this.logInfo(`${Date.now() - perfStart}`)
+
   /**
    * Jest
    */

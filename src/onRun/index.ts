@@ -14,14 +14,14 @@ import runJest, { JestConfig } from './runJest'
 
 const onRun = async (config: DockestConfig) => {
   const {
-    $: { DOCKER_COMPOSE_GENERATED_PATH },
+    $: { dockerComposeGeneratedPath, perfStart },
     opts: {
       afterSetupSleep,
       dev: { idling },
     },
   } = config
 
-  dockerComposeUp(DOCKER_COMPOSE_GENERATED_PATH)
+  dockerComposeUp(dockerComposeGeneratedPath)
 
   await preperation(config)
 
@@ -54,6 +54,7 @@ const onRun = async (config: DockestConfig) => {
     await teardownSingle(runner)
   }
 
+  globalLogger.perf(perfStart)
   exitProcessWithCode(allTestsPassed)
 }
 
