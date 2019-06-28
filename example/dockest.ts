@@ -68,7 +68,7 @@ const configuredRunners = [
 ]
 const dockestConfig = {
   afterSetupSleep: 20,
-  dev: { idling: IS_CLI || true },
+  dev: { idling: IS_CLI || false },
   exitHandler: () => console.log('👋🏼 from custom exitHandler'),
   logLevel: logLevel.VERBOSE,
   runInBand: true,

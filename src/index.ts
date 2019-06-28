@@ -83,5 +83,3 @@ const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
 export { sleep, runners, execaWrapper as execa, logLevel }
 export default Dockest
-
-const docker = new Dockest(jest, runners, opts)
