@@ -1,9 +1,9 @@
 import PostgresRunner from './index'
 
 const config = {
-  service: '_',
   database: '_',
   password: '_',
+  service: '_',
   username: '_',
 }
 const postgresRunner1 = new PostgresRunner(config)
@@ -19,9 +19,9 @@ describe('PostgresRunner', () => {
       () =>
         // @ts-ignore
         new PostgresRunner({
-          // service: '_',
           database: '_',
           password: '_',
+          // service: '_',
           username: '_',
         })
     ).toThrow(/service: Schema-key missing in config/)

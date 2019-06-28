@@ -34,38 +34,36 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class KafkaRunner {
+  public containerId: string
   public runnerConfig: KafkaRunnerConfig
   public runnerLogger: RunnerLogger
-  public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+    this.containerId = ''
     this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
     this.runnerLogger = new RunnerLogger(this)
-    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
-      service: validateTypes.isString,
       dependsOn: validateTypes.isArray,
+      service: validateTypes.isString,
     }
     validateConfig(schema, this.runnerConfig)
   }
 
   public getComposeService: GetComposeService = dockerComposeFileName => {
-    const { image, deleteTopic, autoCreateTopic, dependsOn, ports, service } = this.runnerConfig
+    const { autoCreateTopic, deleteTopic, dependsOn, image, ports, service } = this.runnerConfig
 
     const zkDep = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
     if (!zkDep) {
       throw new ConfigurationError('Missing required ZooKeeper dependency')
     }
     const {
-      runnerConfig: { service: zkService, port: zkPort },
+      runnerConfig: { port: zkPort, service: zkService },
     } = zkDep
 
     return {
       [service]: {
-        image: getImage({ image, dockerComposeFileName, service }),
         depends_on: dependsOn.map(({ runnerConfig: { service } }) => service),
-        ports: [`${ports[DEFAULT_PORT_PLAINTEXT]}:${DEFAULT_PORT_PLAINTEXT}`],
         environment: {
           // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
           KAFKA_ZOOKEEPER_CONNECT: `${zkService}:${zkPort}`,
@@ -79,6 +77,8 @@ class KafkaRunner {
           KAFKA_BROKER_ID: 1,
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
         },
+        image: getImage({ image, dockerComposeFileName, service }),
+        ports: [`${ports[DEFAULT_PORT_PLAINTEXT]}:${DEFAULT_PORT_PLAINTEXT}`],
       },
     }
   }
@@ -86,6 +86,16 @@ class KafkaRunner {
 
 export { KafkaRunnerConfig }
 export default KafkaRunner
+
+/**
+ * Possible TODO: Create topic through bash
+ */
+// await execa(
+//   `docker exec ${
+//     // @ts-ignore
+//     config.runners.find(runner => runner instanceof KafkaRunner).containerId
+//   } bash -c "kafka-topics --create --if-not-exists --topic dockesttopic --replication-factor 1 --partitions 1 --zookeeper zookeeper1confluentinc:2181"`
+// )
 
 /**
  * TODO: SSL & SASL_SSL

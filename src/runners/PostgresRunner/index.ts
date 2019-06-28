@@ -32,14 +32,14 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class PostgresRunner {
+  public containerId: string
   public runnerConfig: PostgresRunnerConfig
   public runnerLogger: RunnerLogger
-  public containerId: string
 
   constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+    this.containerId = ''
     this.runnerConfig = { ...DEFAULT_CONFIG, ...configUserInput }
     this.runnerLogger = new RunnerLogger(this)
-    this.containerId = ''
 
     // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
     const schema: { [key in keyof RequiredConfigProps]: () => void } = {
@@ -52,17 +52,17 @@ class PostgresRunner {
   }
 
   public getComposeService: GetComposeService = dockerComposeFileName => {
-    const { image, password, username, database, port, service } = this.runnerConfig
+    const { database, image, password, port, service, username } = this.runnerConfig
 
     return {
       [service]: {
-        image: getImage({ image, dockerComposeFileName, service }),
-        ports: [`${port}:${DEFAULT_PORT}`],
         environment: {
           POSTGRES_DB: database,
-          POSTGRES_USER: username,
           POSTGRES_PASSWORD: password,
+          POSTGRES_USER: username,
         },
+        image: getImage({ image, dockerComposeFileName, service }),
+        ports: [`${port}:${DEFAULT_PORT}`],
       },
     }
   }

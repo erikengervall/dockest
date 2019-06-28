@@ -3,27 +3,27 @@ import { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
 
 interface JestLib {
-  SearchSource: any
-  TestScheduler: any
-  TestWatcher: any
   getVersion: any
   run: any
   runCLI: any
+  SearchSource: any
+  TestScheduler: any
+  TestWatcher: any
 }
 
 export type JestConfig = {
+  forceExit?: boolean
   lib: JestLib
   projects?: string[]
   runInBand?: boolean
   silent?: boolean
   verbose?: boolean
-  forceExit?: boolean
   watchAll?: boolean
 }
 
 const DEFAULT_CONFIG = {
-  runInBand: true,
   projects: ['.'],
+  runInBand: true,
 }
 
 const runJest = async (config: DockestConfig) => {

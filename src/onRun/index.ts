@@ -1,6 +1,5 @@
 import Dockest, { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
-// import { KafkaRunner } from '../runners'
 import { Runner } from '../runners/@types'
 import {
   checkConnection,
@@ -24,16 +23,21 @@ const onRun = async (config: DockestConfig) => {
     await sleepWithLog('After setup sleep progress', config.afterSetupSleep)
   }
 
-  // FIXME: exp
-  // await execa(
-  //   `docker exec ${
-  //     // @ts-ignore
-  //     config.runners.find(runner => runner instanceof KafkaRunner).containerId
-  //   } bash -c "kafka-topics --create --if-not-exists --topic dockesttopic --replication-factor 1 --partitions 1 --zookeeper zookeeper1confluentinc:2181"`
-  // )
-
   if (config.dev.idling) {
     globalLogger.info(`Dev mode enabled: Jest will not run.`)
+    config.runners.forEach((runner, index) =>
+      globalLogger.info(
+        `[${index}] ${JSON.stringify(
+          {
+            service: runner.runnerConfig.service,
+            containerId: runner.containerId,
+            dependsOn: runner.runnerConfig.dependsOn,
+          },
+          null,
+          2
+        )}\n`
+      )
+    )
     return // Will keep the docker containers running indefinitely
   }
 

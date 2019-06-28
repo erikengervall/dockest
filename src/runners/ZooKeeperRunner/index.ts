@@ -47,11 +47,9 @@ class ZooKeeperRunner {
 
     return {
       [service]: {
+        environment: { ZOOKEEPER_CLIENT_PORT: port },
         image: getImage({ image, dockerComposeFileName, service }),
         ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
-        environment: {
-          ZOOKEEPER_CLIENT_PORT: port,
-        },
       },
     }
   }

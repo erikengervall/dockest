@@ -2,8 +2,8 @@ import ZooKeeperRunner from '../ZooKeeperRunner'
 import KafkaRunner from './index'
 
 const config = {
-  service: '_',
   dependsOn: [new ZooKeeperRunner({ service: '_' })],
+  service: '_',
 }
 const KafkaRunner1 = new KafkaRunner(config)
 const KafkaRunner2 = new KafkaRunner(config)

@@ -31,14 +31,14 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class RedisRunner {
+  public containerId: string
   public runnerConfig: RedisRunnerConfig
   public runnerLogger: RunnerLogger
-  public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+    this.containerId = ''
     this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
     this.runnerLogger = new RunnerLogger(this)
-    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,

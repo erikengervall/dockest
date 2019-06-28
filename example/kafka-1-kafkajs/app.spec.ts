@@ -19,16 +19,19 @@ const waitForEventConsumption = async (
   const recurse = async (): Promise<void> => {
     timeout--
     console.log(
-      `Waiting for published events to be consumed (Progress: ${opts.counter}/${targetCount}) (Timeout in: ${timeout}s)`
+      `⏳ Waiting for published events to be consumed (Progress: ${opts.counter}/${targetCount}) (Timeout in: ${timeout}s)`
     )
     if (timeout <= 0) {
-      throw new Error('Wait for event consumption timed out')
+      throw new Error('❌ Waiting for event consumption timed out')
     }
 
-    if (opts.counter !== targetCount) {
-      await sleep(1000)
-      await recurse()
+    if (opts.counter === targetCount) {
+      console.log(`✅ Successfully consumed ${opts.counter}/${targetCount} messages`)
+      return
     }
+
+    await sleep(1000)
+    await recurse()
   }
 
   await recurse()
@@ -58,7 +61,7 @@ const specWrapper = () =>
 
       expect(mockProductionCallback).toHaveBeenCalledWith({
         acks: 1,
-        messages: [{ key, value: messages[0] }, { key, value: messages[1] }],
+        messages: messages.map(message => ({ key, value: message })),
         topic: env.kafka1confluentinc_topic,
       })
       expect(mockConsumptionCallback).toHaveBeenCalledWith({

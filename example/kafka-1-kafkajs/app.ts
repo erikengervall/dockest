@@ -10,7 +10,7 @@ const env: any = dotenv.config().parsed
 const kafka = new Kafka({
   brokers: [env.kafka1confluentinc_broker1],
   clientId: env.kafka1confluentinc_client_id,
-  logLevel: logLevel.DEBUG,
+  logLevel: logLevel.INFO,
   retry: {
     initialRetryTime: 2500,
     retries: 10,
