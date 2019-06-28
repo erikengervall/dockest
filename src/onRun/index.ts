@@ -13,17 +13,23 @@ import dockerComposeUp from './dockerComposeUp'
 import runJest, { JestConfig } from './runJest'
 
 const onRun = async (config: DockestConfig) => {
-  const { DOCKER_COMPOSE_GENERATED_PATH } = config
+  const {
+    $: { DOCKER_COMPOSE_GENERATED_PATH },
+    opts: {
+      afterSetupSleep,
+      dev: { idling },
+    },
+  } = config
 
   dockerComposeUp(DOCKER_COMPOSE_GENERATED_PATH)
 
   await preperation(config)
 
-  if (config.afterSetupSleep > 0) {
-    await sleepWithLog('After setup sleep progress', config.afterSetupSleep)
+  if (afterSetupSleep > 0) {
+    await sleepWithLog('After setup sleep progress', afterSetupSleep)
   }
 
-  if (config.dev.idling) {
+  if (idling) {
     globalLogger.info(`Dev mode enabled: Jest will not run.`)
     config.runners.forEach((runner, index) =>
       globalLogger.info(
@@ -42,7 +48,7 @@ const onRun = async (config: DockestConfig) => {
   }
 
   const allTestsPassed = await runJest(config)
-  Dockest.config.jestRanWithResult = true
+  Dockest.config.$.jestRanWithResult = true
 
   for (const runner of config.runners) {
     await teardownSingle(runner)
@@ -66,7 +72,7 @@ const preperation = async (config: DockestConfig) => {
       runner.runnerLogger.runnerSetupSuccess()
     }
 
-    !!config.runInBand ? await work(runner)() : parallelPromises.push(work(runner))
+    !!config.opts.runInBand ? await work(runner)() : parallelPromises.push(work(runner))
   }
 
   await Promise.all(parallelPromises)

@@ -11,27 +11,28 @@ export interface ErrorPayload {
   p?: any
 }
 
-let exitInProgress = false
-
 const setupExitHandler = async (config: DockestConfig): Promise<void> => {
-  const { runners } = config
+  const {
+    runners,
+    opts: { exitHandler: customExitHandler },
+  } = config
+  let exitInProgress = false
 
   const exitHandler = async (errorPayload: ErrorPayload): Promise<void> => {
     if (exitInProgress) {
       return
     }
-
     exitInProgress = true
-    if (Dockest.jestRanWithResult) {
-      // Program ran as expected
-      return
+
+    if (!!Dockest.config.$.jestRanWithResult) {
+      return // Program ran as expected
     }
 
     globalLogger.exitHandler('Exithandler invoced', errorPayload)
 
-    if (config.exitHandler && typeof exitHandler === 'function') {
+    if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')
-      config.exitHandler(error)
+      customExitHandler(error)
     }
 
     for (const runner of runners) {

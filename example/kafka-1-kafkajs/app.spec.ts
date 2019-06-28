@@ -64,12 +64,14 @@ const specWrapper = () =>
         messages: messages.map(message => ({ key, value: message })),
         topic: env.kafka1confluentinc_topic,
       })
-      expect(mockConsumptionCallback).toHaveBeenCalledWith({
-        messageHeaders: {},
-        messageKey: key,
-        messageValue: messages[0],
-        partition: 0,
-        topic: env.kafka1confluentinc_topic,
+      messages.forEach(message => {
+        expect(mockConsumptionCallback).toHaveBeenCalledWith({
+          messageHeaders: {},
+          messageKey: key,
+          messageValue: message,
+          partition: 0,
+          topic: env.kafka1confluentinc_topic,
+        })
       })
     })
   })

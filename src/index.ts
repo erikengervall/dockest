@@ -7,36 +7,31 @@ import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './run
 import { Runner } from './runners/@types'
 import { execaWrapper, sleep, validateTypes } from './utils'
 
-interface RequiredConfigProps {
+interface RequiredConfig {
   jest: JestConfig
   runners: Runner[]
 }
-interface DefaultableConfigProps {
+interface DefaultableUserConfig {
   afterSetupSleep: number
+  dev: { idling?: boolean }
+  dockerComposeFileName: string
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
-  dockerComposeFileName: string
   runInBand: boolean
-  dev: {
-    idling?: boolean
-  }
 }
-interface InternalsConfigProps {
+interface InternalConfig {
   DOCKER_COMPOSE_GENERATED_PATH: string
   jestRanWithResult: boolean
 }
-type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
-export type DockestConfig = RequiredConfigProps & DefaultableConfigProps & InternalsConfigProps
+export type DockestConfig = RequiredConfig & { opts: DefaultableUserConfig } & { $: InternalConfig }
 
-const DEFAULT_CONFIG: DefaultableConfigProps = {
+const DEFAULT_CONFIG: DefaultableUserConfig = {
   afterSetupSleep: 0,
+  dev: { idling: false },
+  dockerComposeFileName: 'docker-compose.yml',
   exitHandler: null,
   logLevel: LOG_LEVEL.NORMAL,
-  dockerComposeFileName: 'docker-compose.yml',
   runInBand: true,
-  dev: {
-    idling: false,
-  },
 }
 const INTERNAL_CONFIG = {
   DOCKER_COMPOSE_GENERATED_PATH: `${__dirname}/docker-compose-generated.yml`,
@@ -44,14 +39,18 @@ const INTERNAL_CONFIG = {
 }
 
 class Dockest {
-  public static jestRanWithResult: boolean = false
   public static config: DockestConfig
   public static logLevel: number
   private static instance: Dockest
 
-  constructor(userConfig: DockestConfigUserInput) {
-    Dockest.config = { ...DEFAULT_CONFIG, ...userConfig, ...INTERNAL_CONFIG }
-    BaseLogger.logLevel = Dockest.config.logLevel
+  constructor(jest: JestConfig, runners: Runner[], opts: Partial<DefaultableUserConfig> = {}) {
+    // @ts-ignore
+    Dockest.config = {}
+    Dockest.config.$ = INTERNAL_CONFIG
+    Dockest.config.jest = jest
+    Dockest.config.opts = { ...DEFAULT_CONFIG, ...opts, ...INTERNAL_CONFIG }
+    Dockest.config.runners = runners
+    BaseLogger.logLevel = Dockest.config.opts.logLevel
 
     this.validateConfig()
     onInstantiation(Dockest.config)
@@ -64,7 +63,7 @@ class Dockest {
   }
 
   private validateConfig = () => {
-    const schema: { [key in keyof RequiredConfigProps]: any } = {
+    const schema: { [key in keyof RequiredConfig]: any } = {
       jest: validateTypes.isObject,
       runners: validateTypes.isArray,
     }
@@ -84,3 +83,5 @@ const logLevel = LOG_LEVEL
 const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
 export { sleep, runners, execaWrapper as execa, logLevel }
 export default Dockest
+
+const docker = new Dockest(jest, runners, opts)

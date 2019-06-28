@@ -1,3 +1,3 @@
-const JEST_TIMEOUT: number = 120 * 1000
+jest.setTimeout(60 * 1000)
 
-jest.setTimeout(JEST_TIMEOUT)
+process.env.NODE_ENV = 'test'

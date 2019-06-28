@@ -13,7 +13,6 @@ interface DefaultableConfigProps {
   autoCreateTopic: boolean
   commands: string[]
   connectionTimeout: number
-  deleteTopic: boolean
   host: string
   image: string | undefined
   port: number
@@ -26,7 +25,6 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   autoCreateTopic: true,
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  deleteTopic: true,
   host: DEFAULT_CONFIG_VALUES.HOST,
   image: undefined,
   port: DEFAULT_PORT_PLAINTEXT,
@@ -51,15 +49,15 @@ class KafkaRunner {
   }
 
   public getComposeService: GetComposeService = dockerComposeFileName => {
-    const { autoCreateTopic, deleteTopic, dependsOn, image, ports, service } = this.runnerConfig
+    const { autoCreateTopic, dependsOn, image, ports, service } = this.runnerConfig
 
-    const zkDep = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
-    if (!zkDep) {
+    const zooKeeperDependency = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
+    if (!zooKeeperDependency) {
       throw new ConfigurationError('Missing required ZooKeeper dependency')
     }
     const {
       runnerConfig: { port: zkPort, service: zkService },
-    } = zkDep
+    } = zooKeeperDependency
 
     return {
       [service]: {
@@ -72,7 +70,6 @@ class KafkaRunner {
           KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT',
 
           KAFKA_AUTO_CREATE_TOPICS_ENABLE: !!autoCreateTopic ? 'true' : 'false',
-          KAFKA_DELETE_TOPIC_ENABLE: !!deleteTopic ? 'true' : 'false',
 
           KAFKA_BROKER_ID: 1,
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,

@@ -5,6 +5,10 @@ import { DockestConfig } from '../index'
 import { ComposeFile, Runner } from '../runners/@types'
 
 const generateComposeFile = (config: DockestConfig) => {
+  const {
+    $: { DOCKER_COMPOSE_GENERATED_PATH },
+    opts: { dockerComposeFileName },
+  } = config
   const composeFile = {
     version: '3',
     services: {},
@@ -15,7 +19,7 @@ const generateComposeFile = (config: DockestConfig) => {
       runnerConfig: { dependsOn },
       getComposeService,
     } = runner
-    const composeService = getComposeService(config.dockerComposeFileName)
+    const composeService = getComposeService(dockerComposeFileName)
 
     const depComposeServices = dependsOn.reduce(
       (composeServices: { [key: string]: ComposeFile }, runner: Runner) => {
@@ -23,7 +27,7 @@ const generateComposeFile = (config: DockestConfig) => {
           runnerConfig: { service },
           getComposeService,
         } = runner
-        composeServices[service] = getComposeService(config.dockerComposeFileName)[service]
+        composeServices[service] = getComposeService(dockerComposeFileName)[service]
 
         return composeServices
       },
@@ -40,7 +44,7 @@ const generateComposeFile = (config: DockestConfig) => {
   const yml = yaml.safeDump(composeFile)
 
   try {
-    fs.writeFileSync(`${config.DOCKER_COMPOSE_GENERATED_PATH}`, yml)
+    fs.writeFileSync(`${DOCKER_COMPOSE_GENERATED_PATH}`, yml)
   } catch (error) {
     throw new DockestError(
       `Something went wrong when generating the docker-compose file: ${error.message}`

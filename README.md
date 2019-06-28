@@ -59,19 +59,15 @@ import Dockest, { runners } from 'dockest'
 
 const { PostgresRunner } = runners
 
-const dockest = new Dockest({
-  jest: {
-    lib: require('jest'),
-  },
-  runners: {
-    postgres: new PostgresRunner({
-      service: 'insert-docker-compose-service-name-here',
-      database: 'insert-database-here',
-      username: 'insert-username-here',
-      password: 'insert-password-here',
-    }),
-  },
-})
+const dockest = new Dockest({ lib: require('jest') }, [
+  new PostgresRunner({
+    database: 'insert-database-here',
+    password: 'insert-password-here',
+    service: 'insert-service-name-here',
+    username: 'insert-username-here',
+  }),
+])
+
 
 dockest.run()
 ```
@@ -86,19 +82,14 @@ const {
   runners: { PostgresRunner },
 } = require('dockest')
 
-const dockest = new Dockest({
-  jest: {
-    lib: require('jest'),
-  },
-  runners: {
-    postgres: new PostgresRunner({
-      service: 'insert-docker-compose-service-name-here',
-      database: 'insert-database-here',
-      username: 'insert-username-here',
-      password: 'insert-password-here',
-    }),
-  },
-})
+const dockest = new Dockest({ lib: require('jest') }, [
+  new PostgresRunner({
+    database: 'insert-database-here',
+    password: 'insert-password-here',
+    service: 'insert-service-name-here',
+    username: 'insert-username-here',
+  }),
+])
 
 dockest.run()
 ```
@@ -106,40 +97,22 @@ dockest.run()
 # Dockest constructor
 
 ```TypeScript
-const docker = new Dockest({
-  ...opts,
-  jest,
-  runners,
-})
+const docker = new Dockest(jest, runners, opts)
 ```
-
-## Opts
-
-It's possible to pass custom configuration to Dockest in order to improve developer experience.
-
-### Interface
-
-| Prop            | Required | Type     | Default             | Description                                                                                                                                                                       |
-| --------------- | -------- | -------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| logLevel        | false    | number   | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                                                                                |
-| exitHandler     | false    | function | null                | Custom function which will be invoced upon exiting the process with an error payload of type: { type: string, code?: number, signal?: any, error?: Error, reason?: any, p?: any } |
-| afterSetupSleep | false    | number   | 0                   | Additional sleep after initial setup                                                                                                                                              |
 
 ## Jest
 
 ### Interface
 
-| Prop      | Required | Type     | Default   | Description                                              |
-| --------- | -------- | -------- | --------- | -------------------------------------------------------- |
-| lib       | true     | object   | -         | The Jest library itself                                  |
-| projects  | false    | string[] | ['.']     | https://jestjs.io/docs/en/cli.html#projects-path1-pathn- |
-| runInBand | false    | boolean  | true      | https://jestjs.io/docs/en/cli.html#runinband             |
-| silent    | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#silent                |
-| verbose   | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#verbose               |
-| forceExit | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#forceexit             |
-| watchAll  | false    | boolean  | undefined | https://jestjs.io/docs/en/cli.html#watchall              |
+| Prop      | Required | Type     | Default | Description                                              |
+| --------- | -------- | -------- | ------- | -------------------------------------------------------- |
+| lib       | true     | object   | -       | The Jest library itself                                  |
+| projects  | false    | string[] | ['.']   | https://jestjs.io/docs/en/cli.html#projects-path1-pathn- |
+| runInBand | false    | boolean  | true    | https://jestjs.io/docs/en/cli.html#runinband             |
 
 Note that due to Jest running all tests in parallel per default, Dockest defaults the `runInBand` option to `true`. This'll cause jest to run its tests sequentially and thus avoid potential race conditions if tests perform read/write operations on the same entry. The downside of this is an overall longer runtime.
+
+A complete list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation.
 
 ## Runners
 
@@ -147,26 +120,28 @@ Note that due to Jest running all tests in parallel per default, Dockest default
 
 ```TypeScript
 new PostgresRunner({
-  service: 'insert-docker-compose-service-name-here',
   database: 'insert-database-here',
-  username: 'insert-username-here',
   password: 'insert-password-here',
+  service: 'insert-service-name-here',
+  username: 'insert-username-here',
 })
 ```
 
 #### Interface
 
-| Prop                  | Required | Type     | Default     | Description                                             |
-| --------------------- | -------- | -------- | ----------- | ------------------------------------------------------- |
-| service               | true     | string   | -           | Should match designated docker-compose resource         |
-| database              | true     | string   | -           | Name of the database                                    |
-| username              | true     | string   | -           | User of the database                                    |
-| password              | true     | string   | -           | Password for user of the database                       |
-| host                  | false    | string   | 'localhost' | Hostname of database                                    |
-| port                  | false    | number   | 5432        | Port of database                                        |
-| commands              | false    | string[] | []          | Custom commands that will be executed _once_ upon setup |
-| connectionTimeout     | false    | number   | 3           | How long to wait for the resource to be reachable       |
-| responsivenessTimeout | false    | number   | 10          | How long to wait for the resource to be reachable       |
+| Prop                  | Required | Type                | Default     | Description                                                                                                 |
+| --------------------- | -------- | ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| database              | true     | string              | -           | Name of the database                                                                                        |
+| password              | true     | string              | -           | Password for user of the database                                                                           |
+| service               | true     | string              | -           | Used as an identifiers and, if no image is passed, used to retrieve the image from the user's compose file. |
+| username              | true     | string              | -           | User of the database                                                                                        |
+| commands              | false    | string[]            | []          | Custom commands that will be executed _once_ upon setup                                                     |
+| connectionTimeout     | false    | number              | 3           | How long to wait for the resource to be reachable                                                           |
+| dependsOn             | false    | Runner[]            | []          | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service         |
+| host                  | false    | string              | 'localhost' | Hostname of database                                                                                        |
+| image                 | false    | string or undefined | undefined   | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from        |
+| port                  | false    | number              | 5432        | Port of database                                                                                            |
+| responsivenessTimeout | false    | number              | 10          | How long to wait for the resource to be reachable                                                           |
 
 ### [Redis](https://hub.docker.com/_/redis)
 
@@ -178,72 +153,87 @@ new RedisRunner({
 
 #### Interface
 
-| Prop                  | Required | Type     | Default     | Description                                             |
-| --------------------- | -------- | -------- | ----------- | ------------------------------------------------------- |
-| service               | true     | string   | -           | Should match designated docker-compose resource         |
-| host                  | false    | string   | 'localhost' | Hostname of redis instance                              |
-| port                  | false    | number   | 6379        | Port of redis instance                                  |
-| password              | false    | string   | ''          | Password to redis instance                              |
-| commands              | false    | string[] | []          | Custom commands that will be executed _once_ upon setup |
-| connectionTimeout     | false    | number   | 3           | How long to wait for the resource to be reachable       |
-| responsivenessTimeout | false    | number   | 10          | How long to wait for the resource to be reachable       |
+| Prop                  | Required | Type                | Default     | Description                                                                                                 |
+| --------------------- | -------- | ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| service               | true     | string              | -           | Used as an identifiers and, if no image is passed, used to retrieve the image from the user's compose file. |
+| commands              | false    | string[]            | []          | Custom commands that will be executed _once_ upon setup                                                     |
+| connectionTimeout     | false    | number              | 3           | How long to wait for the resource to be reachable                                                           |
+| dependsOn             | false    | Runner[]            | []          | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service         |
+| host                  | false    | string              | 'localhost' | Hostname of redis instance                                                                                  |
+| image                 | false    | string or undefined | undefined   | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from        |
+| password              | false    | string              | ''          | Password to redis instance                                                                                  |
+| port                  | false    | number              | 6379        | Port of redis instance                                                                                      |
+| responsivenessTimeout | false    | number              | 10          | How long to wait for the resource to be reachable                                                           |
 
-### (WIP) [Kafka](https://hub.docker.com/r/confluentinc/cp-kafka)
+### [ZooKeeper](https://hub.docker.com/r/confluentinc/cp-zookeeper)
 
 ```TypeScript
-new KafkaRunner({
-  service: 'kafka1confluentinc',
-  dependsOn, // TODO:
-  ports: {
-    '9092': '9092', // kafka
-  },
+new ZooKeeperRunner({
+  port: Number(env.zookeeper1confluentinc_port),
+  service: env.zookeeper1confluentinc_service,
 })
 ```
 
-#### (WIP) Zookepeer Interface
+#### Interface
 
-| Prop              | Required | Type   | Default | Description                                       |
-| ----------------- | -------- | ------ | ------- | ------------------------------------------------- |
-| service           | true     | string | -       | Should match designated docker-compose resource   |
-| port              | false    | number | 2181    | This will be the exposed port from your resource  |
-| connectionTimeout | false    | number | 30      | How long to wait for the resource to be reachable |
+| Prop              | Required | Type                | Default     | Description                                                                                          |
+| ----------------- | -------- | ------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
+| service           | true     | string              | -           | Should match designated docker-compose resource                                                      |
+| commands          | false    | string[]            | []          | Custom commands that will be executed _once_ upon setup                                              |
+| connectionTimeout | false    | number              | 30          | How long to wait for the resource to be reachable                                                    |
+| dependsOn         | false    | Runner[]            | []          | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
+| host              | false    | string              | 'localhost' | Hostname of zookeeper instance                                                                       |
+| image             | false    | string or undefined | undefined   | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
+| port              | false    | number              | 2181        | This will be the exposed port from your resource                                                     |
 
-#### (WIP) Kafka Interface
+### [Kafka](https://hub.docker.com/r/confluentinc/cp-kafka)
 
-| Prop              | Required | Type                  | Default                                            | Desciption                                            |
-| ----------------- | -------- | --------------------- | -------------------------------------------------- | ----------------------------------------------------- |
-| service           | true     | string                | -                                                  | Should match designated docker-compose resource       |
-| topics            | true     | string[]              | -                                                  | Topics for testing                                    |
-| host              | false    | string                | 'localhost'                                        | Hostname                                              |
-| ports             | false    | object{string:string} | { '9092': '9092', '9093': '9093', '9094': '9094' } | Port mappings with format `external:inside container` |
-| autoCreateTopics  | false    | boolean               | true                                               | Whether or not Kafka should auto-create topics        |
-| connectionTimeout | false    | number                | 30                                                 | How long to wait for the resource to be reachable     |
+```TypeScript
+new KafkaRunner({
+  service: 'insert-service-name-here',
+  dependsOn: [],
+  ports: { '9092': 9092 },
+})
+```
 
-## Contributing
+#### Interface
 
-### Setup and running tests
+| Prop              | Required | Type               | Default          | Desciption                                                                                           |
+| ----------------- | -------- | ------------------ | ---------------- | ---------------------------------------------------------------------------------------------------- |
+| dependsOn         | true     | Runner[]           | []               | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
+| service           | true     | string             | -                | Should match designated docker-compose resource                                                      |
+| autoCreateTopics  | false    | boolean            | true             | Whether or not Kafka should auto-create topics                                                       |
+| commands          | false    | string[]           | []               | Custom commands that will be executed _once_ upon setup                                              |
+| connectionTimeout | false    | number             | 30               | How long to wait for the resource to be reachable                                                    |
+| host              | false    | string             | 'localhost'      | Hostname                                                                                             |
+| image             | false    | string             | undefined        | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
+| port              | false    | number             | 9092             | This will be the exposed port from your resource                                                     |
+| ports             | false    | { string: number } | { '9092': 9092 } | Port mappings with format `exposed:inside`                                                           |
+
+## Opts
+
+It's possible to pass custom configuration to Dockest in order to improve developer experience.
+
+### Interface
+
+| Prop                  | Required | Type                | Default             | Description                                                                                                                                           |
+| --------------------- | -------- | ------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| afterSetupSleep       | false    | number              | 0                   | Additional sleep after initial setup. Useful when resources require additional time to boot                                                           |
+| dev                   | false    | { idling: boolean } | { idling: false }   | Pauses Jest execution indefinitely. Useful for debugging Jest while resources are running                                                             |
+| dockerComposeFileName | false    | string              | docker-compose.yml  | The file name of your Compose file. This is required if you do **not** pass the image property for each Runner                                        |
+| exitHandler           | false    | function            | null                | Callback that will run before exit. Recieved one argument of type { type: string, code?: number, signal?: any, error?: Error, reason?: any, p?: any } |
+| logLevel              | false    | number              | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                                                    |
+| runInBand             | false    | boolean             | true                | Initializes and runs the Runners in sequence. Disabling this could increase performance                                                               |
+
+# Contributing
+
+## Setup and running tests
 
 - `yarn dev:setup`: Installs all dependencies and necessary git-hooks
-- `yarn test:all`: Runs `yarn test:unit:dockest` and `yarn test:integration:example`
-  - `yarn test:unit:dockest`: Trivial unit tests for the library itself
-  - `yarn test:integration:example`: Runs Dockest from the example
+- `yarn test:all`: Runs `yarn test` and `yarn test:example`
+  - `yarn test`: Unit tests for the library itself
+  - `yarn test:example`: Integration tests using Dockest
 
-### Overview
-
-When calling Dockest, the following chain of events occur
-
-- `index.ts`: Setup each Runner
-  - `BaseRunner.ts`: Start the container
-  - `BaseRunner.ts`: Healthcheck the container (connectivity and/or responsiveness)
-- `index.ts`: Call the Jest Runner
-  - `jest.ts` Run Jest programmatically from its CLI interface
-- `index.ts`: Teardown each container
-  - `BaseRunner.ts`: Stop container
-  - `BaseRunner.ts`: Remove container
-- `index.ts` Exit process with an exit code corresponding to the result from Jest
-
-The BaseRunner contains all the methods required in order to start, healthcheck and teardown containers. The Runners' transform the configuration provided by the users and, by extending from the BaseRunner, calls its methods with arguments constructed with the supplied configuration. This way, the Runners' responsibilities are limited to constructing arguments to be interpreted by the BaseRunner, which makes the implementation of future Runners easier.
-
-## License
+# License
 
 MIT
