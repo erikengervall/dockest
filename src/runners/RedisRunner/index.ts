@@ -7,26 +7,26 @@ interface RequiredConfigProps {
   service: string
 }
 interface DefaultableConfigProps {
-  host: string
-  port: number
-  password: string
-  dependsOn: Runner[]
-  image: string
   commands: string[]
   connectionTimeout: number
+  dependsOn: Runner[]
+  host: string
+  image: string | undefined
+  password: string
+  port: number
   responsivenessTimeout: number
 }
 export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT: number = 6379
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_CONFIG_VALUES.HOST,
-  port: DEFAULT_PORT,
-  password: '',
-  dependsOn: [],
-  image: '',
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
+  dependsOn: [],
+  host: DEFAULT_CONFIG_VALUES.HOST,
+  image: undefined,
+  password: '',
+  port: DEFAULT_PORT,
   responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
 }
 
@@ -47,11 +47,11 @@ class RedisRunner {
   }
 
   public getComposeService = (dockerComposeFileName: string) => {
-    const { service, port } = this.runnerConfig
+    const { image, port, service } = this.runnerConfig
 
     return {
       [service]: {
-        image: getImage(service, dockerComposeFileName),
+        image: getImage({ image, dockerComposeFileName, service }),
         ports: [`${port}:${DEFAULT_PORT}`],
       },
     }

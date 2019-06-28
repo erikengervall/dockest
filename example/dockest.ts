@@ -1,6 +1,6 @@
-import dotenv from 'dotenv'
+// tslint:disable:no-console
 
-// @ts-ignore
+import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 
 const env: any = dotenv.config().parsed
@@ -60,14 +60,13 @@ const kafka1confluentincRunner = new KafkaRunner({
 
 const dockest = new Dockest({
   logLevel: logLevel.VERBOSE,
-  afterSetupSleep: 2,
+  afterSetupSleep: 20,
   runInBand: true,
   exitHandler: () => {
-    // tslint:disable-next-line
     console.log('👋🏼 from custom exitHandler')
   },
   dev: {
-    // idling: IS_CLI || true,
+    idling: IS_CLI || true,
   },
   jest: {
     // tslint:disable-next-line

@@ -1,72 +1,66 @@
 import dotenv from 'dotenv'
 
 /* tslint:disable */
-// @ts-ignore
 const { Kafka, logLevel } = require('kafkajs')
+
+type JestFn = (_: any) => void
 
 const env: any = dotenv.config().parsed
 
-const createConsumer = async ({ kafka, indicateConsumption }) => {
-  const consumer = kafka.consumer({ groupId: env.kafka1confluentinc_consumer_group_id })
+const kafka = new Kafka({
+  brokers: [env.kafka1confluentinc_broker1],
+  clientId: env.kafka1confluentinc_client_id,
+  logLevel: logLevel.DEBUG,
+  retry: {
+    initialRetryTime: 2500,
+    retries: 10,
+  },
+})
 
+const createConsumer = async (mockConsumptionCallback: JestFn) => {
+  const consumer = kafka.consumer({ groupId: env.kafka1confluentinc_consumer_group_id })
   await consumer.connect()
-  await consumer.subscribe({ topic: env.kafka1confluentinc_topic, fromBeginning: true })
+  await consumer.subscribe({ topic: env.kafka1confluentinc_topic })
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      const payload = {
-        topic,
-        partition,
+      mockConsumptionCallback({
+        messageHeaders: message.headers,
         messageKey: message.key.toString(),
         messageValue: message.value.toString(),
-        messageHeaders: message.headers,
-      }
-      console.log('eachMessage ran with payload:', payload)
-      indicateConsumption(payload)
+        partition,
+        topic,
+      })
     },
   })
 
   return consumer
 }
 
-const createMessageProducer = ({ kafka, indicateProduction }) => async ({ message }) => {
+const produceMessage = async (key: string, messages: string[], mockProductionCallback: JestFn) => {
   const producer = kafka.producer()
   await producer.connect()
   const payload = {
+    acks: process.env.NODE_ENV === 'test' ? 1 : -1, // https://kafka.js.org/docs/producing#options
     topic: env.kafka1confluentinc_topic,
-    messages: [{ key: 'arbitrary', value: message }],
+    messages: messages.map((message: string) => ({ key, value: message })),
   }
   await producer.send(payload)
   await producer.disconnect()
-
-  console.log('produced message with payload:', payload)
-  indicateProduction(payload)
+  mockProductionCallback(payload)
 }
 
-const setup = async ({ indicateConsumption, indicateProduction }) => {
-  const kafka = new Kafka({
-    logLevel: logLevel.DEBUG,
-    clientId: env.kafka1confluentinc_client_id,
-    brokers: [env.kafka1confluentinc_broker1],
-    retry: {
-      initialRetryTime: 1200,
-      retries: 100,
-    },
-  })
-
-  const consumer = await createConsumer({ kafka, indicateConsumption })
-  const messageProducer = await createMessageProducer({ kafka, indicateProduction })
+const main = async (
+  key: string,
+  messages: string[],
+  mockConsumptionCallback: JestFn,
+  mockProductionCallback: JestFn
+): Promise<{ consumer: any }> => {
+  const consumer = await createConsumer(mockConsumptionCallback)
+  await produceMessage(key, messages, mockProductionCallback)
 
   return {
-    kafka,
     consumer,
-    messageProducer,
   }
-}
-
-const main = async ({ indicateConsumption, indicateProduction }) => {
-  const { messageProducer } = await setup({ indicateConsumption, indicateProduction })
-
-  await messageProducer({ message: 'imaginary message' })
 }
 
 export default main

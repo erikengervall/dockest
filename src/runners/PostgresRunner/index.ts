@@ -4,28 +4,30 @@ import { getImage, validateConfig, validateTypes } from '../../utils'
 import { GetComposeService, Runner } from '../@types'
 
 interface RequiredConfigProps {
-  service: string
   database: string
-  username: string
   password: string
+  service: string
+  username: string
 }
 interface DefaultableConfigProps {
-  host: string
-  port: number
-  dependsOn: Runner[]
   commands: string[]
   connectionTimeout: number
+  dependsOn: Runner[]
+  host: string
+  image: string | undefined
+  port: number
   responsivenessTimeout: number
 }
 export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT: number = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_CONFIG_VALUES.HOST,
-  port: DEFAULT_PORT,
-  dependsOn: [],
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
+  dependsOn: [],
+  host: DEFAULT_CONFIG_VALUES.HOST,
+  image: undefined,
+  port: DEFAULT_PORT,
   responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
 }
 
@@ -41,20 +43,20 @@ class PostgresRunner {
 
     // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
     const schema: { [key in keyof RequiredConfigProps]: () => void } = {
-      service: validateTypes.isString,
       database: validateTypes.isString,
       password: validateTypes.isString,
+      service: validateTypes.isString,
       username: validateTypes.isString,
     }
     validateConfig(schema, this.runnerConfig)
   }
 
   public getComposeService: GetComposeService = dockerComposeFileName => {
-    const { service, port, database, username, password } = this.runnerConfig
+    const { image, password, username, database, port, service } = this.runnerConfig
 
     return {
       [service]: {
-        image: getImage(service, dockerComposeFileName),
+        image: getImage({ image, dockerComposeFileName, service }),
         ports: [`${port}:${DEFAULT_PORT}`],
         environment: {
           POSTGRES_DB: database,

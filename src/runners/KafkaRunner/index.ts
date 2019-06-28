@@ -6,31 +6,31 @@ import { GetComposeService, Runner } from '../@types'
 import { ZooKeeperRunner } from '../index'
 
 interface RequiredConfigProps {
-  service: string
   dependsOn: Runner[]
+  service: string
 }
 interface DefaultableConfigProps {
-  host: string
-  port: number
-  ports: { [key: number]: number }
+  autoCreateTopic: boolean
   commands: string[]
   connectionTimeout: number
-  autoCreateTopic: boolean
   deleteTopic: boolean
+  host: string
+  image: string | undefined
+  port: number
+  ports: { [key: number]: number }
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT_PLAINTEXT = 9092
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_CONFIG_VALUES.HOST,
-  port: DEFAULT_PORT_PLAINTEXT,
-  ports: {
-    [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
-  },
+  autoCreateTopic: true,
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  autoCreateTopic: true,
   deleteTopic: true,
+  host: DEFAULT_CONFIG_VALUES.HOST,
+  image: undefined,
+  port: DEFAULT_PORT_PLAINTEXT,
+  ports: { [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT },
 }
 
 class KafkaRunner {
@@ -51,11 +51,11 @@ class KafkaRunner {
   }
 
   public getComposeService: GetComposeService = dockerComposeFileName => {
-    const { service, ports, dependsOn, autoCreateTopic, deleteTopic } = this.runnerConfig
+    const { image, deleteTopic, autoCreateTopic, dependsOn, ports, service } = this.runnerConfig
 
     const zkDep = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
     if (!zkDep) {
-      throw new ConfigurationError('Could not find ZooKeeper dependency')
+      throw new ConfigurationError('Missing required ZooKeeper dependency')
     }
     const {
       runnerConfig: { service: zkService, port: zkPort },
@@ -63,7 +63,7 @@ class KafkaRunner {
 
     return {
       [service]: {
-        image: getImage(service, dockerComposeFileName),
+        image: getImage({ image, dockerComposeFileName, service }),
         depends_on: dependsOn.map(({ runnerConfig: { service } }) => service),
         ports: [`${ports[DEFAULT_PORT_PLAINTEXT]}:${DEFAULT_PORT_PLAINTEXT}`],
         environment: {

@@ -7,21 +7,23 @@ interface RequiredConfigProps {
   service: string
 }
 interface DefaultableConfigProps {
-  host: string
-  port: number
+  commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
-  commands: string[]
+  host: string
+  image: string | undefined
+  port: number
 }
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_INTERNAL_PORT: number = 2181
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  host: DEFAULT_CONFIG_VALUES.HOST,
-  port: DEFAULT_INTERNAL_PORT,
+  commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   dependsOn: [],
-  commands: [],
+  host: DEFAULT_CONFIG_VALUES.HOST,
+  image: undefined,
+  port: DEFAULT_INTERNAL_PORT,
 }
 
 class ZooKeeperRunner {
@@ -41,11 +43,11 @@ class ZooKeeperRunner {
   }
 
   public getComposeService = (dockerComposeFileName: string) => {
-    const { service, port } = this.runnerConfig
+    const { image, port, service } = this.runnerConfig
 
     return {
       [service]: {
-        image: getImage(service, dockerComposeFileName),
+        image: getImage({ image, dockerComposeFileName, service }),
         ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
         environment: {
           ZOOKEEPER_CLIENT_PORT: port,
