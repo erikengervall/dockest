@@ -12,14 +12,6 @@ const specWrapper = () =>
 
       expect(firstEntry).toEqual(expect.objectContaining(seedBanana))
     })
-
-    it('should be able to execute custom shell scripts', async () => {
-      await execa('../node_modules/knex/bin/cli.js migrate:rollback')
-
-      const { firstEntry } = await app()
-
-      expect(firstEntry).toEqual(null)
-    })
   })
 
 runOrSkip(dotenv.config().parsed.postgres2knex_enabled, specWrapper)
