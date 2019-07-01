@@ -1,16 +1,20 @@
 import dotenv from 'dotenv'
 import { runOrSkip } from '../testUtils'
-import main from './app'
+import app from './app'
 // @ts-ignore
 import { seedCake } from './data.json'
 
 const specWrapper = () =>
   describe('redis-1-ioredis', () => {
-    it('trabajo', async () => {
-      const { redis } = main()
+    it('should retrieve seeded value', async () => {
+      const { redis } = app()
 
       const value = await redis.get(seedCake.key)
       expect(value).toEqual(seedCake.value)
+    })
+
+    it('should handle flushall', async () => {
+      const { redis } = app()
 
       await redis.flushall()
 

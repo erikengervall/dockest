@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import { execa } from '../../src'
 import { runOrSkip } from '../testUtils'
-import main from './app'
+import app from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
 
@@ -13,25 +13,17 @@ const specWrapper = () => {
 
   describe('postgres-1-sequelize', () => {
     it('should get first entry', async () => {
-      const result = await main()
+      const { firstEntry } = await app()
 
-      expect(result).toEqual(
-        expect.objectContaining({
-          firstEntry: expect.objectContaining(seedUser),
-        })
-      )
+      expect(firstEntry).toEqual(expect.objectContaining(seedUser))
     })
 
-    it('execa', async () => {
+    it('should be able to execute custom shell scripts', async () => {
       await execa('sequelize db:seed:undo:all')
 
-      const result = await main()
+      const { firstEntry } = await app()
 
-      expect(result).toEqual(
-        expect.objectContaining({
-          firstEntry: null,
-        })
-      )
+      expect(firstEntry).toEqual(null)
     })
   })
 }

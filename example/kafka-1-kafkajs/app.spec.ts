@@ -5,18 +5,22 @@ import { sleep } from '../../src'
 import { runOrSkip } from '../testUtils'
 import main from './app'
 
-jest.setTimeout(1000 * 30)
+jest.setTimeout(1000 * 60)
 const env = dotenv.config().parsed
 
 const waitForEventConsumption = async (
   targetCount: number,
-  listener: (args: { counter: number }) => void,
-  produce: () => void,
+  endBatchProcessListener: (args: { counter: number }) => void,
+  startConsuming: () => Promise<void>,
+  emit: () => Promise<void>,
   timeout: number = 15
 ): Promise<void> => {
   const opts = { counter: 0 }
-  listener(opts)
-  await produce()
+  endBatchProcessListener(opts)
+  await startConsuming()
+
+  await sleep(100) // FIXME: Investigate why the consumer doesn't consume messages without this sleep
+  await emit()
 
   const recurse = async (): Promise<void> => {
     timeout--
@@ -39,15 +43,20 @@ const waitForEventConsumption = async (
   await recurse()
 }
 
-const specWrapper = () =>
-  describe('kafka-1-kafkajs', () => {
-    it('trabajo', async () => {
-      const mockProductionCallback = jest.fn()
-      const mockConsumptionCallback = jest.fn()
-      const messages = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      const key = 'arbitrary 🤷🏼‍♂️'
+const specWrapper = () => {
+  const mockProductionCallback = jest.fn()
+  const mockConsumptionCallback = jest.fn()
+  const messages = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+  const key = 'arbitrary key 🌮'
 
-      const { consumer, produce } = await main(
+  beforeEach(() => {
+    mockProductionCallback.mockClear()
+    mockConsumptionCallback.mockClear()
+  })
+
+  describe('kafka-1-kafkajs', () => {
+    it('should be able to produce and consume kafka events', async () => {
+      const { consumer, emit, startConsuming } = main(
         key,
         messages,
         mockConsumptionCallback,
@@ -61,7 +70,8 @@ const specWrapper = () =>
             opts.counter += batchSize
           })
         },
-        produce
+        startConsuming,
+        emit
       )
 
       expect(mockProductionCallback).toHaveBeenCalledWith({
@@ -80,5 +90,6 @@ const specWrapper = () =>
       })
     })
   })
+}
 
 runOrSkip(env.kafka1confluentinc_enabled, specWrapper)

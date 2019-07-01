@@ -7,7 +7,7 @@ const getFirstEntry = async () =>
     .where({ size: seedBanana.size })
     .first()
 
-const main = async () => {
+const app = async () => {
   const firstEntry = await getFirstEntry()
 
   return {
@@ -15,4 +15,4 @@ const main = async () => {
   }
 }
 
-export default main
+export default app
