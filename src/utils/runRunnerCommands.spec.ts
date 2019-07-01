@@ -12,12 +12,7 @@ const postgresRunner = new PostgresRunner({
   database: '_',
   commands: [command],
 })
-
-jest.mock('execa', () => ({
-  shell: jest.fn(() => ({
-    stdout,
-  })),
-}))
+jest.mock('execa', () => jest.fn(() => ({ stdout })))
 
 beforeEach(() => {
   postgresRunner.runnerLogger = createMockProxy()

@@ -4,7 +4,6 @@ import { PostgresRunner } from '../runners'
 import { testables } from './resolveContainerId'
 
 const { getContainerId } = testables
-
 const stdout = `mockStdout`
 const postgresRunner = new PostgresRunner({
   service: '_',
@@ -12,12 +11,7 @@ const postgresRunner = new PostgresRunner({
   password: '_',
   database: '_',
 })
-
-jest.mock('execa', () => ({
-  shell: jest.fn(() => ({
-    stdout,
-  })),
-}))
+jest.mock('execa', () => jest.fn(() => ({ stdout })))
 
 beforeEach(() => {
   postgresRunner.runnerLogger = createMockProxy()

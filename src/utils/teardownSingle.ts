@@ -24,9 +24,9 @@ const stopContainerById = async (runner: Runner): Promise<void> => {
   runner.runnerLogger.stopContainer()
 
   try {
-    const cmd = `docker stop ${containerId}`
+    const command = `docker stop ${containerId}`
 
-    await execaWrapper(cmd, runner)
+    await execaWrapper(command, runner)
   } catch (error) {
     runner.runnerLogger.stopContainerFailed()
 
@@ -42,9 +42,9 @@ const removeContainerById = async (runner: Runner): Promise<void> => {
   runner.runnerLogger.removeContainer()
 
   try {
-    const cmd = `docker rm ${containerId} --volumes`
+    const command = `docker rm ${containerId} --volumes`
 
-    await execaWrapper(cmd, runner)
+    await execaWrapper(command, runner)
   } catch (error) {
     runner.runnerLogger.removeContainerFailed()
 

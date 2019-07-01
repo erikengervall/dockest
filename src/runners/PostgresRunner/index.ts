@@ -70,16 +70,16 @@ class PostgresRunner {
   public createResponsivenessCheckCmd = () => {
     const { host, database, username } = this.runnerConfig
     const containerId = this.containerId
-    const cmd = ` \
-                  docker exec ${containerId} \
-                  bash -c "psql \
-                  -h ${host} \
-                  -d ${database} \
-                  -U ${username} \
-                  -c 'select 1'" \
-                `
+    const command = ` \
+                      docker exec ${containerId} \
+                      bash -c "psql \
+                      -h ${host} \
+                      -d ${database} \
+                      -U ${username} \
+                      -c 'select 1'" \
+                    `
 
-    return cmd
+    return command
   }
 }
 

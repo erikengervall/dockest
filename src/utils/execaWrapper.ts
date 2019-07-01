@@ -2,15 +2,15 @@ import execa from 'execa'
 import { globalLogger } from '../loggers'
 import { Runner } from '../runners/@types'
 
-const execaWrapper = async (cmd: string, runner?: Runner): Promise<string> => {
-  const trimmedCmd = cmd.replace(/\s+/g, ' ').trim()
-  runner ? runner.runnerLogger.shellCmd(trimmedCmd) : globalLogger.shellCmd(trimmedCmd)
+const execaWrapper = async (command: string, runner?: Runner): Promise<string> => {
+  const trimmedCommand = command.replace(/\s+/g, ' ').trim()
+  runner ? runner.runnerLogger.shellCmd(trimmedCommand) : globalLogger.shellCmd(trimmedCommand)
 
-  const { stdout: result } = await execa(trimmedCmd, { shell: true })
+  const { stdout: result } = await execa(trimmedCommand, { shell: true })
 
   runner
-    ? runner.runnerLogger.shellCmdSuccess(trimmedCmd)
-    : globalLogger.shellCmdSuccess(trimmedCmd)
+    ? runner.runnerLogger.shellCmdSuccess(trimmedCommand)
+    : globalLogger.shellCmdSuccess(trimmedCommand)
 
   return result
 }

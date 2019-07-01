@@ -1,11 +1,11 @@
 import sleep from './sleep'
 
 const defaultSleep = 1000
+const flakynessBuffer = 5
 
 describe('sleep', () => {
   describe('happy', () => {
     it('should sleep for default time', async () => {
-      const flakynessBuffer = 5
       const beforeSleep = Date.now()
 
       await sleep()
@@ -16,7 +16,6 @@ describe('sleep', () => {
     })
 
     it('should sleep for custom time', async () => {
-      const flakynessBuffer = 5
       const customSleep = 100
       const beforeSleep = Date.now()
 

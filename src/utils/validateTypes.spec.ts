@@ -1,9 +1,9 @@
 import { LOG_LEVEL } from '../constants'
 import validateTypes from './validateTypes'
 
-let config: any
-
 describe('validateTypes', () => {
+  let config: { [key: string]: any }
+
   beforeEach(() => {
     config = {
       service: 'username',

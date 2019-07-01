@@ -11,12 +11,7 @@ const postgresRunner = new PostgresRunner({
   database: '_',
 })
 postgresRunner.containerId = 'mockContainerId'
-
-jest.mock('execa', () => ({
-  shell: jest.fn(() => ({
-    stdout,
-  })),
-}))
+jest.mock('execa', () => jest.fn(() => ({ stdout })))
 
 describe('teardownSingle', () => {
   beforeEach(() => {

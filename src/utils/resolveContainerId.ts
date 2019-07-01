@@ -47,7 +47,7 @@ const getContainerId = async (runner: Runner): Promise<string> => {
   const {
     runnerConfig: { service },
   } = runner
-  const cmd = ` \
+  const command = ` \
                 docker ps \
                   --quiet \
                   --filter \
@@ -55,7 +55,7 @@ const getContainerId = async (runner: Runner): Promise<string> => {
                 --latest \
               `
 
-  const containerId = await execaWrapper(cmd, runner)
+  const containerId = await execaWrapper(command, runner)
 
   return containerId
 }

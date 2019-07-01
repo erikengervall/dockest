@@ -68,11 +68,11 @@ class RedisRunner {
                             ${!!runnerPassword ? `-a ${runnerPassword}` : ''} \
                             PING \
                           `
-    const cmd = ` \
-                  docker exec ${containerId} redis-cli ${redisCliPingOpts} \
-                `
+    const command = ` \
+                      docker exec ${containerId} redis-cli ${redisCliPingOpts} \
+                    `
 
-    return cmd
+    return command
   }
 }
 
