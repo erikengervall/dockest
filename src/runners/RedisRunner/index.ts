@@ -46,12 +46,12 @@ class RedisRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService = (dockerComposeFileName: string) => {
+  public getComposeService = (composeFileName: string) => {
     const { image, port, service } = this.runnerConfig
 
     return {
       [service]: {
-        image: getImage({ image, dockerComposeFileName, service }),
+        image: getImage({ image, composeFileName, service }),
         ports: [`${port}:${DEFAULT_PORT}`],
       },
     }

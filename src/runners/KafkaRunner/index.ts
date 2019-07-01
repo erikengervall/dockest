@@ -48,7 +48,7 @@ class KafkaRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = dockerComposeFileName => {
+  public getComposeService: GetComposeService = composeFileName => {
     const { autoCreateTopic, dependsOn, image, ports, service } = this.runnerConfig
 
     const zooKeeperDependency = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
@@ -74,7 +74,7 @@ class KafkaRunner {
           KAFKA_BROKER_ID: 1,
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
         },
-        image: getImage({ image, dockerComposeFileName, service }),
+        image: getImage({ image, composeFileName, service }),
         ports: [`${ports[DEFAULT_PORT_PLAINTEXT]}:${DEFAULT_PORT_PLAINTEXT}`],
       },
     }

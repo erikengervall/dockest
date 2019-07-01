@@ -26,7 +26,7 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 ## Usage
 
-Check out `example/dockest.ts` for an example usage implemented in TypeScript.
+Check out `example/dockest.ts` for an example usage.
 
 ### TypeScript
 
@@ -59,15 +59,19 @@ import Dockest, { runners } from 'dockest'
 
 const { PostgresRunner } = runners
 
-const dockest = new Dockest({ lib: require('jest') }, [
-  new PostgresRunner({
-    database: 'insert-database-here',
-    password: 'insert-password-here',
-    service: 'insert-service-name-here',
-    username: 'insert-username-here',
-  }),
-])
-
+const dockest = new Dockest({
+  jest: {
+    lib: require('jest'),
+  },
+  runners: [
+    new PostgresRunner({
+      database: 'insert-database-here',
+      password: 'insert-password-here',
+      service: 'insert-service-name-here',
+      username: 'insert-username-here',
+    }),
+  ],
+})
 
 dockest.run()
 ```
@@ -82,14 +86,19 @@ const {
   runners: { PostgresRunner },
 } = require('dockest')
 
-const dockest = new Dockest({ lib: require('jest') }, [
-  new PostgresRunner({
-    database: 'insert-database-here',
-    password: 'insert-password-here',
-    service: 'insert-service-name-here',
-    username: 'insert-username-here',
-  }),
-])
+const dockest = new Dockest({
+  jest: {
+    lib: require('jest'),
+  },
+  runners: [
+    new PostgresRunner({
+      database: 'insert-database-here',
+      password: 'insert-password-here',
+      service: 'insert-service-name-here',
+      username: 'insert-username-here',
+    }),
+  ],
+})
 
 dockest.run()
 ```
@@ -97,7 +106,11 @@ dockest.run()
 # Dockest constructor
 
 ```TypeScript
-const docker = new Dockest(jest, runners, opts)
+const docker = new Dockest({
+  jest,
+  runners,
+  opts,
+})
 ```
 
 ## Jest
@@ -191,7 +204,12 @@ new ZooKeeperRunner({
 ```TypeScript
 new KafkaRunner({
   service: 'insert-service-name-here',
-  dependsOn: [],
+  dependsOn: [
+    new ZooKeeperRunner({
+      port: Number(env.zookeeper1confluentinc_port),
+      service: env.zookeeper1confluentinc_service,
+    }),
+  ],
   ports: { '9092': 9092 },
 })
 ```
@@ -216,14 +234,14 @@ It's possible to pass custom configuration to Dockest in order to improve develo
 
 ### Interface
 
-| Prop                  | Required | Type                | Default             | Description                                                                                                                                           |
-| --------------------- | -------- | ------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| afterSetupSleep       | false    | number              | 0                   | Additional sleep after initial setup. Useful when resources require additional time to boot                                                           |
-| dev                   | false    | { idling: boolean } | { idling: false }   | Pauses Jest execution indefinitely. Useful for debugging Jest while resources are running                                                             |
-| dockerComposeFileName | false    | string              | docker-compose.yml  | The file name of your Compose file. This is required if you do **not** pass the image property for each Runner                                        |
-| exitHandler           | false    | function            | null                | Callback that will run before exit. Recieved one argument of type { type: string, code?: number, signal?: any, error?: Error, reason?: any, p?: any } |
-| logLevel              | false    | number              | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                                                    |
-| runInBand             | false    | boolean             | true                | Initializes and runs the Runners in sequence. Disabling this could increase performance                                                               |
+| Prop            | Required | Type               | Default             | Description                                                                                                                                           |
+| --------------- | -------- | ------------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| afterSetupSleep | false    | number             | 0                   | Additional sleep after initial setup. Useful when resources require additional time to boot                                                           |
+| dev             | false    | { debug: boolean } | { debug: false }    | Pauses Jest execution indefinitely. Useful for debugging Jest while resources are running                                                             |
+| composeFileName | false    | string             | docker-compose.yml  | The name of your Compose file. This is required if you do **not** pass the image property for each Runner                                             |
+| exitHandler     | false    | function           | null                | Callback that will run before exit. Recieved one argument of type { type: string, code?: number, signal?: any, error?: Error, reason?: any, p?: any } |
+| logLevel        | false    | number             | 2 (logLevel.NORMAL) | Sets the log level between 0 and 4                                                                                                                    |
+| runInBand       | false    | boolean            | true                | Initializes and runs the Runners in sequence. Disabling this could increase performance                                                               |
 
 # Contributing
 

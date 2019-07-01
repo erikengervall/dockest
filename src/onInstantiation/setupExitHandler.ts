@@ -1,15 +1,7 @@
-import Dockest, { DockestConfig } from '../index'
+import { ErrorPayload } from '../@types'
+import { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
 import { teardownSingle } from '../utils'
-
-export interface ErrorPayload {
-  trap: string
-  code?: number
-  signal?: any
-  error?: Error
-  reason?: any
-  p?: any
-}
 
 const setupExitHandler = async (config: DockestConfig): Promise<void> => {
   const {
@@ -25,11 +17,11 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
     }
     exitInProgress = true
 
-    if (!!Dockest.config.$.jestRanWithResult) {
+    if (!!config.$.jestRanWithResult) {
       return // Program ran as expected
     }
 
-    globalLogger.exitHandler('Exithandler invoced', errorPayload)
+    globalLogger.exitHandler('Exithandler invoked', errorPayload)
 
     if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')

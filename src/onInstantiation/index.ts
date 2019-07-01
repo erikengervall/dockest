@@ -1,7 +1,7 @@
 import { DockestConfig } from '../index'
 import flattenRunners from './flattenRunners'
 import generateComposeFile from './generateComposeFile'
-import setupExitHandler, { ErrorPayload } from './setupExitHandler'
+import setupExitHandler from './setupExitHandler'
 
 const onInstantiation = (config: DockestConfig) => {
   flattenRunners(config)
@@ -9,5 +9,4 @@ const onInstantiation = (config: DockestConfig) => {
   generateComposeFile(config)
 }
 
-export { ErrorPayload }
 export default onInstantiation

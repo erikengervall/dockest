@@ -2,7 +2,7 @@ import { Runner } from '../runners/@types'
 import { execaWrapper } from '../utils'
 
 const dockerComposeUp = (dockerComposeGeneratedPath: string, runner?: Runner) => {
-  const cmd = ` \
+  const command = ` \
               docker-compose \
               -f ${dockerComposeGeneratedPath} \
               up \
@@ -10,7 +10,7 @@ const dockerComposeUp = (dockerComposeGeneratedPath: string, runner?: Runner) =>
               --detach \
             `
 
-  execaWrapper(cmd, runner)
+  execaWrapper(command, runner)
 }
 
 export default dockerComposeUp

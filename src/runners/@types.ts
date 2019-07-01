@@ -19,4 +19,4 @@ export type ComposeFile = {
   ports: string[]
 }
 
-export type GetComposeService = (dockerComposeFileName: string) => { [key: string]: ComposeFile }
+export type GetComposeService = (composeFileName: string) => { [key: string]: ComposeFile }

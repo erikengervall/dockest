@@ -1,7 +1,8 @@
+import { ErrorPayload } from './@types'
 import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import { BaseLogger } from './loggers'
-import onInstantiation, { ErrorPayload } from './onInstantiation'
+import onInstantiation from './onInstantiation'
 import onRun, { JestConfig } from './onRun'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
@@ -13,8 +14,10 @@ interface RequiredConfig {
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
-  dev: { idling?: boolean }
-  dockerComposeFileName: string
+  dev: {
+    debug?: boolean
+  }
+  composeFileName: string
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
   runInBand: boolean
@@ -28,8 +31,10 @@ export type DockestConfig = RequiredConfig & { opts: DefaultableUserConfig } & {
 
 const DEFAULT_CONFIG: DefaultableUserConfig = {
   afterSetupSleep: 0,
-  dev: { idling: false },
-  dockerComposeFileName: 'docker-compose.yml',
+  dev: {
+    debug: false,
+  },
+  composeFileName: 'docker-compose.yml',
   exitHandler: null,
   logLevel: LOG_LEVEL.NORMAL,
   runInBand: true,
@@ -41,28 +46,33 @@ const INTERNAL_CONFIG = {
 }
 
 class Dockest {
-  public static config: DockestConfig
-  public static logLevel: number
-  private static instance: Dockest
+  private config: DockestConfig
 
-  constructor(jest: JestConfig, runners: Runner[], opts: Partial<DefaultableUserConfig> = {}) {
-    // @ts-ignore
-    Dockest.config = {}
-    Dockest.config.$ = { ...INTERNAL_CONFIG }
-    Dockest.config.jest = jest
-    Dockest.config.opts = { ...DEFAULT_CONFIG, ...opts, ...INTERNAL_CONFIG }
-    Dockest.config.runners = runners
-    BaseLogger.logLevel = Dockest.config.opts.logLevel
+  constructor({
+    jest,
+    runners,
+    opts = {},
+  }: {
+    jest: JestConfig
+    runners: Runner[]
+    opts: Partial<DefaultableUserConfig>
+  }) {
+    this.config = {
+      jest,
+      runners,
+      opts: { ...DEFAULT_CONFIG, ...opts },
+      $: { ...INTERNAL_CONFIG },
+    }
+    BaseLogger.logLevel = this.config.opts.logLevel
 
     this.validateConfig()
-    onInstantiation(Dockest.config)
-
-    return Dockest.instance || (Dockest.instance = this)
+    onInstantiation(this.config)
   }
 
   public run = async (): Promise<void> => {
-    Dockest.config.$.perfStart = Date.now()
-    await onRun(Dockest.config)
+    this.config.$.perfStart = Date.now()
+
+    await onRun(this.config)
   }
 
   private validateConfig = () => {
@@ -70,14 +80,25 @@ class Dockest {
       jest: validateTypes.isObject,
       runners: validateTypes.isArray,
     }
-    const failures = validateTypes(schema, Dockest.config)
+    const failures = validateTypes(schema, this.config)
 
     if (failures.length > 0) {
       throw new ConfigurationError(`${failures.join('\n')}`)
     }
 
-    if (Dockest.config.runners.length <= 0) {
+    if (this.config.runners.length <= 0) {
       throw new ConfigurationError('Missing runners')
+    }
+
+    // Validate service name uniqueness
+    const map: { [key: string]: string } = {}
+    for (const runner of this.config.runners) {
+      if (map[runner.runnerConfig.service]) {
+        throw new ConfigurationError(
+          `Service property has to be unique. Collision found for runner with service: ${runner.runnerConfig.service}`
+        )
+      }
+      map[runner.runnerConfig.service] = runner.runnerConfig.service
     }
   }
 }

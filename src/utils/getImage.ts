@@ -3,11 +3,11 @@ import yaml from 'js-yaml'
 import { ConfigurationError } from '../errors'
 
 const getImage = ({
-  dockerComposeFileName,
+  composeFileName,
   image: configProvidedImage,
   service,
 }: {
-  dockerComposeFileName: string
+  composeFileName: string
   image?: string
   service: string
 }): string => {
@@ -19,12 +19,10 @@ const getImage = ({
   let dockerCompose = null
 
   try {
-    dockerCompose = yaml.safeLoad(
-      fs.readFileSync(`${process.cwd()}/${dockerComposeFileName}`, 'utf8')
-    )
+    dockerCompose = yaml.safeLoad(fs.readFileSync(`${process.cwd()}/${composeFileName}`, 'utf8'))
     imageFromComposeFile = dockerCompose.services[service].image
   } catch (e) {
-    throw new Error(`Failed to parse ${dockerComposeFileName}`)
+    throw new Error(`Failed to parse ${composeFileName}`)
   }
 
   if (typeof imageFromComposeFile === 'string' && imageFromComposeFile.length > 0) {

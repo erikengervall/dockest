@@ -1,39 +1,33 @@
-import Dockest, { DockestConfig } from '../index'
+import { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
-import { Runner } from '../runners/@types'
-import {
-  checkConnection,
-  checkResponsiveness,
-  resolveContainerId,
-  runRunnerCommands,
-  sleepWithLog,
-  teardownSingle,
-} from '../utils'
+import { sleepWithLog, teardownSingle } from '../utils'
 import dockerComposeUp from './dockerComposeUp'
 import runJest, { JestConfig } from './runJest'
+import waitForRunnersReadyness from './waitForRunnersReadyness'
 
 const onRun = async (config: DockestConfig) => {
   const {
     $: { dockerComposeGeneratedPath, perfStart },
     opts: {
       afterSetupSleep,
-      dev: { idling },
+      dev: { debug },
     },
   } = config
 
   dockerComposeUp(dockerComposeGeneratedPath)
 
-  await preperation(config)
+  await waitForRunnersReadyness(config)
 
   if (afterSetupSleep > 0) {
     await sleepWithLog('After setup sleep progress', afterSetupSleep)
   }
 
-  if (idling) {
-    globalLogger.info(`Dev mode enabled: Jest will not run.`)
+  if (!!debug) {
+    globalLogger.info(`Debug mode enabled, containers are kept running and Jest will not run.`)
+
     config.runners.forEach((runner, index) =>
       globalLogger.info(
-        `[${index}] ${JSON.stringify(
+        `[${index} | ${runner.runnerConfig.service}] ${JSON.stringify(
           {
             service: runner.runnerConfig.service,
             containerId: runner.containerId,
@@ -44,43 +38,19 @@ const onRun = async (config: DockestConfig) => {
         )}\n`
       )
     )
+
     return // Will keep the docker containers running indefinitely
   }
 
   const allTestsPassed = await runJest(config)
-  Dockest.config.$.jestRanWithResult = true
 
   for (const runner of config.runners) {
     await teardownSingle(runner)
   }
 
   globalLogger.perf(perfStart)
-  exitProcessWithCode(allTestsPassed)
-}
-
-const preperation = async (config: DockestConfig) => {
-  const parallelPromises = []
-
-  for (const runner of config.runners) {
-    const work = (runner: Runner) => async () => {
-      runner.runnerLogger.runnerSetup()
-
-      await resolveContainerId(runner)
-      await checkConnection(runner)
-      await checkResponsiveness(runner)
-      await runRunnerCommands(runner)
-
-      runner.runnerLogger.runnerSetupSuccess()
-    }
-
-    !!config.opts.runInBand ? await work(runner)() : parallelPromises.push(work(runner))
-  }
-
-  await Promise.all(parallelPromises)
-}
-
-const exitProcessWithCode = (allTestsPassed: boolean) =>
   allTestsPassed ? process.exit(0) : process.exit(1)
+}
 
 export { JestConfig }
 export default onRun

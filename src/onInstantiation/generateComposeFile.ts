@@ -7,7 +7,7 @@ import { ComposeFile, Runner } from '../runners/@types'
 const generateComposeFile = (config: DockestConfig) => {
   const {
     $: { dockerComposeGeneratedPath },
-    opts: { dockerComposeFileName },
+    opts: { composeFileName },
   } = config
   const composeFile = {
     version: '3',
@@ -19,7 +19,7 @@ const generateComposeFile = (config: DockestConfig) => {
       runnerConfig: { dependsOn },
       getComposeService,
     } = runner
-    const composeService = getComposeService(dockerComposeFileName)
+    const composeService = getComposeService(composeFileName)
 
     const depComposeServices = dependsOn.reduce(
       (composeServices: { [key: string]: ComposeFile }, runner: Runner) => {
@@ -27,7 +27,7 @@ const generateComposeFile = (config: DockestConfig) => {
           runnerConfig: { service },
           getComposeService,
         } = runner
-        composeServices[service] = getComposeService(dockerComposeFileName)[service]
+        composeServices[service] = getComposeService(composeFileName)[service]
 
         return composeServices
       },

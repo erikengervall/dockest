@@ -55,25 +55,24 @@ const kafka1confluentincRunner = new KafkaRunner({
   service: env.kafka1confluentinc_service,
 })
 
-const configuredJest = {
-  // tslint:disable-next-line
-  lib: require('jest'),
-  verbose: true,
-}
-const configuredRunners = [
-  ...(env.postgres1sequelize_enabled === 'true' || IS_CLI ? [postgres1sequelizeRunner] : []),
-  ...(env.postgres2knex_enabled === 'true' || IS_CLI ? [postgres2knexRunner] : []),
-  ...(env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
-  ...(env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
-]
-const dockestConfig = {
-  afterSetupSleep: 20,
-  dev: { idling: IS_CLI || false },
-  exitHandler: () => console.log('👋🏼 from custom exitHandler'),
-  logLevel: logLevel.VERBOSE,
-  runInBand: true,
-}
-
-const dockest = new Dockest(configuredJest, configuredRunners, dockestConfig)
+const dockest = new Dockest({
+  jest: {
+    lib: require('jest'),
+    verbose: true,
+  },
+  runners: [
+    ...(env.postgres1sequelize_enabled === 'true' || IS_CLI ? [postgres1sequelizeRunner] : []),
+    ...(env.postgres2knex_enabled === 'true' || IS_CLI ? [postgres2knexRunner] : []),
+    ...(env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
+    ...(env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
+  ],
+  opts: {
+    afterSetupSleep: 10,
+    dev: { debug: IS_CLI || false },
+    exitHandler: ({ trap }) => console.log(`👋🏼 Hello custom exit handler (${trap})`),
+    logLevel: logLevel.VERBOSE,
+    runInBand: true,
+  },
+})
 
 dockest.run()

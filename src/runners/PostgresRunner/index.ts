@@ -51,7 +51,7 @@ class PostgresRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = dockerComposeFileName => {
+  public getComposeService: GetComposeService = composeFileName => {
     const { database, image, password, port, service, username } = this.runnerConfig
 
     return {
@@ -61,7 +61,7 @@ class PostgresRunner {
           POSTGRES_PASSWORD: password,
           POSTGRES_USER: username,
         },
-        image: getImage({ image, dockerComposeFileName, service }),
+        image: getImage({ image, composeFileName, service }),
         ports: [`${port}:${DEFAULT_PORT}`],
       },
     }

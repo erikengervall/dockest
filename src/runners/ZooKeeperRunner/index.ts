@@ -42,13 +42,13 @@ class ZooKeeperRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService = (dockerComposeFileName: string) => {
+  public getComposeService = (composeFileName: string) => {
     const { image, port, service } = this.runnerConfig
 
     return {
       [service]: {
         environment: { ZOOKEEPER_CLIENT_PORT: port },
-        image: getImage({ image, dockerComposeFileName, service }),
+        image: getImage({ image, composeFileName, service }),
         ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
       },
     }

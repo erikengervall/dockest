@@ -52,6 +52,8 @@ const runJest = async (config: DockestConfig) => {
     success = false
   }
 
+  config.$.jestRanWithResult = true
+
   return success
 }
 
