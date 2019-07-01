@@ -56,7 +56,7 @@ const specWrapper = () => {
 
   describe('kafka-1-kafkajs', () => {
     it('should be able to produce and consume kafka events', async () => {
-      const { consumer, emit, startConsuming } = main(
+      const { consumer, emit, startConsuming, stopConsuming } = main(
         key,
         messages,
         mockConsumptionCallback,
@@ -73,6 +73,7 @@ const specWrapper = () => {
         startConsuming,
         emit
       )
+      await stopConsuming()
 
       expect(mockProductionCallback).toHaveBeenCalledWith({
         acks: 1,

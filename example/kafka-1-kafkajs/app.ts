@@ -18,7 +18,7 @@ const kafka = new Kafka({
 
 const createConsumer = (
   mockConsumptionCallback: JestFn
-): { consumer: any; startConsuming: () => Promise<void> } => {
+): { consumer: any; startConsuming: () => Promise<void>; stopConsuming: () => Promise<void> } => {
   const consumer = kafka.consumer({ groupId: env.kafka1confluentinc_consumer_group_id })
 
   const startConsuming = async () => {
@@ -37,9 +37,12 @@ const createConsumer = (
     })
   }
 
+  const stopConsuming = () => consumer.stop()
+
   return {
     consumer,
     startConsuming,
+    stopConsuming,
   }
 }
 
