@@ -61,7 +61,7 @@ class Dockest {
   }
 
   public run = async (): Promise<void> => {
-    Dockest.config.$.perfStart = new Date()
+    Dockest.config.$.perfStart = Date.now()
     await onRun(Dockest.config)
   }
 

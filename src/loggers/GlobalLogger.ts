@@ -30,8 +30,26 @@ class GlobalLogger extends BaseLogger {
   public sleepWithLog: logMethod = (reason, progress) =>
     this.LOG_LEVEL_VERBOSE() && this.logLoading(`${reason || 'Sleeping'}: ${progress}`)
 
-  public perf = (perfStart: number) =>
-    this.LOG_LEVEL_NORMAL() && this.logInfo(`${Date.now() - perfStart}`)
+  public perf = (perfStart: number) => {
+    if (this.LOG_LEVEL_NORMAL()) {
+      const perfTime = Math.floor((Date.now() - perfStart) / 1000)
+      let hours: number | string = Math.floor(perfTime / 3600)
+      let minutes: number | string = Math.floor((perfTime - hours * 3600) / 60)
+      let seconds: number | string = perfTime - hours * 3600 - minutes * 60
+
+      if (hours < 10) {
+        hours = `0${hours}`
+      }
+      if (minutes < 10) {
+        minutes = `0${minutes}`
+      }
+      if (seconds < 10) {
+        seconds = `0${seconds}`
+      }
+
+      this.logInfo(`Elapsed time: ${hours}:${minutes}:${seconds}`)
+    }
+  }
 
   /**
    * Jest
