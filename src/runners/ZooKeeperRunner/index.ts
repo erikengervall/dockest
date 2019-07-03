@@ -1,6 +1,7 @@
 import { DEFAULT_CONFIG_VALUES } from '../../constants'
+import { ConfigurationError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
-import { getImage, validateConfig, validateTypes } from '../../utils'
+import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { Runner } from '../@types'
 
 interface RequiredConfigProps {
@@ -12,27 +13,35 @@ interface DefaultableConfigProps {
   dependsOn: Runner[]
   host: string
   image: string | undefined
-  port: number
+  ports: { [key: string]: string }
 }
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_INTERNAL_PORT: number = 2181
+const DEFAULT_HOST = 'localhost'
+const DEFAULT_PORT = '2181'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   dependsOn: [],
   host: DEFAULT_CONFIG_VALUES.HOST,
   image: undefined,
-  port: DEFAULT_INTERNAL_PORT,
+  ports: {
+    [DEFAULT_PORT]: DEFAULT_PORT,
+  },
 }
 
 class ZooKeeperRunner {
+  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_PORT: string = DEFAULT_PORT
   public runnerConfig: ZooKeeperRunnerConfig
   public runnerLogger: RunnerLogger
   public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
+    this.runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
     this.runnerLogger = new RunnerLogger(this)
     this.containerId = ''
 
@@ -43,13 +52,23 @@ class ZooKeeperRunner {
   }
 
   public getComposeService = (composeFileName: string) => {
-    const { image, port, service } = this.runnerConfig
+    const { dependsOn, image, ports, service } = this.runnerConfig
+
+    const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
+    if (!ZOOKEEPER_CLIENT_PORT) {
+      throw new ConfigurationError(
+        `Could not resolve required environment variable ZOOKEEPER_CLIENT_PORT. Expected ${DEFAULT_PORT} to appear as value in ports object`
+      )
+    }
 
     return {
       [service]: {
-        environment: { ZOOKEEPER_CLIENT_PORT: port },
-        image: getImage({ image, composeFileName, service }),
-        ports: [`${port}:${DEFAULT_INTERNAL_PORT}`],
+        environment: {
+          ZOOKEEPER_CLIENT_PORT,
+        },
+        ...getDependsOn(dependsOn),
+        ...getImage({ image, composeFileName, service }),
+        ...getPorts(ports),
       },
     }
   }

@@ -4,15 +4,17 @@ import { ConfigurationError } from '../errors'
 
 const getImage = ({
   composeFileName,
-  image: configProvidedImage,
+  image: runnerConfigProvidedImage,
   service,
 }: {
   composeFileName: string
   image?: string
   service: string
-}): string => {
-  if (typeof configProvidedImage === 'string' && configProvidedImage.length > 0) {
-    return configProvidedImage
+}): { image: string } => {
+  if (typeof runnerConfigProvidedImage === 'string' && runnerConfigProvidedImage.length > 0) {
+    return {
+      image: runnerConfigProvidedImage,
+    }
   }
 
   let imageFromComposeFile = null
@@ -26,7 +28,9 @@ const getImage = ({
   }
 
   if (typeof imageFromComposeFile === 'string' && imageFromComposeFile.length > 0) {
-    return imageFromComposeFile
+    return {
+      image: imageFromComposeFile,
+    }
   }
 
   throw new ConfigurationError(`${service} Invalid image found: ${imageFromComposeFile}`)

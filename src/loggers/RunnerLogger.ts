@@ -31,7 +31,7 @@ class RunnerLogger extends BaseLogger {
   public checkResponsivenessSuccess = () =>
     this.LOG_LEVEL_VERBOSE() && this.logSuccess(`Container's responsiveness checked`)
 
-  public checkConnection = (timeout: number, host: string, port: number) =>
+  public checkConnection = (timeout: number, host: string, port: string) =>
     this.LOG_LEVEL_VERBOSE() &&
     this.logLoading(`Checking container's connection (${host}:${port}) (Timeout in: ${timeout}s)`)
 

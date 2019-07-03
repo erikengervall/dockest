@@ -3,13 +3,13 @@ import { LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import { BaseLogger } from './loggers'
 import onInstantiation from './onInstantiation'
-import onRun, { JestConfig } from './onRun'
+import onRun from './onRun'
+import { JestConfig } from './onRun/runJest'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
 import { execaWrapper, sleep, validateTypes } from './utils'
 
 interface RequiredConfig {
-  jest: JestConfig
   runners: Runner[]
 }
 interface DefaultableUserConfig {
@@ -27,7 +27,12 @@ interface InternalConfig {
   jestRanWithResult: boolean
   perfStart: number
 }
-export type DockestConfig = RequiredConfig & { opts: DefaultableUserConfig } & { $: InternalConfig }
+export type DockestConfig = {
+  runners: Runner[]
+  opts: DefaultableUserConfig
+  jest: JestConfig
+  $: InternalConfig
+}
 
 const DEFAULT_CONFIG: DefaultableUserConfig = {
   afterSetupSleep: 0,
@@ -49,12 +54,12 @@ class Dockest {
   private config: DockestConfig
 
   constructor({
-    jest,
     runners,
+    jest,
     opts = {},
   }: {
-    jest: JestConfig
     runners: Runner[]
+    jest: JestConfig
     opts: Partial<DefaultableUserConfig>
   }) {
     this.config = {
@@ -77,7 +82,6 @@ class Dockest {
 
   private validateConfig = () => {
     const schema: { [key in keyof RequiredConfig]: any } = {
-      jest: validateTypes.isObject,
       runners: validateTypes.isArray,
     }
     const failures = validateTypes(schema, this.config)
@@ -95,7 +99,7 @@ class Dockest {
     for (const runner of this.config.runners) {
       if (map[runner.runnerConfig.service]) {
         throw new ConfigurationError(
-          `Service property has to be unique. Collision found for runner with service: ${runner.runnerConfig.service}`
+          `Service property has to be unique. Collision found for runner with service "${runner.runnerConfig.service}"`
         )
       }
       map[runner.runnerConfig.service] = runner.runnerConfig.service

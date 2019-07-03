@@ -5,9 +5,11 @@ import { sleep } from './index'
 
 const checkConnection = async (runner: Runner) => {
   const {
-    runnerConfig: { service, connectionTimeout, host, port },
+    runnerConfig: { service, connectionTimeout, host, ports },
     runnerLogger,
   } = runner
+  // TODO: Would it make sense to check connection for every port?
+  const port = Object.keys(ports)[0]
 
   const recurse = async (connectionTimeout: number) => {
     runnerLogger.checkConnection(connectionTimeout, host, port)
@@ -31,13 +33,13 @@ const checkConnection = async (runner: Runner) => {
   await recurse(connectionTimeout)
 }
 
-const acquireConnection = (host: string, port: number): Promise<void> =>
+const acquireConnection = (host: string, port: string): Promise<void> =>
   new Promise((resolve, reject) => {
     let connected: boolean = false
     let timeoutId: any = null
 
     const netSocket = net
-      .createConnection({ host, port })
+      .createConnection({ host, port: Number(port) })
       .on('connect', () => {
         clearTimeout(timeoutId)
         connected = true

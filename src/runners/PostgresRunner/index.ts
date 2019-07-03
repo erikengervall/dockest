@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
-import { getImage, validateConfig, validateTypes } from '../../utils'
+import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { GetComposeService, Runner } from '../@types'
 
 interface RequiredConfigProps {
@@ -15,30 +15,40 @@ interface DefaultableConfigProps {
   dependsOn: Runner[]
   host: string
   image: string | undefined
-  port: number
+  ports: {
+    [key: string]: string
+  }
   responsivenessTimeout: number
 }
 export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_PORT: number = 5432
+const DEFAULT_HOST = 'localhost'
+const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   dependsOn: [],
-  host: DEFAULT_CONFIG_VALUES.HOST,
+  host: DEFAULT_HOST,
   image: undefined,
-  port: DEFAULT_PORT,
+  ports: {
+    [DEFAULT_PORT]: DEFAULT_PORT,
+  },
   responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
 }
 
 class PostgresRunner {
+  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: PostgresRunnerConfig
   public runnerLogger: RunnerLogger
 
   constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
-    this.runnerConfig = { ...DEFAULT_CONFIG, ...configUserInput }
+    this.runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...configUserInput,
+    }
     this.runnerLogger = new RunnerLogger(this)
 
     // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
@@ -52,7 +62,7 @@ class PostgresRunner {
   }
 
   public getComposeService: GetComposeService = composeFileName => {
-    const { database, image, password, port, service, username } = this.runnerConfig
+    const { database, dependsOn, image, password, ports, service, username } = this.runnerConfig
 
     return {
       [service]: {
@@ -61,8 +71,9 @@ class PostgresRunner {
           POSTGRES_PASSWORD: password,
           POSTGRES_USER: username,
         },
-        image: getImage({ image, composeFileName, service }),
-        ports: [`${port}:${DEFAULT_PORT}`],
+        ...getDependsOn(dependsOn),
+        ...getImage({ image, composeFileName, service }),
+        ...getPorts(ports),
       },
     }
   }

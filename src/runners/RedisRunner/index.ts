@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
-import { getImage, validateConfig, validateTypes } from '../../utils'
+import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { Runner } from '../@types'
 
 interface RequiredConfigProps {
@@ -13,31 +13,41 @@ interface DefaultableConfigProps {
   host: string
   image: string | undefined
   password: string
-  port: number
+  ports: {
+    [key: string]: string
+  }
   responsivenessTimeout: number
 }
 export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_PORT: number = 6379
+const DEFAULT_HOST = 'localhost'
+const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: [],
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   dependsOn: [],
-  host: DEFAULT_CONFIG_VALUES.HOST,
+  host: DEFAULT_HOST,
   image: undefined,
   password: '',
-  port: DEFAULT_PORT,
+  ports: {
+    [DEFAULT_PORT]: DEFAULT_PORT,
+  },
   responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
 }
 
 class RedisRunner {
+  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: RedisRunnerConfig
   public runnerLogger: RunnerLogger
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
-    this.runnerConfig = { ...DEFAULT_CONFIG, ...config }
+    this.runnerConfig = {
+      ...DEFAULT_CONFIG,
+      ...config,
+    }
     this.runnerLogger = new RunnerLogger(this)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
@@ -47,12 +57,13 @@ class RedisRunner {
   }
 
   public getComposeService = (composeFileName: string) => {
-    const { image, port, service } = this.runnerConfig
+    const { dependsOn, image, ports, service } = this.runnerConfig
 
     return {
       [service]: {
-        image: getImage({ image, composeFileName, service }),
-        ports: [`${port}:${DEFAULT_PORT}`],
+        ...getDependsOn(dependsOn),
+        ...getImage({ image, composeFileName, service }),
+        ...getPorts(ports),
       },
     }
   }
@@ -61,7 +72,7 @@ class RedisRunner {
     const { host: runnerHost, password: runnerPassword } = this.runnerConfig
     const containerId = this.containerId
 
-    // FIXME: Should `-p` be DEFAULT_PORT or runnerConfig's port?
+    // FIXME: Should `-p` really be DEFAULT_PORT or runnerConfig's port?
     const redisCliPingOpts = ` \
                             -h ${runnerHost} \
                             -p ${DEFAULT_PORT} \

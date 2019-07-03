@@ -1,3 +1,4 @@
+import jest from 'jest'
 import { ConfigurationError } from '../errors'
 import { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
@@ -13,7 +14,7 @@ interface JestLib {
 
 export type JestConfig = {
   forceExit?: boolean
-  lib: JestLib
+  lib?: JestLib
   projects?: string[]
   runInBand?: boolean
   silent?: boolean
@@ -22,6 +23,7 @@ export type JestConfig = {
 }
 
 const DEFAULT_CONFIG = {
+  lib: jest,
   projects: ['.'],
   runInBand: true,
 }

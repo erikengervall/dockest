@@ -2,7 +2,7 @@ import { DockestConfig } from '../index'
 import { globalLogger } from '../loggers'
 import { sleepWithLog, teardownSingle } from '../utils'
 import dockerComposeUp from './dockerComposeUp'
-import runJest, { JestConfig } from './runJest'
+import runJest from './runJest'
 import waitForRunnersReadyness from './waitForRunnersReadyness'
 
 const onRun = async (config: DockestConfig) => {
@@ -52,5 +52,4 @@ const onRun = async (config: DockestConfig) => {
   allTestsPassed ? process.exit(0) : process.exit(1)
 }
 
-export { JestConfig }
 export default onRun

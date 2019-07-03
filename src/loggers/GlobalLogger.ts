@@ -30,6 +30,9 @@ class GlobalLogger extends BaseLogger {
   public sleepWithLog: logMethod = (reason, progress) =>
     this.LOG_LEVEL_VERBOSE() && this.logLoading(`${reason || 'Sleeping'}: ${progress}`)
 
+  public startPerf = (perfStart: number) =>
+    this.LOG_LEVEL_NORMAL() && this.logInfo(`Started Dockest at ${new Date(perfStart)}`)
+
   public perf = (perfStart: number) => {
     if (this.LOG_LEVEL_NORMAL()) {
       const perfTime = Math.floor((Date.now() - perfStart) / 1000)

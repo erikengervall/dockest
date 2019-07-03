@@ -12,10 +12,11 @@ export type RunnerConfig =
   | ZooKeeperRunnerConfig
 
 export type ComposeFile = {
-  depends_on?: object
-  environment?: { [key: string]: string | number }
+  depends_on?: string[]
+  environment?: {
+    [key: string]: string | number
+  }
   image: string
-  port?: string
   ports: string[]
 }
 

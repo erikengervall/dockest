@@ -8,6 +8,7 @@ const IS_CLI = env.CI === 'true'
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
 const postgres1sequelizeRunner = new PostgresRunner({
+  service: env.postgres1sequelize_service,
   commands: [
     'sequelize db:migrate:undo:all',
     'sequelize db:migrate',
@@ -15,60 +16,70 @@ const postgres1sequelizeRunner = new PostgresRunner({
     'sequelize db:seed --seed 20190101001337-demo-user',
   ],
   database: env.postgres1sequelize_database,
-  host: env.postgres1sequelize_host,
   password: env.postgres1sequelize_password,
-  port: Number(env.postgres1sequelize_port),
-  service: env.postgres1sequelize_service,
+  ports: {
+    [env.postgres1sequelize_port]: PostgresRunner.DEFAULT_PORT,
+  },
   username: env.postgres1sequelize_username,
 })
 
 const postgres2knexRunner = new PostgresRunner({
+  service: env.postgres2knex_service,
   commands: [
     './node_modules/knex/bin/cli.js migrate:rollback',
     './node_modules/knex/bin/cli.js migrate:latest',
     './node_modules/knex/bin/cli.js seed:run',
   ],
   database: env.postgres2knex_database,
-  host: env.postgres2knex_host,
+  host: PostgresRunner.DEFAULT_HOST,
   password: env.postgres2knex_password,
-  port: Number(env.postgres2knex_port),
-  service: env.postgres2knex_service,
+  ports: {
+    [env.postgres2knex_port]: PostgresRunner.DEFAULT_PORT,
+  },
   username: env.postgres2knex_username,
 })
 
 const redis1ioredisRunner = new RedisRunner({
-  host: env.redis1ioredis_host,
-  password: env.redis1ioredis_password,
-  port: Number(env.redis1ioredis_port),
   service: env.redis1ioredis_service,
+  password: env.redis1ioredis_password,
+  ports: {
+    [env.redis1ioredis_port]: RedisRunner.DEFAULT_PORT,
+  },
 })
 
 const zookeeper1confluentincRunner = new ZooKeeperRunner({
-  port: Number(env.zookeeper1confluentinc_port),
   service: env.zookeeper1confluentinc_service,
+  ports: {
+    [env.zookeeper1confluentinc_port]: ZooKeeperRunner.DEFAULT_PORT,
+  },
 })
 
 const kafka1confluentincRunner = new KafkaRunner({
-  dependsOn: [zookeeper1confluentincRunner],
-  port: Number(env.kafka1confluentinc_port1),
-  ports: { 9092: Number(env.kafka1confluentinc_port1) },
   service: env.kafka1confluentinc_service,
+  dependsOn: [zookeeper1confluentincRunner],
+  ports: {
+    [env.kafka1confluentinc_port1]: KafkaRunner.DEFAULT_PORT_PLAINTEXT,
+    // [env.kafka1confluentinc_port2]: KafkaRunner.DEFAULT_PORT_SSL,
+    // [env.kafka1confluentinc_port3]: KafkaRunner.DEFAULT_PORT_SASL_SSL,
+  },
 })
 
 const dockest = new Dockest({
+  runners: [
+    ...(IS_CLI || env.postgres1sequelize_enabled === 'true' ? [postgres1sequelizeRunner] : []),
+    ...(IS_CLI || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
+    ...(IS_CLI || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
+    ...(IS_CLI || env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
+  ],
   jest: {
-    lib: require('jest'),
     verbose: true,
   },
-  runners: [
-    ...(env.postgres1sequelize_enabled === 'true' || IS_CLI ? [postgres1sequelizeRunner] : []),
-    ...(env.postgres2knex_enabled === 'true' || IS_CLI ? [postgres2knexRunner] : []),
-    ...(env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
-    ...(env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
-  ],
   opts: {
     afterSetupSleep: 10,
-    dev: { debug: IS_CLI || false },
+    composeFileName: 'docker-compose.yml',
+    dev: {
+      // debug: true,
+    },
     exitHandler: ({ trap }) => console.log(`👋🏼 Hello custom exit handler (${trap})`),
     logLevel: logLevel.VERBOSE,
     runInBand: true,

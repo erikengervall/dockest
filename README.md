@@ -60,14 +60,11 @@ import Dockest, { runners } from 'dockest'
 const { PostgresRunner } = runners
 
 const dockest = new Dockest({
-  jest: {
-    lib: require('jest'),
-  },
   runners: [
     new PostgresRunner({
+      service: 'insert-service-name-here',
       database: 'insert-database-here',
       password: 'insert-password-here',
-      service: 'insert-service-name-here',
       username: 'insert-username-here',
     }),
   ],
@@ -87,14 +84,11 @@ const {
 } = require('dockest')
 
 const dockest = new Dockest({
-  jest: {
-    lib: require('jest'),
-  },
   runners: [
     new PostgresRunner({
+      service: 'insert-service-name-here',
       database: 'insert-database-here',
       password: 'insert-password-here',
-      service: 'insert-service-name-here',
       username: 'insert-username-here',
     }),
   ],
@@ -107,126 +101,164 @@ dockest.run()
 
 ```TypeScript
 const docker = new Dockest({
-  jest,
   runners,
+  jest,
   opts,
 })
 ```
-
-## Jest
-
-### Interface
-
-| Prop      | Required | Type     | Default | Description                                              |
-| --------- | -------- | -------- | ------- | -------------------------------------------------------- |
-| lib       | true     | object   | -       | The Jest library itself                                  |
-| projects  | false    | string[] | ['.']   | https://jestjs.io/docs/en/cli.html#projects-path1-pathn- |
-| runInBand | false    | boolean  | true    | https://jestjs.io/docs/en/cli.html#runinband             |
-
-Note that due to Jest running all tests in parallel per default, Dockest defaults the `runInBand` option to `true`. This'll cause jest to run its tests sequentially and thus avoid potential race conditions if tests perform read/write operations on the same entry. The downside of this is an overall longer runtime.
-
-A complete list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation.
 
 ## Runners
 
 ### [Postgres](https://hub.docker.com/_/postgres)
 
 ```TypeScript
-new PostgresRunner({
+const opts = {
+  service: 'insert-service-name-here',
   database: 'insert-database-here',
   password: 'insert-password-here',
-  service: 'insert-service-name-here',
   username: 'insert-username-here',
-})
+}
+
+new PostgresRunner(opts)
 ```
 
-#### Interface
+#### opts
 
-| Prop                  | Required | Type                | Default     | Description                                                                                                 |
-| --------------------- | -------- | ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| database              | true     | string              | -           | Name of the database                                                                                        |
-| password              | true     | string              | -           | Password for user of the database                                                                           |
-| service               | true     | string              | -           | Used as an identifiers and, if no image is passed, used to retrieve the image from the user's compose file. |
-| username              | true     | string              | -           | User of the database                                                                                        |
-| commands              | false    | string[]            | []          | Custom commands that will be executed _once_ upon setup                                                     |
-| connectionTimeout     | false    | number              | 3           | How long to wait for the resource to be reachable                                                           |
-| dependsOn             | false    | Runner[]            | []          | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service         |
-| host                  | false    | string              | 'localhost' | Hostname of database                                                                                        |
-| image                 | false    | string or undefined | undefined   | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from        |
-| port                  | false    | number              | 5432        | Port of database                                                                                            |
-| responsivenessTimeout | false    | number              | 10          | How long to wait for the resource to be reachable                                                           |
+| Prop                  | Required | Type                      | Default            | Description                                                                                          |
+| --------------------- | -------- | ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
+| service               | true     | string                    | -                  | Used as an identifiers and, if no `image` option is passed, to find the image from your Compose file |
+| database              | true     | string                    | -                  | Database's name                                                                                      |
+| password              | true     | string                    | -                  | Database's password                                                                                  |
+| username              | true     | string                    | -                  | Database's username                                                                                  |
+| commands              | false    | string[]                  | []                 | Custom commands that execute _once_ after service responsiveness has been established                |
+| connectionTimeout     | false    | number                    | 3                  | How long to wait for the resource to be reachable                                                    |
+| dependsOn             | false    | Runner[]                  | []                 | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
+| host                  | false    | string                    | 'localhost'        | Hostname of database                                                                                 |
+| image                 | false    | string or undefined       | undefined          | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
+| ports                 | false    | { [key: string]: string } | { '5432': '5432' } | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1)          |
+| responsivenessTimeout | false    | number                    | 10                 | How long to wait for the resource to be reachable                                                    |
+
+#### static members
+
+| static member | Type   | Value       |
+| ------------- | ------ | ----------- |
+| DEFAULT_HOST  | string | 'localhost' |
+| DEFAULT_PORT  | string | '5432'      |
 
 ### [Redis](https://hub.docker.com/_/redis)
 
 ```TypeScript
-new RedisRunner({
+const opts = {
   service: 'insert-docker-compose-service-name-here',
-})
+}
+
+new RedisRunner(opts)
 ```
 
-#### Interface
+#### opts
 
-| Prop                  | Required | Type                | Default     | Description                                                                                                 |
-| --------------------- | -------- | ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| service               | true     | string              | -           | Used as an identifiers and, if no image is passed, used to retrieve the image from the user's compose file. |
-| commands              | false    | string[]            | []          | Custom commands that will be executed _once_ upon setup                                                     |
-| connectionTimeout     | false    | number              | 3           | How long to wait for the resource to be reachable                                                           |
-| dependsOn             | false    | Runner[]            | []          | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service         |
-| host                  | false    | string              | 'localhost' | Hostname of redis instance                                                                                  |
-| image                 | false    | string or undefined | undefined   | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from        |
-| password              | false    | string              | ''          | Password to redis instance                                                                                  |
-| port                  | false    | number              | 6379        | Port of redis instance                                                                                      |
-| responsivenessTimeout | false    | number              | 10          | How long to wait for the resource to be reachable                                                           |
+| Prop                  | Required | Type                      | Default            | Description                                                                                          |
+| --------------------- | -------- | ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
+| service               | true     | string                    | -                  | Used as an identifiers and, if no `image` option is passed, to find the image from your Compose file |
+| commands              | false    | string[]                  | []                 | Custom commands that execute _once_ after service responsiveness has been established                |
+| connectionTimeout     | false    | number                    | 3                  | How long to wait for the resource to be reachable                                                    |
+| dependsOn             | false    | Runner[]                  | []                 | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
+| host                  | false    | string                    | 'localhost'        | Hostname of redis instance                                                                           |
+| image                 | false    | string or undefined       | undefined          | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
+| password              | false    | string                    | ''                 | Password to redis instance                                                                           |
+| ports                 | false    | { [key: string]: string } | { '6379': '6379' } | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1)          |
+| responsivenessTimeout | false    | number                    | 10                 | How long to wait for the resource to be reachable                                                    |
+
+#### static members
+
+| static member | Type   | Value       |
+| ------------- | ------ | ----------- |
+| DEFAULT_HOST  | string | 'localhost' |
+| DEFAULT_PORT  | string | '6379'      |
 
 ### [ZooKeeper](https://hub.docker.com/r/confluentinc/cp-zookeeper)
 
 ```TypeScript
-new ZooKeeperRunner({
-  port: Number(env.zookeeper1confluentinc_port),
+const opts = {
   service: env.zookeeper1confluentinc_service,
-})
+  port: Number(env.zookeeper1confluentinc_port),
+}
+
+new ZooKeeperRunner(opts)
 ```
 
-#### Interface
+#### opts
 
-| Prop              | Required | Type                | Default     | Description                                                                                          |
-| ----------------- | -------- | ------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
-| service           | true     | string              | -           | Should match designated docker-compose resource                                                      |
-| commands          | false    | string[]            | []          | Custom commands that will be executed _once_ upon setup                                              |
-| connectionTimeout | false    | number              | 30          | How long to wait for the resource to be reachable                                                    |
-| dependsOn         | false    | Runner[]            | []          | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
-| host              | false    | string              | 'localhost' | Hostname of zookeeper instance                                                                       |
-| image             | false    | string or undefined | undefined   | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
-| port              | false    | number              | 2181        | This will be the exposed port from your resource                                                     |
+| Prop              | Required | Type                      | Default            | Description                                                                                          |
+| ----------------- | -------- | ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
+| service           | true     | string                    | -                  | Used as an identifiers and, if no `image` option is passed, to find the image from your Compose file |
+| commands          | false    | string[]                  | []                 | Custom commands that execute _once_ after service responsiveness has been established                |
+| connectionTimeout | false    | number                    | 30                 | How long to wait for the resource to be reachable                                                    |
+| dependsOn         | false    | Runner[]                  | []                 | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
+| host              | false    | string                    | 'localhost'        | Hostname of zookeeper instance                                                                       |
+| image             | false    | string or undefined       | undefined          | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
+| ports             | false    | { [key: string]: string } | { '2181': '2181' } | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1)          |
+
+#### static members
+
+| static member | Type   | Value       |
+| ------------- | ------ | ----------- |
+| DEFAULT_HOST  | string | 'localhost' |
+| DEFAULT_PORT  | string | '2181'      |
 
 ### [Kafka](https://hub.docker.com/r/confluentinc/cp-kafka)
 
 ```TypeScript
-new KafkaRunner({
+const opts = {
   service: 'insert-service-name-here',
   dependsOn: [
     new ZooKeeperRunner({
-      port: Number(env.zookeeper1confluentinc_port),
       service: env.zookeeper1confluentinc_service,
+      port: Number(env.zookeeper1confluentinc_port),
     }),
   ],
   ports: { '9092': 9092 },
-})
+}
+
+new KafkaRunner(opts)
 ```
 
-#### Interface
+#### opts
 
-| Prop              | Required | Type               | Default          | Desciption                                                                                           |
-| ----------------- | -------- | ------------------ | ---------------- | ---------------------------------------------------------------------------------------------------- |
-| dependsOn         | true     | Runner[]           | []               | Defines the [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) of the service  |
-| service           | true     | string             | -                | Should match designated docker-compose resource                                                      |
-| autoCreateTopics  | false    | boolean            | true             | Whether or not Kafka should auto-create topics                                                       |
-| commands          | false    | string[]           | []               | Custom commands that will be executed _once_ upon setup                                              |
-| connectionTimeout | false    | number             | 30               | How long to wait for the resource to be reachable                                                    |
-| host              | false    | string             | 'localhost'      | Hostname                                                                                             |
-| image             | false    | string             | undefined        | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
-| port              | false    | number             | 9092             | This will be the exposed port from your resource                                                     |
-| ports             | false    | { string: number } | { '9092': 9092 } | Port mappings with format `exposed:inside`                                                           |
+| Prop              | Required | Type                      | Default            | Desciption                                                                                           |
+| ----------------- | -------- | ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
+| service           | true     | string                    | -                  | Used as an identifiers and, if no `image` option is passed, to find the image from your Compose file |
+| dependsOn         | true     | Runner[]                  | []                 | Defines the service's [dependencies](https://docs.docker.com/compose/compose-file/#depends_on)       |
+| autoCreateTopics  | false    | boolean                   | true               | Whether or not Kafka should auto-create topics                                                       |
+| commands          | false    | string[]                  | []                 | Custom commands that execute _once_ after service responsiveness has been established                |
+| connectionTimeout | false    | number                    | 30                 | How long to wait for the resource to be reachable                                                    |
+| host              | false    | string                    | 'localhost'        | Hostname                                                                                             |
+| image             | false    | string                    | undefined          | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from |
+| ports             | false    | { [key: string]: string } | { '9092': '9092' } | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1)          |
+
+#### static members
+
+| static member                | Type   | Value       |
+| ---------------------------- | ------ | ----------- |
+| DEFAULT_HOST                 | string | 'localhost' |
+| DEFAULT_PORT_PLAINTEXT       | string | '9092'      |
+| DEFAULT_PORT_SASL_SSL        | string | '9094'      |
+| DEFAULT_PORT_SCHEMA_REGISTRY | string | '8081'      |
+| DEFAULT_PORT_SSL             | string | '9093'      |
+
+## Jest
+
+### Interface
+
+| Prop      | Required | Type     | Default | Description                                                                                                             |
+| --------- | -------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| lib       | false    | object   | -       | The Jest library itself, typically passed as { lib: require('jest') }. If ommitted, the Dockest dependency will be used |
+| projects  | false    | string[] | ['.']   | https://jestjs.io/docs/en/cli.html#projects-path1-pathn-                                                                |
+| runInBand | false    | boolean  | true    | https://jestjs.io/docs/en/cli.html#runinband                                                                            |
+
+Note that due to Jest running all tests in parallel per default, Dockest defaults the `runInBand` option to `true`. This'll cause jest to run its tests sequentially and thus avoid potential race conditions if tests perform read/write operations on the same entry. The downside of this is an overall longer runtime.
+
+A complete list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation.
 
 ## Opts
 
