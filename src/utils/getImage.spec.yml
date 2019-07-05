@@ -1,0 +1,5 @@
+version: '3'
+
+services:
+  getImageService:
+    image: postgres:9.6

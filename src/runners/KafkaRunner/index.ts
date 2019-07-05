@@ -75,9 +75,10 @@ class KafkaRunner {
     const getZooKeeperConnect = (): { KAFKA_ZOOKEEPER_CONNECT: string } | {} =>
       !!zooKeeperDependency
         ? {
-            KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${
-              Object.keys(zooKeeperDependency.runnerConfig.ports)[0]
-            }`,
+            KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${getKeyForVal(
+              zooKeeperDependency.runnerConfig.ports,
+              ZooKeeperRunner.DEFAULT_PORT
+            )}`,
           }
         : {}
 
@@ -118,8 +119,8 @@ class KafkaRunner {
           // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
           ...getZooKeeperConnect(),
 
-          ...getSecurityProtocolMap(),
           ...getAdvertisedListeners(),
+          ...getSecurityProtocolMap(),
 
           KAFKA_AUTO_CREATE_TOPICS_ENABLE: !!autoCreateTopic ? 'true' : 'false',
           KAFKA_BROKER_ID: 1,
