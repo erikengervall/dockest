@@ -19,7 +19,6 @@ interface DefaultableConfigProps {
 }
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT = '2181'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: DEFAULT_CONFIG_VALUES.COMMANDS,
@@ -33,7 +32,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class ZooKeeperRunner {
-  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public runnerConfig: ZooKeeperRunnerConfig
   public runnerLogger: RunnerLogger

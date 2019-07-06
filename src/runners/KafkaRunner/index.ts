@@ -4,7 +4,7 @@ import {
   getImage,
   getKeyForVal,
   getPorts,
-  trim,
+  trimNoSpaces,
   validateConfig,
   validateTypes,
 } from '../../utils'
@@ -106,7 +106,7 @@ class KafkaRunner {
         : ''
 
       return {
-        KAFKA_ADVERTISED_LISTENERS: trim(`${PLAINTEXT}${SSL}${SASL_SSL}`),
+        KAFKA_ADVERTISED_LISTENERS: trimNoSpaces(`${PLAINTEXT}${SSL}${SASL_SSL}`),
       }
     }
 
@@ -121,7 +121,7 @@ class KafkaRunner {
       const SASL_SSL = exposedSASLSSLPort ? ', SASL_SSL:SASL_SSL, SASL_SSL_HOST:SASL_SSL' : ''
 
       return {
-        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: trim(`${PLAINTEXT}${SSL}${SASL_SSL}`),
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: trimNoSpaces(`${PLAINTEXT}${SSL}${SASL_SSL}`),
       }
     }
 

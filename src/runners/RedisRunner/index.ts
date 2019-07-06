@@ -20,13 +20,12 @@ interface DefaultableConfigProps {
 }
 export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: DEFAULT_CONFIG_VALUES.COMMANDS,
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
   dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
-  host: DEFAULT_HOST,
+  host: DEFAULT_CONFIG_VALUES.HOST,
   image: DEFAULT_CONFIG_VALUES.IMAGE,
   password: '',
   ports: {
@@ -36,7 +35,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class RedisRunner {
-  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: RedisRunnerConfig
