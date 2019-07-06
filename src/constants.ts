@@ -47,21 +47,20 @@ export const COLORS: {
   },
 }
 
-export const DEFAULT_CONFIG_VALUES: {
-  CONNECTION_TIMEOUT: number
-  HOST: string
-  RESPONSIVENESS_TIMEOUT: number
-} = {
-  CONNECTION_TIMEOUT: 5,
-  HOST: 'localhost',
-  RESPONSIVENESS_TIMEOUT: 30,
-}
-
-export const LOG_LEVEL: {
-  [key: string]: number
-} = {
+export const LOG_LEVEL: { [key: string]: number } = {
   NOTHING: 0,
   ERROR: 1,
   NORMAL: 2,
   VERBOSE: 3,
+}
+
+export const DEFAULT_USER_CONFIG = {
+  afterSetupSleep: 0,
+  composeFileName: 'docker-compose.yml',
+  dev: {
+    debug: false,
+  },
+  exitHandler: null,
+  logLevel: LOG_LEVEL.NORMAL,
+  runInBand: true,
 }

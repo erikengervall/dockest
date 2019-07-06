@@ -1,7 +1,7 @@
-import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
 import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { GetComposeService, Runner } from '../@types'
+import { DEFAULT_CONFIG_VALUES } from '../constants'
 
 interface RequiredConfigProps {
   database: string
@@ -22,14 +22,13 @@ interface DefaultableConfigProps {
 }
 export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  commands: [],
+  commands: DEFAULT_CONFIG_VALUES.COMMANDS,
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  dependsOn: [],
-  host: DEFAULT_HOST,
-  image: undefined,
+  dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
+  host: DEFAULT_CONFIG_VALUES.HOST,
+  image: DEFAULT_CONFIG_VALUES.IMAGE,
   ports: {
     [DEFAULT_PORT]: DEFAULT_PORT,
   },
@@ -37,7 +36,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class PostgresRunner {
-  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: PostgresRunnerConfig

@@ -25,9 +25,6 @@ class BaseLogger {
   public LOG_LEVEL_NORMAL = () => BaseLogger.logLevel >= LOG_LEVEL.NORMAL
   public LOG_LEVEL_VERBOSE = () => BaseLogger.logLevel >= LOG_LEVEL.VERBOSE
 
-  public trim = (str: any = ''): any =>
-    typeof str === 'string' ? str.replace(/\s+/g, ' ').trim() : str
-
   public logSuccess: logMethod = (m, d) =>
     console.log(
       `${SUCCESS} ${BRIGHT}${this.service}${this.service && ': '}${m}${RESET}`,

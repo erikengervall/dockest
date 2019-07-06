@@ -1,7 +1,7 @@
-import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
 import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { Runner } from '../@types'
+import { DEFAULT_CONFIG_VALUES } from '../constants'
 
 interface RequiredConfigProps {
   service: string
@@ -23,11 +23,11 @@ export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  commands: [],
+  commands: DEFAULT_CONFIG_VALUES.COMMANDS,
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  dependsOn: [],
+  dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
   host: DEFAULT_HOST,
-  image: undefined,
+  image: DEFAULT_CONFIG_VALUES.IMAGE,
   password: '',
   ports: {
     [DEFAULT_PORT]: DEFAULT_PORT,

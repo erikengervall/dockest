@@ -1,8 +1,8 @@
-import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { ConfigurationError } from '../../errors'
 import { RunnerLogger } from '../../loggers'
 import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { Runner } from '../@types'
+import { DEFAULT_CONFIG_VALUES } from '../constants'
 
 interface RequiredConfigProps {
   service: string
@@ -13,18 +13,20 @@ interface DefaultableConfigProps {
   dependsOn: Runner[]
   host: string
   image: string | undefined
-  ports: { [key: string]: string }
+  ports: {
+    [key: string]: string
+  }
 }
 type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT = '2181'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  commands: [],
+  commands: DEFAULT_CONFIG_VALUES.COMMANDS,
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  dependsOn: [],
+  dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
   host: DEFAULT_CONFIG_VALUES.HOST,
-  image: undefined,
+  image: DEFAULT_CONFIG_VALUES.IMAGE,
   ports: {
     [DEFAULT_PORT]: DEFAULT_PORT,
   },

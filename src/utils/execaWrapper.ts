@@ -1,9 +1,10 @@
 import execa from 'execa'
 import { globalLogger } from '../loggers'
 import { Runner } from '../runners/@types'
+import { trim } from '../utils'
 
 const execaWrapper = async (command: string, runner?: Runner): Promise<string> => {
-  const trimmedCommand = command.replace(/\s+/g, ' ').trim()
+  const trimmedCommand = trim(command)
   runner ? runner.runnerLogger.shellCmd(trimmedCommand) : globalLogger.shellCmd(trimmedCommand)
 
   const { stdout: result } = await execa(trimmedCommand, { shell: true })

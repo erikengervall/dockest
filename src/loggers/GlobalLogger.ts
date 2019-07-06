@@ -1,3 +1,4 @@
+import { trim } from '../utils'
 import BaseLogger, { logMethod } from './BaseLogger'
 
 class GlobalLogger extends BaseLogger {
@@ -67,11 +68,10 @@ class GlobalLogger extends BaseLogger {
    * Execa
    */
   public shellCmd = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, this.trim(logData))
+    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, trim(logData))
 
   public shellCmdSuccess = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() &&
-    this.logSuccess(`Executed shell script with result:`, this.trim(logData))
+    this.LOG_LEVEL_VERBOSE() && this.logSuccess(`Executed shell script with result:`, trim(logData))
 }
 
 const singleton = new GlobalLogger()

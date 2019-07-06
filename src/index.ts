@@ -1,5 +1,5 @@
 import { ErrorPayload } from './@types'
-import { LOG_LEVEL } from './constants'
+import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
 import { ConfigurationError } from './errors'
 import { BaseLogger } from './loggers'
 import onInstantiation from './onInstantiation'
@@ -34,16 +34,6 @@ export type DockestConfig = {
   $: InternalConfig
 }
 
-const DEFAULT_CONFIG: DefaultableUserConfig = {
-  afterSetupSleep: 0,
-  dev: {
-    debug: false,
-  },
-  composeFileName: 'docker-compose.yml',
-  exitHandler: null,
-  logLevel: LOG_LEVEL.NORMAL,
-  runInBand: true,
-}
 const INTERNAL_CONFIG = {
   dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
   jestRanWithResult: false,
@@ -65,7 +55,7 @@ class Dockest {
     this.config = {
       jest,
       runners,
-      opts: { ...DEFAULT_CONFIG, ...opts },
+      opts: { ...DEFAULT_USER_CONFIG, ...opts },
       $: { ...INTERNAL_CONFIG },
     }
     BaseLogger.logLevel = this.config.opts.logLevel

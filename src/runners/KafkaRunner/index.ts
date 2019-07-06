@@ -1,14 +1,15 @@
-import { DEFAULT_CONFIG_VALUES } from '../../constants'
 import { RunnerLogger } from '../../loggers'
 import {
   getDependsOn,
   getImage,
   getKeyForVal,
   getPorts,
+  trim,
   validateConfig,
   validateTypes,
 } from '../../utils'
 import { GetComposeService, Runner } from '../@types'
+import { DEFAULT_CONFIG_VALUES } from '../constants'
 import { ZooKeeperRunner } from '../index'
 
 interface RequiredConfigProps {
@@ -27,25 +28,24 @@ interface DefaultableConfigProps {
 }
 type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
-const DEFAULT_HOST = 'localhost'
 const DEFAULT_PORT_PLAINTEXT = '9092'
 const DEFAULT_PORT_SASL_SSL = '9094'
 const DEFAULT_PORT_SCHEMA_REGISTRY = '8081'
 const DEFAULT_PORT_SSL = '9093'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  autoCreateTopic: true,
-  commands: [],
+  autoCreateTopic: DEFAULT_CONFIG_VALUES.AUTO_CREATE_TOPIC,
+  commands: DEFAULT_CONFIG_VALUES.COMMANDS,
   connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  dependsOn: [],
+  dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
   host: DEFAULT_CONFIG_VALUES.HOST,
-  image: undefined,
+  image: DEFAULT_CONFIG_VALUES.IMAGE,
   ports: {
     [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
   },
 }
 
 class KafkaRunner {
-  public static DEFAULT_HOST: string = DEFAULT_HOST
+  public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT_PLAINTEXT: string = DEFAULT_PORT_PLAINTEXT
   public static DEFAULT_PORT_SASL_SSL: string = DEFAULT_PORT_SASL_SSL
   public static DEFAULT_PORT_SCHEMA_REGISTRY: string = DEFAULT_PORT_SCHEMA_REGISTRY // TODO: Move this to the Schemaregistry Runner once it's implemented
@@ -71,45 +71,57 @@ class KafkaRunner {
   public getComposeService: GetComposeService = composeFileName => {
     const { autoCreateTopic, dependsOn, image, ports, service } = this.runnerConfig
 
-    const zooKeeperDependency = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
-    const getZooKeeperConnect = (): { KAFKA_ZOOKEEPER_CONNECT: string } | {} =>
-      !!zooKeeperDependency
-        ? {
-            KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${getKeyForVal(
-              zooKeeperDependency.runnerConfig.ports,
-              ZooKeeperRunner.DEFAULT_PORT
-            )}`,
-          }
-        : {}
+    const getZooKeeperConnect = (): { KAFKA_ZOOKEEPER_CONNECT: string } | {} => {
+      const zooKeeperDependency = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
+
+      if (!zooKeeperDependency) {
+        return {}
+      }
+
+      const exposedZooKeeperPort = getKeyForVal(
+        zooKeeperDependency.runnerConfig.ports,
+        ZooKeeperRunner.DEFAULT_PORT
+      )
+
+      return {
+        KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${exposedZooKeeperPort}`,
+      }
+    }
 
     const getAdvertisedListeners = (): { KAFKA_ADVERTISED_LISTENERS: string } => {
-      const PLAINTEXT = `PLAINTEXT://${service}:2${getKeyForVal(
-        ports,
-        DEFAULT_PORT_PLAINTEXT
-      )}, PLAINTEXT_HOST://${DEFAULT_HOST}:${getKeyForVal(ports, DEFAULT_PORT_PLAINTEXT)}`
-      const SSL = !!getKeyForVal(ports, DEFAULT_PORT_SSL)
-        ? `,SSL://${service}:2${DEFAULT_PORT_SSL}, SSL_HOST://${DEFAULT_HOST}:${DEFAULT_PORT_SSL}`
+      const exposedPlaintextPort = getKeyForVal(ports, DEFAULT_PORT_PLAINTEXT)
+      const PLAINTEXT = !!exposedPlaintextPort
+        ? `PLAINTEXT://${service}:2${exposedPlaintextPort}, PLAINTEXT_HOST://${DEFAULT_CONFIG_VALUES.HOST}:${exposedPlaintextPort}`
         : ''
-      const SASL_SSL = !!getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
-        ? `,SASL_SSL://${service}:2${DEFAULT_PORT_SASL_SSL}, SASL_SSL_HOST://${DEFAULT_HOST}:${DEFAULT_PORT_SASL_SSL}`
+
+      // TODO: Investigate exact behaviour for SSL & SASL_SSL
+      const exposedSSLPort = getKeyForVal(ports, DEFAULT_PORT_SSL)
+      const SSL = !!exposedSSLPort
+        ? `, SSL://${service}:2${DEFAULT_PORT_SSL}, SSL_HOST://${DEFAULT_CONFIG_VALUES.HOST}:${exposedSSLPort}`
+        : ''
+
+      const exposedSASLSSLPort = getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
+      const SASL_SSL = !!exposedSASLSSLPort
+        ? `, SASL_SSL://${service}:2${DEFAULT_PORT_SASL_SSL}, SASL_SSL_HOST://${DEFAULT_CONFIG_VALUES.HOST}:${exposedSASLSSLPort}`
         : ''
 
       return {
-        KAFKA_ADVERTISED_LISTENERS: `${PLAINTEXT}${SSL}${SASL_SSL}`.replace(/\s+/g, '').trim(),
+        KAFKA_ADVERTISED_LISTENERS: trim(`${PLAINTEXT}${SSL}${SASL_SSL}`),
       }
     }
 
     const getSecurityProtocolMap = (): { KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: string } => {
-      const PLAINTEXT = 'PLAINTEXT:PLAINTEXT, PLAINTEXT_HOST:PLAINTEXT'
-      const SSL = !!getKeyForVal(ports, DEFAULT_PORT_SSL) ? ',SSL:SSL ,SSL_HOST:SSL' : ''
-      const SASL_SSL = !!getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
-        ? ',SASL_SSL:SASL_SSL, SASL_SSL_HOST:SASL_SSL'
-        : ''
+      const exposedPlaintextPort = !!getKeyForVal(ports, DEFAULT_PORT_PLAINTEXT)
+      const PLAINTEXT = exposedPlaintextPort ? 'PLAINTEXT:PLAINTEXT, PLAINTEXT_HOST:PLAINTEXT' : ''
+
+      const exposedSSLPort = !!getKeyForVal(ports, DEFAULT_PORT_SSL)
+      const SSL = exposedSSLPort ? ', SSL:SSL, SSL_HOST:SSL' : ''
+
+      const exposedSASLSSLPort = !!getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
+      const SASL_SSL = exposedSASLSSLPort ? ', SASL_SSL:SASL_SSL, SASL_SSL_HOST:SASL_SSL' : ''
 
       return {
-        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: `${PLAINTEXT}${SSL}${SASL_SSL}`
-          .replace(/\s+/g, '')
-          .trim(),
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: trim(`${PLAINTEXT}${SSL}${SASL_SSL}`),
       }
     }
 

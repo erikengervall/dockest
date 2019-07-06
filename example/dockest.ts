@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 
 const env: any = dotenv.config().parsed
-const IS_CLI = env.CI === 'true'
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
 const postgres1sequelizeRunner = new PostgresRunner({
@@ -66,10 +65,14 @@ const kafka1confluentincRunner = new KafkaRunner({
 
 const dockest = new Dockest({
   runners: [
-    ...(IS_CLI || env.postgres1sequelize_enabled === 'true' ? [postgres1sequelizeRunner] : []),
-    ...(IS_CLI || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
-    ...(IS_CLI || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
-    ...(IS_CLI || env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
+    ...(env.CI === 'true' || env.postgres1sequelize_enabled === 'true'
+      ? [postgres1sequelizeRunner]
+      : []),
+    ...(env.CI === 'true' || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
+    ...(env.CI === 'true' || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
+    ...(env.CI === 'true' || env.kafka1confluentinc_enabled === 'true'
+      ? [kafka1confluentincRunner]
+      : []),
   ],
   jest: {
     verbose: true,

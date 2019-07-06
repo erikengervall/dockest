@@ -1,4 +1,5 @@
 import { Runner } from '../runners/@types'
+import { trim } from '../utils'
 import BaseLogger, { logMethod } from './BaseLogger'
 
 class RunnerLogger extends BaseLogger {
@@ -79,11 +80,10 @@ class RunnerLogger extends BaseLogger {
    * Execa
    */
   public shellCmd = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, this.trim(logData))
+    this.LOG_LEVEL_VERBOSE() && this.logLoading(`Executing shell script:`, trim(logData))
 
   public shellCmdSuccess = (logData = '') =>
-    this.LOG_LEVEL_VERBOSE() &&
-    this.logSuccess(`Executed shell script with result:`, this.trim(logData))
+    this.LOG_LEVEL_VERBOSE() && this.logSuccess(`Executed shell script with result:`, trim(logData))
 }
 
 export default RunnerLogger
