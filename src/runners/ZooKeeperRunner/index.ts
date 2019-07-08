@@ -1,4 +1,4 @@
-import { ConfigurationError } from '../../errors'
+import ConfigurationError from '../../errors/ConfigurationError'
 import RunnerLogger from '../../loggers/RunnerLogger'
 import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { Runner } from '../@types'

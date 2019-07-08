@@ -1,5 +1,5 @@
 import jest from 'jest'
-import { ConfigurationError } from '../errors'
+import  ConfigurationError  from '../errors/ConfigurationError'
 import { DockestConfig } from '../index'
 import globalLogger from '../loggers/globalLogger'
 

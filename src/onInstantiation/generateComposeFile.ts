@@ -1,6 +1,6 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import { DockestError } from '../errors'
+import DockestError from '../errors/DockestError'
 import { DockestConfig } from '../index'
 import { ComposeFile, Runner } from '../runners/@types'
 

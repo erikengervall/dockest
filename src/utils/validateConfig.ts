@@ -1,4 +1,4 @@
-import { ConfigurationError } from '../errors'
+import ConfigurationError from '../errors/ConfigurationError'
 import { RunnerConfig } from '../runners/@types'
 import { validateTypes } from './index'
 

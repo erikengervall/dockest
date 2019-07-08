@@ -1,6 +1,6 @@
 import { ErrorPayload } from './@types'
 import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
-import { ConfigurationError } from './errors'
+import ConfigurationError from './errors/ConfigurationError'
 import BaseLogger from './loggers/BaseLogger'
 import onInstantiation from './onInstantiation'
 import onRun from './onRun'

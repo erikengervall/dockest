@@ -1,5 +1,7 @@
 import { COLORS } from '../constants'
 
+const { keys, values } = Object
+
 type _object = {
   [key: string]: any
 }
@@ -29,7 +31,7 @@ const validateTypes = (schema?: _object, config?: _object): string[] => {
     return failures
   }
 
-  Object.keys(schema).forEach(schemaKey => {
+  keys(schema).forEach(schemaKey => {
     const value = config[schemaKey]
 
     if (value) {
@@ -65,7 +67,7 @@ const isFunction: isType = _ => _ && typeof _ === 'function'
 const isObject: isType = _ => _ && typeof _ === 'object' && _.constructor === Object
 const isObjectWithValuesOfType = (fn: isType) => {
   const isObjectWithValuesOfType = (_?: any): boolean =>
-    isObject(_) && !Object.values(_).some((_?: any) => !fn(_))
+    isObject(_) && !values(_).some((_?: any) => !fn(_))
   isObjectWithValuesOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`
   return isObjectWithValuesOfType
 }

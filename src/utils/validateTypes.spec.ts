@@ -1,6 +1,8 @@
 import { LOG_LEVEL } from '../constants'
 import validateTypes from './validateTypes'
 
+const { values } = Object
+
 describe('validateTypes', () => {
   let config: { [key: string]: any }
 
@@ -27,7 +29,7 @@ describe('validateTypes', () => {
         ports: validateTypes.isArrayOfType(validateTypes.isNumber),
         autoCreateTopics: validateTypes.isBoolean,
         portMapping: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
-        logLevel: validateTypes.isOneOf(Object.values(LOG_LEVEL)),
+        logLevel: validateTypes.isOneOf(values(LOG_LEVEL)),
       }
 
       const failures = validateTypes(validationSchema, config)

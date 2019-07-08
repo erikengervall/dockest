@@ -1,7 +1,9 @@
 import net from 'net'
-import { DockestError } from '../../errors'
+import DockestError from '../../errors/DockestError'
 import { Runner } from '../../runners/@types'
 import { sleep } from '../../utils/index'
+
+const { keys } = Object
 
 const checkConnection = async (runner: Runner) => {
   const {
@@ -9,7 +11,7 @@ const checkConnection = async (runner: Runner) => {
     runnerLogger,
   } = runner
   // TODO: Would it make sense to check connection for every port?
-  const port = Object.keys(ports)[0]
+  const port = keys(ports)[0]
 
   const recurse = async (connectionTimeout: number) => {
     runnerLogger.checkConnection(connectionTimeout, host, port)

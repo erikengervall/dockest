@@ -1,6 +1,6 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import { ConfigurationError } from '../errors'
+import ConfigurationError from '../errors/ConfigurationError'
 
 const getImage = ({
   composeFileName,

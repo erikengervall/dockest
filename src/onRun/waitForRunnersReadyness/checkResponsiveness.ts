@@ -1,4 +1,4 @@
-import { DockestError } from '../../errors'
+import DockestError from '../../errors/DockestError'
 import { Runner } from '../../runners/@types'
 import { execaWrapper, sleep } from '../../utils/index'
 
