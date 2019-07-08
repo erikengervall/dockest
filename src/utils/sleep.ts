@@ -1,4 +1,4 @@
-import { globalLogger } from '../loggers'
+import globalLogger from '../loggers/globalLogger'
 
 const sleep = (ms: number = 1000): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
 

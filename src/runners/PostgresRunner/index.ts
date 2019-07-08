@@ -1,4 +1,4 @@
-import { RunnerLogger } from '../../loggers'
+import RunnerLogger from '../../loggers/RunnerLogger'
 import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { GetComposeService, Runner } from '../@types'
 import { DEFAULT_CONFIG_VALUES } from '../constants'

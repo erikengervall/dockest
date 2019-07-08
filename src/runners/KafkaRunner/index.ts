@@ -1,4 +1,4 @@
-import { RunnerLogger } from '../../loggers'
+import RunnerLogger from '../../loggers/RunnerLogger'
 import {
   getDependsOn,
   getImage,

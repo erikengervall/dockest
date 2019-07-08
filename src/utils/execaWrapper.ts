@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { globalLogger } from '../loggers'
+import globalLogger from '../loggers/globalLogger'
 import { Runner } from '../runners/@types'
 import { trim } from '../utils'
 

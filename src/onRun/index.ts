@@ -1,5 +1,5 @@
 import { DockestConfig } from '../index'
-import { globalLogger } from '../loggers'
+import globalLogger from '../loggers/globalLogger'
 import { sleepWithLog, teardownSingle } from '../utils'
 import dockerComposeUp from './dockerComposeUp'
 import runJest from './runJest'

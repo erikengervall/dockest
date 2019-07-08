@@ -1,11 +1,9 @@
-import { DockestConfig } from '../index'
-import { Runner } from '../runners/@types'
-import {
-  checkConnection,
-  checkResponsiveness,
-  resolveContainerId,
-  runRunnerCommands,
-} from '../utils'
+import { DockestConfig } from '../../index'
+import { Runner } from '../../runners/@types'
+import checkConnection from './checkConnection'
+import checkResponsiveness from './checkResponsiveness'
+import resolveContainerId from './resolveContainerId'
+import runRunnerCommands from './runRunnerCommands'
 
 const waitForRunnersReadyness = async (config: DockestConfig) => {
   const parallelPromises = []

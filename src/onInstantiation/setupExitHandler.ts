@@ -1,6 +1,6 @@
 import { ErrorPayload } from '../@types'
 import { DockestConfig } from '../index'
-import { globalLogger } from '../loggers'
+import globalLogger from '../loggers/globalLogger'
 import { teardownSingle } from '../utils'
 
 const setupExitHandler = async (config: DockestConfig): Promise<void> => {

@@ -1,6 +1,6 @@
 import execa from 'execa'
 import { createMockProxy } from 'jest-mock-proxy'
-import { PostgresRunner } from '../runners'
+import { PostgresRunner } from '../../runners'
 import runRunnerCommands from './runRunnerCommands'
 
 const command = 'mockCommand'

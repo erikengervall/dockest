@@ -1,28 +1,23 @@
 import execa from 'execa'
 import { createMockProxy } from 'jest-mock-proxy'
-import { PostgresRunner } from '../runners'
+import { RedisRunner } from '../runners'
 import teardownSingle from './teardownSingle'
 
 const stdout = `mockStdout`
-const postgresRunner = new PostgresRunner({
-  service: '_',
-  username: '_',
-  password: '_',
-  database: '_',
-})
-postgresRunner.containerId = 'mockContainerId'
+const redisRunner = new RedisRunner({ service: '_' })
+redisRunner.containerId = 'mockContainerId'
 jest.mock('execa', () => jest.fn(() => ({ stdout })))
 
 describe('teardownSingle', () => {
   beforeEach(() => {
     // @ts-ignore
     execa.mockClear()
-    postgresRunner.runnerLogger = createMockProxy()
+    redisRunner.runnerLogger = createMockProxy()
   })
 
   describe('happy', () => {
     it('should work', async () => {
-      await teardownSingle(postgresRunner)
+      await teardownSingle(redisRunner)
 
       expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker stop/), { shell: true })
       expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker rm/), { shell: true })
@@ -37,10 +32,10 @@ describe('teardownSingle', () => {
         throw error
       })
 
-      await teardownSingle(postgresRunner)
+      await teardownSingle(redisRunner)
 
-      expect(postgresRunner.runnerLogger.stopContainerFailed).toHaveBeenCalled()
-      expect(postgresRunner.runnerLogger.removeContainerFailed).toHaveBeenCalled()
+      expect(redisRunner.runnerLogger.stopContainerFailed).toHaveBeenCalled()
+      expect(redisRunner.runnerLogger.removeContainerFailed).toHaveBeenCalled()
     })
   })
 })

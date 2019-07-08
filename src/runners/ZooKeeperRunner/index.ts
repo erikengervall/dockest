@@ -1,5 +1,5 @@
 import { ConfigurationError } from '../../errors'
-import { RunnerLogger } from '../../loggers'
+import RunnerLogger from '../../loggers/RunnerLogger'
 import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
 import { Runner } from '../@types'
 import { DEFAULT_CONFIG_VALUES } from '../constants'

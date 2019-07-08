@@ -1,4 +1,4 @@
-import { globalLogger } from '../loggers'
+import globalLogger from '../loggers/globalLogger'
 import { Runner } from '../runners/@types'
 import { execaWrapper } from './index'
 

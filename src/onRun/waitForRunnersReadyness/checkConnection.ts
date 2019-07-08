@@ -1,7 +1,7 @@
 import net from 'net'
-import { DockestError } from '../errors'
-import { Runner } from '../runners/@types'
-import { sleep } from './index'
+import { DockestError } from '../../errors'
+import { Runner } from '../../runners/@types'
+import { sleep } from '../../utils/index'
 
 const checkConnection = async (runner: Runner) => {
   const {

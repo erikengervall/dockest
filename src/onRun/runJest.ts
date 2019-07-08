@@ -1,7 +1,7 @@
 import jest from 'jest'
 import { ConfigurationError } from '../errors'
 import { DockestConfig } from '../index'
-import { globalLogger } from '../loggers'
+import globalLogger from '../loggers/globalLogger'
 
 interface JestLib {
   getVersion: any

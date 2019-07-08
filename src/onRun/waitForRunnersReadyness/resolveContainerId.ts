@@ -1,6 +1,6 @@
-import { DockestError } from '../errors'
-import { Runner } from '../runners/@types'
-import { execaWrapper, sleep } from './index'
+import { DockestError } from '../../errors'
+import { Runner } from '../../runners/@types'
+import { execaWrapper, sleep } from '../../utils/index'
 
 const resolveContainerId = async (runner: Runner): Promise<void> => {
   const {

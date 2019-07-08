@@ -1,5 +1,5 @@
 import execa from 'execa'
-import { Runner } from '../runners/@types'
+import { Runner } from '../../runners/@types'
 
 const runRunnerCommands = async (runner: Runner): Promise<void> => {
   const {
