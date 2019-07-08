@@ -22,3 +22,6 @@ trash
 # Dockest dev
 #
 dist
+
+# Webstorm
+.idea/*
