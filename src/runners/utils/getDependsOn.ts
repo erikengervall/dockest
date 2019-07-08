@@ -1,4 +1,4 @@
-import { Runner } from '../runners/@types'
+import { Runner } from '../@types'
 
 const getDependsOn = (dependsOn: Runner[]): { depends_on?: string[] } =>
   dependsOn.length > 0

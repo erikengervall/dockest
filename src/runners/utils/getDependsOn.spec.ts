@@ -1,4 +1,4 @@
-import { RedisRunner } from '../runners'
+import { RedisRunner } from '..'
 import getDependsOn from './getDependsOn'
 
 describe('getDependsOn', () => {

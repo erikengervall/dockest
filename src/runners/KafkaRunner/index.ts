@@ -1,16 +1,9 @@
 import RunnerLogger from '../../loggers/RunnerLogger'
-import {
-  getDependsOn,
-  getImage,
-  getKeyForVal,
-  getPorts,
-  trimNoSpaces,
-  validateConfig,
-  validateTypes,
-} from '../../utils'
-import { GetComposeService, Runner } from '../@types'
+import { getKeyForVal, trimNoSpaces, validateConfig, validateTypes } from '../../utils'
+import { BaseRunner, GetComposeService, Runner } from '../@types'
 import { DEFAULT_CONFIG_VALUES } from '../constants'
 import { ZooKeeperRunner } from '../index'
+import { getDependsOn, getImage, getPorts } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -44,7 +37,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   },
 }
 
-class KafkaRunner {
+class KafkaRunner implements BaseRunner {
   public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT_PLAINTEXT: string = DEFAULT_PORT_PLAINTEXT
   public static DEFAULT_PORT_SASL_SSL: string = DEFAULT_PORT_SASL_SSL

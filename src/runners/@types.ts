@@ -21,3 +21,7 @@ export type ComposeFile = {
 }
 
 export type GetComposeService = (composeFileName: string) => { [key: string]: ComposeFile }
+
+export interface BaseRunner {
+  getComposeService: GetComposeService
+}

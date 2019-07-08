@@ -1,7 +1,9 @@
 const { keys } = Object
 
 export const getKeyForVal = (
-  haystack: { [key: string]: string },
+  haystack: {
+    [key: string]: string
+  },
   needle: string
 ): string | undefined => keys(haystack).find(key => haystack[key] === needle)
 

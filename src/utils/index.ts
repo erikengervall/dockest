@@ -1,7 +1,4 @@
 export { default as execaWrapper } from './execaWrapper'
-export { default as getDependsOn } from './getDependsOn'
-export { default as getImage } from './getImage'
-export { default as getPorts } from './getPorts'
 export { default as sleep, sleepWithLog } from './sleep'
 export { default as teardownSingle } from './teardownSingle'
 export { default as validateConfig } from './validateConfig'

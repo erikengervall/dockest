@@ -1,7 +1,8 @@
 import RunnerLogger from '../../loggers/RunnerLogger'
-import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
-import { GetComposeService, Runner } from '../@types'
+import { validateConfig, validateTypes } from '../../utils'
+import { BaseRunner, GetComposeService, Runner } from '../@types'
 import { DEFAULT_CONFIG_VALUES } from '../constants'
+import { getDependsOn, getImage, getPorts } from '../utils'
 
 interface RequiredConfigProps {
   database: string
@@ -35,7 +36,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
 }
 
-class PostgresRunner {
+class PostgresRunner implements BaseRunner {
   public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string

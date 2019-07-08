@@ -1,4 +1,4 @@
-import { DEFAULT_USER_CONFIG } from '../constants'
+import { DEFAULT_USER_CONFIG } from '../../constants'
 import getImage from './getImage'
 
 describe('getImage', () => {

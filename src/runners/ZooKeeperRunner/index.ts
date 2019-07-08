@@ -1,8 +1,9 @@
 import ConfigurationError from '../../errors/ConfigurationError'
 import RunnerLogger from '../../loggers/RunnerLogger'
-import { getDependsOn, getImage, getPorts, validateConfig, validateTypes } from '../../utils'
-import { Runner } from '../@types'
+import { validateConfig, validateTypes } from '../../utils'
+import { BaseRunner, GetComposeService, Runner } from '../@types'
 import { DEFAULT_CONFIG_VALUES } from '../constants'
+import { getDependsOn, getImage, getPorts } from '../utils'
 
 interface RequiredConfigProps {
   service: string
@@ -31,7 +32,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   },
 }
 
-class ZooKeeperRunner {
+class ZooKeeperRunner implements BaseRunner {
   public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public runnerConfig: ZooKeeperRunnerConfig
@@ -52,7 +53,7 @@ class ZooKeeperRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService = (composeFileName: string) => {
+  public getComposeService: GetComposeService = composeFileName => {
     const { dependsOn, image, ports, service } = this.runnerConfig
 
     const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
