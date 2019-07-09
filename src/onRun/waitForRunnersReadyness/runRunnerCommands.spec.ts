@@ -1,30 +1,20 @@
-import execa from 'execa'
-import { createMockProxy } from 'jest-mock-proxy'
-import { PostgresRunner } from '../../runners'
+import testUtils, { mockedExecaStdout, runnerCommand } from '../../testUtils'
 import runRunnerCommands from './runRunnerCommands'
 
-const command = 'mockCommand'
-const stdout = `mockStdout`
-const postgresRunner = new PostgresRunner({
-  service: '_',
-  username: '_',
-  password: '_',
-  database: '_',
-  commands: [command],
-})
-jest.mock('execa', () => jest.fn(() => ({ stdout })))
-
-beforeEach(() => {
-  postgresRunner.runnerLogger = createMockProxy()
-})
+const { allRunners, execa } = testUtils({ withRunnerCommands: true })
+jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
 describe('runRunnerCommands', () => {
-  it('trabajo', async () => {
-    await runRunnerCommands(postgresRunner)
+  describe('test all runner types', () => {
+    allRunners.forEach(runner => {
+      it(`should work for ${runner.constructor.name}`, async () => {
+        await runRunnerCommands(runner)
 
-    expect(postgresRunner.runnerLogger.customShellCmd).toHaveBeenCalledWith(command)
-    expect(execa).toHaveBeenCalledWith(command, { shell: true })
-    expect(execa).lastReturnedWith({ stdout })
-    expect(postgresRunner.runnerLogger.customShellCmdSuccess).toHaveBeenCalledWith(stdout)
+        expect(runner.runnerLogger.customShellCmd).toHaveBeenCalledWith(runnerCommand)
+        expect(execa).toHaveBeenCalledWith(runnerCommand, { shell: true })
+        expect(execa).lastReturnedWith({ stdout: mockedExecaStdout })
+        expect(runner.runnerLogger.customShellCmdSuccess).toHaveBeenCalledWith(mockedExecaStdout)
+      })
+    })
   })
 })

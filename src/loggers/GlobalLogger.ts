@@ -1,4 +1,4 @@
-import { trim } from '../utils'
+import { trim } from '../utils/helpers'
 import BaseLogger, { logMethod } from './BaseLogger'
 
 class GlobalLogger extends BaseLogger {

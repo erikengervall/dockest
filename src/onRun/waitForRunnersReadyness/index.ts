@@ -20,7 +20,7 @@ const waitForRunnersReadyness = async (config: DockestConfig) => {
       runner.runnerLogger.runnerSetupSuccess()
     }
 
-    !!config.opts.runInBand ? await work(runner)() : parallelPromises.push(work(runner))
+    !!config.opts.runInBand ? await work(runner)() : parallelPromises.push(work(runner)())
   }
 
   await Promise.all(parallelPromises)

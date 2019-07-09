@@ -1,9 +1,13 @@
 import RunnerLogger from '../../loggers/RunnerLogger'
-import { getKeyForVal, trimNoSpaces, validateConfig, validateTypes } from '../../utils'
+import { getKeyForVal, trimNoSpaces } from '../../utils/helpers'
+import validateConfig from '../../utils/validateConfig'
+import validateTypes from '../../utils/validateTypes'
 import { BaseRunner, GetComposeService, Runner } from '../@types'
 import { DEFAULT_CONFIG_VALUES } from '../constants'
 import { ZooKeeperRunner } from '../index'
-import { getDependsOn, getImage, getPorts } from '../utils'
+import getDependsOn from '../utils/getDependsOn'
+import getImage from '../utils/getImage'
+import getPorts from '../utils/getPorts'
 
 interface RequiredConfigProps {
   service: string

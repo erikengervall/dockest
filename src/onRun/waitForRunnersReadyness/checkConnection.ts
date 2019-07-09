@@ -1,7 +1,7 @@
 import net from 'net'
 import DockestError from '../../errors/DockestError'
 import { Runner } from '../../runners/@types'
-import { sleep } from '../../utils/index'
+import sleep from '../../utils/sleep'
 
 const { keys } = Object
 

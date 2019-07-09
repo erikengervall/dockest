@@ -85,7 +85,7 @@ const dockest = new Dockest({
     },
     exitHandler: ({ trap }) => console.log(`👋🏼 Hello custom exit handler (${trap})`),
     logLevel: logLevel.VERBOSE,
-    runInBand: true,
+    runInBand: false,
   },
 })
 

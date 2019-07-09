@@ -1,7 +1,7 @@
 import execa from 'execa'
 import globalLogger from '../loggers/globalLogger'
 import { Runner } from '../runners/@types'
-import { trim } from '../utils'
+import { trim } from '../utils/helpers'
 
 const execaWrapper = async (command: string, runner?: Runner): Promise<string> => {
   const trimmedCommand = trim(command)

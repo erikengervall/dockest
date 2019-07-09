@@ -7,7 +7,9 @@ import onRun from './onRun'
 import { JestConfig } from './onRun/runJest'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
-import { execaWrapper, sleep, validateTypes } from './utils'
+import execaWrapper from './utils/execaWrapper'
+import sleep from './utils/sleep'
+import validateTypes from './utils/validateTypes'
 
 interface RequiredConfig {
   runners: Runner[]

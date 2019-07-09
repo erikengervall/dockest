@@ -1,16 +1,9 @@
-import execa from 'execa'
-import { createMockProxy } from 'jest-mock-proxy'
-import { RedisRunner } from '../../runners'
+import testUtils, { mockedExecaStdout } from '../../testUtils'
 import { testables } from './resolveContainerId'
 
 const { getContainerId } = testables
-const stdout = `mockStdout`
-const redisRunner = new RedisRunner({ service: '_' })
-jest.mock('execa', () => jest.fn(() => ({ stdout })))
-
-beforeEach(() => {
-  redisRunner.runnerLogger = createMockProxy()
-})
+const { redisRunner, execa } = testUtils({})
+jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
 describe('getContainerId', () => {
   it('should work', async () => {
@@ -20,7 +13,7 @@ describe('getContainerId', () => {
       expect.stringMatching(/docker ps/)
     )
     expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker ps/), { shell: true })
-    expect(execa).lastReturnedWith({ stdout })
-    expect(containerId).toEqual(stdout)
+    expect(execa).lastReturnedWith({ stdout: mockedExecaStdout })
+    expect(containerId).toEqual(mockedExecaStdout)
   })
 })

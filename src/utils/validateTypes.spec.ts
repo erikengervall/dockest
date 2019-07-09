@@ -4,7 +4,9 @@ import validateTypes from './validateTypes'
 const { values } = Object
 
 describe('validateTypes', () => {
-  let config: { [key: string]: any }
+  let config: {
+    [key: string]: any
+  }
 
   beforeEach(() => {
     config = {
@@ -12,7 +14,7 @@ describe('validateTypes', () => {
       commands: ['first command', 'second command'],
       variousStuff: ['first command', 1, () => ({})],
       port: 1337,
-      ports: [1337, 1338],
+      ports: ['1337:1337', '1338:1338'],
       autoCreateTopics: true,
       portMapping: { '1337': '1338' },
       logLevel: 1,
@@ -24,9 +26,9 @@ describe('validateTypes', () => {
       const validationSchema = {
         service: validateTypes.isString,
         commands: validateTypes.isArrayOfType(validateTypes.isString),
-        variousStuff: validateTypes.isArray,
+        variousStuff: validateTypes.isArrayOfType(validateTypes.isAny),
         port: validateTypes.isNumber,
-        ports: validateTypes.isArrayOfType(validateTypes.isNumber),
+        ports: validateTypes.isArrayOfType(validateTypes.isString),
         autoCreateTopics: validateTypes.isBoolean,
         portMapping: validateTypes.isObjectWithValuesOfType(validateTypes.isString),
         logLevel: validateTypes.isOneOf(values(LOG_LEVEL)),
