@@ -1,4 +1,4 @@
-import { getKeyForVal } from './helpers'
+import getKeyForVal from './getKeyForVal'
 
 describe('helpers', () => {
   describe('getKeyForVal', () => {

@@ -1,7 +1,7 @@
 import execa from 'execa'
 import { Runner } from '../../runners/@types'
 
-const runRunnerCommands = async (runner: Runner): Promise<void> => {
+export default async (runner: Runner): Promise<void> => {
   const {
     runnerConfig: { commands = [] },
     runnerLogger,
@@ -15,5 +15,3 @@ const runRunnerCommands = async (runner: Runner): Promise<void> => {
     runnerLogger.customShellCmdSuccess(result)
   }
 }
-
-export default runRunnerCommands

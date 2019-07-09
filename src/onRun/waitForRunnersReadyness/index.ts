@@ -5,25 +5,37 @@ import checkResponsiveness from './checkResponsiveness'
 import resolveContainerId from './resolveContainerId'
 import runRunnerCommands from './runRunnerCommands'
 
-const waitForRunnersReadyness = async (config: DockestConfig) => {
+const setupRunner = async (runner: Runner) => {
+  runner.runnerLogger.runnerSetup()
+
+  await resolveContainerId(runner)
+  await checkConnection(runner)
+  await checkResponsiveness(runner)
+  await runRunnerCommands(runner)
+
+  runner.runnerLogger.runnerSetupSuccess()
+}
+
+const setupRunnerWithDependencies = async (runner: Runner) => {
+  // Setup runner's dependencies
+  for (const depRunner of runner.runnerConfig.dependsOn) {
+    await setupRunner(depRunner)
+  }
+
+  // Setup runner
+  await setupRunner(runner)
+}
+
+export default async (config: DockestConfig) => {
   const parallelPromises = []
 
   for (const runner of config.runners) {
-    const work = (runner: Runner) => async () => {
-      runner.runnerLogger.runnerSetup()
-
-      await resolveContainerId(runner)
-      await checkConnection(runner)
-      await checkResponsiveness(runner)
-      await runRunnerCommands(runner)
-
-      runner.runnerLogger.runnerSetupSuccess()
+    if (!!config.opts.runInBand) {
+      await setupRunnerWithDependencies(runner)
+    } else {
+      parallelPromises.push(setupRunnerWithDependencies(runner))
     }
-
-    !!config.opts.runInBand ? await work(runner)() : parallelPromises.push(work(runner)())
   }
 
   await Promise.all(parallelPromises)
 }
-
-export default waitForRunnersReadyness

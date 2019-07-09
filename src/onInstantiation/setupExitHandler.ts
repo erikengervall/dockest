@@ -3,7 +3,7 @@ import { ErrorPayload } from '../@types'
 import globalLogger from '../loggers/globalLogger'
 import teardownSingle from '../utils/teardownSingle'
 
-const setupExitHandler = async (config: DockestConfig): Promise<void> => {
+export default async (config: DockestConfig): Promise<void> => {
   const {
     $: { perfStart },
     opts: { exitHandler: customExitHandler },
@@ -57,5 +57,3 @@ const setupExitHandler = async (config: DockestConfig): Promise<void> => {
     exitHandler({ trap: 'unhandledRejection', reason, p })
   )
 }
-
-export default setupExitHandler

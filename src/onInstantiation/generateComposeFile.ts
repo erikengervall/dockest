@@ -4,7 +4,7 @@ import { DockestConfig } from '../'
 import DockestError from '../errors/DockestError'
 import { ComposeFile, Runner } from '../runners/@types'
 
-const generateComposeFile = (config: DockestConfig) => {
+export default (config: DockestConfig) => {
   const {
     $: { dockerComposeGeneratedPath },
     opts: { composeFileName },
@@ -51,5 +51,3 @@ const generateComposeFile = (config: DockestConfig) => {
     )
   }
 }
-
-export default generateComposeFile

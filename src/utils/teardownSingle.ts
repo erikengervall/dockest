@@ -14,6 +14,12 @@ const teardownSingle = async (runner: Runner): Promise<void> => {
     return
   }
 
+  // Teardown runner's dependencies
+  for (const depRunner of runner.runnerConfig.dependsOn) {
+    await teardownSingle(depRunner)
+  }
+
+  // Teardown runner
   await stopContainerById(runner)
   await removeContainerById(runner)
 }

@@ -1,5 +1,6 @@
 import RunnerLogger from '../../loggers/RunnerLogger'
-import { getKeyForVal, trimNoSpaces } from '../../utils/helpers'
+import getKeyForVal from '../../utils/getKeyForVal'
+import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 import { BaseRunner, GetComposeService, Runner } from '../@types'
@@ -103,7 +104,7 @@ class KafkaRunner implements BaseRunner {
         : ''
 
       return {
-        KAFKA_ADVERTISED_LISTENERS: trimNoSpaces(`${PLAINTEXT}${SSL}${SASL_SSL}`),
+        KAFKA_ADVERTISED_LISTENERS: trim(`${PLAINTEXT}${SSL}${SASL_SSL}`, ''),
       }
     }
 
@@ -118,7 +119,7 @@ class KafkaRunner implements BaseRunner {
       const SASL_SSL = exposedSASLSSLPort ? ', SASL_SSL:SASL_SSL, SASL_SSL_HOST:SASL_SSL' : ''
 
       return {
-        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: trimNoSpaces(`${PLAINTEXT}${SSL}${SASL_SSL}`),
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: trim(`${PLAINTEXT}${SSL}${SASL_SSL}`, ''),
       }
     }
 

@@ -3,7 +3,24 @@ import { Runner } from '../../runners/@types'
 import execaWrapper from '../../utils/execaWrapper'
 import sleep from '../../utils/sleep'
 
-const resolveContainerId = async (runner: Runner): Promise<void> => {
+const getContainerId = async (runner: Runner): Promise<string> => {
+  const {
+    runnerConfig: { service },
+  } = runner
+  const command = ` \
+                docker ps \
+                  --quiet \
+                  --filter \
+                  "name=${service}" \
+                --latest \
+              `
+
+  const containerId = await execaWrapper(command, runner)
+
+  return containerId
+}
+
+export default async (runner: Runner): Promise<void> => {
   const {
     runnerLogger,
     runnerConfig: { service },
@@ -44,23 +61,5 @@ const resolveContainerId = async (runner: Runner): Promise<void> => {
   await recurse(resolveContainerIdTimeout)
 }
 
-const getContainerId = async (runner: Runner): Promise<string> => {
-  const {
-    runnerConfig: { service },
-  } = runner
-  const command = ` \
-                docker ps \
-                  --quiet \
-                  --filter \
-                  "name=${service}" \
-                --latest \
-              `
-
-  const containerId = await execaWrapper(command, runner)
-
-  return containerId
-}
-
 const testables = { getContainerId }
 export { testables }
-export default resolveContainerId
