@@ -1,6 +1,6 @@
 import { DockestConfig } from '../index'
 import globalLogger from '../loggers/globalLogger'
-import { sleepWithLog } from '../utils/sleep'
+import sleepForX from '../utils/sleepForX'
 import teardownSingle from '../utils/teardownSingle'
 import dockerComposeUp from './dockerComposeUp'
 import runJest from './runJest'
@@ -20,7 +20,7 @@ const onRun = async (config: DockestConfig) => {
   await waitForRunnersReadyness(config)
 
   if (afterSetupSleep > 0) {
-    await sleepWithLog('After setup sleep progress', afterSetupSleep)
+    await sleepForX('After setup sleep', afterSetupSleep)
   }
 
   if (!!debug) {

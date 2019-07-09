@@ -1,5 +1,6 @@
 // tslint:disable:no-console
 
+import readline from 'readline'
 import { COLORS, ICONS, LOG_LEVEL } from '../constants'
 import { Runner } from '../runners/@types'
 
@@ -50,6 +51,15 @@ class BaseLogger {
       this.defaultD(d),
       '\n'
     )
+
+  public replacePrevLine: logMethod = (m, isLast) => {
+    readline.cursorTo(process.stdout, 0)
+    process.stdout.write(m)
+
+    if (isLast) {
+      process.stdout.write('\n\n')
+    }
+  }
 
   private defaultD = (d?: object): object | string => d || ''
 }

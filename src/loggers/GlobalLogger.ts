@@ -28,8 +28,8 @@ class GlobalLogger extends BaseLogger {
   /**
    * Utils
    */
-  public sleepWithLog: logMethod = (reason, progress) =>
-    this.LOG_LEVEL_VERBOSE() && this.logLoading(`${reason || 'Sleeping'}: ${progress}`)
+  public sleepForX = (reason: any, progress: any, isLast: any) =>
+    this.LOG_LEVEL_VERBOSE() && this.replacePrevLine(`${reason || 'Sleeping'}: ${progress}`, isLast)
 
   public startPerf = (perfStart: number) =>
     this.LOG_LEVEL_NORMAL() && this.logInfo(`Started Dockest at ${new Date(perfStart)}`)
