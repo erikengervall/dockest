@@ -6,14 +6,14 @@ import resolveContainerId from './resolveContainerId'
 import runRunnerCommands from './runRunnerCommands'
 
 const setupRunner = async (runner: Runner) => {
-  runner.runnerLogger.runnerSetup()
+  runner.logger.info('Setup initiated')
 
   await resolveContainerId(runner)
   await checkConnection(runner)
   await checkResponsiveness(runner)
   await runRunnerCommands(runner)
 
-  runner.runnerLogger.runnerSetupSuccess()
+  runner.logger.info('Setup successful')
 }
 
 const setupRunnerWithDependencies = async (runner: Runner) => {

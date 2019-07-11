@@ -1,4 +1,4 @@
-import RunnerLogger from '../../loggers/RunnerLogger'
+import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 import { BaseRunner, GetComposeService, Runner } from '../@types'
@@ -44,7 +44,7 @@ class PostgresRunner implements BaseRunner {
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: PostgresRunnerConfig
-  public runnerLogger: RunnerLogger
+  public logger: Logger
 
   constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
@@ -52,7 +52,7 @@ class PostgresRunner implements BaseRunner {
       ...DEFAULT_CONFIG,
       ...configUserInput,
     }
-    this.runnerLogger = new RunnerLogger(this)
+    this.logger = new Logger(this)
 
     // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
     const schema: { [key in keyof RequiredConfigProps]: () => void } = {

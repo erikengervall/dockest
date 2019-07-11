@@ -1,25 +1,23 @@
-import execa from 'execa'
 import { createMockProxy } from 'jest-mock-proxy'
-import testUtils, { mockedExecaStdout } from '../testUtils'
+import testUtils from '../testUtils'
 import teardownSingle from './teardownSingle'
 
-const { redisRunner } = testUtils({})
+const { redisRunner, execa } = testUtils({})
 redisRunner.containerId = 'mockContainerId'
-jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
 describe('teardownSingle', () => {
   beforeEach(() => {
     // @ts-ignore
     execa.mockClear()
-    redisRunner.runnerLogger = createMockProxy()
+    redisRunner.logger = createMockProxy()
   })
 
   describe('happy', () => {
     it('should work', async () => {
       await teardownSingle(redisRunner)
 
-      expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker stop/), { shell: true })
-      expect(execa).toHaveBeenCalledWith(expect.stringMatching(/docker rm/), { shell: true })
+      expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker stop'), { shell: true })
+      expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker rm'), { shell: true })
     })
   })
 
@@ -33,8 +31,8 @@ describe('teardownSingle', () => {
 
       await teardownSingle(redisRunner)
 
-      expect(redisRunner.runnerLogger.stopContainerFailed).toHaveBeenCalled()
-      expect(redisRunner.runnerLogger.removeContainerFailed).toHaveBeenCalled()
+      expect(redisRunner.logger.info).toHaveBeenCalled()
+      expect(redisRunner.logger.error).toHaveBeenCalled()
     })
   })
 })

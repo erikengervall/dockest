@@ -1,21 +1,14 @@
-export const ICONS: {
-  [key: string]: string
-} = {
-  VERBOSE: '🗣 ',
+export const ICONS = {
+  DEBUG: '🐛 ',
   LOADING: '⏳',
   SUCCESS: '✅',
-  FAILED: '🔥',
   ERROR: '❌',
   STOPPED: '🛑',
-  WARNING: '⚠️',
+  WARN: '⚠️',
   INFO: 'ℹ️',
 }
 
-export const COLORS: {
-  [key: string]: {
-    [key: string]: string
-  }
-} = {
+export const COLORS = {
   MISC: {
     RESET: '\x1b[0m',
     BRIGHT: '\x1b[1m',
@@ -47,11 +40,12 @@ export const COLORS: {
   },
 }
 
-export const LOG_LEVEL: { [key: string]: number } = {
+export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,
-  NORMAL: 2,
-  VERBOSE: 3,
+  WARN: 2,
+  INFO: 4,
+  DEBUG: 5,
 }
 
 export const DEFAULT_USER_CONFIG = {
@@ -61,6 +55,6 @@ export const DEFAULT_USER_CONFIG = {
     debug: false,
   },
   exitHandler: null,
-  logLevel: LOG_LEVEL.NORMAL,
+  logLevel: LOG_LEVEL.INFO,
   runInBand: true,
 }

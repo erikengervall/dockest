@@ -22,14 +22,14 @@ const getContainerId = async (runner: Runner): Promise<string> => {
 
 export default async (runner: Runner): Promise<void> => {
   const {
-    runnerLogger,
+    logger,
     runnerConfig: { service },
   } = runner
   const resolveContainerIdTimeout = 10
   let containerId = ''
 
   const recurse = async (resolveContainerIdTimeout: number): Promise<void> => {
-    runnerLogger.resolveContainerId()
+    logger.info('Attempting to resolve containerId')
 
     if (resolveContainerIdTimeout <= 0) {
       throw new DockestError(
@@ -47,7 +47,7 @@ export default async (runner: Runner): Promise<void> => {
         throw new Error(`Invalid containerId: ${containerId}`)
       }
 
-      runnerLogger.resolveContainerIdSuccess(containerId)
+      logger.info(`Found containerId: ${containerId}`)
     } catch (error) {
       resolveContainerIdTimeout--
 

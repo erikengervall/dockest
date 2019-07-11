@@ -1,17 +1,15 @@
 import execa from 'execa'
-import globalLogger from '../loggers/globalLogger'
+import Logger from '../Logger'
 import { Runner } from '../runners/@types'
 import trim from '../utils/trim'
 
 const execaWrapper = async (command: string, runner?: Runner): Promise<string> => {
   const trimmedCommand = trim(command)
-  runner ? runner.runnerLogger.shellCmd(trimmedCommand) : globalLogger.shellCmd(trimmedCommand)
+  const logger = runner ? runner.logger : Logger
 
+  logger.debug(`Executing shell script: ${trimmedCommand}`)
   const { stdout: result } = await execa(trimmedCommand, { shell: true })
-
-  runner
-    ? runner.runnerLogger.shellCmdSuccess(trimmedCommand)
-    : globalLogger.shellCmdSuccess(trimmedCommand)
+  logger.debug(`Successfully executed shell script with result: ${result}`)
 
   return result
 }

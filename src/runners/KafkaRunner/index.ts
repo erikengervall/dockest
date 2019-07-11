@@ -1,4 +1,4 @@
-import RunnerLogger from '../../loggers/RunnerLogger'
+import Logger from '../../Logger'
 import getKeyForVal from '../../utils/getKeyForVal'
 import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
@@ -50,7 +50,7 @@ class KafkaRunner implements BaseRunner {
   public static DEFAULT_PORT_SSL: string = DEFAULT_PORT_SSL
   public containerId: string
   public runnerConfig: KafkaRunnerConfig
-  public runnerLogger: RunnerLogger
+  public logger: Logger
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
@@ -58,7 +58,7 @@ class KafkaRunner implements BaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.runnerLogger = new RunnerLogger(this)
+    this.logger = new Logger(this)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,

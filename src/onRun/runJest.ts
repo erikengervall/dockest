@@ -1,7 +1,7 @@
 import jest from 'jest'
 import ConfigurationError from '../errors/ConfigurationError'
 import { DockestConfig } from '../index'
-import globalLogger from '../loggers/globalLogger'
+import Logger from '../Logger'
 
 interface JestLib {
   getVersion: any
@@ -36,20 +36,21 @@ const runJest = async (config: DockestConfig) => {
   validateJestConfig(jestConfig)
 
   try {
-    globalLogger.jestSuccess(`Dependencies up and running, running Jest`)
-    const jestResult: { results: { success: true } } = await lib.runCLI(jestConfig, projects)
+    Logger.info(`Dependencies up and running, running Jest`)
+    Logger.debug(`Jest config:`, { jestConfig, projects })
+    const jestResult: { results: { success: boolean } } = await lib.runCLI(jestConfig, projects)
 
     if (!jestResult.results.success) {
-      globalLogger.jestFailed(`Jest test(s) failed`)
+      Logger.error(`Jest test(s) failed`)
 
       success = false
     } else {
-      globalLogger.jestSuccess(`Jest test(s) successful`)
+      Logger.info(`Jest test(s) successful`)
 
       success = true
     }
   } catch (error) {
-    globalLogger.jestError(`Failed to run Jest`, error)
+    Logger.error(`Failed to run Jest`, error)
 
     success = false
   }

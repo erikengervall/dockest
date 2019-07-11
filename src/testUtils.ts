@@ -1,10 +1,14 @@
 import execa from 'execa'
 import { createMockProxy } from 'jest-mock-proxy'
+import Logger from './Logger'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
 
 export const mockedExecaStdout = 'getContainerId 🌮'
 export const runnerCommand = 'runRunnerCommands 🌮'
+
+jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
+jest.mock('./Logger')
 
 type testUtils = (opts: {
   withRunnerCommands?: boolean
@@ -12,6 +16,7 @@ type testUtils = (opts: {
   allRunners: Runner[]
   execa: any
   kafkaRunner: Runner
+  Logger: any
   postgresRunner: Runner
   redisRunner: Runner
   runnerCommands?: string[]
@@ -43,18 +48,17 @@ const testUtils: testUtils = ({ withRunnerCommands }) => {
   })
 
   beforeEach(() => {
-    kafkaRunner.runnerLogger = createMockProxy()
-    postgresRunner.runnerLogger = createMockProxy()
-    redisRunner.runnerLogger = createMockProxy()
-    zooKeeperRunner.runnerLogger = createMockProxy()
-    // console.log({ execa })
-    // execa.mockClear()
+    kafkaRunner.logger = createMockProxy()
+    postgresRunner.logger = createMockProxy()
+    redisRunner.logger = createMockProxy()
+    zooKeeperRunner.logger = createMockProxy()
   })
 
   return {
     allRunners: [kafkaRunner, postgresRunner, redisRunner, zooKeeperRunner],
     execa,
     kafkaRunner,
+    Logger,
     postgresRunner,
     redisRunner,
     zooKeeperRunner,

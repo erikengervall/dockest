@@ -1,63 +1,63 @@
-import globalLogger from '../loggers/globalLogger'
 import { Runner } from '../runners/@types'
 import execaWrapper from './execaWrapper'
 
 const teardownSingle = async (runner: Runner): Promise<void> => {
-  const {
-    containerId,
-    runnerConfig: { service },
-  } = runner
+  const { containerId, logger } = runner
 
   if (!containerId) {
-    globalLogger.error(`${service}: Cannot teardown container without a containerId`)
-
+    logger.error('Cannot teardown container without a containerId')
     return
   }
 
   // Teardown runner's dependencies
   for (const depRunner of runner.runnerConfig.dependsOn) {
-    await teardownSingle(depRunner)
+    const { logger } = depRunner
+
+    logger.info('Container teared down')
+    await stopContainerById(depRunner)
+    await removeContainerById(depRunner)
+    logger.info('Container teared down')
   }
 
   // Teardown runner
+  logger.info('Container teared down')
   await stopContainerById(runner)
   await removeContainerById(runner)
+  logger.info('Container teared down')
 }
 
 const stopContainerById = async (runner: Runner): Promise<void> => {
-  const { containerId } = runner
-
-  runner.runnerLogger.stopContainer()
+  const { containerId, logger } = runner
+  logger.debug('Container being stopped')
 
   try {
     const command = `docker stop ${containerId}`
 
     await execaWrapper(command, runner)
   } catch (error) {
-    runner.runnerLogger.stopContainerFailed()
+    logger.error('Unexpected error when stopping container')
 
     return
   }
 
-  runner.runnerLogger.stopContainerSuccess()
+  logger.debug('Container stopped')
 }
 
 const removeContainerById = async (runner: Runner): Promise<void> => {
-  const { containerId } = runner
-
-  runner.runnerLogger.removeContainer()
+  const { containerId, logger } = runner
+  logger.debug('Container being removed')
 
   try {
     const command = `docker rm ${containerId} --volumes`
 
     await execaWrapper(command, runner)
   } catch (error) {
-    runner.runnerLogger.removeContainerFailed()
+    logger.error('Unexpected error when removing container')
 
     return
   }
 
-  runner.runnerLogger.removeContainerSuccess()
+  logger.debug('Container removed')
 }
 
 export default teardownSingle

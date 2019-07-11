@@ -1,5 +1,5 @@
 import { DockestConfig } from '../index'
-import globalLogger from '../loggers/globalLogger'
+import Logger from '../Logger'
 import sleepForX from '../utils/sleepForX'
 import teardownSingle from '../utils/teardownSingle'
 import dockerComposeUp from './dockerComposeUp'
@@ -24,11 +24,11 @@ const onRun = async (config: DockestConfig) => {
   }
 
   if (!!debug) {
-    globalLogger.info(`Debug mode enabled, containers are kept running and Jest will not run.`)
+    Logger.info(`Debug mode enabled, containers are kept running and Jest will not run.`)
 
     config.runners.forEach((runner, index) =>
-      globalLogger.info(
-        `[${index} | ${runner.runnerConfig.service}] ${JSON.stringify(
+      Logger.info(
+        `[${index + 1}/${config.runners.length} | ${runner.runnerConfig.service}] ${JSON.stringify(
           {
             service: runner.runnerConfig.service,
             containerId: runner.containerId,
@@ -40,7 +40,8 @@ const onRun = async (config: DockestConfig) => {
       )
     )
 
-    return // Will keep the docker containers running indefinitely
+    // Keep the docker containers running indefinitely
+    return
   }
 
   const allTestsPassed = await runJest(config)
@@ -49,7 +50,7 @@ const onRun = async (config: DockestConfig) => {
     await teardownSingle(runner)
   }
 
-  globalLogger.perf(perfStart)
+  Logger.perf(perfStart)
   allTestsPassed ? process.exit(0) : process.exit(1)
 }
 

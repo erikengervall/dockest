@@ -1,4 +1,4 @@
-import RunnerLogger from '../../loggers/RunnerLogger'
+import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 import { BaseRunner, GetComposeService, Runner } from '../@types'
@@ -43,7 +43,7 @@ class RedisRunner implements BaseRunner {
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: RedisRunnerConfig
-  public runnerLogger: RunnerLogger
+  public logger: Logger
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
@@ -51,7 +51,7 @@ class RedisRunner implements BaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.runnerLogger = new RunnerLogger(this)
+    this.logger = new Logger(this)
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,

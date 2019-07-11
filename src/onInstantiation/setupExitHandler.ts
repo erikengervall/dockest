@@ -1,6 +1,6 @@
 import { DockestConfig } from '../'
 import { ErrorPayload } from '../@types'
-import globalLogger from '../loggers/globalLogger'
+import Logger from '../Logger'
 import teardownSingle from '../utils/teardownSingle'
 
 export default async (config: DockestConfig): Promise<void> => {
@@ -21,7 +21,7 @@ export default async (config: DockestConfig): Promise<void> => {
       return // Program ran as expected
     }
 
-    globalLogger.exitHandler('Exithandler invoked', errorPayload)
+    Logger.error('Exithandler invoked', errorPayload)
 
     if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')
@@ -32,7 +32,7 @@ export default async (config: DockestConfig): Promise<void> => {
       await teardownSingle(runner)
     }
 
-    globalLogger.perf(perfStart)
+    Logger.perf(perfStart)
     process.exit(errorPayload.code || 1)
   }
 

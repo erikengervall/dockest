@@ -1,5 +1,5 @@
 import ConfigurationError from '../../errors/ConfigurationError'
-import RunnerLogger from '../../loggers/RunnerLogger'
+import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 import { BaseRunner, GetComposeService, Runner } from '../@types'
@@ -39,7 +39,7 @@ class ZooKeeperRunner implements BaseRunner {
   public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public runnerConfig: ZooKeeperRunnerConfig
-  public runnerLogger: RunnerLogger
+  public logger: Logger
   public containerId: string
 
   constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
@@ -47,7 +47,7 @@ class ZooKeeperRunner implements BaseRunner {
       ...DEFAULT_CONFIG,
       ...config,
     }
-    this.runnerLogger = new RunnerLogger(this)
+    this.logger = new Logger(this)
     this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {

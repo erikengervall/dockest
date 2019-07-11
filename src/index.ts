@@ -1,7 +1,7 @@
 import { ErrorPayload } from './@types'
 import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
 import ConfigurationError from './errors/ConfigurationError'
-import BaseLogger from './loggers/BaseLogger'
+import Logger from './Logger'
 import onInstantiation from './onInstantiation'
 import onRun from './onRun'
 import { JestConfig } from './onRun/runJest'
@@ -60,7 +60,7 @@ class Dockest {
       opts: { ...DEFAULT_USER_CONFIG, ...opts },
       $: { ...INTERNAL_CONFIG },
     }
-    BaseLogger.logLevel = this.config.opts.logLevel
+    Logger.logLevel = this.config.opts.logLevel
 
     this.validateConfig()
     onInstantiation(this.config)

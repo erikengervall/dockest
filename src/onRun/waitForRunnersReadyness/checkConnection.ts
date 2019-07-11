@@ -31,13 +31,15 @@ const acquireConnection = (host: string, port: string): Promise<void> =>
 export default async (runner: Runner) => {
   const {
     runnerConfig: { service, connectionTimeout, host, ports },
-    runnerLogger,
+    logger,
   } = runner
   // TODO: Would it make sense to check connection for every port?
   const port = keys(ports)[0]
 
   const recurse = async (connectionTimeout: number) => {
-    runnerLogger.checkConnection(connectionTimeout, host, port)
+    logger.debug(
+      `Checking container's connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`
+    )
 
     if (connectionTimeout <= 0) {
       throw new DockestError(`${service} connection timed out`)
@@ -46,7 +48,7 @@ export default async (runner: Runner) => {
     try {
       await acquireConnection(host, port)
 
-      runnerLogger.checkConnectionSuccess()
+      logger.debug(`Container's connection checked`)
     } catch (error) {
       connectionTimeout--
 

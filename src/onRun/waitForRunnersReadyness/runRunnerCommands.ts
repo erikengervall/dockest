@@ -4,14 +4,14 @@ import { Runner } from '../../runners/@types'
 export default async (runner: Runner): Promise<void> => {
   const {
     runnerConfig: { commands = [] },
-    runnerLogger,
+    logger,
   } = runner
 
   for (const command of commands) {
-    runnerLogger.customShellCmd(command)
+    logger.debug(`Executed custom command: ${command}`)
 
     const { stdout: result } = await execa(command, { shell: true })
 
-    runnerLogger.customShellCmdSuccess(result)
+    logger.debug(`Executed custom command successfully with result\n${result}`)
   }
 }
