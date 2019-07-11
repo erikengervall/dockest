@@ -36,21 +36,21 @@ const runJest = async (config: DockestConfig) => {
   validateJestConfig(jestConfig)
 
   try {
-    Logger.info(`Dependencies up and running, running Jest`)
-    Logger.debug(`Jest config:`, { jestConfig, projects })
+    Logger.info(`Dependencies up and running: Executing Jest`)
+    Logger.debug(`Jest config:`, { data: { jestConfig, projects } })
     const jestResult: { results: { success: boolean } } = await lib.runCLI(jestConfig, projects)
 
     if (!jestResult.results.success) {
-      Logger.error(`Jest test(s) failed`)
+      Logger.error(`Jest test(s) failed`, { nl: 1 })
 
       success = false
     } else {
-      Logger.info(`Jest test(s) successful`)
+      Logger.info(`Jest test(s) successful`, { nl: 1 })
 
       success = true
     }
   } catch (error) {
-    Logger.error(`Failed to run Jest`, error)
+    Logger.error(`Jest test(s) failed`, { data: { error } })
 
     success = false
   }
@@ -63,18 +63,18 @@ const runJest = async (config: DockestConfig) => {
 const validateJestConfig = (config: JestConfig) => {
   // Validate jest
   if (!config) {
-    throw new ConfigurationError('Missing jest configuration object')
+    throw new ConfigurationError('Jest configuration object missing')
   }
 
   // Validate jest.lib
   if (!config.lib) {
-    throw new ConfigurationError('Missing jest.lib')
+    throw new ConfigurationError('Jest libray missing')
   }
 
   // Validate jest version
   const MINIMUM_JEST_VERSION = '20.0.0' // Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
   if (config.lib.getVersion() < MINIMUM_JEST_VERSION) {
-    throw new ConfigurationError('Jest version too low, please update')
+    throw new ConfigurationError('Jest version too old: Please update')
   }
 }
 

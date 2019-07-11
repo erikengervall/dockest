@@ -8,10 +8,10 @@ const execaWrapper = async (command: string, runner?: Runner): Promise<string> =
   const logger = runner ? runner.logger : Logger
 
   logger.debug(`Executing shell script: ${trimmedCommand}`)
-  const { stdout: result } = await execa(trimmedCommand, { shell: true })
-  logger.debug(`Successfully executed shell script with result: ${result}`)
+  const { stdout } = await execa(trimmedCommand, { shell: true })
+  logger.debug(`Successfully executed shell script ${trimmedCommand}`)
 
-  return result
+  return stdout
 }
 
 export default execaWrapper

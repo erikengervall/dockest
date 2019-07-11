@@ -13,7 +13,7 @@ const setupRunner = async (runner: Runner) => {
   await checkResponsiveness(runner)
   await runRunnerCommands(runner)
 
-  runner.logger.info('Setup successful')
+  runner.logger.info('Setup successful', { nl: 1 })
 }
 
 const setupRunnerWithDependencies = async (runner: Runner) => {

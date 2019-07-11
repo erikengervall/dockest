@@ -1,6 +1,6 @@
 import { ICONS } from '../constants'
 
-class BaseError extends Error {
+export default class BaseError extends Error {
   payload: object
   timestamp: Date
 
@@ -16,5 +16,3 @@ class BaseError extends Error {
     this.timestamp = new Date()
   }
 }
-
-export default BaseError

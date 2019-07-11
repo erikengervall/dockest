@@ -1,5 +1,5 @@
 export const ICONS = {
-  DEBUG: '🐛 ',
+  DEBUG: '🐛',
   LOADING: '⏳',
   SUCCESS: '✅',
   ERROR: '❌',
@@ -40,12 +40,30 @@ export const COLORS = {
   },
 }
 
+export const LOG_SYMBOLS = [
+  '🦊',
+  '🐼',
+  '🐒',
+  '🦋',
+  '🦄',
+  '🐥',
+  '🐙',
+  '🦖',
+  '🐞',
+  '🦂',
+  '🦍',
+  '🦃',
+  '🐿',
+  '🐉',
+  '🦚',
+].sort(() => 0.5 - Math.random())
+
 export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,
   WARN: 2,
-  INFO: 4,
-  DEBUG: 5,
+  INFO: 3,
+  DEBUG: 4,
 }
 
 export const DEFAULT_USER_CONFIG = {

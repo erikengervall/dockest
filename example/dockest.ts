@@ -78,14 +78,14 @@ const dockest = new Dockest({
     verbose: true,
   },
   opts: {
-    afterSetupSleep: 11,
+    afterSetupSleep: 4,
     composeFileName: 'docker-compose.yml',
     dev: {
       // debug: true,
     },
     exitHandler: ({ trap }) => console.log(`👋🏼 Hello custom exit handler (${trap})`),
-    logLevel: logLevel.DEBUG,
-    runInBand: false,
+    logLevel: logLevel.INFO,
+    runInBand: true,
   },
 })
 

@@ -19,8 +19,8 @@ const checkResponsiveness = async (runner: Runner) => {
   // @ts-ignore
   const responsivenessCheckCmd = runner.createResponsivenessCheckCmd()
 
-  const recurse = async (responsivenessTimeout: number): Promise<void> => {
-    logger.debug(`Checking container's responsiveness (Timeout in: ${responsivenessTimeout}s)`)
+  const recurse = async (responsivenessTimeout: number, runner: Runner): Promise<void> => {
+    logger.debug(`Checking responsiveness (Timeout in: ${responsivenessTimeout}s)`)
 
     if (responsivenessTimeout <= 0) {
       throw new DockestError(`Responsiveness timed out`)
@@ -29,16 +29,16 @@ const checkResponsiveness = async (runner: Runner) => {
     try {
       await execaWrapper(responsivenessCheckCmd, runner)
 
-      logger.debug(`Container's responsiveness checked`)
+      logger.debug(`Checked responsiveness successfully`)
     } catch (error) {
       responsivenessTimeout--
 
       await sleep(1000)
-      await recurse(responsivenessTimeout)
+      await recurse(responsivenessTimeout, runner)
     }
   }
 
-  await recurse(responsivenessTimeout)
+  await recurse(responsivenessTimeout, runner)
 }
 
 export default checkResponsiveness

@@ -37,9 +37,7 @@ export default async (runner: Runner) => {
   const port = keys(ports)[0]
 
   const recurse = async (connectionTimeout: number) => {
-    logger.debug(
-      `Checking container's connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`
-    )
+    logger.debug(`Checking connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`)
 
     if (connectionTimeout <= 0) {
       throw new DockestError(`${service} connection timed out`)
@@ -48,7 +46,7 @@ export default async (runner: Runner) => {
     try {
       await acquireConnection(host, port)
 
-      logger.debug(`Container's connection checked`)
+      logger.debug(`Checked connection successfully`)
     } catch (error) {
       connectionTimeout--
 

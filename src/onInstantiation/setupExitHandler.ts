@@ -21,7 +21,7 @@ export default async (config: DockestConfig): Promise<void> => {
       return // Program ran as expected
     }
 
-    Logger.error('Exithandler invoked', errorPayload)
+    Logger.error('Exithandler invoked', { data: errorPayload })
 
     if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')

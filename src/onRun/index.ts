@@ -15,7 +15,7 @@ const onRun = async (config: DockestConfig) => {
     },
   } = config
 
-  dockerComposeUp(dockerComposeGeneratedPath)
+  await dockerComposeUp(dockerComposeGeneratedPath)
 
   await waitForRunnersReadyness(config)
 

@@ -1,48 +1,62 @@
 // tslint:disable:no-console
 
 import readline from 'readline'
-import { COLORS, ICONS, LOG_LEVEL } from './constants'
+import { LOG_LEVEL } from './constants'
 import { Runner } from './runners/@types'
 
-const { DEBUG, INFO, ERROR, WARN } = ICONS
-const {
-  FG: { RED, YELLOW },
-  MISC: { RESET, BRIGHT },
-} = COLORS
+type payload = {
+  icon?: string
+  data?: { [key: string]: any }
+  service?: string
+  symbol?: string
+  nl?: number
+}
 
-type LogMethod = (message: string, data?: { [key: string]: any }, service?: string) => void
+type LogMethod = (message: string, payload?: payload) => void
 
-const formatMessage = (message: string, service: string) =>
-  `${service}${service && ': '}${message}${RESET}`
+const getLogArgs = (message: string, payload: payload) => {
+  const { data, service, symbol, nl = 0 } = payload
+  const logArgs = []
+
+  const serv = !!service ? service : 'Dockest'
+  const symb = !!symbol ? symbol : '🌈'
+  logArgs.push(`${symb} ${serv} ${symb} ${message}`)
+
+  if (!!data && Logger.logLevel === LOG_LEVEL.DEBUG) {
+    logArgs.push(data)
+  }
+
+  if (!!nl && nl > 0) {
+    logArgs.concat(new Array(nl).fill('\n'))
+  }
+
+  return logArgs
+}
 
 class Logger {
   public static logLevel: number = LOG_LEVEL.INFO
 
-  public static error: LogMethod = (message, data = {}, service = '') => {
+  public static error: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.ERROR) {
-      const msg = formatMessage(message, service)
-      console.error(`${ERROR}${RED} ${msg}`, data, '\n')
+      console.error(...getLogArgs(message, payload))
     }
   }
 
-  public static warn: LogMethod = (message, data = {}, service = '') => {
+  public static warn: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.WARN) {
-      const msg = formatMessage(message, service)
-      console.warn(`${WARN}${YELLOW} ${msg}`, data, '\n')
+      console.warn(...getLogArgs(message, payload))
     }
   }
 
-  public static info: LogMethod = (message, data = {}, service = '') => {
+  public static info: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.INFO) {
-      const msg = formatMessage(message, service)
-      console.info(`${INFO}${BRIGHT}  ${msg}`, data, '\n')
+      console.info(...getLogArgs(message, payload))
     }
   }
 
-  public static debug: LogMethod = (message, data = {}, service = '') => {
+  public static debug: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.DEBUG) {
-      const msg = formatMessage(message, service)
-      console.debug(`${DEBUG}${BRIGHT}  ${msg}`, data, '\n')
+      console.debug(...getLogArgs(message, payload))
     }
   }
 
@@ -74,15 +88,27 @@ class Logger {
     Logger.info(`Elapsed time: ${hours}:${minutes}:${seconds}`)
   }
 
-  private service: string = ''
+  private runnerService: string = ''
+  private runnerSymbol: string = ''
   constructor(runner?: Runner) {
-    this.service = runner ? runner.runnerConfig.service : ''
+    this.runnerService = runner ? runner.runnerConfig.service : ''
   }
 
-  public error: LogMethod = (message, data) => Logger.error(message, data, this.service)
-  public warn: LogMethod = (message, data) => Logger.warn(message, data, this.service)
-  public info: LogMethod = (message, data) => Logger.info(message, data, this.service)
-  public debug: LogMethod = (message, data) => Logger.debug(message, data, this.service)
+  public setRunnerSymbol = (symbol: string): void => {
+    this.runnerSymbol = symbol
+  }
+
+  public error: LogMethod = (message, payload = {}) =>
+    Logger.error(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+
+  public warn: LogMethod = (message, payload = {}) =>
+    Logger.warn(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+
+  public info: LogMethod = (message, payload = {}) =>
+    Logger.info(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+
+  public debug: LogMethod = (message, payload = {}) =>
+    Logger.debug(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
 }
 
 export { LogMethod }
