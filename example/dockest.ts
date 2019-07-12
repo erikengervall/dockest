@@ -78,7 +78,7 @@ const dockest = new Dockest({
     verbose: true,
   },
   opts: {
-    afterSetupSleep: 4,
+    afterSetupSleep: 10,
     composeFileName: 'docker-compose.yml',
     dev: {
       // debug: true,
