@@ -16,18 +16,18 @@ type LogMethod = (message: string, payload?: payload) => void
 
 const getLogArgs = (message: string, payload: payload) => {
   const { data, service, symbol, nl = 0 } = payload
-  const logArgs = []
+  let logArgs = []
 
-  const serv = !!service ? service : 'Dockest'
-  const symb = !!symbol ? symbol : '🌈'
-  logArgs.push(`${symb} ${serv} ${symb} ${message}`)
+  const derivedService = !!service ? service : 'Dockest'
+  const derivedSymbol = !!symbol ? symbol : '🌈'
+  logArgs.push(`${derivedSymbol} ${derivedService} ${derivedSymbol} ${message}`)
 
   if (!!data && Logger.logLevel === LOG_LEVEL.DEBUG) {
     logArgs.push(data)
   }
 
   if (!!nl && nl > 0) {
-    logArgs.concat(new Array(nl).fill('\n'))
+    logArgs = logArgs.concat(new Array(nl).fill('\n'))
   }
 
   return logArgs

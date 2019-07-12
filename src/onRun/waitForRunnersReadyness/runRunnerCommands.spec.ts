@@ -12,7 +12,10 @@ describe('runRunnerCommands', () => {
         expect(runner.logger.debug).toHaveBeenCalledWith(expect.stringContaining(runnerCommand))
         expect(execa).toHaveBeenCalledWith(runnerCommand, { shell: true })
         expect(execa).lastReturnedWith({ stdout: mockedExecaStdout })
-        expect(runner.logger.debug).toHaveBeenCalledWith(expect.stringContaining(mockedExecaStdout))
+        expect(runner.logger.debug).toHaveBeenCalledWith(
+          expect.stringContaining(mockedExecaStdout),
+          expect.anything()
+        )
       })
     })
   })

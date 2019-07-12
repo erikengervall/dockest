@@ -48,7 +48,7 @@ export const LOG_SYMBOLS = [
   '🦄',
   '🐥',
   '🐙',
-  '🦖',
+  '🦖 ',
   '🐞',
   '🦂',
   '🦍',
@@ -56,7 +56,7 @@ export const LOG_SYMBOLS = [
   '🐿',
   '🐉',
   '🦚',
-].sort(() => 0.5 - Math.random())
+]
 
 export const LOG_LEVEL = {
   NOTHING: 0,
