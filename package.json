@@ -37,7 +37,7 @@
     "travis:script": "yarn test:all"
   },
   "dependencies": {
-    "execa": "^2.0.0",
+    "execa": "^2.0.3",
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
@@ -52,6 +52,7 @@
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.5.2"
+    "typedoc": "^0.14.2",
+    "typescript": "^3.5.3"
   }
 }

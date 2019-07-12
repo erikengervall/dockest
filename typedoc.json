@@ -1,0 +1,12 @@
+{
+  "exclude": [
+    "**/node_modules/execa/index.d.ts",
+    "**/src/onRun/waitForRunnersReadyness/runRunnerCommands.ts",
+    "**/src/utils/execaWrapper.ts"
+  ],
+  "excludeExternals": true,
+  "includeDeclarations": true,
+  "mode": "file",
+  "name": "Dockest",
+  "out": "./docs"
+}
