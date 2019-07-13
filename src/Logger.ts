@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import readline from 'readline'
 import { LOG_LEVEL } from './constants'
 import { Runner } from './runners/@types'
