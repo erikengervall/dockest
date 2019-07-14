@@ -23,3 +23,6 @@ trash
 #
 dist
 docker-compose-generated.yml
+
+# Webstorm
+.idea/*
