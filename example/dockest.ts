@@ -75,12 +75,13 @@ const dockest = new Dockest({
   },
   opts: {
     afterSetupSleep: 10,
-    composeFileName: 'docker-compose-integration.yml',
+    composeFileName: 'docker-compose-dockest.yml',
     dev: {
       // debug: true,
     },
-    exitHandler: ({ trap }) => console.log(`👋🏼 Hello custom exit handler (${trap})`),
-    logLevel: logLevel.INFO,
+    dumpErrors: false,
+    exitHandler: ({ trap }) => console.log(`👋🏼 Hello custom exit handler (${trap})`), // eslint-disable-line no-console
+    logLevel: logLevel.DEBUG,
     runInBand: true,
   },
 })

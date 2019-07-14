@@ -41,7 +41,7 @@ const runJest = async (config: DockestConfig) => {
 
       success = false
     } else {
-      Logger.info(`\nJest test(s) successful`, { nl: 1 })
+      Logger.info(`Jest test(s) successful`, { pnl: 1, nl: 1 })
 
       success = true
     }

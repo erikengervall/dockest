@@ -2,6 +2,7 @@ import { DockestConfig } from '../'
 import { ErrorPayload } from '../@types'
 import Logger from '../Logger'
 import teardownSingle from '../utils/teardownSingle'
+import dumpError from '../utils/dumpError'
 
 export default async (config: DockestConfig): Promise<void> => {
   const {
@@ -30,6 +31,14 @@ export default async (config: DockestConfig): Promise<void> => {
 
     for (const runner of runners) {
       await teardownSingle(runner)
+    }
+
+    if (config.opts.dumpErrors === true) {
+      dumpError({
+        errorPayload,
+        timestamp: new Date(),
+        __configuration: config,
+      })
     }
 
     Logger.perf(perfStart)

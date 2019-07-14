@@ -10,13 +10,18 @@ interface Payload {
   service?: string
   symbol?: string
   nl?: number
+  pnl?: number
 }
 
 type LogMethod = (message: string, payload?: Payload) => void
 
 const getLogArgs = (message: string, payload: Payload): string[] => {
-  const { data, service, symbol, nl = 0 } = payload
-  let logArgs = []
+  const { data, service, symbol, nl = 0, pnl = 0 } = payload
+  let logArgs: string[] = []
+
+  if (!!pnl && pnl > 0) {
+    logArgs = logArgs.concat(new Array(pnl).fill('\n'))
+  }
 
   const derivedService = !!service ? service : 'Dockest'
   const derivedSymbol = !!symbol ? symbol : '🌈'

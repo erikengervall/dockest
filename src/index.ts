@@ -1,6 +1,7 @@
 import { ErrorPayload } from './@types'
 import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
 import ConfigurationError from './errors/ConfigurationError'
+import BaseError from './errors/BaseError'
 import onInstantiation from './onInstantiation'
 import onRun from './onRun'
 import { JestConfig } from './onRun/runJest'
@@ -19,6 +20,7 @@ interface DefaultableUserConfig {
     debug?: boolean
   }
   composeFileName: string
+  dumpErrors: boolean
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
   runInBand: boolean
@@ -46,12 +48,12 @@ class Dockest {
 
   public constructor({
     runners,
-    jest,
+    jest = {},
     opts = {},
   }: {
     runners: Runner[]
-    jest: JestConfig
-    opts: Partial<DefaultableUserConfig>
+    jest?: JestConfig
+    opts?: Partial<DefaultableUserConfig>
   }) {
     this.config = {
       jest,
@@ -59,6 +61,7 @@ class Dockest {
       opts: { ...DEFAULT_USER_CONFIG, ...opts },
       $: { ...INTERNAL_CONFIG },
     }
+    BaseError.DockestConfig = this.config
 
     this.validateConfig()
     onInstantiation(this.config)
@@ -70,7 +73,7 @@ class Dockest {
     await onRun(this.config)
   }
 
-  private validateConfig = () => {
+  private validateConfig = async () => {
     const schema: { [key in keyof RequiredConfig]: any } = {
       runners: validateTypes.isArray,
     }

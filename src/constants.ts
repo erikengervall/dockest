@@ -40,7 +40,23 @@ export const COLORS = {
   },
 }
 
-export const LOG_SYMBOLS = ['🦊', '🐼', '🐒', '🦋', '🦄', '🐥', '🐙', '🦖 ', '🐞', '🦂', '🦍', '🦃', '🐿', '🐉', '🦚']
+export const LOG_SYMBOLS = [
+  '🦊 ',
+  '🐼 ',
+  '🐒 ',
+  '🦋 ',
+  '🦄 ',
+  '🐥 ',
+  '🐙 ',
+  '🦖 ',
+  '🐞 ',
+  '🦂 ',
+  '🦍 ',
+  '🦃 ',
+  '🐿 ',
+  '🐉 ',
+  '🦚 ',
+]
 
 export const LOG_LEVEL = {
   NOTHING: 0,
@@ -56,6 +72,7 @@ export const DEFAULT_USER_CONFIG = {
   dev: {
     debug: false,
   },
+  dumpErrors: false,
   exitHandler: null,
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,

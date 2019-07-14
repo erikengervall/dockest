@@ -23,13 +23,18 @@ const getImage = ({
 
   let imageFromComposeFile = null
   let dockerCompose = null
+  const path = `${nodeProcess.cwd()}/${composeFileName}`
 
   try {
-    const path = `${nodeProcess.cwd()}/${composeFileName}`
     dockerCompose = yaml.safeLoad(fs.readFileSync(path, 'utf8'))
+  } catch (error) {
+    throw new ConfigurationError(`Failed to parse '${path}' (${error.message})`)
+  }
+
+  try {
     imageFromComposeFile = dockerCompose.services[service].image
-  } catch (e) {
-    throw new Error(`Failed to parse ${composeFileName}`)
+  } catch (error) {
+    throw new ConfigurationError(`Image not found for service ${service}`)
   }
 
   if (typeof imageFromComposeFile === 'string' && imageFromComposeFile.length > 0) {
