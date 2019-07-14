@@ -17,11 +17,11 @@ export default async (config: DockestConfig): Promise<void> => {
     }
     exitInProgress = true
 
-    if (!!config.$.jestRanWithResult) {
+    if (config.$.jestRanWithResult) {
       return // Program ran as expected
     }
 
-    Logger.error('Exithandler invoked', { data: errorPayload })
+    Logger.error(`Exithandler invoked from process event ${errorPayload.trap}`)
 
     if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')
@@ -53,7 +53,7 @@ export default async (config: DockestConfig): Promise<void> => {
   process.on('uncaughtException', async error => exitHandler({ trap: 'uncaughtException', error }))
 
   // catches unhandled promise rejections
-  process.on('unhandledRejection', async (reason, p) =>
-    exitHandler({ trap: 'unhandledRejection', reason, p })
+  process.on('unhandledRejection', async (reason, promise) =>
+    exitHandler({ trap: 'unhandledRejection', reason, promise }),
   )
 }

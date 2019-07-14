@@ -23,7 +23,7 @@ const onRun = async (config: DockestConfig) => {
     await sleepForX('After setup sleep', afterSetupSleep)
   }
 
-  if (!!debug) {
+  if (debug) {
     Logger.info(`Debug mode enabled, containers are kept running and Jest will not run.`)
 
     config.runners.forEach((runner, index) =>
@@ -35,9 +35,9 @@ const onRun = async (config: DockestConfig) => {
             dependsOn: runner.runnerConfig.dependsOn,
           },
           null,
-          2
-        )}\n`
-      )
+          2,
+        )}\n`,
+      ),
     )
 
     // Keep the docker containers running indefinitely

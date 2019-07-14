@@ -21,18 +21,15 @@ export default (config: DockestConfig) => {
     } = runner
     const composeService = getComposeService(composeFileName)
 
-    const depComposeServices = dependsOn.reduce(
-      (composeServices: { [key: string]: ComposeFile }, runner: Runner) => {
-        const {
-          runnerConfig: { service },
-          getComposeService,
-        } = runner
-        composeServices[service] = getComposeService(composeFileName)[service]
+    const depComposeServices = dependsOn.reduce((composeServices: { [key: string]: ComposeFile }, runner: Runner) => {
+      const {
+        runnerConfig: { service },
+        getComposeService,
+      } = runner
+      composeServices[service] = getComposeService(composeFileName)[service]
 
-        return composeServices
-      },
-      {}
-    )
+      return composeServices
+    }, {})
 
     composeFile.services = {
       ...composeFile.services,
@@ -46,8 +43,6 @@ export default (config: DockestConfig) => {
   try {
     fs.writeFileSync(`${dockerComposeGeneratedPath}`, yml)
   } catch (error) {
-    throw new DockestError(
-      `Something went wrong when generating the docker-compose file: ${error.message}`
-    )
+    throw new DockestError(`Something went wrong when generating the docker-compose file: ${error.message}`)
   }
 }

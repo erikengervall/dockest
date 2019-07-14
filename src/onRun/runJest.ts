@@ -4,15 +4,11 @@ import { DockestConfig } from '../index'
 import Logger from '../Logger'
 
 interface JestLib {
-  getVersion: any
-  run: any
-  runCLI: any
-  SearchSource: any
-  TestScheduler: any
-  TestWatcher: any
+  getVersion: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  runCLI: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export type JestConfig = {
+export interface JestConfig {
   forceExit?: boolean
   lib?: JestLib
   projects?: string[]

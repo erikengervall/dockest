@@ -5,13 +5,9 @@ import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
 
 export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner
 
-export type RunnerConfig =
-  | KafkaRunnerConfig
-  | PostgresRunnerConfig
-  | RedisRunnerConfig
-  | ZooKeeperRunnerConfig
+export type RunnerConfig = KafkaRunnerConfig | PostgresRunnerConfig | RedisRunnerConfig | ZooKeeperRunnerConfig
 
-export type ComposeFile = {
+export interface ComposeFile {
   depends_on?: string[]
   environment?: {
     [key: string]: string | number

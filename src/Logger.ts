@@ -1,18 +1,20 @@
+/* eslint-disable no-console */
+
 import readline from 'readline'
 import { LOG_LEVEL } from './constants'
 import { Runner } from './runners/@types'
 
-type payload = {
+interface Payload {
   icon?: string
-  data?: { [key: string]: any }
+  data?: { [key: string]: any } // eslint-disable-line @typescript-eslint/no-explicit-any
   service?: string
   symbol?: string
   nl?: number
 }
 
-type LogMethod = (message: string, payload?: payload) => void
+type LogMethod = (message: string, payload?: Payload) => void
 
-const getLogArgs = (message: string, payload: payload) => {
+const getLogArgs = (message: string, payload: Payload): string[] => {
   const { data, service, symbol, nl = 0 } = payload
   let logArgs = []
 
@@ -21,7 +23,7 @@ const getLogArgs = (message: string, payload: payload) => {
   logArgs.push(`${derivedSymbol} ${derivedService} ${derivedSymbol} ${message}`)
 
   if (!!data && Logger.logLevel === LOG_LEVEL.DEBUG) {
-    logArgs.push(data)
+    logArgs.push(JSON.stringify(data, null, 2))
   }
 
   if (!!nl && nl > 0) {
@@ -67,7 +69,7 @@ class Logger {
     }
   }
 
-  public static perf = (perfStart: number) => {
+  public static perf = (perfStart: number): void => {
     const perfTime = Math.floor((Date.now() - perfStart) / 1000)
     let hours: number | string = Math.floor(perfTime / 3600)
     let minutes: number | string = Math.floor((perfTime - hours * 3600) / 60)
@@ -88,7 +90,7 @@ class Logger {
 
   private runnerService: string = ''
   private runnerSymbol: string = ''
-  constructor(runner?: Runner) {
+  public constructor(runner?: Runner) {
     this.runnerService = runner ? runner.runnerConfig.service : ''
   }
 

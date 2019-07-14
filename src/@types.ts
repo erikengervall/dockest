@@ -1,8 +1,8 @@
 export interface ErrorPayload {
   trap: string
   code?: number
-  signal?: any
+  signal?: any // eslint-disable-line @typescript-eslint/no-explicit-any
   error?: Error
-  reason?: any
-  p?: any
+  reason?: Error | any // eslint-disable-line @typescript-eslint/no-explicit-any
+  promise?: Promise<any> // eslint-disable-line @typescript-eslint/no-explicit-any
 }

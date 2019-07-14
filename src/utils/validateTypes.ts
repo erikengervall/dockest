@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { COLORS } from '../constants'
 
 const { keys, values } = Object
 
-type _object = {
+interface Obj {
   [key: string]: any
 }
 type isType = (_?: any) => boolean
@@ -15,10 +17,9 @@ const {
 const getExpected = (typeValidator: any): string =>
   typeValidator.expected || typeValidator.name.substring(2).toLowerCase()
 
-const getReceived = (value: any): string =>
-  isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`
+const getReceived = (value: any): string => (isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`)
 
-const validateTypes = (schema?: _object, config?: _object): string[] => {
+const validateTypes = (schema?: Obj, config?: Obj): string[] => {
   const failures: string[] = []
 
   if (!schema) {
@@ -66,8 +67,7 @@ const isArrayOfType = (fn: isType) => {
 const isFunction: isType = _ => _ && typeof _ === 'function'
 const isObject: isType = _ => _ && typeof _ === 'object' && _.constructor === Object
 const isObjectWithValuesOfType = (fn: isType) => {
-  const isObjectWithValuesOfType = (_?: any): boolean =>
-    isObject(_) && !values(_).some((_?: any) => !fn(_))
+  const isObjectWithValuesOfType = (_?: any): boolean => isObject(_) && !values(_).some((_?: any) => !fn(_))
   isObjectWithValuesOfType.expected = `{ [prop: string]: ${fn.name.substring(2).toLowerCase()} }`
   return isObjectWithValuesOfType
 }
