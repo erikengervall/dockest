@@ -10,7 +10,7 @@ describe('getDependsOn', () => {
     const result = getDependsOn(depRunners)
 
     expect(result).toEqual({
-      depends_on: ['redis1', 'redis2'],
+      depends_on: ['redis1', 'redis2'], // eslint-disable-line @typescript-eslint/camelcase
     })
   })
 })

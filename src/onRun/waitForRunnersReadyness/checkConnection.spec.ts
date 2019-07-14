@@ -6,7 +6,7 @@ const host = 'localhost'
 const port = '1337'
 
 jest.mock('net', () => ({
-  createConnection: jest.fn(function(_) {
+  createConnection: jest.fn(function() {
     // @ts-ignore
     return this
   }),

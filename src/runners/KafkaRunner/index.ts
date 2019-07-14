@@ -52,7 +52,7 @@ class KafkaRunner implements BaseRunner {
   public runnerConfig: KafkaRunnerConfig
   public logger: Logger
 
-  constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+  public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
@@ -76,10 +76,7 @@ class KafkaRunner implements BaseRunner {
         return {}
       }
 
-      const exposedZooKeeperPort = getKeyForVal(
-        zooKeeperDependency.runnerConfig.ports,
-        ZooKeeperRunner.DEFAULT_PORT
-      )
+      const exposedZooKeeperPort = getKeyForVal(zooKeeperDependency.runnerConfig.ports, ZooKeeperRunner.DEFAULT_PORT)
 
       return {
         KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${exposedZooKeeperPort}`,

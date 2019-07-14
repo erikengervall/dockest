@@ -33,17 +33,14 @@ export default async (runner: Runner): Promise<void> => {
 
     if (resolveContainerIdTimeout <= 0) {
       throw new DockestError(
-        `${service}: Timed out (${resolveContainerIdTimeout}s) while trying to resolve containerId`
+        `${service}: Timed out (${resolveContainerIdTimeout}s) while trying to resolve containerId`,
       )
     }
 
     try {
       containerId = await getContainerId(runner)
 
-      if (
-        typeof containerId !== 'string' ||
-        (typeof containerId === 'string' && containerId.length === 0)
-      ) {
+      if (typeof containerId !== 'string' || (typeof containerId === 'string' && containerId.length === 0)) {
         throw new Error(`Invalid containerId: ${containerId}`)
       }
 

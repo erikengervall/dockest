@@ -65,21 +65,17 @@ const kafka1confluentincRunner = new KafkaRunner({
 
 const dockest = new Dockest({
   runners: [
-    ...(env.CI === 'true' || env.postgres1sequelize_enabled === 'true'
-      ? [postgres1sequelizeRunner]
-      : []),
+    ...(env.CI === 'true' || env.postgres1sequelize_enabled === 'true' ? [postgres1sequelizeRunner] : []),
     ...(env.CI === 'true' || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
     ...(env.CI === 'true' || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
-    ...(env.CI === 'true' || env.kafka1confluentinc_enabled === 'true'
-      ? [kafka1confluentincRunner]
-      : []),
+    ...(env.CI === 'true' || env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
   ],
   jest: {
     verbose: true,
   },
   opts: {
     afterSetupSleep: 10,
-    composeFileName: 'docker-compose.yml',
+    composeFileName: 'docker-compose-integration.yml',
     dev: {
       // debug: true,
     },

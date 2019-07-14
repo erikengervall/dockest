@@ -4,8 +4,8 @@ import { DockestConfig } from '../index'
 import Logger from '../Logger'
 
 interface JestLib {
-  getVersion: any // eslint-disable-line @typescript-eslint/no-explicit-any
-  runCLI: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  getVersion: any
+  runCLI: any
 }
 
 export interface JestConfig {
@@ -32,7 +32,7 @@ const runJest = async (config: DockestConfig) => {
   validateJestConfig(jestConfig)
 
   try {
-    Logger.info(`Dependencies up and running: Executing Jest`)
+    Logger.info(`Dependencies up and running: Executing Jest`, { nl: 1 })
     Logger.debug(`Jest config:`, { data: { jestConfig, projects } })
     const jestResult: { results: { success: boolean } } = await lib.runCLI(jestConfig, projects)
 
@@ -41,7 +41,7 @@ const runJest = async (config: DockestConfig) => {
 
       success = false
     } else {
-      Logger.info(`Jest test(s) successful`, { nl: 1 })
+      Logger.info(`\nJest test(s) successful`, { nl: 1 })
 
       success = true
     }

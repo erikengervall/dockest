@@ -12,7 +12,7 @@ describe('RedisRunner', () => {
     expect(
       () =>
         // @ts-ignore
-        new RedisRunner({})
+        new RedisRunner({}),
     ).toThrow(/service: Schema-key missing in config/)
   })
 })

@@ -28,7 +28,7 @@ interface InternalConfig {
   jestRanWithResult: boolean
   perfStart: number
 }
-export type DockestConfig = {
+export interface DockestConfig {
   runners: Runner[]
   opts: DefaultableUserConfig
   jest: JestConfig
@@ -44,7 +44,7 @@ const INTERNAL_CONFIG = {
 class Dockest {
   private config: DockestConfig
 
-  constructor({
+  public constructor({
     runners,
     jest,
     opts = {},
@@ -89,7 +89,7 @@ class Dockest {
     for (const runner of this.config.runners) {
       if (map[runner.runnerConfig.service]) {
         throw new ConfigurationError(
-          `Service property has to be unique. Collision found for runner with service "${runner.runnerConfig.service}"`
+          `Service property has to be unique. Collision found for runner with service "${runner.runnerConfig.service}"`,
         )
       }
       map[runner.runnerConfig.service] = runner.runnerConfig.service

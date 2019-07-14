@@ -35,7 +35,7 @@
     "install:all": "yarn install && cd example && yarn install",
     "travis:install": "yarn install:all",
     "travis:script": "yarn test:all",
-    "lint": "tsc --noEmit && eslint ./src/**/*.ts"
+    "lint": "yarn eslint ./src/**/*.ts"
   },
   "dependencies": {
     "execa": "^2.0.3",

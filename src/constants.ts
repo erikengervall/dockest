@@ -40,23 +40,7 @@ export const COLORS = {
   },
 }
 
-export const LOG_SYMBOLS = [
-  '🦊',
-  '🐼',
-  '🐒',
-  '🦋',
-  '🦄',
-  '🐥',
-  '🐙',
-  '🦖 ',
-  '🐞',
-  '🦂',
-  '🦍',
-  '🦃',
-  '🐿',
-  '🐉',
-  '🦚',
-]
+export const LOG_SYMBOLS = ['🦊', '🐼', '🐒', '🦋', '🦄', '🐥', '🐙', '🦖 ', '🐞', '🦂', '🦍', '🦃', '🐿', '🐉', '🦚']
 
 export const LOG_LEVEL = {
   NOTHING: 0,

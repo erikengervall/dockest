@@ -4,7 +4,7 @@ import validateTypes from './validateTypes'
 const { values } = Object
 
 describe('validateTypes', () => {
-  let config: { [key: string]: any } // eslint-disable-line @typescript-eslint/no-explicit-any
+  let config: { [key: string]: any }
 
   beforeEach(() => {
     config = {

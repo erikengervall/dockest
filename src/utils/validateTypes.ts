@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { COLORS } from '../constants'
 
 const { keys, values } = Object

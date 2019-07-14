@@ -7,13 +7,15 @@ const { keys } = Object
 
 const acquireConnection = (host: string, port: string): Promise<void> =>
   new Promise((resolve, reject) => {
-    let connected: boolean = false
-    let timeoutId: any = null
+    let connected = false
+    let timeoutId: NodeJS.Timeout | null = null
 
     const netSocket = net
       .createConnection({ host, port: Number(port) })
       .on('connect', () => {
-        clearTimeout(timeoutId)
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+        }
         connected = true
         netSocket.end()
         resolve()
@@ -22,10 +24,7 @@ const acquireConnection = (host: string, port: string): Promise<void> =>
         connected = false
       })
 
-    timeoutId = setTimeout(
-      () => !connected && reject(new Error('Timeout while acquiring connection')),
-      1000
-    )
+    timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000)
   })
 
 export default async (runner: Runner) => {

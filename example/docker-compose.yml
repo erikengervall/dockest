@@ -3,13 +3,9 @@ version: '3'
 services:
   postgres1sequelize: # https://hub.docker.com/_/postgres
     image: postgres:9.6
-    volumes:
-      - postgres1Volume:/var/lib/postgresql/data
 
   postgres2knex: # https://hub.docker.com/_/postgres
     image: postgres:9.6
-    volumes:
-      - postgres2Volume:/var/lib/postgresql/data
 
   redis1ioredis: # https://hub.docker.com/_/redis
     image: redis:5.0.3
@@ -19,7 +15,3 @@ services:
 
   kafka1confluentinc: # https://hub.docker.com/r/confluentinc/cp-kafka
     image: confluentinc/cp-kafka:latest
-
-volumes:
-  postgres1Volume:
-  postgres2Volume:

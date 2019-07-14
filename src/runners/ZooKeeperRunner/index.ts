@@ -42,7 +42,7 @@ class ZooKeeperRunner implements BaseRunner {
   public logger: Logger
   public containerId: string
 
-  constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+  public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -62,7 +62,7 @@ class ZooKeeperRunner implements BaseRunner {
     const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
     if (!ZOOKEEPER_CLIENT_PORT) {
       throw new ConfigurationError(
-        `Could not resolve required environment variable ZOOKEEPER_CLIENT_PORT. Expected ${DEFAULT_PORT} to appear as value in ports object`
+        `Could not resolve required environment variable ZOOKEEPER_CLIENT_PORT. Expected ${DEFAULT_PORT} to appear as value in ports object`,
       )
     }
 

@@ -12,7 +12,7 @@ describe('ZooKeeperRunner', () => {
     expect(
       () =>
         // @ts-ignore
-        new ZooKeeperRunner({})
+        new ZooKeeperRunner({}),
     ).toThrow(/service: Schema-key missing in config/)
   })
 })

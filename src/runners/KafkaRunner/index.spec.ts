@@ -19,7 +19,7 @@ describe('KafkaRunner', () => {
     expect(
       () =>
         // @ts-ignore
-        new KafkaRunner({})
+        new KafkaRunner({}),
     ).toThrow(/service: Schema-key missing in config/)
   })
 })

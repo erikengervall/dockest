@@ -22,7 +22,7 @@ describe('PostgresRunner', () => {
     expect(
       () =>
         // @ts-ignore
-        new PostgresRunner({ database: '_', password: '_', username: '_' })
+        new PostgresRunner({ database: '_', password: '_', username: '_' }),
     ).toThrow(/service: Schema-key missing in config/)
   })
 })

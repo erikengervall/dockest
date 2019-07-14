@@ -8,17 +8,17 @@
   },
   "dependencies": {
     "dotenv": "^8.0.0",
-    "ioredis": "^4.3.0",
-    "kafkajs": "^1.4.7",
-    "knex": "^0.17.6",
+    "ioredis": "^4.11.2",
+    "kafkajs": "^1.9.3",
+    "knex": "^0.19.0",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^5.8.10",
+    "sequelize": "^5.10.0",
     "sequelize-cli": "^5.4.0"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.0",
-    "@types/ioredis": "^4.0.12",
+    "@types/ioredis": "^4.0.13",
     "@types/jest": "^24.0.15",
     "@types/kafkajs": "^1.8.2",
     "@types/knex": "^0.16.1",
@@ -27,6 +27,6 @@
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.0.2",
-    "typescript": "^3.3.1"
+    "typescript": "^3.5.3"
   }
 }

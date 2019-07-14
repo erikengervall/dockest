@@ -6,7 +6,7 @@ import { Runner } from './runners/@types'
 
 interface Payload {
   icon?: string
-  data?: { [key: string]: any } // eslint-disable-line @typescript-eslint/no-explicit-any
+  data?: { [key: string]: any }
   service?: string
   symbol?: string
   nl?: number

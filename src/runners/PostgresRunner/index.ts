@@ -46,7 +46,7 @@ class PostgresRunner implements BaseRunner {
   public runnerConfig: PostgresRunnerConfig
   public logger: Logger
 
-  constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+  public constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
     this.runnerConfig = {
       ...DEFAULT_CONFIG,

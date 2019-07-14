@@ -45,7 +45,7 @@ class RedisRunner implements BaseRunner {
   public runnerConfig: RedisRunnerConfig
   public logger: Logger
 
-  constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+  public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.containerId = ''
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
