@@ -33,7 +33,6 @@ const runJest = async (config: DockestConfig) => {
 
   try {
     Logger.info(`Dependencies up and running: Executing Jest`, { nl: 1 })
-    Logger.debug(`Jest config:`, { data: { jestConfig, projects } })
     const jestResult: { results: { success: boolean } } = await lib.runCLI(jestConfig, projects)
 
     if (!jestResult.results.success) {

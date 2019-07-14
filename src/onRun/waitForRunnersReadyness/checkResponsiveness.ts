@@ -3,9 +3,9 @@ import { Runner } from '../../runners/@types'
 import execaWrapper from '../../utils/execaWrapper'
 import sleep from '../../utils/sleep'
 
+// FIXME: Fix type errors
 const checkResponsiveness = async (runner: Runner) => {
   const {
-    // FIXME: Fix type errors
     // @ts-ignore
     runnerConfig: { responsivenessTimeout },
     logger,
@@ -20,6 +20,7 @@ const checkResponsiveness = async (runner: Runner) => {
   const responsivenessCheckCmd = runner.createResponsivenessCheckCmd()
 
   const recurse = async (responsivenessTimeout: number, runner: Runner): Promise<void> => {
+    // TODO: Try getting replacePrevLine in here
     logger.debug(`Checking responsiveness (Timeout in: ${responsivenessTimeout}s)`)
 
     if (responsivenessTimeout <= 0) {
