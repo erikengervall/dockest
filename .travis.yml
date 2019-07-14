@@ -21,8 +21,8 @@ before_install:
 
   # pull & build example images
   - cd example
-  - docker-compose pull
-  - docker-compose build
+  - docker-compose -f docker-compose-dockest.yml pull
+  - docker-compose -f docker-compose-dockest.yml build
   - cd ../
 
   - yarn global add typescript
