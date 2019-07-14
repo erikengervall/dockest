@@ -28,7 +28,7 @@ describe('getImage', () => {
           mockProcess: { cwd: () => __dirname },
         })
 
-      expect(result).toThrow(`Failed to parse ${invalidComposeFileName}`)
+      expect(result).toThrow(/Failed to parse '\//)
     })
   })
 

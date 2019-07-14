@@ -77,3 +77,5 @@ export const DEFAULT_USER_CONFIG = {
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,
 }
+
+export const PROCESS_TEST_ENV = 'dockest-test'
