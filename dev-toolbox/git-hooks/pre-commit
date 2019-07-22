@@ -1,24 +1,27 @@
 #!/bin/sh
 
 ##
+## Generate new docs
+##
+yarn docs
+git add ./docs
+
+##
 ## If there's buildable updates, compile the code and add it to the commit
 ##
-
-# disabled
-exit 0
-
+exit 0 # disabled since the dist is built upon installation
 buildableFilesTouched="$(git diff --cached --name-only | grep 'src/' | uniq)"
 
 ## In order to prevent infinite commit>post-commit>loop
 if [ -z "$buildableFilesTouched" ]; then
 	exit 0
 else
-	echo "⏳⏳⏳ pre-commit ⏳⏳⏳"
+	# echo "⏳⏳⏳ pre-commit ⏳⏳⏳"
 	if yarn build; then
 		git add ./dist
-		echo "✅✅✅ pre-commit ✅✅✅ \n"
+		# echo "✅✅✅ pre-commit ✅✅✅ \n"
 	else
-		echo "🔥🔥🔥 pre-commit 🔥🔥🔥 \n"
+		# echo "🔥🔥🔥 pre-commit 🔥🔥🔥 \n"
 		exit 1
 	fi;
 fi;

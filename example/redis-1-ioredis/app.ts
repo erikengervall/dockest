@@ -10,7 +10,7 @@ const redis = new Redis({
   password: env.redis1ioredis_password,
 })
 
-const main = () => {
+const app = () => {
   redis.set(seedCake.key, seedCake.value)
 
   return {
@@ -18,4 +18,4 @@ const main = () => {
   }
 }
 
-export default main
+export default app

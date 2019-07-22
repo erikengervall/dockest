@@ -6,32 +6,31 @@ addons:
     packages:
       - docker-ce
 env:
-  - CI=true
+  - DOCKEST_CI=true
 
 before_install:
   # print relevant versions
   - docker --version
   - docker-compose --version
 
-  # upgrading docker-compose to match my development version
+  # upgrading docker-compose to match Dockest's development version: v1.23.2
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
 
-  # pull & build example images
+  # pull example images
   - cd example
-  - docker-compose pull
-  - docker-compose build
+  - docker-compose -f docker-compose-dockest.yml pull
   - cd ../
 
   - yarn global add typescript
 
-  - echo "*** <before_install> complete ***"
+  - echo "*** <travis.before_install> complete ***"
 install:
   - yarn travis:install
 
-  - echo "*** <install> complete ***"
+  - echo "*** <travis.install> complete ***"
 script:
   # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   # - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"

@@ -1,102 +1,106 @@
-import { LOG_LEVEL } from './constants'
-import { ConfigurationError } from './errors'
-import setupExitHandler from './exitHandler'
-import JestRunner, { JestConfig } from './jest'
-import { BaseLogger } from './loggers'
-import { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } from './runners'
-import { sleepWithLog, validateTypes } from './runners/utils'
+import { ErrorPayload } from './@types'
+import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
+import ConfigurationError from './errors/ConfigurationError'
+import BaseError from './errors/BaseError'
+import onInstantiation from './onInstantiation'
+import onRun from './onRun'
+import { JestConfig } from './onRun/runJest'
+import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
+import { Runner } from './runners/@types'
+import execaWrapper from './utils/execaWrapper'
+import sleep from './utils/sleep'
+import validateTypes from './utils/validateTypes'
 
-interface UserRunners {
-  [runnerKey: string]: KafkaRunner | PostgresRunner | RedisRunner | ZookeeperRunner
+interface RequiredConfig {
+  runners: Runner[]
 }
-
-interface RequiredConfigProps {
-  jest: JestConfig
-  runners: UserRunners
-}
-interface DefaultableConfigProps {
+interface DefaultableUserConfig {
   afterSetupSleep: number
-  exitHandler: (_: any) => void
+  dev: {
+    debug?: boolean
+  }
+  composeFileName: string
+  dumpErrors: boolean
+  exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
+  runInBand: boolean
 }
-type DockestConfigUserInput = RequiredConfigProps & Partial<DefaultableConfigProps>
-export type DockestConfig = RequiredConfigProps & DefaultableConfigProps
+interface InternalConfig {
+  dockerComposeGeneratedPath: string
+  jestRanWithResult: boolean
+  perfStart: number
+}
+export interface DockestConfig {
+  runners: Runner[]
+  opts: DefaultableUserConfig
+  jest: JestConfig
+  $: InternalConfig
+}
 
-const DEFAULT_CONFIG: DefaultableConfigProps = {
-  afterSetupSleep: 0,
-  exitHandler: () => undefined,
-  logLevel: LOG_LEVEL.NORMAL,
+const INTERNAL_CONFIG = {
+  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
+  jestRanWithResult: false,
+  perfStart: Date.now(),
 }
 
 class Dockest {
-  public static jestRanWithResult: boolean = false
-  public static config: DockestConfig
-  private static instance: Dockest
-  private jestRunner: JestRunner
+  private config: DockestConfig
 
-  constructor(userConfig: DockestConfigUserInput) {
-    Dockest.config = {
-      ...DEFAULT_CONFIG,
-      ...userConfig,
+  public constructor({
+    runners,
+    jest = {},
+    opts = {},
+  }: {
+    runners: Runner[]
+    jest?: JestConfig
+    opts?: Partial<DefaultableUserConfig>
+  }) {
+    this.config = {
+      jest,
+      runners,
+      opts: { ...DEFAULT_USER_CONFIG, ...opts },
+      $: { ...INTERNAL_CONFIG },
     }
-    BaseLogger.logLevel = Dockest.config.logLevel
-    this.jestRunner = new JestRunner(Dockest.config.jest)
+    BaseError.DockestConfig = this.config
 
     this.validateConfig()
-    setupExitHandler(Dockest.config)
-
-    return Dockest.instance || (Dockest.instance = this)
+    onInstantiation(this.config)
   }
 
   public run = async (): Promise<void> => {
-    await this.setupRunners()
-    if (Dockest.config.afterSetupSleep > 0) {
-      await sleepWithLog('After setup sleep progress', Dockest.config.afterSetupSleep)
-    }
+    this.config.$.perfStart = Date.now()
 
-    const result = await this.runJest()
-    await this.teardownRunners()
-    result.success ? process.exit(0) : process.exit(1)
+    await onRun(this.config)
   }
 
-  private setupRunners = async () => {
-    const { runners } = Dockest.config
-
-    for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].setup(runnerKey)
+  private validateConfig = async () => {
+    const schema: { [key in keyof RequiredConfig]: any } = {
+      runners: validateTypes.isArray,
     }
-  }
-
-  private runJest = async () => {
-    const result = await this.jestRunner.run()
-    Dockest.jestRanWithResult = true
-
-    return result
-  }
-
-  private teardownRunners = async () => {
-    const { runners } = Dockest.config
-
-    for (const runnerKey of Object.keys(runners)) {
-      await runners[runnerKey].teardown()
-    }
-  }
-
-  private validateConfig = () => {
-    const schema: { [key in keyof RequiredConfigProps]: any } = {
-      jest: validateTypes.isObject,
-      runners: validateTypes.isObject,
-    }
-
-    const failures = validateTypes(schema, Dockest.config)
+    const failures = validateTypes(schema, this.config)
 
     if (failures.length > 0) {
       throw new ConfigurationError(`${failures.join('\n')}`)
+    }
+
+    if (this.config.runners.length <= 0) {
+      throw new ConfigurationError('Missing runners')
+    }
+
+    // Validate service name uniqueness
+    const map: { [key: string]: string } = {}
+    for (const runner of this.config.runners) {
+      if (map[runner.runnerConfig.service]) {
+        throw new ConfigurationError(
+          `Service property has to be unique. Collision found for runner with service "${runner.runnerConfig.service}"`,
+        )
+      }
+      map[runner.runnerConfig.service] = runner.runnerConfig.service
     }
   }
 }
 
 const logLevel = LOG_LEVEL
-const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner }
-export { logLevel, runners }
+const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
+export { sleep, runners, execaWrapper as execa, logLevel }
 export default Dockest

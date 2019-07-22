@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "0.3.8",
+  "version": "1.0.0",
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
   "keywords": [
     "docker",
@@ -25,35 +25,44 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "prepare": "npm run build",
+    "prepare": "yarn build",
     "build": "rimraf ./dist && tsc",
     "build:watch": "rimraf ./dist && tsc --watch",
-    "test:unit:dockest": "jest ./src",
-    "test:integration:example": "cd example && npm run test:integration && cd ..",
-    "test:all": "npm run test:unit:dockest && npm run test:integration:example",
-    "dev:setup": "./dev-toolbox/setup && npm run install:all",
-    "install:all": "npm install && cd example && npm install",
-    "travis:install": "npm run install:all",
-    "travis:script": "npm run test:all"
+    "test": "jest ./src",
+    "test:example": "cd example && yarn test && cd ..",
+    "test:all": "yarn test && yarn test:example",
+    "dev:setup": "./dev-toolbox/setup && yarn install:all",
+    "install:all": "yarn install && cd example && yarn install",
+    "travis:install": "yarn install:all",
+    "travis:script": "yarn test:all",
+    "lint": "yarn eslint ./src/**/*.ts",
+    "docs": "yarn typedoc ./src"
   },
   "dependencies": {
-    "execa": "^1.0.0",
-    "ip": "^1.1.5"
+    "execa": "^2.0.3",
+    "js-yaml": "^3.13.1"
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
-    "@types/ip": "^1.1.0",
-    "@types/jest": "^24.0.11",
-    "@types/sequelize": "^4.27.48",
-    "jest": "^24.7.1",
-    "prettier": "^1.17.0",
+    "@types/jest": "^24.0.15",
+    "@types/js-yaml": "^3.12.1",
+    "@types/prettier": "^1.16.4",
+    "@types/rimraf": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^1.12.0",
+    "@typescript-eslint/parser": "^1.12.0",
+    "@typescript-eslint/typescript-estree": "^1.12.0",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
+    "jest-mock-proxy": "^3.0.0",
+    "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0",
     "rimraf": "^2.6.2",
-    "sequelize": "^5.7.4",
-    "sequelize-cli": "^5.3.0",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.17.0",
-    "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.4.4"
+    "tslint": "^5.18.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.5.3"
   }
 }

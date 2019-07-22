@@ -1,40 +1,31 @@
 import dotenv from 'dotenv'
-import { runners } from '../../src'
-import main from './app'
+import { execa } from '../../src'
+import { runOrSkip } from '../testUtils'
+import app from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
 
-const env: any = dotenv.config().parsed
-const describeFn = env.postgres1sequelize_enabled === 'true' ? describe : describe.skip
-const { runHelpCmd } = runners.PostgresRunner.getHelpers()
-
-const test = async () => {
-  it('trabajo', async () => {
-    const result = await main()
-
-    expect(result).toEqual(
-      expect.objectContaining({
-        firstEntry: expect.objectContaining(seedUser),
-      })
-    )
+const specWrapper = () => {
+  beforeEach(async () => {
+    await execa('sequelize db:seed:undo:all')
+    await execa('sequelize db:seed:all')
   })
 
-  it('runHelpCmd', async () => {
-    await runHelpCmd('sequelize db:seed:undo:all')
+  describe('postgres-1-sequelize', () => {
+    it('should get first entry', async () => {
+      const { firstEntry } = await app()
 
-    const result = await main()
+      expect(firstEntry).toEqual(expect.objectContaining(seedUser))
+    })
 
-    expect(result).toEqual(
-      expect.objectContaining({
-        firstEntry: null,
-      })
-    )
+    it('should be able to execute custom shell scripts', async () => {
+      await execa('sequelize db:seed:undo:all')
+
+      const { firstEntry } = await app()
+
+      expect(firstEntry).toEqual(null)
+    })
   })
 }
 
-beforeEach(async () => {
-  await runHelpCmd('sequelize db:seed:undo:all')
-  await runHelpCmd('sequelize db:seed:all')
-})
-
-describeFn('postgres-1-sequelize', test)
+runOrSkip(dotenv.config().parsed.postgres1sequelize_enabled, specWrapper)

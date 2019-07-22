@@ -1,85 +1,96 @@
-import dotenv from 'dotenv'
+// tslint:disable:no-console
 
-// @ts-ignore
+import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 
 const env: any = dotenv.config().parsed
-const { KafkaRunner, PostgresRunner, RedisRunner, ZookeeperRunner } = runners
+const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
-const postgres1sequelize = new PostgresRunner({
-  username: env.postgres1sequelize_username,
-  password: env.postgres1sequelize_password,
-  database: env.postgres1sequelize_database,
-  host: env.postgres1sequelize_host,
-  port: Number(env.postgres1sequelize_port),
-  service: env.postgres1sequelize_service,
+/**
+ * When passing the `image` prop in the runner opts, the service name no longer has to match a Docker compose service
+ */
+const postgres1sequelizeRunner = new PostgresRunner({
+  service: 'dockest_inline_service_name_postgres1sequelizeRunner',
+  image: 'postgres:9.6',
   commands: [
     'sequelize db:migrate:undo:all',
     'sequelize db:migrate',
     'sequelize db:seed:undo:all',
     'sequelize db:seed --seed 20190101001337-demo-user',
   ],
+  database: env.postgres1sequelize_database,
+  password: env.postgres1sequelize_password,
+  ports: {
+    [env.postgres1sequelize_port]: PostgresRunner.DEFAULT_PORT,
+  },
+  username: env.postgres1sequelize_username,
 })
 
-const postgres2knex = new PostgresRunner({
-  username: env.postgres2knex_username,
-  password: env.postgres2knex_password,
-  database: env.postgres2knex_database,
-  host: env.postgres2knex_host,
-  port: Number(env.postgres2knex_port),
+const postgres2knexRunner = new PostgresRunner({
   service: env.postgres2knex_service,
   commands: [
     './node_modules/knex/bin/cli.js migrate:rollback',
     './node_modules/knex/bin/cli.js migrate:latest',
     './node_modules/knex/bin/cli.js seed:run',
   ],
-})
-
-const zookeeperService = env.zookeeper_service
-const zookeeperPort = Number(env.zookeeper_port)
-const zookeepeerConnect = `${zookeeperService}:${zookeeperPort}`
-const zookeeper = new ZookeeperRunner({
-  service: zookeeperService,
-  port: zookeeperPort,
-})
-
-const kafka1kafkajs = new KafkaRunner({
-  service: env.kafka_service,
-  host: env.kafka_host,
-  topics: [env.kafka_topic],
-  zookeepeerConnect,
-  autoCreateTopics: true,
+  database: env.postgres2knex_database,
+  host: PostgresRunner.DEFAULT_HOST,
+  password: env.postgres2knex_password,
   ports: {
-    [env.kafka_port1]: env.kafka_port1,
-    [env.kafka_port2]: env.kafka_port2,
-    [env.kafka_port3]: env.kafka_port3,
-    zookeeperPort: `${zookeeperPort}`,
+    [env.postgres2knex_port]: PostgresRunner.DEFAULT_PORT,
+  },
+  username: env.postgres2knex_username,
+})
+
+const redis1ioredisRunner = new RedisRunner({
+  service: env.redis1ioredis_service,
+  password: env.redis1ioredis_password,
+  ports: {
+    [env.redis1ioredis_port]: RedisRunner.DEFAULT_PORT,
   },
 })
 
-const redis1ioredis = new RedisRunner({
-  service: env.redis1ioredis_service,
-  host: env.redis1ioredis_host,
-  port: Number(env.redis1ioredis_port),
-  password: env.redis1ioredis_password,
+const zookeeper1confluentincRunner = new ZooKeeperRunner({
+  service: env.zookeeper1confluentinc_service,
+  ports: {
+    [env.zookeeper1confluentinc_port]: ZooKeeperRunner.DEFAULT_PORT,
+  },
+})
+
+const kafka1confluentincRunner = new KafkaRunner({
+  service: env.kafka1confluentinc_service,
+  dependsOn: [zookeeper1confluentincRunner],
+  ports: {
+    [env.kafka1confluentinc_port1]: KafkaRunner.DEFAULT_PORT_PLAINTEXT,
+    // [env.kafka1confluentinc_port2]: KafkaRunner.DEFAULT_PORT_SSL,
+    // [env.kafka1confluentinc_port3]: KafkaRunner.DEFAULT_PORT_SASL_SSL,
+  },
 })
 
 const dockest = new Dockest({
-  logLevel: logLevel.VERBOSE,
-  afterSetupSleep: 5,
+  runners: [
+    ...(process.env.DOCKEST_CI === 'true' || env.postgres1sequelize_enabled === 'true'
+      ? [postgres1sequelizeRunner]
+      : []),
+    ...(process.env.DOCKEST_CI === 'true' || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
+    ...(process.env.DOCKEST_CI === 'true' || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
+    ...(process.env.DOCKEST_CI === 'true' || env.kafka1confluentinc_enabled === 'true'
+      ? [kafka1confluentincRunner]
+      : []),
+  ],
   jest: {
-    // tslint:disable-next-line
-    lib: require('jest'),
     verbose: true,
   },
-  runners: {
-    ...(env.postgres1sequelize_enabled === 'true' || env.CI === 'true'
-      ? { postgres1sequelize }
-      : {}),
-    ...(env.postgres2knex_enabled === 'true' || env.CI === 'true' ? { postgres2knex } : {}),
-    ...(env.zookeeper_enabled === 'true' ? { zookeeper } : {}),
-    ...(env.kafka_enabled === 'true' ? { kafka1kafkajs } : {}),
-    ...(env.redis1ioredis_enabled === 'true' ? { redis1ioredis } : {}),
+  opts: {
+    afterSetupSleep: 10,
+    composeFileName: 'docker-compose-dockest.yml',
+    dev: {
+      // debug: true,
+    },
+    dumpErrors: false,
+    exitHandler: ({ trap }) => console.log(`Hello ${trap}, nice to meet you 👋🏼`), // eslint-disable-line no-console
+    logLevel: logLevel.DEBUG,
+    runInBand: true,
   },
 })
 

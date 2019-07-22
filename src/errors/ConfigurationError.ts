@@ -1,9 +1,9 @@
 import BaseError from './BaseError'
 
-class ConfigurationError extends BaseError {
-  constructor(message: string) {
-    super(`Invalid configuration: ${message}}`)
+export default class ConfigurationError extends BaseError {
+  public constructor(message: string, payload?: object) {
+    super(message, payload)
+
+    this.name = 'ConfigurationError'
   }
 }
-
-export default ConfigurationError

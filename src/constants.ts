@@ -1,15 +1,14 @@
-const ICONS: { [key: string]: string } = {
-  VERBOSE: '🗣 ',
+export const ICONS = {
+  DEBUG: '🐛',
   LOADING: '⏳',
   SUCCESS: '✅',
-  FAILED: '🔥',
   ERROR: '❌',
   STOPPED: '🛑',
-  WARNING: '⚠️',
+  WARN: '⚠️',
   INFO: 'ℹ️',
 }
 
-const COLORS: { [key: string]: { [key: string]: string } } = {
+export const COLORS = {
   MISC: {
     RESET: '\x1b[0m',
     BRIGHT: '\x1b[1m',
@@ -41,17 +40,42 @@ const COLORS: { [key: string]: { [key: string]: string } } = {
   },
 }
 
-const defaultDockerComposeRunOpts = Object.values({
-  // cleanUp: '--rm',
-  runInBackground: '--detach',
-  doNotRunLinkedServices: '--no-deps',
-}).join(' ')
+export const LOG_SYMBOLS = [
+  '🦊 ',
+  '🐼 ',
+  '🐒 ',
+  '🦋 ',
+  '🦄 ',
+  '🐥 ',
+  '🐙 ',
+  '🦖 ',
+  '🐞 ',
+  '🦂 ',
+  '🦍 ',
+  '🦃 ',
+  '🐿 ',
+  '🐉 ',
+  '🦚 ',
+]
 
-const LOG_LEVEL = {
+export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,
-  NORMAL: 2,
-  VERBOSE: 3,
+  WARN: 2,
+  INFO: 3,
+  DEBUG: 4,
 }
 
-export { ICONS, COLORS, defaultDockerComposeRunOpts, LOG_LEVEL }
+export const DEFAULT_USER_CONFIG = {
+  afterSetupSleep: 0,
+  composeFileName: 'docker-compose.yml',
+  dev: {
+    debug: false,
+  },
+  dumpErrors: false,
+  exitHandler: null,
+  logLevel: LOG_LEVEL.INFO,
+  runInBand: true,
+}
+
+export const PROCESS_TEST_ENV = 'dockest-test'

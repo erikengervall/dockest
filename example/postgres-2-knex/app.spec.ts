@@ -1,21 +1,17 @@
 import dotenv from 'dotenv'
-import main from './app'
+import { execa } from '../../src'
+import { runOrSkip } from '../testUtils'
+import app from './app'
 // @ts-ignore
 import { seedBanana } from './data.json'
 
-const env: any = dotenv.config().parsed
-const describeFn = env.postgres2knex_enabled === 'true' ? describe : describe.skip
+const specWrapper = () =>
+  describe('postgres-2-knex', () => {
+    it('should get first entry', async () => {
+      const { firstEntry } = await app()
 
-const test = () => {
-  it('trabajo', async () => {
-    const result = await main()
-
-    expect(result).toEqual(
-      expect.objectContaining({
-        firstEntry: expect.objectContaining(seedBanana),
-      })
-    )
+      expect(firstEntry).toEqual(expect.objectContaining(seedBanana))
+    })
   })
-}
 
-describeFn('postgres-2-knex', test)
+runOrSkip(dotenv.config().parsed.postgres2knex_enabled, specWrapper)
