@@ -2,9 +2,6 @@ import { COLORS } from '../constants'
 
 const { keys, values } = Object
 
-interface Obj {
-  [key: string]: any
-}
 type isType = (_?: any) => boolean
 
 const {
@@ -17,7 +14,7 @@ const getExpected = (typeValidator: any): string =>
 
 const getReceived = (value: any): string => (isArray(value) ? `${typeof value[0]}[]` : `${value} (${typeof value})`)
 
-const validateTypes = (schema?: Obj, config?: Obj): string[] => {
+const validateTypes = (schema?: { [key: string]: isType }, config?: { [key: string]: any }): string[] => {
   const failures: string[] = []
 
   if (!schema) {

@@ -6,8 +6,12 @@ import Dockest, { logLevel, runners } from '../src'
 const env: any = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
+/**
+ * When passing the `image` prop in the runner opts, the service name no longer has to match your Docker compose service
+ */
 const postgres1sequelizeRunner = new PostgresRunner({
-  service: env.postgres1sequelize_service,
+  service: 'dockest_inline_service_name_postgres1sequelizeRunner',
+  image: 'postgres:9.6',
   commands: [
     'sequelize db:migrate:undo:all',
     'sequelize db:migrate',
@@ -65,10 +69,10 @@ const kafka1confluentincRunner = new KafkaRunner({
 
 const dockest = new Dockest({
   runners: [
-    ...(env.CI === 'true' || env.postgres1sequelize_enabled === 'true' ? [postgres1sequelizeRunner] : []),
-    ...(env.CI === 'true' || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
-    ...(env.CI === 'true' || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
-    ...(env.CI === 'true' || env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
+    ...(env.DOCKEST_CI === 'true' || env.postgres1sequelize_enabled === 'true' ? [postgres1sequelizeRunner] : []),
+    ...(env.DOCKEST_CI === 'true' || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
+    ...(env.DOCKEST_CI === 'true' || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
+    ...(env.DOCKEST_CI === 'true' || env.kafka1confluentinc_enabled === 'true' ? [kafka1confluentincRunner] : []),
   ],
   jest: {
     verbose: true,
