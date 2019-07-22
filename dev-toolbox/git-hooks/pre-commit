@@ -1,12 +1,15 @@
 #!/bin/sh
 
 ##
+## Generate new docs
+##
+yarn docs
+git add ./docs
+
+##
 ## If there's buildable updates, compile the code and add it to the commit
 ##
-
-# disabled
-exit 0
-
+exit 0 # disabled
 buildableFilesTouched="$(git diff --cached --name-only | grep 'src/' | uniq)"
 
 ## In order to prevent infinite commit>post-commit>loop

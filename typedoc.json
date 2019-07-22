@@ -2,7 +2,8 @@
   "exclude": [
     "**/node_modules/execa/index.d.ts",
     "**/src/onRun/waitForRunnersReadyness/runRunnerCommands.ts",
-    "**/src/utils/execaWrapper.ts"
+    "**/src/utils/execaWrapper.ts",
+    "**/*.spec*"
   ],
   "excludeExternals": true,
   "includeDeclarations": true,

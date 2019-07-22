@@ -74,10 +74,10 @@
 								<span class="target">BaseError</span>
 								<ul class="tsd-hierarchy">
 									<li>
-										<a href="configurationerror.html" class="tsd-signature-type">ConfigurationError</a>
+										<a href="dockesterror.html" class="tsd-signature-type">DockestError</a>
 									</li>
 									<li>
-										<a href="dockesterror.html" class="tsd-signature-type">DockestError</a>
+										<a href="configurationerror.html" class="tsd-signature-type">ConfigurationError</a>
 									</li>
 								</ul>
 							</li>
@@ -100,9 +100,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseerror.html#message" class="tsd-kind-icon">message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="baseerror.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="baseerror.html#payload" class="tsd-kind-icon">payload</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="baseerror.html#stack" class="tsd-kind-icon">stack</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="baseerror.html#timestamp" class="tsd-kind-icon">timestamp</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="baseerror.html#dockestconfig" class="tsd-kind-icon">Dockest<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="baseerror.html#error" class="tsd-kind-icon">Error</a></li>
 							</ul>
 						</section>
@@ -115,13 +114,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Base<wbr>Error<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, payload<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="baseerror.html" class="tsd-signature-type">BaseError</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Base<wbr>Error<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, payload<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="baseerror.html" class="tsd-signature-type">BaseError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/erikengervall/dockest/blob/284d7a3/src/errors/BaseError.ts#L5">errors/BaseError.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/erikengervall/dockest/blob/d3ee640/src/errors/BaseError.ts#L6">errors/BaseError.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -130,7 +129,7 @@
 									<h5>message: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> payload: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> payload: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="baseerror.html" class="tsd-signature-type">BaseError</a></h4>
@@ -162,16 +161,6 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="payload" class="tsd-anchor"></a>
-					<h3>payload</h3>
-					<div class="tsd-signature tsd-kind-icon">payload<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/erikengervall/dockest/blob/284d7a3/src/errors/BaseError.ts#L4">errors/BaseError.ts:4</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="stack" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stack</h3>
@@ -184,13 +173,13 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="timestamp" class="tsd-anchor"></a>
-					<h3>timestamp</h3>
-					<div class="tsd-signature tsd-kind-icon">timestamp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="dockestconfig" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> Dockest<wbr>Config</h3>
+					<div class="tsd-signature tsd-kind-icon">Dockest<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="../interfaces/dockestconfig.html" class="tsd-signature-type">DockestConfig</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikengervall/dockest/blob/284d7a3/src/errors/BaseError.ts#L5">errors/BaseError.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/erikengervall/dockest/blob/d3ee640/src/errors/BaseError.ts#L6">errors/BaseError.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -230,14 +219,11 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="baseerror.html#name" class="tsd-kind-icon">name</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="baseerror.html#payload" class="tsd-kind-icon">payload</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="baseerror.html#stack" class="tsd-kind-icon">stack</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="baseerror.html#timestamp" class="tsd-kind-icon">timestamp</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="baseerror.html#dockestconfig" class="tsd-kind-icon">Dockest<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="baseerror.html#error" class="tsd-kind-icon">Error</a>
