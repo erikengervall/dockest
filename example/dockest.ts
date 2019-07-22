@@ -71,6 +71,8 @@ console.log('env.DOCKEST_CI', env.DOCKEST_CI)
 console.log('typeof env.DOCKEST_CI', typeof env.DOCKEST_CI)
 console.log(`env.DOCKEST_CI === 'true'`, env.DOCKEST_CI === 'true')
 console.log(`env.DOCKEST_CI === true`, env.DOCKEST_CI === true)
+console.log(`env`, env)
+console.log(`process.env`, process.env)
 const dockest = new Dockest({
   runners: [
     ...(!!env.DOCKEST_CI || env.postgres1sequelize_enabled === 'true' ? [postgres1sequelizeRunner] : []),
