@@ -23,8 +23,8 @@ const getLogArgs = (message: string, payload: Payload): string[] => {
     logArgs = logArgs.concat(new Array(pnl).fill('\n'))
   }
 
-  const derivedService = !!service ? service : 'Dockest'
-  const derivedSymbol = !!symbol ? symbol : '🌈'
+  const derivedService = service || 'Dockest'
+  const derivedSymbol = symbol || '🌈'
   logArgs.push(`${derivedSymbol} ${derivedService} ${derivedSymbol} ${message}`)
 
   if (!!data && Logger.logLevel === LOG_LEVEL.DEBUG) {
