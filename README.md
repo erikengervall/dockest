@@ -62,7 +62,7 @@ const { PostgresRunner } = runners
 const dockest = new Dockest({
   runners: [
     new PostgresRunner({
-      service: 'insert-service-name-here',
+      service: 'insert-docker-compose-service-name-here',
       database: 'insert-database-here',
       password: 'insert-password-here',
       username: 'insert-username-here',
@@ -86,7 +86,7 @@ const {
 const dockest = new Dockest({
   runners: [
     new PostgresRunner({
-      service: 'insert-service-name-here',
+      service: 'insert-docker-compose-service-name-here',
       database: 'insert-database-here',
       password: 'insert-password-here',
       username: 'insert-username-here',
@@ -113,7 +113,7 @@ const docker = new Dockest({
 
 ```TypeScript
 const opts = {
-  service: 'insert-service-name-here',
+  service: 'insert-docker-compose-service-name-here',
   database: 'insert-database-here',
   password: 'insert-password-here',
   username: 'insert-username-here',
@@ -180,8 +180,7 @@ new RedisRunner(opts)
 
 ```TypeScript
 const opts = {
-  service: env.zookeeper1confluentinc_service,
-  port: Number(env.zookeeper1confluentinc_port),
+  service: 'insert-service-here',
 }
 
 new ZooKeeperRunner(opts)
@@ -210,7 +209,7 @@ new ZooKeeperRunner(opts)
 
 ```TypeScript
 const opts = {
-  service: 'insert-service-name-here',
+  service: 'insert-docker-compose-service-name-here',
   dependsOn: [
     new ZooKeeperRunner({
       service: env.zookeeper1confluentinc_service,

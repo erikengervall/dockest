@@ -5,16 +5,55 @@
     "previous": "Previous",
     "tagline": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
     "docs": {
+      "connectivity": {
+        "title": "Connectivity",
+        "sidebar_label": "Connectivity"
+      },
+      "dockest_constructor": {
+        "title": "Dockest constructor",
+        "sidebar_label": "Dockest constructor"
+      },
+      "example": {
+        "title": "Example usage",
+        "sidebar_label": "Example usage"
+      },
       "intro": {
         "title": "Introduction",
-        "sidebar_label": "Intro"
+        "sidebar_label": "Introduction"
+      },
+      "req": {
+        "title": "Req",
+        "sidebar_label": "Req"
+      },
+      "responsiveness": {
+        "title": "Responsiveness",
+        "sidebar_label": "Responsiveness"
+      },
+      "runner_kafka": {
+        "title": "Kafka",
+        "sidebar_label": "Kafka"
+      },
+      "runner_postgres": {
+        "title": "Postgres",
+        "sidebar_label": "Postgres"
+      },
+      "runner_redis": {
+        "title": "Redis",
+        "sidebar_label": "Redis"
+      },
+      "runner_zookeeper": {
+        "title": "ZooKeeper",
+        "sidebar_label": "ZooKeeper"
       }
     },
     "links": {
       "Docs": "Docs"
     },
     "categories": {
-      "Docusaurus": "Docusaurus"
+      "Getting started": "Getting started",
+      "Dockest constructor": "Dockest constructor",
+      "Runners": "Runners",
+      "Healthcheckers": "Healthcheckers"
     }
   },
   "pages-strings": {

@@ -1,5 +1,8 @@
 {
   "docs": {
-    "Docusaurus": ["doc1"]
+    "Getting started": ["intro", "example"],
+    "Dockest constructor": ["dockest_constructor"],
+    "Runners": ["runner_redis", "runner_postgres", "runner_zookeeper", "runner_kafka"],
+    "Healthcheckers": ["connectivity", "responsiveness"]
   }
 }

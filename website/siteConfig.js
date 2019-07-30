@@ -38,7 +38,6 @@ const siteConfig = {
     primaryColor: '#55735a',
     secondaryColor: '#3b503e',
   },
-
   /* Custom fonts for website */
   /*
   fonts: {
@@ -52,7 +51,6 @@ const siteConfig = {
     ]
   },
   */
-
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © ${new Date().getFullYear()} Erik Engervall`,
 
@@ -75,7 +73,7 @@ const siteConfig = {
 
   // For sites with a sizable amount of content, set collapsible to true.
   // Expand/collapse the links and subcategories under categories.
-  docsSideNavCollapsible: true,
+  // docsSideNavCollapsible: true,
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
