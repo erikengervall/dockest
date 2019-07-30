@@ -36,7 +36,7 @@
     "travis:install": "yarn install:all",
     "travis:script": "yarn test:all",
     "lint": "yarn eslint ./src/**/*.ts",
-    "docs": "yarn typedoc ./src"
+    "typedoc": "yarn typedoc ./src"
   },
   "dependencies": {
     "execa": "^2.0.3",
