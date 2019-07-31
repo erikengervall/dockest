@@ -47,6 +47,20 @@ class Footer extends React.Component {
               Star
             </a>
           </div>
+
+          <div style={{ textAlign: 'right' }}>
+            <a href="https://travis-ci.com/erikengervall/dockest">
+              <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat" />
+            </a>
+
+            <a href="https://www.npmjs.com/package/dockest">
+              <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat" />
+            </a>
+
+            <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
+              <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat" />
+            </a>
+          </div>
         </section>
 
         <section className="copyright">{this.props.config.copyright}</section>

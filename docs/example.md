@@ -1,14 +1,12 @@
 ---
 id: example
-title: Example usage
-sidebar_label: Example usage
+title: Example
+sidebar_label: Example
 ---
 
-## Usage
+Check out `example/dockest.ts` for an example.
 
-Check out `example/dockest.ts` for an example usage.
-
-### TypeScript
+## TypeScript
 
 For TypeScript projects it's recommended to use `ts-jest` in order to avoid having to compile TypeScript on every change when running Jest.
 
@@ -54,7 +52,7 @@ const dockest = new Dockest({
 dockest.run()
 ```
 
-### Javascript
+## Javascript
 
 <br>
 `dockest.js`

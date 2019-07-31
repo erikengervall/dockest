@@ -34,3 +34,8 @@ new RedisRunner(opts)
 | ------------- | ------ | ----------- |
 | DEFAULT_HOST  | string | 'localhost' |
 | DEFAULT_PORT  | string | '6379'      |
+
+## Healthchecks
+
+1. Runs [connectivity](connectivity.md) check
+2. Runs [responsiveness](responsiveness.md) check by querying redis with `PING`

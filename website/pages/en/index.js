@@ -7,6 +7,12 @@
 
 const React = require('react') // eslint-disable-line @typescript-eslint/no-var-requires
 
+const styles = {
+  mainContainer: {
+    padding: 20,
+  },
+}
+
 class Index extends React.Component {
   render() {
     const { config: siteConfig, language = '' } = this.props
@@ -16,17 +22,11 @@ class Index extends React.Component {
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`
 
     return (
-      <div>
-        <div className="homeContainer">
-          <div className="wrapper homeWrapper">
-            <img src={`${baseUrl}img/logo.png`} alt="Project Logo" />
+      <div style={styles.mainContainer}>
+        <img src={`${baseUrl}img/logo.png`} alt="Project Logo" />
 
-            <div className="inner">
-              <h2>
-                <small>{siteConfig.tagline}</small>
-              </h2>
-            </div>
-          </div>
+        <div className="inner">
+          <h2>{siteConfig.tagline}</h2>
         </div>
       </div>
     )

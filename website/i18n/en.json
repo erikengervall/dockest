@@ -14,12 +14,16 @@
         "sidebar_label": "Dockest constructor"
       },
       "example": {
-        "title": "Example usage",
-        "sidebar_label": "Example usage"
+        "title": "Example",
+        "sidebar_label": "Example"
       },
       "intro": {
         "title": "Introduction",
         "sidebar_label": "Introduction"
+      },
+      "jest": {
+        "title": "Jest",
+        "sidebar_label": "Jest"
       },
       "req": {
         "title": "Req",
@@ -44,6 +48,10 @@
       "runner_zookeeper": {
         "title": "ZooKeeper",
         "sidebar_label": "ZooKeeper"
+      },
+      "typedoc": {
+        "title": "Typedoc",
+        "sidebar_label": "Typedoc"
       }
     },
     "links": {
@@ -52,6 +60,7 @@
     "categories": {
       "Getting started": "Getting started",
       "Dockest constructor": "Dockest constructor",
+      "Jest": "Jest",
       "Runners": "Runners",
       "Healthcheckers": "Healthcheckers"
     }

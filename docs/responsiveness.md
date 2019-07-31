@@ -4,4 +4,6 @@ title: Responsiveness
 sidebar_label: Responsiveness
 ---
 
-Recursively attempts to establish responsiveness with the Docker service by calling internal APIs of the service. For a database this could include a trivial `SELECT`.
+Recursively attempts to determine the responsiveness of the Docker service by calling internal APIs of the service. For example a database would be called with a trivial `SELECT` query.
+
+The responsiveness healthcheck will fail once the responsivenessTimeout is reached.

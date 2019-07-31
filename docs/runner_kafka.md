@@ -43,3 +43,7 @@ new KafkaRunner(opts)
 | DEFAULT_PORT_SASL_SSL        | string | '9094'      |
 | DEFAULT_PORT_SCHEMA_REGISTRY | string | '8081'      |
 | DEFAULT_PORT_SSL             | string | '9093'      |
+
+## Healthchecks
+
+1. Runs [connectivity](connectivity.md) check

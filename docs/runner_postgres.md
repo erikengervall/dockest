@@ -39,3 +39,8 @@ new PostgresRunner(opts)
 | ------------- | ------ | ----------- |
 | DEFAULT_HOST  | string | 'localhost' |
 | DEFAULT_PORT  | string | '5432'      |
+
+## Healthchecks
+
+1. Runs [connectivity](connectivity.md) check
+2. Runs [responsiveness](responsiveness.md) check by querying the database with `select 1`

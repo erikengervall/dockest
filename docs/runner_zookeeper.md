@@ -32,3 +32,7 @@ new ZooKeeperRunner(opts)
 | ------------- | ------ | ----------- |
 | DEFAULT_HOST  | string | 'localhost' |
 | DEFAULT_PORT  | string | '2181'      |
+
+## Healthchecks
+
+1. Runs [connectivity](connectivity.md) check
