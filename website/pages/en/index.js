@@ -7,26 +7,111 @@
 
 const React = require('react') // eslint-disable-line @typescript-eslint/no-var-requires
 
-const styles = {
-  mainContainer: {
-    padding: 20,
-  },
+const CompLibrary = require('../../core/CompLibrary.js') // eslint-disable-line @typescript-eslint/no-var-requires
+
+const MarkdownBlock = CompLibrary.MarkdownBlock /* Used to read markdown */
+const Container = CompLibrary.Container
+const GridBlock = CompLibrary.GridBlock
+
+const Button = props => (
+  <div className="pluginWrapper buttonWrapper">
+    <a className="button" href={props.href} target={props.target}>
+      {props.children}
+    </a>
+  </div>
+)
+
+const createLinkGenerator = ({ siteConfig, language = '' }) => {
+  const { baseUrl, docsUrl } = siteConfig
+  const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`
+  const langPart = `${language ? `${language}/` : ''}`
+  return doc => `${baseUrl}${docsPart}${langPart}${doc}`
+}
+
+class HomeSplash extends React.Component {
+  render() {
+    const { siteConfig } = this.props
+    const { baseUrl } = siteConfig
+    const docUrl = createLinkGenerator(this.props)
+
+    const SplashContainer = props => (
+      <div className="homeContainer">
+        <div className="homeSplashFade">
+          <div className="wrapper homeWrapper">{props.children}</div>
+        </div>
+      </div>
+    )
+
+    const Logo = props => (
+      <img src={props.img_src} alt={siteConfig.title} aria-label="https://github.com/erikengervall/dockest" />
+    )
+
+    const ProjectTitle = () => (
+      <h2 className="projectTitle">
+        <Logo img_src={`${baseUrl}img/logo.png`} />
+        <small>{siteConfig.tagline}</small>
+      </h2>
+    )
+
+    const PromoSection = props => (
+      <div className="section promoSection">
+        <div className="promoRow">
+          <div className="pluginRowBlock">{props.children}</div>
+        </div>
+      </div>
+    )
+
+    return (
+      <SplashContainer>
+        <div className="inner">
+          <ProjectTitle siteConfig={siteConfig} />
+          <PromoSection>
+            <Button href={docUrl('intro')}>Documentation</Button>
+            <Button href={siteConfig.repoUrl}>Github</Button>
+          </PromoSection>
+        </div>
+      </SplashContainer>
+    )
+  }
 }
 
 class Index extends React.Component {
   render() {
     const { config: siteConfig, language = '' } = this.props
-    const { baseUrl, docsUrl } = siteConfig
-    const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`
-    const langPart = `${language ? `${language}/` : ''}`
-    const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`
+    const docUrl = createLinkGenerator({ siteConfig, language })
+
+    const Block = props => (
+      <Container padding={['bottom', 'top']} id={props.id} background={props.background}>
+        <GridBlock align="center" contents={props.children} layout={props.layout} />
+      </Container>
+    )
+
+    const Features = props => (
+      <div id="feature">
+        <Block layout="fourColumn">
+          {[
+            {
+              title: 'Super lightweight',
+              content: `Dockest doesn't depend on heavy libraries in order to function`,
+            },
+            {
+              title: 'Simple interfaces',
+              content: 'Every interface is designed to be as simple as possible to use',
+            },
+            {
+              title: 'TODO:',
+              content: 'TODO:',
+            },
+          ]}
+        </Block>
+      </div>
+    )
 
     return (
-      <div style={styles.mainContainer}>
-        <img src={`${baseUrl}img/logo.png`} alt="Project Logo" />
-
-        <div className="inner">
-          <h2>{siteConfig.tagline}</h2>
+      <div>
+        <HomeSplash siteConfig={siteConfig} language={language} />
+        <div className="mainContainer">
+          <Features />
         </div>
       </div>
     )

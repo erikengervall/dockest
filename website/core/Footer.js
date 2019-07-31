@@ -7,6 +7,15 @@
 
 const React = require('react') // eslint-disable-line @typescript-eslint/no-var-requires
 
+const styles = {
+  badgeWrapper: {
+    textAlign: 'right',
+  },
+  badge: {
+    // marginRight: 5,
+  },
+}
+
 class Footer extends React.Component {
   docUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl
@@ -48,17 +57,21 @@ class Footer extends React.Component {
             </a>
           </div>
 
-          <div style={{ textAlign: 'right' }}>
-            <a href="https://travis-ci.com/erikengervall/dockest">
+          <div style={styles.badgeWrapper}>
+            <a href="https://travis-ci.com/erikengervall/dockest" style={styles.badge}>
               <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat" />
             </a>
 
-            <a href="https://www.npmjs.com/package/dockest">
+            <a href="https://www.npmjs.com/package/dockest" style={styles.badge}>
               <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat" />
             </a>
 
-            <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
+            <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE" style={styles.badge}>
               <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat" />
+            </a>
+
+            <a href="https://www.npmjs.com/package/dockest?activeTab=versions" style={styles.badge}>
+              <img alt="npm" src="https://img.shields.io/npm/v/dockest" />
             </a>
           </div>
         </section>
