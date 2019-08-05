@@ -1,10 +1,11 @@
 #!/bin/sh
 
 ##
-## Generate new docs
+## Generate a new set of typedoc
 ##
-yarn docs
-git add ./docs
+exit 0 # disabled
+yarn typedoc
+git add ./typedoc
 
 ##
 ## If there's buildable updates, compile the code and add it to the commit
