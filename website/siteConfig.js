@@ -15,13 +15,13 @@ const siteConfig = {
   tagline:
     'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
   url: 'https://npmjs.com/package/dockest', // Your website URL
-  baseUrl: '/', // Base URL for your project */
+  baseUrl: '/', // Base URL for your project
+  organizationName: 'erikengervall',
+  projectName: 'Dockest', // Used for publishing and more
+
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
-
-  // Used for publishing and more
-  projectName: 'Dockest',
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
