@@ -8,9 +8,9 @@ Check out [`example/dockest.ts`](https://github.com/erikengervall/dockest/tree/m
 
 ## TypeScript
 
-Note that `ts-jest` and `ts-node` are recommended, but completely optional.
+Note that [`ts-jest`](https://www.npmjs.com/package/ts-jest) and [`ts-node`](https://www.npmjs.com/package/ts-node) are recommended, but completely optional.
 
-**`jest.config.js`** (Skip if not using `ts-jest`)
+**`jest.config.js`** (skip if not using `ts-jest`)
 
 ```JavaScript
 module.exports = {

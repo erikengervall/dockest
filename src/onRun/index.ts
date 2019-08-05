@@ -4,7 +4,7 @@ import sleepForX from '../utils/sleepForX'
 import teardownSingle from '../utils/teardownSingle'
 import dockerComposeUp from './dockerComposeUp'
 import runJest from './runJest'
-import waitForRunnersReadyness from './waitForRunnersReadyness'
+import waitForRunnersReadiness from './waitForRunnersReadiness'
 
 const onRun = async (config: DockestConfig) => {
   const {
@@ -17,7 +17,7 @@ const onRun = async (config: DockestConfig) => {
 
   await dockerComposeUp(dockerComposeGeneratedPath)
 
-  await waitForRunnersReadyness(config)
+  await waitForRunnersReadiness(config)
 
   if (afterSetupSleep > 0) {
     await sleepForX('After setup sleep', afterSetupSleep)
