@@ -22,18 +22,13 @@ const siteConfig = {
 
   // Used for publishing and more
   projectName: 'Dockest',
-  // organizationName: 'facebook',
-  // For top-level user or org sites, the organization is still the same.
-  // e.g., for the https://JoelMarcey.github.io site, it would be set like...
-  //   organizationName: 'JoelMarcey'
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    // {
-    //   href: engineeringBlogPostUrl,
-    //   label: 'Blog post',
-    // },
-    { doc: 'introduction', label: 'Docs' },
+    {
+      doc: 'introduction',
+      label: 'Docs',
+    },
   ],
 
   /* path to images for header/footer */
@@ -64,7 +59,7 @@ const siteConfig = {
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'rainbow',
+    theme: 'github',
   },
 
   // Add custom scripts here that would be placed in <script> tags.
