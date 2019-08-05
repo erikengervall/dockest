@@ -67,7 +67,12 @@ class HomeSplash extends React.Component {
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
             <Button href={docUrl('intro')}>Documentation</Button>
-            <Button href={siteConfig.repoUrl}>Github</Button>
+            <Button target="_blank" href={siteConfig.repoUrl}>
+              Github
+            </Button>
+            <Button target="_blank" href={siteConfig.engineeringBlogPostUrl}>
+              Motivational blog post
+            </Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -91,16 +96,12 @@ class Index extends React.Component {
         <Block layout="fourColumn">
           {[
             {
-              title: 'Super lightweight',
-              content: `Dockest doesn't depend on heavy libraries in order to function`,
+              title: 'Just JS (well yeah, TS 🤷🏼‍♂️)',
+              content: `Dockest is a pure JavaScript library that handles the entire lifecycle of your docker services during integration testing`,
             },
             {
-              title: 'Simple interfaces',
-              content: 'Every interface is designed to be as simple as possible to use',
-            },
-            {
-              title: 'TODO:',
-              content: 'TODO:',
+              title: 'Completely modular and extendable',
+              content: `Dockest is built with modularity in mind and extending the library with new services is a breeze`,
             },
           ]}
         </Block>

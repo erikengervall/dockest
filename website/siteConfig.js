@@ -8,6 +8,8 @@
 // See https://docusaurus.io/docs/site-config for all the possible
 // site configuration options.
 
+const engineeringBlogPostUrl = 'https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163'
+
 const siteConfig = {
   title: 'Dockest', // Title for your website.
   tagline:
@@ -26,7 +28,13 @@ const siteConfig = {
   //   organizationName: 'JoelMarcey'
 
   // For no header links in the top nav bar -> headerLinks: [],
-  headerLinks: [{ doc: 'intro', label: 'Docs' }],
+  headerLinks: [
+    // {
+    //   href: engineeringBlogPostUrl,
+    //   label: 'Blog post',
+    // },
+    { doc: 'intro', label: 'Docs' },
+  ],
 
   /* path to images for header/footer */
   // headerIcon: 'img/favicon.png',
@@ -84,6 +92,7 @@ const siteConfig = {
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   repoUrl: 'https://github.com/erikengervall/dockest',
+  engineeringBlogPostUrl,
 }
 
 module.exports = siteConfig

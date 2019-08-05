@@ -59,10 +59,8 @@
     },
     "categories": {
       "Getting started": "Getting started",
-      "Dockest constructor": "Dockest constructor",
-      "Jest": "Jest",
-      "Runners": "Runners",
-      "Healthcheckers": "Healthcheckers"
+      "Interfaces": "Interfaces",
+      "Healthchecks": "Healthchecks"
     }
   },
   "pages-strings": {
