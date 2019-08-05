@@ -1,0 +1,15 @@
+{
+  "docs": {
+    "Getting started": ["introduction", "example"],
+    "Interfaces": [
+      "dockest_constructor",
+      "jest",
+      {
+        "type": "subcategory",
+        "label": "Runners",
+        "ids": ["runner_redis", "runner_postgres", "runner_zookeeper", "runner_kafka"]
+      }
+    ],
+    "Healthchecks": ["connectivity", "responsiveness"]
+  }
+}
