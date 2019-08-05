@@ -20,6 +20,7 @@ module.exports = {
 
 <br>
 **`package.json`**
+
 ```JSON
 {
   "scripts": {
