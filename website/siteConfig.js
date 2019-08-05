@@ -14,8 +14,8 @@ const siteConfig = {
   title: 'Dockest', // Title for your website.
   tagline:
     'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
-  url: 'https://npmjs.com/package/dockest', // Your website URL
-  baseUrl: '/', // Base URL for your project
+  url: 'https://erikengervall.github.io', // Your website URL
+  baseUrl: '/dockest/', // Base URL for your project
   organizationName: 'erikengervall',
   projectName: 'Dockest', // Used for publishing and more
 
