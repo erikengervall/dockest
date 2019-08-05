@@ -4,9 +4,24 @@ title: Introduction
 sidebar_label: Introduction
 ---
 
+## Motivation
+
+The motivation for Dockest, along with real world examples, can be read in this [blog article](https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163).
+
+<br>
+**TLDR**
+
+> Dockest was born out of frustration and with a vision to make developers’ lives slightly less miserable.
+
+## Dockest’s core concepts
+
+Dockest provides abstraction for your Docker services’ lifecycles as well as making sure that your unit tests are executed. Adopting Dockest is super easy regardless if you’ve got existing tests or not and doesn’t necessarily require additional CI pipeline steps.
+
+Dockest’s core concept is composed of runners. Runners are references to Docker services, listed in your Compose file, that your application depend on. The runners are structured to be independent of one another, not only to simplify the configuration of Dockest itself, but also to lower the threshold for anyone to contribute with new runners for unsupported Docker services.
+
 ## Requirements
 
-First things first: Dockest has a few mandatory requirements in order to work.
+Dockest has a few system requirements in order to work:
 
 - Dockest uses Jest's programmatic CLI and requires Jest **v20.0.0** or newer to work
 - [Docker](https://www.docker.com/)

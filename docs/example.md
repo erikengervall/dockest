@@ -4,11 +4,11 @@ title: Example
 sidebar_label: Example
 ---
 
-Check out `example/dockest.ts` for an example.
+Check out [`example/dockest.ts`](https://github.com/erikengervall/dockest/tree/master/example) for an example.
 
 ## TypeScript
 
-For TypeScript projects it's recommended to use `ts-jest` in order to avoid having to compile TypeScript on every change when running Jest.
+Note that `ts-jest` and `ts-node` are recommended, but completely optional.
 
 **`jest.config.js`** (Skip if not using `ts-jest`)
 
@@ -42,17 +42,28 @@ import Dockest, { runners } from 'dockest'
 const { RedisRunner } = runners
 
 const myRedisRunner = new RedisRunner({
-  service: 'insert-service-name-here',
+service: 'insert-service-name-here',
 })
 
 const dockest = new Dockest({
-  runners: [myRedisRunner],
+runners: [myRedisRunner],
 })
 
 dockest.run()
+
 ```
 
 ## Javascript
+
+**`package.json`**
+
+```JSON
+{
+  "scripts": {
+    "test": "node ./dockest.ts"
+  }
+}
+```
 
 <br>
 `dockest.js`

@@ -23,7 +23,7 @@ new KafkaRunner(opts)
 
 ## Interface
 
-| Prop              | Required | Type                      | Default            | Desciption                                                                                           |
+| Prop              | Required | Type                      | Default            | Description                                                                                          |
 | ----------------- | -------- | ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
 | service           | true     | string                    | -                  | Used as an identifiers and, if no `image` option is passed, to find the image from your Compose file |
 | dependsOn         | true     | Runner[]                  | []                 | Defines the service's [dependencies](https://docs.docker.com/compose/compose-file/#depends_on)       |
