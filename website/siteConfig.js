@@ -33,7 +33,7 @@ const siteConfig = {
     //   href: engineeringBlogPostUrl,
     //   label: 'Blog post',
     // },
-    { doc: 'intro', label: 'Docs' },
+    { doc: 'introduction', label: 'Docs' },
   ],
 
   /* path to images for header/footer */

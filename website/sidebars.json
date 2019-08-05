@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Getting started": ["intro", "example"],
+    "Getting started": ["introduction", "example"],
     "Interfaces": [
       "dockest_constructor",
       "jest",

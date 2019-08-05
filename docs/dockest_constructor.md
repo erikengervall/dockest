@@ -16,11 +16,11 @@ const docker = new Dockest({
 
 ## Interface
 
-| Prop    | Required | Type   | Default | Description                                    |
-| ------- | -------- | ------ | ------- | ---------------------------------------------- |
-| runners | true     | array  | -       | [Runner instances](runner_redis.md)            |
-| jest    | false    | object | -       | [Jest configuration](jest.md)                  |
-| opts    | false    | object | -       | [Dockest options](dockest_constructor.md#opts) |
+| Prop    | Required | Type   | Default                                  | Description                         |
+| ------- | -------- | ------ | ---------------------------------------- | ----------------------------------- |
+| runners | true     | array  | []                                       | [Runner instances](runner_redis.md) |
+| jest    | false    | object | see docs for [Jest](jest.md)             | Jest configuration                  |
+| opts    | false    | object | see [below](dockest_constructor.md#opts) | Dockest configuration               |
 
 ## opts
 

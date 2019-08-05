@@ -70,9 +70,6 @@ class HomeSplash extends React.Component {
             <Button target="_blank" href={siteConfig.repoUrl}>
               Github
             </Button>
-            <Button target="_blank" href={siteConfig.engineeringBlogPostUrl}>
-              Motivational blog post
-            </Button>
           </PromoSection>
         </div>
       </SplashContainer>

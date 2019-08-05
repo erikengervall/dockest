@@ -15,7 +15,3 @@ sidebar_label: Jest
 Note that due to Jest running all tests in parallel per default, Dockest defaults the `runInBand` option to `true`. This will cause jest to run its tests sequentially and thus avoid potential race conditions if tests perform read/write operations on the same entry. The downside of this is an overall longer runtime.
 
 A complete list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation.
-
-### Opts
-
-It's possible to pass custom configuration to Dockest in order to improve developer experience.
