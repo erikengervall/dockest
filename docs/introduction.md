@@ -26,3 +26,12 @@ Dockest has a few system requirements in order to work:
 - Dockest uses Jest's programmatic CLI and requires Jest **v20.0.0** or newer to work
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs."_)
+
+## Contributing
+
+**Setup and testing**
+
+- `yarn dev:setup` Installs all dependencies and necessary git-hooks
+- `yarn test:all` Runs `yarn test` and `yarn test:example`
+  - `yarn test` Unit tests for the library itself
+  - `yarn test:example` Integration tests using Dockest

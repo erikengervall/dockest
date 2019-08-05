@@ -94,7 +94,7 @@ class Index extends React.Component {
         <Block layout="fourColumn">
           {[
             {
-              title: 'Just JS (well yeah, TS 🤷🏼‍♂️)',
+              title: 'Just JavaScript (via TS)',
               content: `Dockest is a pure JavaScript library that handles the entire lifecycle of your docker services during integration testing`,
             },
             {
