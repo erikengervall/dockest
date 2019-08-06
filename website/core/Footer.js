@@ -73,6 +73,10 @@ class Footer extends React.Component {
             <a href="https://www.npmjs.com/package/dockest?activeTab=versions" style={styles.badge}>
               <img alt="npm" src="https://img.shields.io/npm/v/dockest" />
             </a>
+
+            <a href="https://snyk.io/test/github/erikengervall/dockest" style={styles.badge}>
+              <img alt="snyk" src="https://snyk.io/test/github/erikengervall/dockest/badge.svg" />
+            </a>
           </div>
         </section>
 
