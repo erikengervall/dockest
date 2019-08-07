@@ -1,5 +1,5 @@
-import testUtils, { mockedExecaStdout } from '../testUtils'
 import execaWrapper from './execaWrapper'
+import testUtils, { mockedExecaStdout } from '../testUtils'
 
 const { redisRunner, Logger, execa } = testUtils({})
 

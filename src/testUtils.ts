@@ -1,8 +1,9 @@
-import execa from 'execa'
 import { createMockProxy } from 'jest-mock-proxy'
-import Logger from './Logger'
+import execa from 'execa'
+
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
+import Logger from './Logger'
 
 export const mockedExecaStdout = 'getContainerId 🌮'
 export const runnerCommand = 'runRunnerCommands 🌮'

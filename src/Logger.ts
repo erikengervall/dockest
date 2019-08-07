@@ -1,16 +1,14 @@
-/* eslint-disable no-console */
-
-import readline from 'readline'
 import { LOG_LEVEL } from './constants'
 import { Runner } from './runners/@types'
+import readline from 'readline'
 
 interface Payload {
-  icon?: string
   data?: { [key: string]: any }
-  service?: string
-  symbol?: string
+  icon?: string
   nl?: number
   pnl?: number
+  service?: string
+  symbol?: string
 }
 
 type LogMethod = (message: string, payload?: Payload) => void
@@ -43,25 +41,25 @@ class Logger {
 
   public static error: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.ERROR) {
-      console.error(...getLogArgs(message, payload))
+      console.error(...getLogArgs(message, payload)) // eslint-disable-line no-console
     }
   }
 
   public static warn: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.WARN) {
-      console.warn(...getLogArgs(message, payload))
+      console.warn(...getLogArgs(message, payload)) // eslint-disable-line no-console
     }
   }
 
   public static info: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.INFO) {
-      console.info(...getLogArgs(message, payload))
+      console.info(...getLogArgs(message, payload)) // eslint-disable-line no-console
     }
   }
 
   public static debug: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.DEBUG) {
-      console.debug(...getLogArgs(message, payload))
+      console.debug(...getLogArgs(message, payload)) // eslint-disable-line no-console
     }
   }
 

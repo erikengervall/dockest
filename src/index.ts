@@ -1,13 +1,13 @@
-import { ErrorPayload } from './@types'
 import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
-import ConfigurationError from './errors/ConfigurationError'
-import BaseError from './errors/BaseError'
-import onInstantiation from './onInstantiation'
-import onRun from './onRun'
+import { ErrorPayload } from './@types'
 import { JestConfig } from './onRun/runJest'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
+import BaseError from './errors/BaseError'
+import ConfigurationError from './errors/ConfigurationError'
 import execaWrapper from './utils/execaWrapper'
+import onInstantiation from './onInstantiation'
+import onRun from './onRun'
 import sleep from './utils/sleep'
 import validateTypes from './utils/validateTypes'
 
@@ -16,10 +16,8 @@ interface RequiredConfig {
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
-  dev: {
-    debug?: boolean
-  }
   composeFileName: string
+  dev: { debug?: boolean }
   dumpErrors: boolean
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
@@ -27,6 +25,7 @@ interface DefaultableUserConfig {
 }
 interface InternalConfig {
   dockerComposeGeneratedPath: string
+  failedTeardowns: { service: string; containerId: string }[]
   jestRanWithResult: boolean
   perfStart: number
 }
@@ -39,6 +38,7 @@ export interface DockestConfig {
 
 const INTERNAL_CONFIG = {
   dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
+  failedTeardowns: [],
   jestRanWithResult: false,
   perfStart: Date.now(),
 }
