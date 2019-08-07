@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/execa": "^2.0.0",
-    "@types/jest": "^24.0.16",
+    "@types/jest": "^24.0.17",
     "@types/js-yaml": "^3.12.1",
     "@types/prettier": "^1.18.1",
     "@types/rimraf": "^2.0.2",
