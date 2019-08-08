@@ -1,5 +1,5 @@
-import { ICONS, PROCESS_TEST_ENV } from '../constants'
 import { DockestConfig } from '..'
+import { ICONS, PROCESS_TEST_ENV } from '../constants'
 import dumpError from '../utils/dumpError'
 
 export default class BaseError extends Error {

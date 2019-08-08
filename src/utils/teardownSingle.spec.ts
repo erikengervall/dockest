@@ -1,6 +1,7 @@
 import { createMockProxy } from 'jest-mock-proxy'
-import testUtils from '../testUtils'
+
 import teardownSingle from './teardownSingle'
+import testUtils from '../testUtils'
 
 const { redisRunner, execa } = testUtils({})
 redisRunner.containerId = 'mockContainerId'

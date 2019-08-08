@@ -1,5 +1,5 @@
-import testUtils, { mockedExecaStdout, runnerCommand } from '../../testUtils'
 import runRunnerCommands from './runRunnerCommands'
+import testUtils, { mockedExecaStdout, runnerCommand } from '../../testUtils'
 
 const { allRunners, execa } = testUtils({ withRunnerCommands: true })
 

@@ -1,5 +1,5 @@
-import DockestError from '../../errors/DockestError'
 import { Runner } from '../../runners/@types'
+import DockestError from '../../errors/DockestError'
 import execaWrapper from '../../utils/execaWrapper'
 import sleep from '../../utils/sleep'
 
