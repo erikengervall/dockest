@@ -1,4 +1,6 @@
 {
+  "name": "Dockest",
+  "mode": "file",
   "exclude": [
     "**/node_modules/execa/index.d.ts",
     "**/src/onRun/waitForRunnersReadyness/runRunnerCommands.ts",
@@ -7,7 +9,5 @@
   ],
   "excludeExternals": true,
   "includeDeclarations": true,
-  "mode": "file",
-  "name": "Dockest",
-  "out": "./typedoc"
+  "theme": "markdown"
 }
