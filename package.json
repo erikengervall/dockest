@@ -32,11 +32,12 @@
     "test:example": "cd example && yarn test && cd ..",
     "test:all": "yarn test && yarn test:example",
     "dev:setup": "./dev-toolbox/setup && yarn install:all",
-    "install:all": "yarn install && cd example && yarn install",
+    "install:all": "yarn install && cd example && yarn install && cd ../example && yarn install",
     "travis:install": "yarn install:all",
     "travis:script": "yarn test:all",
-    "lint": "yarn eslint ./src/**/*.ts",
-    "docs": "yarn typedoc ./src"
+    "travis:docs": "yarn typedoc ./src --out ./website/build/typedoc",
+    "docs": "yarn typedoc ./src --out ./typedoc",
+    "lint": "yarn eslint ./src/**/*.ts"
   },
   "dependencies": {
     "execa": "^2.0.3",
@@ -64,6 +65,7 @@
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "typedoc": "^0.15.0",
+    "typedoc-plugin-markdown": "^2.1.1",
     "typescript": "^3.5.3"
   }
 }
