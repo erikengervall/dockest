@@ -28,7 +28,7 @@
     "prepare": "yarn build",
     "build": "rimraf ./dist && tsc",
     "build:watch": "rimraf ./dist && tsc --watch",
-    "test": "jest ./src",
+    "test": "jest ./src --forceExit",
     "test:example": "cd example && yarn test && cd ..",
     "test:all": "yarn test && yarn test:example",
     "dev:setup": "./dev-toolbox/setup && yarn install:all",
