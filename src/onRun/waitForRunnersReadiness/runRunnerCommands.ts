@@ -1,4 +1,4 @@
-import execa from 'execa'
+import execa from 'execa' // eslint-disable-line import/default
 import { Runner } from '../../runners/@types'
 
 export default async (runner: Runner): Promise<void> => {

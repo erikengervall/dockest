@@ -1,6 +1,6 @@
-import ConfigurationError from '../errors/ConfigurationError'
-import { RunnerConfig } from '../runners/@types'
 import validateTypes from './validateTypes'
+import { RunnerConfig } from '../runners/@types'
+import ConfigurationError from '../errors/ConfigurationError'
 
 export default (schema: { [key: string]: any }, config: RunnerConfig) => {
   const failures = validateTypes(schema, config)

@@ -1,45 +1,51 @@
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
-import { BaseRunner, GetComposeService, Runner } from '../@types'
-import { DEFAULT_CONFIG_VALUES } from '../constants'
+import {
+  Runner,
+  BaseRunner,
+  GetComposeService,
+  SharedRequiredConfigProps,
+  SharedDefaultableConfigProps,
+} from '../@types'
+import { ObjStrStr } from '../../@types'
+import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
-interface RequiredConfigProps {
+type RequiredConfigProps = {
   service: string
-}
-interface DefaultableConfigProps {
+} & SharedRequiredConfigProps
+
+type DefaultableConfigProps = {
   commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
   host: string
   image: string | undefined
   password: string
-  ports: {
-    [key: string]: string
-  }
+  ports: ObjStrStr
   responsivenessTimeout: number
-}
-export type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+} & SharedDefaultableConfigProps
+
+type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  commands: DEFAULT_CONFIG_VALUES.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
-  host: DEFAULT_CONFIG_VALUES.HOST,
-  image: DEFAULT_CONFIG_VALUES.IMAGE,
+  ...SHARED_DEFAULT_CONFIG_PROPS,
+  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
+  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
+  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
+  host: DEFAULT_CONFIG_PROPS.HOST,
+  image: DEFAULT_CONFIG_PROPS.IMAGE,
   password: '',
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
-  responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
+  ports: { [DEFAULT_PORT]: DEFAULT_PORT },
+  responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
 }
 
 class RedisRunner implements BaseRunner {
-  public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
+  public static DEFAULT_HOST: string = DEFAULT_CONFIG_PROPS.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: RedisRunnerConfig
@@ -90,4 +96,5 @@ class RedisRunner implements BaseRunner {
   }
 }
 
+export { RedisRunnerConfig }
 export default RedisRunner

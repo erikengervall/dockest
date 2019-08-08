@@ -1,8 +1,10 @@
-import testUtils, { mockedExecaStdout } from '../../testUtils'
 import { testables } from './resolveContainerId'
+import testUtils, { mockedExecaStdout } from '../../testUtils'
 
 const { getContainerId } = testables
 const { redisRunner, execa } = testUtils({})
+
+jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
 describe('getContainerId', () => {
   it('should work', async () => {

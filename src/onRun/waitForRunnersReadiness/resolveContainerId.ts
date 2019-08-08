@@ -1,5 +1,5 @@
-import DockestError from '../../errors/DockestError'
 import { Runner } from '../../runners/@types'
+import DockestError from '../../errors/DockestError'
 import execaWrapper from '../../utils/execaWrapper'
 import sleep from '../../utils/sleep'
 
@@ -19,6 +19,9 @@ const getContainerId = async (runner: Runner): Promise<string> => {
 
   return containerId
 }
+
+const testables = { getContainerId }
+export { testables }
 
 export default async (runner: Runner): Promise<void> => {
   const {
@@ -57,6 +60,3 @@ export default async (runner: Runner): Promise<void> => {
 
   await recurse(resolveContainerIdTimeout)
 }
-
-const testables = { getContainerId }
-export { testables }

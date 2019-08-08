@@ -1,5 +1,5 @@
-import { LOG_LEVEL } from '../constants'
 import validateTypes from './validateTypes'
+import { LOG_LEVEL } from '../constants'
 
 const { values } = Object
 

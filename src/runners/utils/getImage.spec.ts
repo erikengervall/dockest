@@ -1,5 +1,5 @@
-import { DEFAULT_USER_CONFIG } from '../../constants'
 import getImage from './getImage'
+import { DEFAULT_USER_CONFIG } from '../../constants'
 
 describe('getImage', () => {
   const testComposeFileName = 'getImage.spec.yml'

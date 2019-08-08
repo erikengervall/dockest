@@ -1,9 +1,11 @@
 import { createMockProxy } from 'jest-mock-proxy'
-import testUtils from '../testUtils'
 import teardownSingle from './teardownSingle'
+import testUtils, { mockedExecaStdout } from '../testUtils'
 
 const { redisRunner, execa } = testUtils({})
 redisRunner.containerId = 'mockContainerId'
+
+jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
 describe('teardownSingle', () => {
   beforeEach(() => {

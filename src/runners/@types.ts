@@ -9,15 +9,23 @@ export type RunnerConfig = KafkaRunnerConfig | PostgresRunnerConfig | RedisRunne
 
 export interface ComposeFile {
   depends_on?: string[]
-  environment?: {
-    [key: string]: string | number
-  }
+  environment?: { [key: string]: string | number }
   image: string
   ports: string[]
 }
 
-export type GetComposeService = (composeFileName: string) => { [key: string]: ComposeFile }
+export type GetComposeService = (
+  composeFileName: string,
+) => {
+  [key: string]: ComposeFile
+}
 
 export interface BaseRunner {
   getComposeService: GetComposeService
 }
+
+export interface SharedRequiredConfigProps {
+  service: string
+}
+
+export interface SharedDefaultableConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface

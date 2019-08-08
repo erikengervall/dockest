@@ -1,10 +1,10 @@
+import dockerComposeUp from './dockerComposeUp'
+import runJest from './runJest'
+import waitForRunnersReadiness from './waitForRunnersReadiness'
 import { DockestConfig } from '../index'
 import Logger from '../Logger'
 import sleepForX from '../utils/sleepForX'
 import teardownSingle from '../utils/teardownSingle'
-import dockerComposeUp from './dockerComposeUp'
-import runJest from './runJest'
-import waitForRunnersReadiness from './waitForRunnersReadiness'
 
 const onRun = async (config: DockestConfig) => {
   const {
@@ -40,8 +40,7 @@ const onRun = async (config: DockestConfig) => {
       ),
     )
 
-    // Keep the docker containers running indefinitely
-    return
+    return // Keep the docker containers running indefinitely
   }
 
   const allTestsPassed = await runJest(config)

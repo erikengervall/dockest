@@ -1,6 +1,7 @@
 import jest from 'jest'
-import ConfigurationError from '../errors/ConfigurationError'
+
 import { DockestConfig } from '../index'
+import ConfigurationError from '../errors/ConfigurationError'
 import Logger from '../Logger'
 
 interface JestLib {

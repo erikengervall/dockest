@@ -1,6 +1,6 @@
-import execa from 'execa'
-import Logger from '../Logger'
+import execa from 'execa' // eslint-disable-line import/default
 import { Runner } from '../runners/@types'
+import Logger from '../Logger'
 import trim from '../utils/trim'
 
 const execaWrapper = async (command: string, runner?: Runner): Promise<string> => {

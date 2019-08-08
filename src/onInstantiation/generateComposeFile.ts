@@ -1,8 +1,8 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import { DockestConfig } from '../'
-import DockestError from '../errors/DockestError'
 import { ComposeFile, Runner } from '../runners/@types'
+import { DockestConfig } from '../index'
+import DockestError from '../errors/DockestError'
 
 export default (config: DockestConfig) => {
   const {

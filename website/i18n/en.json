@@ -52,15 +52,110 @@
       "typedoc": {
         "title": "Typedoc",
         "sidebar_label": "Typedoc"
+      },
+      "typedoc/classes/baseerror": {
+        "title": "BaseError",
+        "sidebar_label": "BaseError"
+      },
+      "typedoc/classes/configurationerror": {
+        "title": "ConfigurationError",
+        "sidebar_label": "ConfigurationError"
+      },
+      "typedoc/classes/dockest": {
+        "title": "Dockest",
+        "sidebar_label": "Dockest"
+      },
+      "typedoc/classes/dockesterror": {
+        "title": "DockestError",
+        "sidebar_label": "DockestError"
+      },
+      "typedoc/classes/kafkarunner": {
+        "title": "KafkaRunner",
+        "sidebar_label": "KafkaRunner"
+      },
+      "typedoc/classes/logger": {
+        "title": "Logger",
+        "sidebar_label": "Logger"
+      },
+      "typedoc/classes/postgresrunner": {
+        "title": "PostgresRunner",
+        "sidebar_label": "PostgresRunner"
+      },
+      "typedoc/classes/redisrunner": {
+        "title": "RedisRunner",
+        "sidebar_label": "RedisRunner"
+      },
+      "typedoc/classes/zookeeperrunner": {
+        "title": "ZooKeeperRunner",
+        "sidebar_label": "ZooKeeperRunner"
+      },
+      "typedoc/index": {
+        "title": "Dockest",
+        "sidebar_label": "Globals"
+      },
+      "typedoc/interfaces/baserunner": {
+        "title": "BaseRunner",
+        "sidebar_label": "BaseRunner"
+      },
+      "typedoc/interfaces/composefile": {
+        "title": "ComposeFile",
+        "sidebar_label": "ComposeFile"
+      },
+      "typedoc/interfaces/defaultableuserconfig": {
+        "title": "DefaultableUserConfig",
+        "sidebar_label": "DefaultableUserConfig"
+      },
+      "typedoc/interfaces/dockestconfig": {
+        "title": "DockestConfig",
+        "sidebar_label": "DockestConfig"
+      },
+      "typedoc/interfaces/errorpayload": {
+        "title": "ErrorPayload",
+        "sidebar_label": "ErrorPayload"
+      },
+      "typedoc/interfaces/internalconfig": {
+        "title": "InternalConfig",
+        "sidebar_label": "InternalConfig"
+      },
+      "typedoc/interfaces/jestconfig": {
+        "title": "JestConfig",
+        "sidebar_label": "JestConfig"
+      },
+      "typedoc/interfaces/jestlib": {
+        "title": "JestLib",
+        "sidebar_label": "JestLib"
+      },
+      "typedoc/interfaces/objstrstr": {
+        "title": "ObjStrStr",
+        "sidebar_label": "ObjStrStr"
+      },
+      "typedoc/interfaces/payload": {
+        "title": "Payload",
+        "sidebar_label": "Payload"
+      },
+      "typedoc/interfaces/requiredconfig": {
+        "title": "RequiredConfig",
+        "sidebar_label": "RequiredConfig"
+      },
+      "typedoc/interfaces/shareddefaultableconfigprops": {
+        "title": "SharedDefaultableConfigProps",
+        "sidebar_label": "SharedDefaultableConfigProps"
+      },
+      "typedoc/interfaces/sharedrequiredconfigprops": {
+        "title": "SharedRequiredConfigProps",
+        "sidebar_label": "SharedRequiredConfigProps"
       }
     },
     "links": {
-      "Docs": "Docs"
+      "Docs": "Docs",
+      "Types": "Types"
     },
     "categories": {
       "Getting started": "Getting started",
       "Interfaces": "Interfaces",
-      "Healthchecks": "Healthchecks"
+      "Healthchecks": "Healthchecks",
+      "Introduction": "Introduction",
+      "Classes": "Classes"
     }
   },
   "pages-strings": {

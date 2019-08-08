@@ -1,5 +1,5 @@
-import ZooKeeperRunner from '../ZooKeeperRunner'
 import KafkaRunner from './index'
+import ZooKeeperRunner from '../ZooKeeperRunner'
 
 const KafkaRunner1 = new KafkaRunner({
   dependsOn: [new ZooKeeperRunner({ service: 'zk1' })],

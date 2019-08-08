@@ -1,8 +1,12 @@
 export interface ErrorPayload {
   trap: string
   code?: number
-  signal?: any
   error?: Error
-  reason?: Error | any
   promise?: Promise<any>
+  reason?: Error | any
+  signal?: any
+}
+
+export interface ObjStrStr {
+  [key: string]: string
 }

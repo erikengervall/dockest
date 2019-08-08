@@ -1,8 +1,8 @@
-import { DockestConfig } from '../'
+import { DockestConfig } from '../index'
 import { ErrorPayload } from '../@types'
+import dumpError from '../utils/dumpError'
 import Logger from '../Logger'
 import teardownSingle from '../utils/teardownSingle'
-import dumpError from '../utils/dumpError'
 
 export default async (config: DockestConfig): Promise<void> => {
   const {

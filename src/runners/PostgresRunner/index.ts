@@ -1,46 +1,51 @@
-import Logger from '../../Logger'
-import validateConfig from '../../utils/validateConfig'
-import validateTypes from '../../utils/validateTypes'
-import { BaseRunner, GetComposeService, Runner } from '../@types'
-import { DEFAULT_CONFIG_VALUES } from '../constants'
+import {
+  BaseRunner,
+  GetComposeService,
+  Runner,
+  SharedDefaultableConfigProps,
+  SharedRequiredConfigProps,
+} from '../@types'
+import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
+import { ObjStrStr } from '../../@types'
 import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
+import Logger from '../../Logger'
+import validateConfig from '../../utils/validateConfig'
+import validateTypes from '../../utils/validateTypes'
 
-interface RequiredConfigProps {
+type RequiredConfigProps = {
   database: string
   password: string
-  service: string
   username: string
-}
-interface DefaultableConfigProps {
+} & SharedRequiredConfigProps
+
+type DefaultableConfigProps = {
   commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
   host: string
   image: string | undefined
-  ports: {
-    [key: string]: string
-  }
+  ports: ObjStrStr
   responsivenessTimeout: number
-}
-export type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+} & SharedDefaultableConfigProps
+
+type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
-  commands: DEFAULT_CONFIG_VALUES.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_VALUES.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_VALUES.DEPENDS_ON,
-  host: DEFAULT_CONFIG_VALUES.HOST,
-  image: DEFAULT_CONFIG_VALUES.IMAGE,
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
-  responsivenessTimeout: DEFAULT_CONFIG_VALUES.RESPONSIVENESS_TIMEOUT,
+  ...SHARED_DEFAULT_CONFIG_PROPS,
+  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
+  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
+  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
+  host: DEFAULT_CONFIG_PROPS.HOST,
+  image: DEFAULT_CONFIG_PROPS.IMAGE,
+  ports: { [DEFAULT_PORT]: DEFAULT_PORT },
+  responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
 }
 
 class PostgresRunner implements BaseRunner {
-  public static DEFAULT_HOST: string = DEFAULT_CONFIG_VALUES.HOST
+  public static DEFAULT_HOST: string = DEFAULT_CONFIG_PROPS.HOST
   public static DEFAULT_PORT: string = DEFAULT_PORT
   public containerId: string
   public runnerConfig: PostgresRunnerConfig
@@ -97,4 +102,5 @@ class PostgresRunner implements BaseRunner {
   }
 }
 
+export { PostgresRunnerConfig }
 export default PostgresRunner

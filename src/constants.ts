@@ -1,81 +1,76 @@
-export const ICONS = {
-  DEBUG: '🐛',
-  LOADING: '⏳',
-  SUCCESS: '✅',
-  ERROR: '❌',
-  STOPPED: '🛑',
-  WARN: '⚠️',
-  INFO: 'ℹ️',
-}
-
-export const COLORS = {
+export const COLORS = Object.freeze({
   MISC: {
-    RESET: '\x1b[0m',
+    BLINK: '\x1b[5m',
     BRIGHT: '\x1b[1m',
     DIM: '\x1b[2m',
-    UNDERSCORE: '\x1b[4m',
-    BLINK: '\x1b[5m',
-    REVERSE: '\x1b[7m',
     HIDDEN: '\x1b[8m',
+    RESET: '\x1b[0m',
+    REVERSE: '\x1b[7m',
+    UNDERSCORE: '\x1b[4m',
   },
   FG: {
     BLACK: '\x1b[30m',
-    RED: '\x1b[31m',
-    GREEN: '\x1b[32m',
-    YELLOW: '\x1b[33m',
     BLUE: '\x1b[34m',
-    MAGENTA: '\x1b[35m',
     CYAN: '\x1b[36m',
+    GREEN: '\x1b[32m',
+    MAGENTA: '\x1b[35m',
+    RED: '\x1b[31m',
     WHITE: '\x1b[37m',
+    YELLOW: '\x1b[33m',
   },
   BG: {
     BLACK: '\x1b[40m',
-    RED: '\x1b[41m',
-    GREEN: '\x1b[42m',
-    YELLOW: '\x1b[43m',
     BLUE: '\x1b[44m',
-    MAGENTA: '\x1b[45m',
     CYAN: '\x1b[46m',
+    GREEN: '\x1b[42m',
+    MAGENTA: '\x1b[45m',
+    RED: '\x1b[41m',
     WHITE: '\x1b[47m',
+    YELLOW: '\x1b[43m',
   },
-}
+})
 
-export const LOG_SYMBOLS = [
-  '🦊 ',
-  '🐼 ',
-  '🐒 ',
-  '🦋 ',
-  '🦄 ',
-  '🐥 ',
-  '🐙 ',
-  '🦖 ',
-  '🐞 ',
-  '🦂 ',
-  '🦍 ',
-  '🦃 ',
-  '🐿 ',
+export const LOG_SYMBOLS: readonly string[] = [
   '🐉 ',
+  '🐒 ',
+  '🐙 ',
+  '🐞 ',
+  '🐥 ',
+  '🐼 ',
+  '🐿 ',
+  '🦂 ',
+  '🦃 ',
+  '🦄 ',
+  '🦊 ',
+  '🦋 ',
+  '🦍 ',
+  '🦖 ',
   '🦚 ',
 ]
 
-export const LOG_LEVEL = {
+export const LOG_LEVEL = Object.freeze({
   NOTHING: 0,
   ERROR: 1,
   WARN: 2,
   INFO: 3,
   DEBUG: 4,
-}
+})
 
-export const DEFAULT_USER_CONFIG = {
+export const DEFAULT_USER_CONFIG = Object.freeze({
   afterSetupSleep: 0,
   composeFileName: 'docker-compose.yml',
-  dev: {
-    debug: false,
-  },
+  dev: { debug: false },
   dumpErrors: false,
   exitHandler: null,
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,
-}
+})
+
+export const INTERNAL_CONFIG = Object.freeze({
+  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
+  failedTeardowns: [],
+  jestRanWithResult: false,
+  perfStart: Date.now(),
+})
 
 export const PROCESS_TEST_ENV = 'dockest-test'

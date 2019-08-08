@@ -1,13 +1,13 @@
-import { ErrorPayload } from './@types'
-import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
-import ConfigurationError from './errors/ConfigurationError'
+import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
+import { ErrorPayload, ObjStrStr } from './@types'
+import { JestConfig } from './onRun/runJest'
+import { Runner } from './runners/@types'
+import * as runners from './runners'
 import BaseError from './errors/BaseError'
+import ConfigurationError from './errors/ConfigurationError'
+import execaWrapper from './utils/execaWrapper'
 import onInstantiation from './onInstantiation'
 import onRun from './onRun'
-import { JestConfig } from './onRun/runJest'
-import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
-import { Runner } from './runners/@types'
-import execaWrapper from './utils/execaWrapper'
 import sleep from './utils/sleep'
 import validateTypes from './utils/validateTypes'
 
@@ -16,10 +16,8 @@ interface RequiredConfig {
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
-  dev: {
-    debug?: boolean
-  }
   composeFileName: string
+  dev: { debug?: boolean }
   dumpErrors: boolean
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
@@ -27,6 +25,7 @@ interface DefaultableUserConfig {
 }
 interface InternalConfig {
   dockerComposeGeneratedPath: string
+  failedTeardowns: { service: string; containerId: string }[]
   jestRanWithResult: boolean
   perfStart: number
 }
@@ -35,12 +34,6 @@ export interface DockestConfig {
   opts: DefaultableUserConfig
   jest: JestConfig
   $: InternalConfig
-}
-
-const INTERNAL_CONFIG = {
-  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
-  jestRanWithResult: false,
-  perfStart: Date.now(),
 }
 
 class Dockest {
@@ -88,7 +81,7 @@ class Dockest {
     }
 
     // Validate service name uniqueness
-    const map: { [key: string]: string } = {}
+    const map: ObjStrStr = {}
     for (const runner of this.config.runners) {
       if (map[runner.runnerConfig.service]) {
         throw new ConfigurationError(
@@ -101,6 +94,5 @@ class Dockest {
 }
 
 const logLevel = LOG_LEVEL
-const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
 export { sleep, runners, execaWrapper as execa, logLevel }
 export default Dockest

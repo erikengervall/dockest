@@ -32,12 +32,17 @@ install:
 
   - echo "*** <travis.install> complete ***"
 script:
-  # docusaurus
+  # run linting
+  - yarn lint
+
+  # generate typedoc markdown files
+  - yarn travis:docs
+
+  # publish docusaurus website
   - git config --global user.name "${GH_NAME}"
   - git config --global user.email "${GH_EMAIL}"
   - echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
   - cd website
-  - yarn install
   - GIT_USER="${GH_NAME}" yarn publish-gh-pages
   - cd ../
 
