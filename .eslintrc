@@ -19,14 +19,20 @@
     },
     "project": "./tsconfig.json"
   },
-  "env": { "node": true },
+  "env": {
+    "node": true
+  },
 
   "rules": {
     "no-console": 2,
+
+    // Typescript
     // "@typescript-eslint/indent": ["error", 2, { "VariableDeclarator": 2 }],
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-use-before-define": 0,
     "@typescript-eslint/no-explicit-any": 0,
+
+    // Import
     "import/order": ["error", { "groups": ["builtin", "external", "index", "sibling", "parent", "internal"] }],
     "import/newline-after-import": ["error", { "count": 1 }]
 
