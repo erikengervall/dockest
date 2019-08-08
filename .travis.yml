@@ -32,6 +32,9 @@ install:
 
   - echo "*** <travis.install> complete ***"
 script:
+  # run linting
+  - yarn lint
+
   # generate typedoc markdown files
   - yarn travis:docs
 

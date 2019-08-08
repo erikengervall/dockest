@@ -1,8 +1,8 @@
 import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
 import { ErrorPayload, ObjStrStr } from './@types'
 import { JestConfig } from './onRun/runJest'
-import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
+import * as runners from './runners'
 import BaseError from './errors/BaseError'
 import ConfigurationError from './errors/ConfigurationError'
 import execaWrapper from './utils/execaWrapper'
@@ -101,6 +101,5 @@ class Dockest {
 }
 
 const logLevel = LOG_LEVEL
-const runners = { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner }
 export { sleep, runners, execaWrapper as execa, logLevel }
 export default Dockest

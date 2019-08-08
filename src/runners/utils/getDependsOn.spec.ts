@@ -1,5 +1,5 @@
-import { RedisRunner } from '../index'
 import getDependsOn from './getDependsOn'
+import { RedisRunner } from '../index'
 
 describe('getDependsOn', () => {
   it('should resolve service names from dependencies', () => {

@@ -3,6 +3,8 @@ import testUtils, { mockedExecaStdout, runnerCommand } from '../../testUtils'
 
 const { allRunners, execa } = testUtils({ withRunnerCommands: true })
 
+jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
+
 describe('runRunnerCommands', () => {
   describe('test all runner types', () => {
     allRunners.forEach(runner => {

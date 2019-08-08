@@ -1,9 +1,9 @@
-import { DockestConfig } from '../../index'
-import { Runner } from '../../runners/@types'
 import checkConnection from './checkConnection'
 import checkResponsiveness from './checkResponsiveness'
 import resolveContainerId from './resolveContainerId'
 import runRunnerCommands from './runRunnerCommands'
+import { Runner } from '../../runners/@types'
+import { DockestConfig } from '../../index'
 
 const setupRunner = async (runner: Runner) => {
   runner.logger.info('Setup initiated')

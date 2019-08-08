@@ -1,5 +1,4 @@
 import net from 'net'
-
 import { testables } from './checkConnection'
 
 const { acquireConnection } = testables

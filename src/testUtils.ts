@@ -1,15 +1,17 @@
 import { createMockProxy } from 'jest-mock-proxy'
-import execa from 'execa'
-
-import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
+import execa from 'execa' // eslint-disable-line import/default
+import * as runners from './runners'
 import { Runner } from './runners/@types'
 import Logger from './Logger'
 
 export const mockedExecaStdout = 'getContainerId 🌮'
 export const runnerCommand = 'runRunnerCommands 🌮'
 
-jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
-jest.mock('./Logger')
+/**
+ * FIXME: Would love for this to work 🦊
+ */
+// jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
+// jest.mock('./Logger')
 
 type testUtils = (opts: {
   withRunnerCommands?: boolean
@@ -26,6 +28,7 @@ type testUtils = (opts: {
 
 const testUtils: testUtils = ({ withRunnerCommands }) => {
   const withCmds = withRunnerCommands ? { commands: [runnerCommand] } : {}
+  const { ZooKeeperRunner, KafkaRunner, PostgresRunner, RedisRunner } = runners
 
   const zooKeeperRunner = new ZooKeeperRunner({
     service: 'zookeepeer',

@@ -1,5 +1,4 @@
 import net from 'net'
-
 import { Runner } from '../../runners/@types'
 import DockestError from '../../errors/DockestError'
 import sleep from '../../utils/sleep'
