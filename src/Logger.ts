@@ -93,7 +93,7 @@ class Logger {
   }
 
   private runnerService: string = ''
-  private runnerSymbol: string = ''
+  private runnerSymbol: string = '🦇 '
   public constructor(runner?: Runner) {
     this.runnerService = runner ? runner.runnerConfig.service : ''
   }

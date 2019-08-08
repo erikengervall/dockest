@@ -20,6 +20,9 @@ const getContainerId = async (runner: Runner): Promise<string> => {
   return containerId
 }
 
+const testables = { getContainerId }
+export { testables }
+
 export default async (runner: Runner): Promise<void> => {
   const {
     logger,
@@ -57,6 +60,3 @@ export default async (runner: Runner): Promise<void> => {
 
   await recurse(resolveContainerIdTimeout)
 }
-
-const testables = { getContainerId }
-export { testables }

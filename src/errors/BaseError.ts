@@ -1,12 +1,12 @@
 import { DockestConfig } from '../index'
-import { ICONS, PROCESS_TEST_ENV } from '../constants'
+import { PROCESS_TEST_ENV } from '../constants'
 import dumpError from '../utils/dumpError'
 
 export default class BaseError extends Error {
   public static DockestConfig: DockestConfig
 
   public constructor(message: string, payload?: object) {
-    let errorMessage = `${ICONS.ERROR} ${message}`
+    let errorMessage = `💥 ${message}`
     if (payload) {
       errorMessage = `${errorMessage}\n${JSON.stringify(payload, null, 2)}`
     }

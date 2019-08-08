@@ -9,8 +9,7 @@ export default (config: DockestConfig) => {
     const serviceHash = Math.abs(hashCode(service))
 
     if (LOG_SYMBOLS_CLONE.length === 0) {
-      // If there's not enough symbols, start over
-      LOG_SYMBOLS_CLONE = LOG_SYMBOLS.slice(0)
+      LOG_SYMBOLS_CLONE = LOG_SYMBOLS.slice(0) // If there's not enough symbols, reinitialize the array
     }
 
     const index = serviceHash % LOG_SYMBOLS_CLONE.length

@@ -1,14 +1,4 @@
-export const ICONS = {
-  DEBUG: '🐛',
-  ERROR: '❌',
-  INFO: 'ℹ️',
-  LOADING: '⏳',
-  STOPPED: '🛑',
-  SUCCESS: '✅',
-  WARN: '⚠️',
-}
-
-export const COLORS = {
+export const COLORS = Object.freeze({
   MISC: {
     BLINK: '\x1b[5m',
     BRIGHT: '\x1b[1m',
@@ -38,9 +28,9 @@ export const COLORS = {
     WHITE: '\x1b[47m',
     YELLOW: '\x1b[43m',
   },
-}
+})
 
-export const LOG_SYMBOLS = [
+export const LOG_SYMBOLS: readonly string[] = [
   '🐉 ',
   '🐒 ',
   '🐙 ',
@@ -58,15 +48,15 @@ export const LOG_SYMBOLS = [
   '🦚 ',
 ]
 
-export const LOG_LEVEL = {
+export const LOG_LEVEL = Object.freeze({
   NOTHING: 0,
   ERROR: 1,
   WARN: 2,
   INFO: 3,
   DEBUG: 4,
-}
+})
 
-export const DEFAULT_USER_CONFIG = {
+export const DEFAULT_USER_CONFIG = Object.freeze({
   afterSetupSleep: 0,
   composeFileName: 'docker-compose.yml',
   dev: { debug: false },
@@ -74,6 +64,13 @@ export const DEFAULT_USER_CONFIG = {
   exitHandler: null,
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,
-}
+})
+
+export const INTERNAL_CONFIG = Object.freeze({
+  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
+  failedTeardowns: [],
+  jestRanWithResult: false,
+  perfStart: Date.now(),
+})
 
 export const PROCESS_TEST_ENV = 'dockest-test'

@@ -1,4 +1,4 @@
-import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
+import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
 import { ErrorPayload, ObjStrStr } from './@types'
 import { JestConfig } from './onRun/runJest'
 import { Runner } from './runners/@types'
@@ -34,13 +34,6 @@ export interface DockestConfig {
   opts: DefaultableUserConfig
   jest: JestConfig
   $: InternalConfig
-}
-
-const INTERNAL_CONFIG = {
-  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
-  failedTeardowns: [],
-  jestRanWithResult: false,
-  perfStart: Date.now(),
 }
 
 class Dockest {

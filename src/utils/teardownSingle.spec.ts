@@ -1,5 +1,4 @@
 import { createMockProxy } from 'jest-mock-proxy'
-
 import teardownSingle from './teardownSingle'
 import testUtils, { mockedExecaStdout } from '../testUtils'
 

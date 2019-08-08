@@ -3,8 +3,6 @@ import { Runner } from '../../runners/@types'
 import DockestError from '../../errors/DockestError'
 import sleep from '../../utils/sleep'
 
-const { keys } = Object
-
 const acquireConnection = (host: string, port: string): Promise<void> =>
   new Promise((resolve, reject) => {
     let connected = false
@@ -27,35 +25,35 @@ const acquireConnection = (host: string, port: string): Promise<void> =>
     timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000)
   })
 
+const testables = { acquireConnection }
+export { testables }
+
 export default async (runner: Runner) => {
   const {
     runnerConfig: { service, connectionTimeout, host, ports },
     logger,
   } = runner
-  // TODO: Would it make sense to check connection for every port?
-  const port = keys(ports)[0]
 
-  const recurse = async (connectionTimeout: number) => {
-    logger.debug(`Checking connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`)
+  for (const port in ports) {
+    const recurse = async (connectionTimeout: number) => {
+      logger.debug(`Checking connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`)
 
-    if (connectionTimeout <= 0) {
-      throw new DockestError(`${service} connection timed out`)
+      if (connectionTimeout <= 0) {
+        throw new DockestError(`${service} connection timed out`)
+      }
+
+      try {
+        await acquireConnection(host, port)
+
+        logger.debug(`Checked connection successfully`)
+      } catch (error) {
+        connectionTimeout--
+
+        await sleep(1000)
+        await recurse(connectionTimeout)
+      }
     }
 
-    try {
-      await acquireConnection(host, port)
-
-      logger.debug(`Checked connection successfully`)
-    } catch (error) {
-      connectionTimeout--
-
-      await sleep(1000)
-      await recurse(connectionTimeout)
-    }
+    await recurse(connectionTimeout)
   }
-
-  await recurse(connectionTimeout)
 }
-
-const testables = { acquireConnection }
-export { testables }

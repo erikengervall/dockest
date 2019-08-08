@@ -25,7 +25,7 @@ describe('Dockest', () => {
   it('should be initializable and expose the main run method', () => {
     const Dockest = dockestExport.default
     const RedisRunner = dockestExport.runners.RedisRunner
-    const redisRunner = new RedisRunner({ service: 'redisrunner2000', image: 'redis2000' })
+    const redisRunner = new RedisRunner({ service: '_', image: '_' })
 
     const dockest = new Dockest({ runners: [redisRunner] })
 
