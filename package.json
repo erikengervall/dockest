@@ -36,7 +36,7 @@
     "travis:install": "yarn install:all",
     "travis:script": "yarn test:all",
     "lint": "yarn eslint ./src/**/*.ts",
-    "typedoc": "yarn typedoc ./src"
+    "docs": "yarn typedoc ./src"
   },
   "dependencies": {
     "execa": "^2.0.3",
@@ -54,6 +54,7 @@
     "@typescript-eslint/typescript-estree": "^1.13.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
     "jest-mock-proxy": "^3.0.0",
