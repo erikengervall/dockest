@@ -1,6 +1,8 @@
+import { ObjStrStr } from '../../@types'
+
 const { keys } = Object
 
-const getPorts = (ports: { [key: string]: string }): { ports: string[] } => ({
+const getPorts = (ports: ObjStrStr): { ports: string[] } => ({
   ports: keys(ports).map(key => {
     const externalPort = key
     const internalPort = ports[key]

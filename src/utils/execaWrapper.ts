@@ -1,5 +1,4 @@
-import execa from 'execa'
-
+import execa from 'execa' // eslint-disable-line import/default
 import { Runner } from '../runners/@types'
 import Logger from '../Logger'
 import trim from '../utils/trim'

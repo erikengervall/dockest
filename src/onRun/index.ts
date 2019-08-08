@@ -1,11 +1,10 @@
-import { DockestConfig } from '../index'
 import dockerComposeUp from './dockerComposeUp'
-import Logger from '../Logger'
-import reportFailedTeardowns from './reportFailedTeardowns'
 import runJest from './runJest'
+import waitForRunnersReadiness from './waitForRunnersReadiness'
+import { DockestConfig } from '../index'
+import Logger from '../Logger'
 import sleepForX from '../utils/sleepForX'
 import teardownSingle from '../utils/teardownSingle'
-import waitForRunnersReadiness from './waitForRunnersReadiness'
 
 const onRun = async (config: DockestConfig) => {
   const {
@@ -41,8 +40,7 @@ const onRun = async (config: DockestConfig) => {
       ),
     )
 
-    // Keep the docker containers running indefinitely
-    return
+    return // Keep the docker containers running indefinitely
   }
 
   const allTestsPassed = await runJest(config)
@@ -50,8 +48,6 @@ const onRun = async (config: DockestConfig) => {
   for (const runner of config.runners) {
     await teardownSingle(runner)
   }
-
-  reportFailedTeardowns(config)
 
   Logger.perf(perfStart)
   allTestsPassed ? process.exit(0) : process.exit(1)

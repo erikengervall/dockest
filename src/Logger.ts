@@ -1,6 +1,6 @@
+import readline from 'readline'
 import { LOG_LEVEL } from './constants'
 import { Runner } from './runners/@types'
-import readline from 'readline'
 
 interface Payload {
   data?: { [key: string]: any }
@@ -9,6 +9,7 @@ interface Payload {
   pnl?: number
   service?: string
   symbol?: string
+  error?: Error
 }
 
 type LogMethod = (message: string, payload?: Payload) => void

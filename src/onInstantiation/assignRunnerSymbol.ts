@@ -1,4 +1,4 @@
-import { DockestConfig } from '..'
+import { DockestConfig } from '../index'
 import { LOG_SYMBOLS } from '../constants'
 import hashCode from '../utils/hashCode'
 

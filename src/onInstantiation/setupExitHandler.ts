@@ -1,4 +1,4 @@
-import { DockestConfig } from '../'
+import { DockestConfig } from '../index'
 import { ErrorPayload } from '../@types'
 import dumpError from '../utils/dumpError'
 import Logger from '../Logger'

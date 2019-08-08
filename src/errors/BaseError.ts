@@ -1,4 +1,4 @@
-import { DockestConfig } from '..'
+import { DockestConfig } from '../index'
 import { ICONS, PROCESS_TEST_ENV } from '../constants'
 import dumpError from '../utils/dumpError'
 

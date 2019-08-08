@@ -1,5 +1,5 @@
-import { Runner } from '../runners/@types'
 import execaWrapper from './execaWrapper'
+import { Runner } from '../runners/@types'
 
 const stopContainerById = async (runner: Runner): Promise<void> => {
   const { containerId, logger } = runner
@@ -10,7 +10,7 @@ const stopContainerById = async (runner: Runner): Promise<void> => {
 
     await execaWrapper(command, runner)
   } catch (error) {
-    return logger.error('Unexpected error when stopping container')
+    return logger.error('Unexpected error when stopping container', { error })
   }
 
   logger.debug('Container stopped')
@@ -25,7 +25,7 @@ const removeContainerById = async (runner: Runner): Promise<void> => {
 
     await execaWrapper(command, runner)
   } catch (error) {
-    return logger.error('Unexpected error when removing container')
+    return logger.error('Unexpected error when removing container', { error })
   }
 
   logger.debug('Container removed')

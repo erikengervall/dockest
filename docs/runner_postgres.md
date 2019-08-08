@@ -6,6 +6,8 @@ sidebar_label: Postgres
 
 ## Minimal working example
 
+helo
+
 ```TypeScript
 const opts = {
   service: 'insert-service-here', // Should match the Compose file's intended service

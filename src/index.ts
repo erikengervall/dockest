@@ -1,5 +1,5 @@
 import { DEFAULT_USER_CONFIG, LOG_LEVEL } from './constants'
-import { ErrorPayload } from './@types'
+import { ErrorPayload, ObjStrStr } from './@types'
 import { JestConfig } from './onRun/runJest'
 import { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } from './runners'
 import { Runner } from './runners/@types'
@@ -88,7 +88,7 @@ class Dockest {
     }
 
     // Validate service name uniqueness
-    const map: { [key: string]: string } = {}
+    const map: ObjStrStr = {}
     for (const runner of this.config.runners) {
       if (map[runner.runnerConfig.service]) {
         throw new ConfigurationError(
