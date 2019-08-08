@@ -35,8 +35,7 @@
     "install:all": "yarn install && cd example && yarn install && cd ../example && yarn install",
     "travis:install": "yarn install:all",
     "travis:script": "yarn test:all",
-    "travis:docs": "yarn typedoc ./src --out ./website/build/typedoc",
-    "docs": "yarn typedoc ./src --out ./typedoc",
+    "travis:docs": "yarn typedoc ./src",
     "lint": "yarn eslint ./src/**/*.ts"
   },
   "dependencies": {

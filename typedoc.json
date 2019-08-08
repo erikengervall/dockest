@@ -9,5 +9,8 @@
   ],
   "excludeExternals": true,
   "includeDeclarations": true,
-  "theme": "markdown"
+  "theme": "markdown",
+  "platform": "docusaurus",
+  "readme": "none",
+  "out": "docs/typedoc"
 }
