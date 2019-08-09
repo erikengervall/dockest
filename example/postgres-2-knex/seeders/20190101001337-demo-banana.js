@@ -1,4 +1,4 @@
-const { seedBanana } = require('../data.json')
+const { seedBanana } = require('../data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const seed = knex =>
   knex('bananas').insert([

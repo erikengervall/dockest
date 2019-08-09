@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import dotenv from 'dotenv'
 import Dockest, { logLevel, runners } from '../src'
 

@@ -1,4 +1,5 @@
 const dotenv = require('dotenv') // eslint-disable-line @typescript-eslint/no-var-requires
+
 const env = dotenv.config().parsed
 
 const dbConfig = {

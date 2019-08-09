@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
-import { execa } from '../../src'
-import { runOrSkip } from '../testUtils'
 import app from './app'
 // @ts-ignore
 import { seedUser } from './data.json'
+import { execa } from '../../src'
+import { runOrSkip } from '../testUtils'
 
 const specWrapper = () => {
   beforeEach(async () => {

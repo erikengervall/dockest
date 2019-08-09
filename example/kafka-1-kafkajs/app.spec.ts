@@ -1,9 +1,7 @@
-// tslint:disable:no-console
-
 import dotenv from 'dotenv'
+import main from './app'
 import { sleep } from '../../src'
 import { runOrSkip } from '../testUtils'
-import main from './app'
 
 jest.setTimeout(1000 * 60)
 const env = dotenv.config().parsed
@@ -13,7 +11,7 @@ const waitForEventConsumption = async (
   endBatchProcessListener: (args: { counter: number }) => void,
   startConsuming: () => Promise<void>,
   emit: () => Promise<void>,
-  timeout: number = 15
+  timeout: number = 15,
 ): Promise<void> => {
   const opts = { counter: 0 }
   endBatchProcessListener(opts)
@@ -24,16 +22,18 @@ const waitForEventConsumption = async (
 
   const recurse = async (): Promise<void> => {
     timeout--
+
+    // eslint-disable-next-line no-console
     console.log(
-      `⏳ Waiting for published events to be consumed (Progress: ${opts.counter}/${targetCount}) (Timeout in: ${timeout}s)`
+      `⏳ Waiting for published events to be consumed (Progress: ${opts.counter}/${targetCount}) (Timeout in: ${timeout}s)`,
     )
     if (timeout <= 0) {
       throw new Error('❌ Waiting for event consumption timed out')
     }
 
     if (opts.counter === targetCount) {
-      console.log(`✅ Successfully consumed ${opts.counter}/${targetCount} messages`)
-      return
+      // eslint-disable-next-line no-console
+      return console.log(`✅ Successfully consumed ${opts.counter}/${targetCount} messages`)
     }
 
     await sleep(1000)
@@ -60,7 +60,7 @@ const specWrapper = () => {
         key,
         messages,
         mockConsumptionCallback,
-        mockProductionCallback
+        mockProductionCallback,
       )
 
       await waitForEventConsumption(
@@ -71,7 +71,7 @@ const specWrapper = () => {
           })
         },
         startConsuming,
-        emit
+        emit,
       )
       await stopConsuming()
 

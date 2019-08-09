@@ -1,5 +1,4 @@
 import Sequelize from 'sequelize'
-
 import postgresConfig from '../config/postgresConfig.js'
 
 const config = postgresConfig.test
@@ -15,7 +14,7 @@ const UserModel = sequelize.define(
     lastName: Sequelize.STRING,
     email: Sequelize.STRING,
   },
-  {}
+  {},
 )
 
 db.sequelize = sequelize

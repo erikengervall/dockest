@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
-import { runOrSkip } from '../testUtils'
 import app from './app'
-// @ts-ignore
-import { seedCake } from './data.json'
+import { runOrSkip } from '../testUtils'
+
+const { seedCake } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const specWrapper = () =>
   describe('redis-1-ioredis', () => {

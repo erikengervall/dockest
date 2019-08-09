@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import Redis from 'ioredis'
-// @ts-ignore
-import { seedCake } from './data.json'
+
+const { seedCake } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const env: any = dotenv.config().parsed
 const redis = new Redis({

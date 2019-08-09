@@ -1,4 +1,3 @@
-const skip = () => describe.skip('', () => it('is skipped'))
+const skip = () => describe.skip('', () => it('should be skipped'))
 
-export const runOrSkip = (enabled: string, specWrapper: () => void) =>
-  enabled === 'true' ? specWrapper() : skip()
+export const runOrSkip = (enabled: string, specWrapper: () => void) => (enabled === 'true' ? specWrapper() : skip())

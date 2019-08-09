@@ -1,9 +1,8 @@
 import dotenv from 'dotenv'
-import { execa } from '../../src'
-import { runOrSkip } from '../testUtils'
 import app from './app'
-// @ts-ignore
-import { seedBanana } from './data.json'
+import { runOrSkip } from '../testUtils'
+
+const { seedBanana } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const specWrapper = () =>
   describe('postgres-2-knex', () => {

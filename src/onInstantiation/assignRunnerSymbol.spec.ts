@@ -1,7 +1,7 @@
 import { createMockProxy } from 'jest-mock-proxy'
-import assignRunnerSymbol from './assignRunnerSymbol'
 import { DEFAULT_USER_CONFIG, INTERNAL_CONFIG, LOG_SYMBOLS } from '../constants'
 import { runners } from '../index'
+import assignRunnerSymbol from './assignRunnerSymbol'
 
 jest.mock('../Logger')
 

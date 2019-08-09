@@ -1,6 +1,6 @@
-// @ts-ignore
-import { seedUser } from './data.json'
 import postgres1sequelize from './models'
+
+const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const getFirstEntry = async () =>
   postgres1sequelize.UserModel.findOne({

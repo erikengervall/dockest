@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
-// tslint:disable-next-line
-const { Kafka, logLevel } = require('kafkajs')
+
+const { Kafka, logLevel } = require('kafkajs') // eslint-disable-line @typescript-eslint/no-var-requires
 
 type JestFn = (_: any) => void
 
@@ -17,7 +17,7 @@ const kafka = new Kafka({
 })
 
 const createConsumer = (
-  mockConsumptionCallback: JestFn
+  mockConsumptionCallback: JestFn,
 ): { consumer: any; startConsuming: () => Promise<void>; stopConsuming: () => Promise<void> } => {
   const consumer = kafka.consumer({ groupId: env.kafka1confluentinc_consumer_group_id })
 
@@ -49,7 +49,7 @@ const createConsumer = (
 const produceMessage = (
   key: string,
   messages: string[],
-  mockProductionCallback: JestFn
+  mockProductionCallback: JestFn,
 ): { emit: () => Promise<void> } => {
   const producer = kafka.producer()
   const payload = {
@@ -70,12 +70,7 @@ const produceMessage = (
   }
 }
 
-const app = (
-  key: string,
-  messages: string[],
-  mockConsumptionCallback: JestFn,
-  mockProductionCallback: JestFn
-) => ({
+const app = (key: string, messages: string[], mockConsumptionCallback: JestFn, mockProductionCallback: JestFn) => ({
   ...createConsumer(mockConsumptionCallback),
   ...produceMessage(key, messages, mockProductionCallback),
 })
