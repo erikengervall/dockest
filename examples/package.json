@@ -6,7 +6,7 @@
   "scripts": {
     "test:1": "ts-node ./example-1/dockest.ts",
     "test:2": "ts-node ./example-2/dockest.ts",
-    "test": "yarn test:1 && yarn test:2"
+    "test": "yarn test:1"
   },
   "dependencies": {
     "dotenv": "^8.0.0",
