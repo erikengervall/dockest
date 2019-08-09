@@ -28,7 +28,7 @@ before_install:
 
   - echo "*** <travis.before_install> complete ***"
 install:
-  - yarn travis:install
+  - yarn install:all
 
   - echo "*** <travis.install> complete ***"
 script:
@@ -36,7 +36,7 @@ script:
   - yarn lint
 
   # generate typedoc markdown files
-  - yarn travis:docs
+  - yarn generate:typedoc
 
   # publish docusaurus website
   - git config --global user.name "${GH_NAME}"
@@ -48,4 +48,4 @@ script:
 
   # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   # - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-  - yarn travis:script
+  - yarn test:all

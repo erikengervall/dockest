@@ -1,20 +1,17 @@
 {
-  "name": "example",
+  "name": "examples",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "install:1": "cd example-1 && yarn --force && cd ..",
     "install:2": "cd example-2 && yarn --force && cd ..",
+    "install:all": "yarn --force && yarn install:1 && yarn install:2",
     "test:1": "cd example-1 && yarn test && cd ..",
     "test:2": "cd example-2 && yarn test && cd ..",
-    "install:all": "yarn --force && yarn install:1 && yarn install:2",
     "test": "yarn test:1"
   },
   "devDependencies": {
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "ts-node": "^8.0.2",
-    "typescript": "^3.5.3"
+    "ts-node": "^8.3.0"
   }
 }

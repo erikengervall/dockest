@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# root
+yarn --force
+
+# examples
+cd examples
+yarn install:all
+cd ..
+
+# website
+cd website
+yarn
+cd ..
