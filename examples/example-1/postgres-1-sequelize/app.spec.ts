@@ -3,7 +3,7 @@ import app from './app'
 import { execa } from '../../../src'
 import { runOrSkip } from '../testUtils'
 
-const { seedUser } = require('./data.json.js') // eslint-disable-line @typescript-eslint/no-var-requires
+const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const specWrapper = () => {
   beforeEach(async () => {
