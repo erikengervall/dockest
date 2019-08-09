@@ -46,7 +46,7 @@ export default async (config: DockestConfig): Promise<void> => {
   }
 
   // so the program will not close instantly
-  process.stdin.resume()
+  process.stdin.resume() // FIXME: causes "Jest has detected the following 1 open handle potentially keeping Jest from exiting:"
 
   // do something when app is closing
   process.on('exit', async code => exitHandler({ trap: 'exit', code }))
