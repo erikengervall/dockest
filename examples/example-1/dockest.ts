@@ -83,7 +83,7 @@ const dockest = new Dockest({
     afterSetupSleep: 10,
     composeFileName: 'docker-compose-dockest.yml',
     dev: {
-      debug: true,
+      // debug: true,
     },
     dumpErrors: false,
     exitHandler: ({ trap }) => console.log(`Hello ${trap}, nice to meet you 👋🏼`), // eslint-disable-line no-console

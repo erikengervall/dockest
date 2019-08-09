@@ -5,16 +5,5 @@
   "license": "MIT",
   "scripts": {
     "test": "ts-node ./dockest.ts"
-  },
-  "dependencies": {
-    "ioredis": "^4.14.0"
-  },
-  "devDependencies": {
-    "@types/ioredis": "^4.0.13",
-    "@types/jest": "^24.0.17",
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "ts-node": "^8.0.2",
-    "typescript": "^3.5.3"
   }
 }

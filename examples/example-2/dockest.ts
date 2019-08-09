@@ -19,7 +19,7 @@ const dockest = new Dockest({
   },
   opts: {
     dev: {
-      debug: true,
+      // debug: true,
     },
     logLevel: logLevel.DEBUG,
   },
