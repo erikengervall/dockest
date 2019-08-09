@@ -3,7 +3,7 @@ import Dockest, { logLevel, runners } from '../../src'
 const { RedisRunner } = runners
 
 /**
- * Placeholder in order for Dockest to not throw configuration errors due to lack of runners
+ * Placeholder runner in order for Dockest to not throw configuration errors due to lack of runners
  */
 const redis1ioredisRunner = new RedisRunner({
   service: 'never_gonna_give_you_up',
@@ -14,8 +14,9 @@ const redis1ioredisRunner = new RedisRunner({
 const dockest = new Dockest({
   runners: [redis1ioredisRunner],
   jest: {
+    lib: require('jest'),
+    projects: ['<rootDir>/projects/*'],
     verbose: true,
-    projects: ['.'],
   },
   opts: {
     dev: {
