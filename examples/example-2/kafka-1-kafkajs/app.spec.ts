@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import main from './app'
-import { sleep } from '../../src'
+import { sleep } from '../../../src'
 import { runOrSkip } from '../testUtils'
 
 jest.setTimeout(1000 * 60)

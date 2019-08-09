@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import Dockest, { logLevel, runners } from '../src'
+import Dockest, { logLevel, runners } from '../../src'
 
 const env: any = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
@@ -83,7 +83,7 @@ const dockest = new Dockest({
     afterSetupSleep: 10,
     composeFileName: 'docker-compose-dockest.yml',
     dev: {
-      // debug: true,
+      debug: true,
     },
     dumpErrors: false,
     exitHandler: ({ trap }) => console.log(`Hello ${trap}, nice to meet you 👋🏼`), // eslint-disable-line no-console

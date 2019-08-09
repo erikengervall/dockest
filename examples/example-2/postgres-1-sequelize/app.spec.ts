@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 import app from './app'
-// @ts-ignore
-import { seedUser } from './data.json'
-import { execa } from '../../src'
+import { execa } from '../../../src'
 import { runOrSkip } from '../testUtils'
+
+const { seedUser } = require('./data.json.js') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const specWrapper = () => {
   beforeEach(async () => {
