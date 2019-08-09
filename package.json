@@ -31,7 +31,7 @@
     "test": "jest ./src --forceExit --detectOpenHandles",
     "test:example": "cd example && yarn test && cd ..",
     "test:all": "yarn test && yarn test:example",
-    "dev:setup": "./dev-toolbox/setup && yarn install:all",
+    "dev:setup": "./tools/setup && yarn install:all",
     "install:all": "yarn install && cd example && yarn install && cd ../website && yarn install",
     "travis:install": "yarn install:all",
     "travis:script": "yarn test:all",
