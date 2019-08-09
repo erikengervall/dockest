@@ -10,5 +10,5 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/'],
   setupFiles: ['./jest.setup.ts'],
   roots: ['./src'],
-  projects: ['<rootDir>/src', '<rootDir>/example'],
+  projects: ['<rootDir>/src'],
 }
