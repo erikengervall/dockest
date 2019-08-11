@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "yarn ts-node ./dockest.ts"
+    "test": "cd ../../ && yarn build && cd ./examples/example-2 && node ./dockest.js"
   },
   "devDependencies": {
     "@types/jest": "^24.0.17",

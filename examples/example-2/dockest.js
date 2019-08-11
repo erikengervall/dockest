@@ -1,6 +1,8 @@
-import Dockest, { logLevel, runners } from '../../src'
-
-const { RedisRunner } = runners
+const {
+  default: Dockest,
+  logLevel,
+  runners: { RedisRunner },
+} = require('../../dist') // eslint-disable-line @typescript-eslint/no-var-requires
 
 /**
  * Placeholder runner in order for Dockest to not throw configuration errors due to lack of runners
