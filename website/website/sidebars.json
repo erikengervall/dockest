@@ -1,0 +1,33 @@
+{
+  "dockest": {
+    "Introduction": [
+      "typedoc/index"
+    ],
+    "Classes": [
+      "typedoc/classes/baseerror",
+      "typedoc/classes/configurationerror",
+      "typedoc/classes/dockest",
+      "typedoc/classes/dockesterror",
+      "typedoc/classes/kafkarunner",
+      "typedoc/classes/logger",
+      "typedoc/classes/postgresrunner",
+      "typedoc/classes/redisrunner",
+      "typedoc/classes/zookeeperrunner"
+    ],
+    "Interfaces": [
+      "typedoc/interfaces/baserunner",
+      "typedoc/interfaces/composefile",
+      "typedoc/interfaces/defaultableuserconfig",
+      "typedoc/interfaces/dockestconfig",
+      "typedoc/interfaces/errorpayload",
+      "typedoc/interfaces/internalconfig",
+      "typedoc/interfaces/jestconfig",
+      "typedoc/interfaces/jestlib",
+      "typedoc/interfaces/objstrstr",
+      "typedoc/interfaces/payload",
+      "typedoc/interfaces/requiredconfig",
+      "typedoc/interfaces/shareddefaultableconfigprops",
+      "typedoc/interfaces/sharedrequiredconfigprops"
+    ]
+  }
+}
