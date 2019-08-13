@@ -6,13 +6,14 @@
  */
 
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'Dockest',
+  tagline:
+    'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
+  url: 'https://erikengervall.github.io/dockest/',
   baseUrl: '/',
-  favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  favicon: 'img/favicon.png',
+  organizationName: 'erikengervall', // Usually your GitHub org/user name.
+  projectName: 'Dockest', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'My Site',
@@ -22,12 +23,8 @@ module.exports = {
       },
       links: [
         { to: 'docs/doc1', label: 'Docs', position: 'left' },
-        { to: 'blog', label: 'Blog', position: 'left' },
-        {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
-        },
+        { to: 'docs/typedoc/index', label: 'Typedocs', position: 'left' },
+        { href: 'https://github.com/erikengervall/dockest', label: 'GitHub', position: 'right' },
       ],
     },
     footer: {
@@ -42,27 +39,9 @@ module.exports = {
             },
           ],
         },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'Social',
-          items: [
-            {
-              label: 'Blog',
-              to: 'blog',
-            },
-          ],
-        },
       ],
       logo: {
-        alt: 'Facebook Open Source Logo',
+        alt: 'Engervall',
         src: 'https://docusaurus.io/img/oss_logo.png',
       },
       copyright: `Copyright © ${new Date().getFullYear()} Engervall, Built with Docusaurus.`,
