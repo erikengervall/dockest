@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react'
+import React from 'react' // eslint-disable-line @typescript-eslint/no-unused-vars
 import classnames from 'classnames'
-import Layout from '@theme/Layout'
-import Link from '@docusaurus/Link'
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
-import withBaseUrl from '@docusaurus/withBaseUrl'
+import Layout from '@theme/Layout' // eslint-disable-line import/no-unresolved, @typescript-eslint/no-unused-vars
+import Link from '@docusaurus/Link' // eslint-disable-line import/no-unresolved, @typescript-eslint/no-unused-vars
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext' // eslint-disable-line import/no-unresolved
+import withBaseUrl from '@docusaurus/withBaseUrl' // eslint-disable-line import/no-unresolved
 import styles from './styles.module.css'
 
 const features = [
@@ -49,8 +49,13 @@ const features = [
 function Home() {
   const context = useDocusaurusContext()
   const { siteConfig = {} } = context
+
   return (
-    <Layout title={`Hello from ${siteConfig.title}`} description="Description will go into a meta tag in <head />">
+    <Layout
+      title={`${siteConfig.title}`}
+      description="Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications"
+    >
+      {/* <img src={withBaseUrl('img/logo.png')} /> */}
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -58,7 +63,7 @@ function Home() {
           <div className={styles.buttons}>
             <Link
               className={classnames('button button--outline button--secondary button--lg', styles.getStarted)}
-              to={withBaseUrl('docs/doc1')}
+              to={withBaseUrl('docs/introduction')}
             >
               Get Started
             </Link>

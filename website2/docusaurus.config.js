@@ -8,7 +8,7 @@
 module.exports = {
   title: 'Dockest',
   tagline:
-    'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
+    'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications',
   url: 'https://erikengervall.github.io/dockest/',
   baseUrl: '/',
   favicon: 'img/favicon.png',
@@ -16,36 +16,17 @@ module.exports = {
   projectName: 'Dockest', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
+      title: 'Dockest',
       links: [
-        { to: 'docs/doc1', label: 'Docs', position: 'left' },
+        { to: 'docs/introduction', label: 'Docs', position: 'left' },
         { to: 'docs/typedoc/index', label: 'Typedocs', position: 'left' },
         { href: 'https://github.com/erikengervall/dockest', label: 'GitHub', position: 'right' },
       ],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Docs',
-              to: 'docs/doc1',
-            },
-          ],
-        },
-      ],
-      logo: {
-        alt: 'Engervall',
-        src: 'https://docusaurus.io/img/oss_logo.png',
-      },
-      copyright: `Copyright © ${new Date().getFullYear()} Engervall, Built with Docusaurus.`,
-    },
+    // footer: {
+    //   style: 'dark',
+    //   copyright: `Copyright © ${new Date().getFullYear()} Engervall`,
+    // },
   },
   presets: [
     [

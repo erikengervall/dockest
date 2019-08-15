@@ -18,7 +18,5 @@ module.exports = {
       },
     ],
     Healthchecks: ['connectivity', 'responsiveness'],
-    Docusaurus: ['doc1', 'doc2', 'doc3'],
-    Features: ['mdx'],
   },
 }
