@@ -2,10 +2,16 @@ import KafkaRunner, { KafkaRunnerConfig } from './KafkaRunner'
 import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
 import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
+import SimpleRunner, { SimpleRunnerConfig } from './SimpleRunner'
 
-export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner
+export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | SimpleRunner
 
-export type RunnerConfig = KafkaRunnerConfig | PostgresRunnerConfig | RedisRunnerConfig | ZooKeeperRunnerConfig
+export type RunnerConfig =
+  | KafkaRunnerConfig
+  | PostgresRunnerConfig
+  | RedisRunnerConfig
+  | ZooKeeperRunnerConfig
+  | SimpleRunnerConfig
 
 export interface ComposeFile {
   depends_on?: string[]
