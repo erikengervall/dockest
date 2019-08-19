@@ -17,6 +17,7 @@ describe('Dockest', () => {
         PostgresRunner: expect.any(Function),
         RedisRunner: expect.any(Function),
         ZooKeeperRunner: expect.any(Function),
+        SimpleRunner: expect.any(Function),
       },
       sleep: expect.any(Function),
     })
