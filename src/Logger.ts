@@ -65,7 +65,8 @@ class Logger {
   }
 
   public static replacePrevLine = (m: string, isLast: boolean = false): void => {
-    readline.cursorTo(process.stdout, 0, 0)
+    // @ts-ignore
+    readline.cursorTo(process.stdout, 0, null)
     process.stdout.write(m)
 
     if (isLast) {
