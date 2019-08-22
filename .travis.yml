@@ -20,9 +20,9 @@ before_install:
   - docker-compose --version
 
   # pull example images
-  - cd example
+  - cd examples/example-1
   - docker-compose -f docker-compose-dockest.yml pull
-  - cd ../
+  - cd ../../
 
   - yarn global add typescript
 
