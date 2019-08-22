@@ -1,0 +1,14 @@
+{
+  "name": "example-2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "cd ../../ && yarn build && cd ./examples/example-2 && node ./dockest.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.17",
+    "jest": "^24.8.0",
+    "ts-node": "^8.3.0"
+  }
+}

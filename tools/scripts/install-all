@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# root
+yarn --force
+
+# examples
+cd examples
+yarn install:all
+cd ..
+
+# website docusaurus v2: https://v2.docusaurus.io/
+cd website2
+yarn
+cd ..
+
+# website docusaurus v: https://docusaurus.io/
+cd website
+yarn
+cd ..

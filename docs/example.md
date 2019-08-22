@@ -39,14 +39,12 @@ module.exports = {
 ```TypeScript
 import Dockest, { runners } from 'dockest'
 
-const { RedisRunner } = runners
-
-const myRedisRunner = new RedisRunner({
-service: 'insert-service-name-here',
-})
-
 const dockest = new Dockest({
-runners: [myRedisRunner],
+  runners: [
+    new runners.RedisRunner({
+      service: 'insert-service-name-here',
+    }),
+  ],
 })
 
 dockest.run()
@@ -71,15 +69,15 @@ dockest.run()
 ```JavaScript
 const {
   default: Dockest,
-  runners: { PostgresRunner },
+  runners: { RedisRunner },
 } = require('dockest')
 
-const myRedisRunner = new RedisRunner({
-  service: 'insert-service-name-here',
-})
-
 const dockest = new Dockest({
-  runners: [myRedisRunner],
+  runners: [
+    new RedisRunner({
+      service: 'insert-service-name-here',
+    }),
+  ],
 })
 
 dockest.run()

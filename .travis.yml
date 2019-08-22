@@ -20,15 +20,15 @@ before_install:
   - docker-compose --version
 
   # pull example images
-  - cd example
+  - cd examples/example-1
   - docker-compose -f docker-compose-dockest.yml pull
-  - cd ../
+  - cd ../../
 
   - yarn global add typescript
 
   - echo "*** <travis.before_install> complete ***"
 install:
-  - yarn travis:install
+  - yarn install:all
 
   - echo "*** <travis.install> complete ***"
 script:
@@ -36,19 +36,19 @@ script:
   - yarn lint
 
   # generate typedoc markdown files
-  - yarn travis:docs
+  - yarn generate:typedoc
 
   # publish docusaurus website
   # only merge when pushed to master
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
-      git config --global user.name "${GH_NAME}";
-      git config --global user.email "${GH_EMAIL}";
-      echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc;
-      cd website;
-      GIT_USER="${GH_NAME}" yarn publish-gh-pages;
-      cd ../;
+    git config --global user.name "${GH_NAME}";
+    git config --global user.email "${GH_EMAIL}";
+    echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc;
+    cd website;
+    GIT_USER="${GH_NAME}" yarn publish-gh-pages;
+    cd ../;
     fi
 
   # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   # - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-  - yarn travis:script
+  - yarn test:all

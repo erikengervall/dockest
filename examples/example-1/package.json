@@ -1,0 +1,27 @@
+{
+  "name": "example-1",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "../node_modules/.bin/ts-node ./dockest.ts"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "ioredis": "^4.14.0",
+    "kafkajs": "^1.10.0",
+    "knex": "^0.19.1",
+    "pg": "^7.12.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^5.15.1",
+    "sequelize-cli": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.0",
+    "@types/ioredis": "^4.0.13",
+    "@types/kafkajs": "^1.8.2",
+    "@types/knex": "^0.16.1",
+    "@types/pg": "^7.4.14",
+    "@types/sequelize": "^4.28.4"
+  }
+}
