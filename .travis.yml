@@ -45,7 +45,7 @@ script:
     git config --global user.email "${GH_EMAIL}";
     echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc;
     cd website;
-    GIT_USER="${GH_NAME}" yarn deploy;
+    GIT_USER="${GH_NAME}" yarn publish-gh-pages;
     cd ../;
     fi
 
