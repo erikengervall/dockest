@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
   "keywords": [
     "docker",
