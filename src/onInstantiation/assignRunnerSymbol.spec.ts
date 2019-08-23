@@ -1,15 +1,16 @@
 import { createMockProxy } from 'jest-mock-proxy'
-import { DEFAULT_USER_CONFIG, INTERNAL_CONFIG, LOG_SYMBOLS } from '../constants'
-import { runners } from '../index'
 import assignRunnerSymbol from './assignRunnerSymbol'
+import { runners } from '../index'
+import { DEFAULT_USER_CONFIG, INTERNAL_CONFIG, LOG_SYMBOLS } from '../constants'
 
 jest.mock('../Logger')
 
 const { RedisRunner } = runners
-const createDockestConfig = (numberOfRunners: number = 1) => {
+const createDockestConfig = (numberOfRunners = 1) => {
   const manyRedisRunners = Array.from(Array(numberOfRunners), (_, index) => {
     const redisRunner = new RedisRunner({ service: `${index}`, image: '_' })
     redisRunner.logger = createMockProxy()
+
     return redisRunner
   })
 
