@@ -92,6 +92,12 @@ const siteConfig = {
   // template. For example, if you need your repo's URL...
   repoUrl: 'https://github.com/erikengervall/dockest',
   engineeringBlogPostUrl,
+
+  algolia: {
+    apiKey: '9bf9f3d6b00b633293ccea7bbd73a7d1',
+    indexName: 'dockest',
+    algoliaOptions: {}, // Optional, if provided by Algolia
+  },
 }
 
 module.exports = siteConfig
