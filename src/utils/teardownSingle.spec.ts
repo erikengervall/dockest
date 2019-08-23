@@ -9,7 +9,6 @@ jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
 describe('teardownSingle', () => {
   beforeEach(() => {
-    // @ts-ignore
     execa.mockClear()
     redisRunner.logger = createMockProxy()
   })
@@ -26,7 +25,6 @@ describe('teardownSingle', () => {
   describe('sad', () => {
     it('should log and swallow teardown errors', async () => {
       const error = new Error('Unexpected teardown error')
-      // @ts-ignore
       execa.mockImplementation(() => {
         throw error
       })
