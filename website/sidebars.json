@@ -36,6 +36,7 @@
       "typedoc/classes/logger",
       "typedoc/classes/postgresrunner",
       "typedoc/classes/redisrunner",
+      "typedoc/classes/simplerunner",
       "typedoc/classes/zookeeperrunner"
     ],
     "Interfaces": [
