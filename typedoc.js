@@ -7,5 +7,5 @@ module.exports = {
   theme: 'markdown',
   platform: 'docusaurus',
   readme: 'none',
-  out: 'website/docs/typedoc',
+  out: 'docs/typedoc',
 }

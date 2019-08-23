@@ -28,6 +28,11 @@ module.exports = {
     //   copyright: `Copyright © ${new Date().getFullYear()} Engervall`,
     // },
   },
+  algolia: {
+    apiKey: '9bf9f3d6b00b633293ccea7bbd73a7d1',
+    indexName: 'dockest',
+    algoliaOptions: {}, // Optional, if provided by Algolia
+  },
   presets: [
     [
       '@docusaurus/preset-classic',

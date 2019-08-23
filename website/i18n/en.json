@@ -49,10 +49,6 @@
         "title": "ZooKeeper",
         "sidebar_label": "ZooKeeper"
       },
-      "typedoc": {
-        "title": "Typedoc",
-        "sidebar_label": "Typedoc"
-      },
       "typedoc/classes/baseerror": {
         "title": "BaseError",
         "sidebar_label": "BaseError"
@@ -84,6 +80,10 @@
       "typedoc/classes/redisrunner": {
         "title": "RedisRunner",
         "sidebar_label": "RedisRunner"
+      },
+      "typedoc/classes/simplerunner": {
+        "title": "SimpleRunner",
+        "sidebar_label": "SimpleRunner"
       },
       "typedoc/classes/zookeeperrunner": {
         "title": "ZooKeeperRunner",
