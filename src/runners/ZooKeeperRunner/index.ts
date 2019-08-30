@@ -44,11 +44,12 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class ZooKeeperRunner implements BaseRunner {
-  public static DEFAULT_HOST: string = DEFAULT_CONFIG_PROPS.HOST
-  public static DEFAULT_PORT: string = DEFAULT_PORT
+  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_PORT = DEFAULT_PORT
+  public containerId = ''
+  public initializer = ''
   public runnerConfig: ZooKeeperRunnerConfig
   public logger: Logger
-  public containerId: string
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.runnerConfig = {
@@ -56,7 +57,6 @@ class ZooKeeperRunner implements BaseRunner {
       ...config,
     }
     this.logger = new Logger(this)
-    this.containerId = ''
 
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,

@@ -1,7 +1,11 @@
 import execaWrapper from './execaWrapper'
 import testUtils, { mockedExecaStdout } from '../testUtils'
 
-const { redisRunner, Logger, execa } = testUtils({})
+const {
+  initializedRunners: { redisRunner },
+  Logger,
+  execa,
+} = testUtils({})
 
 jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 jest.mock('../Logger')

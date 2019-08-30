@@ -41,12 +41,12 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class SimpleRunner implements BaseRunner {
-  public containerId: string
+  public containerId = ''
+  public initializer = ''
   public runnerConfig: SimpleRunnerConfig
   public logger: Logger
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    this.containerId = ''
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,

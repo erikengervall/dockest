@@ -5,6 +5,8 @@ import { runOrSkip } from '../testUtils'
 
 const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
+const env: any = dotenv.config().parsed
+
 const specWrapper = () => {
   beforeEach(async () => {
     await execa('sequelize db:seed:undo:all')
@@ -28,4 +30,4 @@ const specWrapper = () => {
   })
 }
 
-runOrSkip(dotenv.config().parsed.postgres1sequelize_enabled, specWrapper)
+runOrSkip(env.postgres1sequelize_enabled, specWrapper)

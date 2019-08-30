@@ -4,14 +4,14 @@ import { sleep } from '../../../src'
 import { runOrSkip } from '../testUtils'
 
 jest.setTimeout(1000 * 60)
-const env = dotenv.config().parsed
+const env: any = dotenv.config().parsed
 
 const waitForEventConsumption = async (
   targetCount: number,
   endBatchProcessListener: (args: { counter: number }) => void,
   startConsuming: () => Promise<void>,
   emit: () => Promise<void>,
-  timeout: number = 15,
+  timeout = 15,
 ): Promise<void> => {
   const opts = { counter: 0 }
   endBatchProcessListener(opts)
@@ -66,9 +66,12 @@ const specWrapper = () => {
       await waitForEventConsumption(
         messages.length,
         opts => {
-          consumer.on(consumer.events.END_BATCH_PROCESS, ({ payload: { batchSize } }) => {
-            opts.counter += batchSize
-          })
+          consumer.on(
+            consumer.events.END_BATCH_PROCESS,
+            ({ payload: { batchSize } }: { payload: { batchSize: number } }) => {
+              opts.counter += batchSize
+            },
+          )
         },
         startConsuming,
         emit,

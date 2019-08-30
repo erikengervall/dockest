@@ -4,6 +4,8 @@ import { runOrSkip } from '../testUtils'
 
 const { seedBanana } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
+const env: any = dotenv.config().parsed
+
 const specWrapper = () =>
   describe('postgres-2-knex', () => {
     it('should get first entry', async () => {
@@ -13,4 +15,4 @@ const specWrapper = () =>
     })
   })
 
-runOrSkip(dotenv.config().parsed.postgres2knex_enabled, specWrapper)
+runOrSkip(env.postgres2knex_enabled, specWrapper)

@@ -1,5 +1,5 @@
 import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
-import { ErrorPayload, ObjStrStr } from './@types'
+import { ErrorPayload, ObjStrStr, ArrayAtLeastOne } from './@types'
 import { JestConfig } from './onRun/runJest'
 import { Runner } from './runners/@types'
 import * as runners from './runners'
@@ -12,7 +12,7 @@ import sleep from './utils/sleep'
 import validateTypes from './utils/validateTypes'
 
 interface RequiredConfig {
-  runners: Runner[]
+  runners: ArrayAtLeastOne<Runner>
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
@@ -30,7 +30,7 @@ interface InternalConfig {
   perfStart: number
 }
 export interface DockestConfig {
-  runners: Runner[]
+  runners: ArrayAtLeastOne<Runner>
   opts: DefaultableUserConfig
   jest: JestConfig
   $: InternalConfig
@@ -44,7 +44,7 @@ class Dockest {
     jest = {},
     opts = {},
   }: {
-    runners: Runner[]
+    runners: ArrayAtLeastOne<Runner>
     jest?: JestConfig
     opts?: Partial<DefaultableUserConfig>
   }) {
