@@ -28,6 +28,10 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 Learn more about Dockest on the [official website](https://erikengervall.github.io/dockest/).
 
+## Acknowledgements
+
+Thanks to [Juan Lulkin](https://github.com/joaomilho) for the logo ❤️
+
 ## License
 
 MIT
