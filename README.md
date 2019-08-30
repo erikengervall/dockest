@@ -3,8 +3,11 @@
 Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.
 
 <p align="center">
-  <img alt="dockest logo" src="https://raw.githubusercontent.com/erikengervall/dockest/master/tools/logo/pinterest_profile_image.png">
+  <a href='https://erikengervall.github.io/dockest/'><img alt="dockest logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/dockest/master/tools/logo/logo.svg"></a>
 </p>
+
+<br>
+<br>
 
 <p align="center">
   <a href="https://travis-ci.com/erikengervall/dockest">
@@ -23,7 +26,11 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 ## Documentation
 
-Find all documentation on the [website](https://erikengervall.github.io/dockest/).
+Learn more about Dockest on the [official website](https://erikengervall.github.io/dockest/).
+
+## Acknowledgements
+
+Thanks to [Juan Lulkin](https://github.com/joaomilho) for the logo ❤️
 
 ## License
 
