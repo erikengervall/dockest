@@ -4,6 +4,7 @@ import postgresConfig from '../config/postgresConfig.js'
 const config = postgresConfig.test
 const db: any = {}
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 const sequelize = new Sequelize(config)
 

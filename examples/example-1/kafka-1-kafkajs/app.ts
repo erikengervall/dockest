@@ -25,7 +25,15 @@ const createConsumer = (
     await consumer.connect()
     await consumer.subscribe({ topic: env.kafka1confluentinc_topic })
     await consumer.run({
-      eachMessage: async ({ topic, partition, message }) => {
+      eachMessage: async ({
+        topic,
+        partition,
+        message,
+      }: {
+        topic: string
+        partition: number
+        message: { headers: any; key: any; value: any }
+      }) => {
         mockConsumptionCallback({
           messageHeaders: message.headers,
           messageKey: message.key.toString(),

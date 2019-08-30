@@ -4,6 +4,8 @@ import { runOrSkip } from '../testUtils'
 
 const { seedCake } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 
+const env: any = dotenv.config().parsed
+
 const specWrapper = () =>
   describe('redis-1-ioredis', () => {
     it('should retrieve seeded value', async () => {
@@ -23,4 +25,4 @@ const specWrapper = () =>
     })
   })
 
-runOrSkip(dotenv.config().parsed.redis1ioredis_enabled, specWrapper)
+runOrSkip(env.redis1ioredis_enabled, specWrapper)
