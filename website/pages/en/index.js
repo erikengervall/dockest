@@ -42,13 +42,15 @@ class HomeSplash extends React.Component {
       </div>
     )
 
-    const Logo = props => (
-      <img src={props.img_src} alt={siteConfig.title} aria-label="https://github.com/erikengervall/dockest" />
-    )
-
     const ProjectTitle = () => (
       <h2 className="projectTitle">
-        <Logo img_src={`${baseUrl}img/logo.png`} />
+        <img
+          style={{ maxWidth: '350px', marginBottom: '50px' }}
+          src={`${baseUrl}img/logo.svg`}
+          alt={siteConfig.title}
+          aria-label="https://github.com/erikengervall/dockest"
+        />
+
         <small>{siteConfig.tagline}</small>
       </h2>
     )
@@ -109,6 +111,7 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
+
         <div className="mainContainer">
           <Features />
         </div>
