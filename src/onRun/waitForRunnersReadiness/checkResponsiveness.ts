@@ -6,9 +6,11 @@ import sleep from '../../utils/sleep'
 // FIXME: Fix type errors
 const checkResponsiveness = async (runner: Runner) => {
   const {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     runnerConfig: { responsivenessTimeout },
     logger,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     createResponsivenessCheckCmd,
   } = runner
@@ -16,6 +18,7 @@ const checkResponsiveness = async (runner: Runner) => {
   if (!responsivenessTimeout || !createResponsivenessCheckCmd) {
     return Promise.resolve()
   }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   const responsivenessCheckCmd = runner.createResponsivenessCheckCmd()
 

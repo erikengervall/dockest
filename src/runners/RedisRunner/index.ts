@@ -45,14 +45,14 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class RedisRunner implements BaseRunner {
-  public static DEFAULT_HOST: string = DEFAULT_CONFIG_PROPS.HOST
-  public static DEFAULT_PORT: string = DEFAULT_PORT
-  public containerId: string
+  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_PORT = DEFAULT_PORT
+  public containerId = ''
+  public initializer = ''
   public runnerConfig: RedisRunnerConfig
   public logger: Logger
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    this.containerId = ''
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,

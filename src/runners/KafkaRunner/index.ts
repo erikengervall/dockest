@@ -47,17 +47,17 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class KafkaRunner implements BaseRunner {
-  public static DEFAULT_HOST: string = DEFAULT_CONFIG_PROPS.HOST
-  public static DEFAULT_PORT_PLAINTEXT: string = DEFAULT_PORT_PLAINTEXT
-  public static DEFAULT_PORT_SASL_SSL: string = DEFAULT_PORT_SASL_SSL
-  public static DEFAULT_PORT_SCHEMA_REGISTRY: string = DEFAULT_PORT_SCHEMA_REGISTRY // TODO: Move this to the Schemaregistry Runner once it's implemented
-  public static DEFAULT_PORT_SSL: string = DEFAULT_PORT_SSL
-  public containerId: string
+  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_PORT_PLAINTEXT = DEFAULT_PORT_PLAINTEXT
+  public static DEFAULT_PORT_SASL_SSL = DEFAULT_PORT_SASL_SSL
+  public static DEFAULT_PORT_SCHEMA_REGISTRY = DEFAULT_PORT_SCHEMA_REGISTRY // TODO: Move this to the Schemaregistry Runner once it's implemented
+  public static DEFAULT_PORT_SSL = DEFAULT_PORT_SSL
+  public containerId = ''
+  public initializer = ''
   public runnerConfig: KafkaRunnerConfig
   public logger: Logger
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
-    this.containerId = ''
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,

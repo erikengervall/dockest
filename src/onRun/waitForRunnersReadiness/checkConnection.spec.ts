@@ -7,6 +7,7 @@ const port = '1337'
 
 jest.mock('net', () => ({
   createConnection: jest.fn(function() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     return this
   }),
@@ -17,6 +18,7 @@ jest.mock('net', () => ({
       //
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     return this
   }),

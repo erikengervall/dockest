@@ -10,3 +10,5 @@ export interface ErrorPayload {
 export interface ObjStrStr {
   [key: string]: string
 }
+
+export type ArrayAtLeastOne<T> = { [key: number]: T } & Array<T>

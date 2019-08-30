@@ -5,37 +5,48 @@ import runRunnerCommands from './runRunnerCommands'
 import { Runner } from '../../runners/@types'
 import { DockestConfig } from '../../index'
 
-const setupRunner = async (runner: Runner) => {
+const setupRunner = async (runner: Runner, initializer: string) => {
   runner.logger.info('Setup initiated')
 
   await resolveContainerId(runner)
   await checkConnection(runner)
   await checkResponsiveness(runner)
   await runRunnerCommands(runner)
+  runner.initializer = initializer
 
   runner.logger.info('Setup successful', { nl: 1 })
+}
+
+const setupIfNotOngoing = async (runner: Runner, initializer: string) => {
+  if (!!runner.initializer) {
+    runner.logger.info(
+      `"${runner.runnerConfig.service}" has already been setup by "${runner.initializer}" - skipping`,
+      { nl: 1 },
+    )
+  } else {
+    await setupRunner(runner, initializer)
+  }
 }
 
 const setupRunnerWithDependencies = async (runner: Runner) => {
   // Setup runner's dependencies
   for (const depRunner of runner.runnerConfig.dependsOn) {
-    await setupRunner(depRunner)
+    await setupIfNotOngoing(depRunner, runner.runnerConfig.service)
   }
 
-  // Setup runner
-  await setupRunner(runner)
+  await setupIfNotOngoing(runner, runner.runnerConfig.service)
 }
 
 export default async (config: DockestConfig) => {
-  const parallelPromises = []
+  const setupPromises = []
 
   for (const runner of config.runners) {
     if (!!config.opts.runInBand) {
       await setupRunnerWithDependencies(runner)
     } else {
-      parallelPromises.push(setupRunnerWithDependencies(runner))
+      setupPromises.push(setupRunnerWithDependencies(runner))
     }
   }
 
-  await Promise.all(parallelPromises)
+  await Promise.all(setupPromises)
 }

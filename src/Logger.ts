@@ -64,7 +64,8 @@ class Logger {
     }
   }
 
-  public static replacePrevLine = (m: string, isLast: boolean = false): void => {
+  public static replacePrevLine = (m: string, isLast = false): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     readline.cursorTo(process.stdout, 0, null)
     process.stdout.write(m)
@@ -93,8 +94,8 @@ class Logger {
     Logger.info(`Elapsed time: ${hours}:${minutes}:${seconds}`)
   }
 
-  private runnerService: string = ''
-  private runnerSymbol: string = '🦇 '
+  private runnerService = ''
+  private runnerSymbol = '🦇 '
   public constructor(runner?: Runner) {
     this.runnerService = runner ? runner.runnerConfig.service : ''
   }
