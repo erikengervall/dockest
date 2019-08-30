@@ -9,29 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New logo 🎉
-- Supports services being referenced as a dependency multiple times
+- New logo 🎉 #69
+- Supports services being referenced as a dependency multiple times #68
 
 ### Fixed
 
-- Jest commands work when including projects
+- Jest commands work when including projects #66 #53
+
+### Changed
+
+- Bumped all dependencies #67
 
 ## [1.0.2] - 2019-08-20
 
 ### Added
 
-- SimpleRunner
-- Support for parsing of Compose Files as well as supplying runners with individual images.
-- Support for parallelism of Jest and healthchecking Runner.
+- SimpleRunner #63
+- Support for parsing of Compose Files as well as supplying runners with individual images. #55
+- Support for parallelism of Jest and healthchecking Runner. #55
 
 ## [1.0.0] - 2019-07-22
 
 ### Added
 
-- KafkaRunner
-- ZooKeeperRunner
+- KafkaRunner #55
+- ZooKeeperRunner #55
 - PostgresRunner
-- RedisRunner
+- RedisRunner #40
 
 ### Changed
 
