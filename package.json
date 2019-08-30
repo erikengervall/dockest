@@ -28,7 +28,7 @@
     "prepare": "yarn build",
     "build": "rm -rf ./dist && tsc",
     "build:watch": "rm -rf ./dist && tsc --watch",
-    "dev:setup": "./tools/setup && yarn install:all",
+    "dev:setup": "./tools/scripts/setup && yarn install:all",
     "install:all": "./tools/scripts/install-all",
     "generate:typedoc": "yarn typedoc ./src",
     "test": "jest ./src --forceExit --detectOpenHandles",
