@@ -2,7 +2,7 @@ import KafkaRunner, { KafkaRunnerConfig } from './KafkaRunner'
 import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
 import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
-import GeneralPurposeRunner, { GeneralPurposeConfig } from './GeneralPurposeRunner'
+import GeneralPurposeRunner, { GeneralPurposeRunnerConfig } from './GeneralPurposeRunner'
 import { ObjStrStr } from '../@types'
 import Logger from '../Logger'
 
@@ -13,7 +13,7 @@ export type RunnerConfig =
   | PostgresRunnerConfig
   | RedisRunnerConfig
   | ZooKeeperRunnerConfig
-  | GeneralPurposeConfig
+  | GeneralPurposeRunnerConfig
 
 export type Service = string
 export type Commands = string[]
@@ -22,25 +22,23 @@ export type DependsOn = Runner[]
 export type Host = string
 export type Image = string | undefined
 export type Ports = ObjStrStr
+export interface Environment {
+  [key: string]: string | number
+}
+export type Build = string
 export interface Props {
-  environment?: {
-    [key: string]: string | number
-  }
-  build?: string
   [key: string]: any
 }
 
-export interface ComposeFile {
+export interface ComposeFile extends Props {
   depends_on?: string[]
   image?: string
+  environment?: Environment
+  build?: Build
   ports: string[]
 }
 
-export type GetComposeService = (
-  composeFileName: string,
-) => {
-  [key: string]: ComposeFile
-}
+export type GetComposeService = (composeFileName: string) => { [key: string]: ComposeFile }
 
 export interface BaseRunner {
   getComposeService: GetComposeService

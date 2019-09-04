@@ -10,12 +10,10 @@ import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 
-interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
-
+interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   autoCreateTopic: boolean
 }
-
 interface KafkaRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT_PLAINTEXT = '9092'
@@ -25,7 +23,9 @@ const DEFAULT_PORT_SSL = '9093'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
   autoCreateTopic: DEFAULT_CONFIG_PROPS.AUTO_CREATE_TOPIC,
-  ports: { [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT },
+  ports: {
+    [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
+  },
 }
 
 class KafkaRunner implements BaseRunner {

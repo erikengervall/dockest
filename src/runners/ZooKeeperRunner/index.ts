@@ -1,12 +1,5 @@
-import {
-  BaseRunner,
-  GetComposeService,
-  Runner,
-  SharedDefaultableConfigProps,
-  SharedRequiredConfigProps,
-} from '../@types'
+import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
 import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
-import { ObjStrStr } from '../../@types'
 import ConfigurationError from '../../errors/ConfigurationError'
 import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
@@ -18,16 +11,7 @@ import validateTypes from '../../utils/validateTypes'
 interface RequiredConfigProps extends SharedRequiredConfigProps {
   service: string
 }
-
-interface DefaultableConfigProps extends SharedDefaultableConfigProps {
-  commands: string[]
-  connectionTimeout: number
-  dependsOn: Runner[]
-  host: string
-  image: string | undefined
-  ports: ObjStrStr
-}
-
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {}
 interface ZooKeeperRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '2181'

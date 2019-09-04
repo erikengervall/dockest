@@ -7,9 +7,9 @@ import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
-interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
-interface DefaultableConfigProps extends SharedDefaultableConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
-interface GeneralPurposeConfig extends RequiredConfigProps, DefaultableConfigProps {}
+interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {} // eslint-disable-line
+interface GeneralPurposeRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
@@ -18,7 +18,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 class GeneralPurposeRunner implements BaseRunner {
   public containerId = ''
   public initializer = ''
-  public runnerConfig: GeneralPurposeConfig
+  public runnerConfig: GeneralPurposeRunnerConfig
   public logger: Logger
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
@@ -49,5 +49,5 @@ class GeneralPurposeRunner implements BaseRunner {
   }
 }
 
-export { GeneralPurposeConfig }
+export { GeneralPurposeRunnerConfig }
 export default GeneralPurposeRunner

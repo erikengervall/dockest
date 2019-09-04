@@ -12,17 +12,17 @@ interface RequiredConfigProps extends SharedRequiredConfigProps {
   password: string
   username: string
 }
-
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   responsivenessTimeout: number
 }
-
 interface PostgresRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  ports: { [DEFAULT_PORT]: DEFAULT_PORT },
+  ports: {
+    [DEFAULT_PORT]: DEFAULT_PORT,
+  },
   responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
 }
 

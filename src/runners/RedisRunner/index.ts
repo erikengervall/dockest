@@ -7,7 +7,7 @@ import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
-interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
+interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   password: string
   responsivenessTimeout: number
@@ -18,7 +18,9 @@ const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
   password: '',
-  ports: { [DEFAULT_PORT]: DEFAULT_PORT },
+  ports: {
+    [DEFAULT_PORT]: DEFAULT_PORT,
+  },
   responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
 }
 
