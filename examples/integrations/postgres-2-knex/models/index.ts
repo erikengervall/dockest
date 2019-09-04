@@ -1,5 +1,6 @@
 import Knex from 'knex'
-import knexConfig from '../../knexfile.js'
+
+const knexConfig = require('../../knexfile.js') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const knex = Knex({
   client: knexConfig.client,
