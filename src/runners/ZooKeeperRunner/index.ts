@@ -15,20 +15,20 @@ import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 
-type RequiredConfigProps = {
+interface RequiredConfigProps extends SharedRequiredConfigProps {
   service: string
-} & SharedRequiredConfigProps
+}
 
-type DefaultableConfigProps = {
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
   host: string
   image: string | undefined
   ports: ObjStrStr
-} & SharedDefaultableConfigProps
+}
 
-type ZooKeeperRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+interface ZooKeeperRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '2181'
 const DEFAULT_CONFIG: DefaultableConfigProps = {

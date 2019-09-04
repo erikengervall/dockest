@@ -16,7 +16,7 @@ import getPorts from '../utils/getPorts'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
-type DefaultableConfigProps = {
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
@@ -25,9 +25,9 @@ type DefaultableConfigProps = {
   ports: ObjStrStr
   environment: { [key: string]: string | number }
   props: { [key: string]: string | number }
-} & SharedDefaultableConfigProps
+}
 
-type GeneralPurposeConfig = RequiredConfigProps & DefaultableConfigProps
+interface GeneralPurposeConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: DEFAULT_CONFIG_PROPS.COMMANDS,

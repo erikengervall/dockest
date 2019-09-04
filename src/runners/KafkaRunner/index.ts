@@ -17,9 +17,9 @@ import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 
-type RequiredConfigProps = {} & SharedRequiredConfigProps
+interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
-type DefaultableConfigProps = {
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   autoCreateTopic: boolean
   commands: string[]
   connectionTimeout: number
@@ -27,9 +27,9 @@ type DefaultableConfigProps = {
   host: string
   image: string | undefined
   ports: ObjStrStr
-} & SharedDefaultableConfigProps
+}
 
-type KafkaRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+interface KafkaRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT_PLAINTEXT = '9092'
 const DEFAULT_PORT_SASL_SSL = '9094'

@@ -14,13 +14,13 @@ import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 
-type RequiredConfigProps = {
+interface RequiredConfigProps extends SharedRequiredConfigProps {
   database: string
   password: string
   username: string
-} & SharedRequiredConfigProps
+}
 
-type DefaultableConfigProps = {
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
@@ -28,9 +28,9 @@ type DefaultableConfigProps = {
   image: string | undefined
   ports: ObjStrStr
   responsivenessTimeout: number
-} & SharedDefaultableConfigProps
+}
 
-type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+interface PostgresRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {

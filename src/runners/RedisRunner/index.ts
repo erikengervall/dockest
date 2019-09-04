@@ -14,9 +14,9 @@ import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
-type RequiredConfigProps = {} & SharedRequiredConfigProps
+interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
-type DefaultableConfigProps = {
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
   dependsOn: Runner[]
@@ -25,9 +25,9 @@ type DefaultableConfigProps = {
   password: string
   ports: ObjStrStr
   responsivenessTimeout: number
-} & SharedDefaultableConfigProps
+}
 
-type RedisRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+interface RedisRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
