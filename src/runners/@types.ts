@@ -6,15 +6,6 @@ import GeneralPurposeRunner, { GeneralPurposeRunnerConfig } from './GeneralPurpo
 import { ObjStrStr } from '../@types'
 import Logger from '../Logger'
 
-export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
-
-export type RunnerConfig =
-  | KafkaRunnerConfig
-  | PostgresRunnerConfig
-  | RedisRunnerConfig
-  | ZooKeeperRunnerConfig
-  | GeneralPurposeRunnerConfig
-
 export type Service = string
 export type Commands = string[]
 export type ConnectionTimeout = number
@@ -22,19 +13,17 @@ export type DependsOn = Runner[]
 export type Host = string
 export type Image = string | undefined
 export type Ports = ObjStrStr
-export interface Environment {
+export interface Props {
   [key: string]: string | number
 }
-export type Build = string
-export interface Props {
-  [key: string]: any
-}
 
-export interface ComposeFile extends Props {
+export interface ComposeFile {
   depends_on?: string[]
   image?: string
-  environment?: Environment
-  build?: Build
+  environment?: {
+    [key: string]: string | number
+  }
+  build?: string
   ports: string[]
 }
 
@@ -61,3 +50,12 @@ export interface SharedDefaultableConfigProps {
   ports: Ports
   props: Props
 }
+
+export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
+
+export type RunnerConfig =
+  | KafkaRunnerConfig
+  | PostgresRunnerConfig
+  | RedisRunnerConfig
+  | ZooKeeperRunnerConfig
+  | GeneralPurposeRunnerConfig
