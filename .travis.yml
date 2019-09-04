@@ -20,7 +20,7 @@ before_install:
   - docker-compose --version
 
   # pull example images
-  - cd examples/example-1
+  - cd examples/integrations
   - docker-compose -f docker-compose-dockest.yml pull
   - cd ../../
 
