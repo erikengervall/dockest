@@ -10,7 +10,7 @@ import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 
-interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line
+interface RequiredConfigProps extends SharedRequiredConfigProps {}
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   autoCreateTopic: boolean
 }

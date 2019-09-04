@@ -7,8 +7,8 @@ import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
-interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line
-interface DefaultableConfigProps extends SharedDefaultableConfigProps {} // eslint-disable-line
+interface RequiredConfigProps extends SharedRequiredConfigProps {}
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {}
 interface GeneralPurposeRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
