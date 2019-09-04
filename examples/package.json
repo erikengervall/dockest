@@ -6,10 +6,12 @@
   "scripts": {
     "install:1": "cd integrations && yarn --force && cd ..",
     "install:2": "cd multiple-projects && yarn --force && cd ..",
-    "install:all": "yarn --force && yarn install:1 && yarn install:2",
+    "install:3": "cd node-to-node && yarn --force && cd ..",
+    "install:all": "yarn --force && yarn install:1 && yarn install:2 && yarn install:3",
     "test:1": "cd integrations && yarn test && cd ..",
     "test:2": "cd multiple-projects && yarn test && cd ..",
-    "test": "yarn test:1 && yarn test:2"
+    "test:3": "cd node-to-nod && yarn test && cd ..",
+    "test": "yarn test:1 && yarn test:2 && yarn test:3"
   },
   "devDependencies": {
     "ts-node": "^8.3.0"

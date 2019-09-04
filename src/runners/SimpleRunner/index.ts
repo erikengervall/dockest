@@ -23,7 +23,7 @@ type DefaultableConfigProps = {
   connectionTimeout: number
   dependsOn: Runner[]
   host: string
-  image: string | undefined
+  image: string | undefined | null
   ports: ObjStrStr
   environment: ObjStrStr
 } & SharedDefaultableConfigProps

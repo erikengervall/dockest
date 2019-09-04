@@ -4,12 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "../node_modules/.bin/ts-node ./index.ts"
+    "test": "echo \"WIP\"",
+    "qq": "../node_modules/.bin/ts-node ./dockest.ts"
   },
   "dependencies": {
     "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.1"
   }
 }

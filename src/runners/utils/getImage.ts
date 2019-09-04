@@ -9,11 +9,15 @@ const getImage = ({
   service,
 }: {
   composeFileName: string
-  image?: string
+  image?: string | null
   mockProcess?: any
   service: string
-}): { image: string } => {
+}): { image: string } | {} => {
   const nodeProcess = mockProcess || process
+
+  if (runnerConfigProvidedImage === null) {
+    return {}
+  }
 
   if (typeof runnerConfigProvidedImage === 'string' && runnerConfigProvidedImage.length > 0) {
     return {

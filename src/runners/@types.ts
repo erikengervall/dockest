@@ -16,7 +16,7 @@ export type RunnerConfig =
 export interface ComposeFile {
   depends_on?: string[]
   environment?: { [key: string]: string | number }
-  image: string
+  image?: string
   ports: string[]
 }
 

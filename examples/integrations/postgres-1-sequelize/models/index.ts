@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
-import postgresConfig from '../config/postgresConfig.js'
+
+const postgresConfig = require('../config/postgresConfig.js') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const config = postgresConfig.test
 const db: any = {}

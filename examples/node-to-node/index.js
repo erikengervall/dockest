@@ -1,12 +1,12 @@
-import express from 'express'
+const express = require('express') // eslint-disable-line @typescript-eslint/no-var-requires
 
 const SERVICE_PORT = process.env.PORT || 3000
 const SERVICE_NAME = 'PRIMARY SERVICE'
 
 const app = express()
 
-app.get('/', (req: any, res: any) => {
-  res.send('primary app says hi')
+app.get('/', (req, res) => {
+  res.send(`${SERVICE_NAME} app says hi`)
 })
 
 app.listen(SERVICE_PORT, () => {
