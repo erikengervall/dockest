@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    // "baseUrl": "./src",
-    // "paths": {
-    //   "src": ["./*"]
-    // },
+    "baseUrl": "./src",
+    "paths": {
+      "src": ["./*"]
+    },
     "outDir": "dist",
     "esModuleInterop": true,
     "lib": ["es2019"],
@@ -18,6 +18,6 @@
     "resolveJsonModule": true,
     "declaration": true
   },
-  "include": ["src/**/*.*", "examples/**/*.*"],
+  "include": ["src/**/*.*"],
   "exclude": ["dist", "node_modules", "typedoc", "docs"]
 }
