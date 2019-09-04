@@ -23,7 +23,7 @@ const onRun = async (config: DockestConfig) => {
     await sleepForX('After setup sleep', afterSetupSleep)
   }
 
-  if (debug) {
+  if (debug || process.argv.includes('dev') || process.argv.includes('debug')) {
     Logger.info(`Debug mode enabled, containers are kept running and Jest will not run.`)
 
     config.runners.forEach((runner, index) =>
