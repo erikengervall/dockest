@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "install:1": "cd example-1 && yarn --force && cd ..",
-    "install:2": "cd example-2 && yarn --force && cd ..",
+    "install:1": "cd integrations && yarn --force && cd ..",
+    "install:2": "cd multiple-projects && yarn --force && cd ..",
     "install:all": "yarn --force && yarn install:1 && yarn install:2",
-    "test:1": "cd example-1 && yarn test && cd ..",
-    "test:2": "cd example-2 && yarn test && cd ..",
+    "test:1": "cd integrations && yarn test && cd ..",
+    "test:2": "cd multiple-projects && yarn test && cd ..",
     "test": "yarn test:1 && yarn test:2"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 module.exports = {
+  parser: '@typescript-eslint/parser',
   root: true,
   extends: [
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
@@ -9,7 +10,6 @@ module.exports = {
     'plugin:import/warnings', // https://github.com/benmosher/eslint-plugin-import
     'plugin:import/typescript', // https://github.com/benmosher/eslint-plugin-import
   ],
-  parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   parserOptions: {
     ecmaVersion: 2019, // Allows for the parsing of modern ECMAScript features
@@ -17,7 +17,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: false,
     },
-    project: './tsconfig.json',
+    // project: [require('path').resolve(__dirname, './tsconfig.json')],
+    tsconfigRootDir: __dirname,
   },
   env: {
     node: true,
