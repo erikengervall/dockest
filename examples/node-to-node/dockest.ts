@@ -1,15 +1,16 @@
+import path from 'path'
 import Dockest, { logLevel, runners } from '../../src'
 
 const { SimpleRunner } = runners
 
 const nodeDepRunner = new SimpleRunner({
-  service: 'nodeDepRunner',
+  service: 'nodedeprunner',
   ports: {
     '1337': '8080',
   },
   image: null,
-  environment: {
-    build: './node-dependency',
+  props: {
+    build: path.resolve(__dirname, './node-dependency'),
   },
 })
 

@@ -25,7 +25,8 @@ type DefaultableConfigProps = {
   host: string
   image: string | undefined | null
   ports: ObjStrStr
-  environment: ObjStrStr
+  environment: { [key: string]: string | number }
+  props: { [key: string]: string | number }
 } & SharedDefaultableConfigProps
 
 type SimpleRunnerConfig = RequiredConfigProps & DefaultableConfigProps
@@ -38,6 +39,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   image: DEFAULT_CONFIG_PROPS.IMAGE,
   ports: {},
   environment: {},
+  props: {},
 }
 
 class SimpleRunner implements BaseRunner {
@@ -60,10 +62,11 @@ class SimpleRunner implements BaseRunner {
   }
 
   public getComposeService: GetComposeService = composeFileName => {
-    const { dependsOn, image, ports, service, environment } = this.runnerConfig
+    const { dependsOn, image, ports, service, environment, props } = this.runnerConfig
 
     return {
       [service]: {
+        ...props,
         environment: {
           ...environment,
         },

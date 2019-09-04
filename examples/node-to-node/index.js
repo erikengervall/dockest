@@ -1,14 +1,13 @@
-const express = require('express') // eslint-disable-line @typescript-eslint/no-var-requires
+const axios = require('axios') // eslint-disable-line @typescript-eslint/no-var-requires
 
-const SERVICE_PORT = process.env.PORT || 3000
-const SERVICE_NAME = 'PRIMARY SERVICE'
+const main = async () => {
+  const result = await axios({
+    baseURL: 'http://localhost:1337/',
+    url: '/',
+    method: 'GET',
+  })
 
-const app = express()
+  return result
+}
 
-app.get('/', (req, res) => {
-  res.send(`${SERVICE_NAME} app says hi`)
-})
-
-app.listen(SERVICE_PORT, () => {
-  console.log(`${SERVICE_NAME} listening on port ${SERVICE_PORT}`) // eslint-disable-line no-console
-})
+module.exports = main
