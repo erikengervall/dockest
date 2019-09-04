@@ -4,6 +4,7 @@ import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
 import GeneralPurposeRunner, { GeneralPurposeConfig } from './GeneralPurposeRunner'
 import { ObjStrStr } from '../@types'
+import Logger from '../Logger'
 
 export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
 
@@ -34,6 +35,10 @@ export type GetComposeService = (
 
 export interface BaseRunner {
   getComposeService: GetComposeService
+  containerId: string
+  initializer: string
+  runnerConfig: RunnerConfig
+  logger: Logger
 }
 
 export interface SharedRequiredConfigProps {
