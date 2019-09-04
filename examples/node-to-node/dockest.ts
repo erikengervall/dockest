@@ -4,7 +4,7 @@ import Dockest, { logLevel, runners } from '../../src'
 const { SimpleRunner } = runners
 
 const nodeDepRunner = new SimpleRunner({
-  service: 'nodedeprunner',
+  service: 'node_dep_runner',
   ports: {
     '1337': '8080',
   },
