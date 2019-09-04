@@ -1,14 +1,6 @@
-import { Runner, SharedDefaultableConfigProps } from './@types'
+import { SharedDefaultableConfigProps } from './@types'
 
-export const DEFAULT_CONFIG_PROPS: {
-  AUTO_CREATE_TOPIC: boolean
-  COMMANDS: string[]
-  CONNECTION_TIMEOUT: number
-  DEPENDS_ON: Runner[]
-  HOST: string
-  IMAGE: undefined
-  RESPONSIVENESS_TIMEOUT: number
-} = {
+export const DEFAULT_CONFIG_PROPS = {
   AUTO_CREATE_TOPIC: true,
   COMMANDS: [],
   CONNECTION_TIMEOUT: 5,
@@ -18,4 +10,13 @@ export const DEFAULT_CONFIG_PROPS: {
   RESPONSIVENESS_TIMEOUT: 30,
 }
 
-export const SHARED_DEFAULT_CONFIG_PROPS: SharedDefaultableConfigProps = {}
+export const SHARED_DEFAULT_CONFIG_PROPS: SharedDefaultableConfigProps = {
+  commands: [],
+  connectionTimeout: 5,
+  dependsOn: [],
+  host: 'localhost',
+  image: null,
+  ports: {},
+  environment: {},
+  props: {},
+}

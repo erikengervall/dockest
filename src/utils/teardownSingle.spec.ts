@@ -2,10 +2,10 @@ import teardownSingle from './teardownSingle'
 import testUtils, { mockedExecaStdout } from '../testUtils'
 
 const {
-  initializedRunners: { simpleRunner },
+  initializedRunners: { generalPurposeRunner },
   execa,
 } = testUtils({})
-simpleRunner.containerId = 'mockContainerId'
+generalPurposeRunner.containerId = 'mockContainerId'
 
 jest.mock('execa', () => jest.fn(() => ({ stdout: mockedExecaStdout })))
 
@@ -18,7 +18,7 @@ describe('teardownSingle', () => {
 
   describe('happy', () => {
     it('should work', async () => {
-      await teardownSingle(simpleRunner)
+      await teardownSingle(generalPurposeRunner)
 
       expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker stop'), { shell: true })
       expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker rm'), { shell: true })
@@ -34,10 +34,10 @@ describe('teardownSingle', () => {
         throw error
       })
 
-      await teardownSingle(simpleRunner)
+      await teardownSingle(generalPurposeRunner)
 
-      expect(simpleRunner.logger.info).toHaveBeenCalled()
-      expect(simpleRunner.logger.error).toHaveBeenCalled()
+      expect(generalPurposeRunner.logger.info).toHaveBeenCalled()
+      expect(generalPurposeRunner.logger.error).toHaveBeenCalled()
     })
   })
 })

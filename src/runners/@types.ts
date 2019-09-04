@@ -2,16 +2,17 @@ import KafkaRunner, { KafkaRunnerConfig } from './KafkaRunner'
 import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
 import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
-import SimpleRunner, { SimpleRunnerConfig } from './SimpleRunner'
+import GeneralPurposeRunner, { GeneralPurposeConfig } from './GeneralPurposeRunner'
+import { ObjStrStr } from '../@types'
 
-export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | SimpleRunner
+export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
 
 export type RunnerConfig =
   | KafkaRunnerConfig
   | PostgresRunnerConfig
   | RedisRunnerConfig
   | ZooKeeperRunnerConfig
-  | SimpleRunnerConfig
+  | GeneralPurposeConfig
 
 export interface ComposeFile {
   depends_on?: string[]
@@ -39,4 +40,13 @@ export interface SharedRequiredConfigProps {
   service: string
 }
 
-export interface SharedDefaultableConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
+export interface SharedDefaultableConfigProps {
+  commands: string[]
+  connectionTimeout: number
+  dependsOn: Runner[]
+  host: string
+  image: string | undefined | null
+  ports: ObjStrStr
+  environment: { [key: string]: string | number }
+  props: { [key: string]: string | number }
+}

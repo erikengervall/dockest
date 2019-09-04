@@ -14,9 +14,7 @@ import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
-type RequiredConfigProps = {
-  service: string
-} & SharedRequiredConfigProps
+interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
 type DefaultableConfigProps = {
   commands: string[]
@@ -29,7 +27,7 @@ type DefaultableConfigProps = {
   props: { [key: string]: string | number }
 } & SharedDefaultableConfigProps
 
-type SimpleRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+type GeneralPurposeConfig = RequiredConfigProps & DefaultableConfigProps
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   commands: DEFAULT_CONFIG_PROPS.COMMANDS,
@@ -42,10 +40,10 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   props: {},
 }
 
-class SimpleRunner implements BaseRunner {
+class GeneralPurposeRunner implements BaseRunner {
   public containerId = ''
   public initializer = ''
-  public runnerConfig: SimpleRunnerConfig
+  public runnerConfig: GeneralPurposeConfig
   public logger: Logger
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
@@ -78,5 +76,5 @@ class SimpleRunner implements BaseRunner {
   }
 }
 
-export { SimpleRunnerConfig }
-export default SimpleRunner
+export { GeneralPurposeConfig }
+export default GeneralPurposeRunner
