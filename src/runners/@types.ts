@@ -15,15 +15,24 @@ export type RunnerConfig =
   | ZooKeeperRunnerConfig
   | GeneralPurposeConfig
 
-export interface ComposeFile {
-  depends_on?: string[]
-  image?: string
+export type Service = string
+export type Commands = string[]
+export type ConnectionTimeout = number
+export type DependsOn = Runner[]
+export type Host = string
+export type Image = string | undefined
+export type Ports = ObjStrStr
+export interface Props {
   environment?: {
     [key: string]: string | number
   }
-  props?: {
-    [key: string]: string | number
-  }
+  build?: string
+  [key: string]: any
+}
+
+export interface ComposeFile {
+  depends_on?: string[]
+  image?: string
   ports: string[]
 }
 
@@ -42,16 +51,15 @@ export interface BaseRunner {
 }
 
 export interface SharedRequiredConfigProps {
-  service: string
+  service: Service
 }
 
 export interface SharedDefaultableConfigProps {
-  commands: string[]
-  connectionTimeout: number
-  dependsOn: Runner[]
-  host: string
-  image: string | undefined | null
-  ports: ObjStrStr
-  environment: { [key: string]: string | number }
-  props: { [key: string]: string | number }
+  commands: Commands
+  connectionTimeout: ConnectionTimeout
+  dependsOn: DependsOn
+  host: Host
+  image: Image
+  ports: Ports
+  props: Props
 }

@@ -4,13 +4,15 @@ import { DEFAULT_USER_CONFIG } from '../../constants'
 describe('getImage', () => {
   const testComposeFileName = 'getImage.spec.yml'
   const service = 'getImageService'
+  const props = {}
 
   describe('without user provided image', () => {
     it('should get image from test Compose file', () => {
       const result = getImage({
         composeFileName: testComposeFileName,
-        service,
         mockProcess: { cwd: () => __dirname },
+        props,
+        service,
       })
 
       expect(result).toEqual({
@@ -24,8 +26,9 @@ describe('getImage', () => {
       const result = () =>
         getImage({
           composeFileName: invalidComposeFileName,
-          service,
           mockProcess: { cwd: () => __dirname },
+          props,
+          service,
         })
 
       expect(result).toThrow(/Failed to parse '\//)
@@ -38,9 +41,10 @@ describe('getImage', () => {
 
       const result = getImage({
         composeFileName: DEFAULT_USER_CONFIG.composeFileName,
-        service,
-        mockProcess: { cwd: () => __dirname },
         image,
+        mockProcess: { cwd: () => __dirname },
+        props,
+        service,
       })
 
       expect(result).toEqual({

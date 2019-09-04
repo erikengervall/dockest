@@ -44,7 +44,7 @@ export default ({ withRunnerCommands = false }) => {
     ...withCmds,
   })
   const redisRunner = new RedisRunner({ service: 'redis', ...withCmds })
-  const generalPurposeRunner = new GeneralPurposeRunner({ service: 'simple', ...withCmds })
+  const generalPurposeRunner = new GeneralPurposeRunner({ service: 'general', ...withCmds })
   const initializedRunners = {
     kafkaRunner,
     postgresRunner,

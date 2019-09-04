@@ -33,11 +33,6 @@ interface ZooKeeperRunnerConfig extends RequiredConfigProps, DefaultableConfigPr
 const DEFAULT_PORT = '2181'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
-  host: DEFAULT_CONFIG_PROPS.HOST,
-  image: DEFAULT_CONFIG_PROPS.IMAGE,
   ports: {
     [DEFAULT_PORT]: DEFAULT_PORT,
   },
@@ -65,7 +60,7 @@ class ZooKeeperRunner implements BaseRunner {
   }
 
   public getComposeService: GetComposeService = composeFileName => {
-    const { dependsOn, image, ports, service } = this.runnerConfig
+    const { dependsOn, image, ports, props, service } = this.runnerConfig
 
     const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
     if (!ZOOKEEPER_CLIENT_PORT) {
@@ -80,8 +75,9 @@ class ZooKeeperRunner implements BaseRunner {
           ZOOKEEPER_CLIENT_PORT,
         },
         ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, service }),
+        ...getImage({ image, composeFileName, props, service }),
         ...getPorts(ports),
+        ...props, // FIXME: Would love to type this stronger
       },
     }
   }

@@ -1,49 +1,29 @@
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
-import {
-  Runner,
-  BaseRunner,
-  GetComposeService,
-  SharedRequiredConfigProps,
-  SharedDefaultableConfigProps,
-} from '../@types'
-import { ObjStrStr } from '../../@types'
+import { BaseRunner, GetComposeService, SharedRequiredConfigProps, SharedDefaultableConfigProps } from '../@types'
 import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
-
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
-  commands: string[]
-  connectionTimeout: number
-  dependsOn: Runner[]
-  host: string
-  image: string | undefined
   password: string
-  ports: ObjStrStr
   responsivenessTimeout: number
 }
-
 interface RedisRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '6379'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
-  host: DEFAULT_CONFIG_PROPS.HOST,
-  image: DEFAULT_CONFIG_PROPS.IMAGE,
   password: '',
   ports: { [DEFAULT_PORT]: DEFAULT_PORT },
   responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
 }
 
 class RedisRunner implements BaseRunner {
-  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_HOST = SHARED_DEFAULT_CONFIG_PROPS.host
   public static DEFAULT_PORT = DEFAULT_PORT
   public containerId = ''
   public initializer = ''
@@ -64,13 +44,14 @@ class RedisRunner implements BaseRunner {
   }
 
   public getComposeService: GetComposeService = composeFileName => {
-    const { dependsOn, image, ports, service } = this.runnerConfig
+    const { dependsOn, image, ports, props, service } = this.runnerConfig
 
     return {
       [service]: {
         ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, service }),
+        ...getImage({ image, composeFileName, props, service }),
         ...getPorts(ports),
+        ...props, // FIXME: Would love to type this stronger
       },
     }
   }

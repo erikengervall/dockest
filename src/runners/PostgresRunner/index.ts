@@ -1,12 +1,5 @@
-import {
-  BaseRunner,
-  GetComposeService,
-  Runner,
-  SharedDefaultableConfigProps,
-  SharedRequiredConfigProps,
-} from '../@types'
+import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
 import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
-import { ObjStrStr } from '../../@types'
 import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
 import getPorts from '../utils/getPorts'
@@ -21,12 +14,6 @@ interface RequiredConfigProps extends SharedRequiredConfigProps {
 }
 
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
-  commands: string[]
-  connectionTimeout: number
-  dependsOn: Runner[]
-  host: string
-  image: string | undefined
-  ports: ObjStrStr
   responsivenessTimeout: number
 }
 
@@ -35,17 +22,12 @@ interface PostgresRunnerConfig extends RequiredConfigProps, DefaultableConfigPro
 const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
-  host: DEFAULT_CONFIG_PROPS.HOST,
-  image: DEFAULT_CONFIG_PROPS.IMAGE,
   ports: { [DEFAULT_PORT]: DEFAULT_PORT },
   responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
 }
 
 class PostgresRunner implements BaseRunner {
-  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_HOST = SHARED_DEFAULT_CONFIG_PROPS.host
   public static DEFAULT_PORT = DEFAULT_PORT
   public containerId = ''
   public initializer = ''
@@ -70,7 +52,7 @@ class PostgresRunner implements BaseRunner {
   }
 
   public getComposeService: GetComposeService = composeFileName => {
-    const { database, dependsOn, image, password, ports, service, username } = this.runnerConfig
+    const { database, dependsOn, image, password, ports, props, service, username } = this.runnerConfig
 
     return {
       [service]: {
@@ -80,8 +62,9 @@ class PostgresRunner implements BaseRunner {
           POSTGRES_USER: username,
         },
         ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, service }),
+        ...getImage({ image, composeFileName, props, service }),
         ...getPorts(ports),
+        ...props, // FIXME: Would love to type this stronger
       },
     }
   }

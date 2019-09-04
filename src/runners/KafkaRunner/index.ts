@@ -1,12 +1,5 @@
-import {
-  BaseRunner,
-  GetComposeService,
-  Runner,
-  SharedDefaultableConfigProps,
-  SharedRequiredConfigProps,
-} from '../@types'
+import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
 import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
-import { ObjStrStr } from '../../@types'
 import { ZooKeeperRunner } from '../index'
 import getDependsOn from '../utils/getDependsOn'
 import getImage from '../utils/getImage'
@@ -21,12 +14,6 @@ interface RequiredConfigProps extends SharedRequiredConfigProps {} // eslint-dis
 
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   autoCreateTopic: boolean
-  commands: string[]
-  connectionTimeout: number
-  dependsOn: Runner[]
-  host: string
-  image: string | undefined
-  ports: ObjStrStr
 }
 
 interface KafkaRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
@@ -38,16 +25,11 @@ const DEFAULT_PORT_SSL = '9093'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
   autoCreateTopic: DEFAULT_CONFIG_PROPS.AUTO_CREATE_TOPIC,
-  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
-  host: DEFAULT_CONFIG_PROPS.HOST,
-  image: DEFAULT_CONFIG_PROPS.IMAGE,
   ports: { [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT },
 }
 
 class KafkaRunner implements BaseRunner {
-  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_HOST = SHARED_DEFAULT_CONFIG_PROPS.host
   public static DEFAULT_PORT_PLAINTEXT = DEFAULT_PORT_PLAINTEXT
   public static DEFAULT_PORT_SASL_SSL = DEFAULT_PORT_SASL_SSL
   public static DEFAULT_PORT_SCHEMA_REGISTRY = DEFAULT_PORT_SCHEMA_REGISTRY // TODO: Move this to the Schemaregistry Runner once it's implemented
@@ -71,7 +53,7 @@ class KafkaRunner implements BaseRunner {
   }
 
   public getComposeService: GetComposeService = composeFileName => {
-    const { autoCreateTopic, dependsOn, image, ports, service } = this.runnerConfig
+    const { autoCreateTopic, dependsOn, image, ports, props, service } = this.runnerConfig
 
     const getZooKeeperConnect = (): { KAFKA_ZOOKEEPER_CONNECT: string } | {} => {
       const zooKeeperDependency = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
@@ -138,8 +120,9 @@ class KafkaRunner implements BaseRunner {
           KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
         },
         ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, service }),
+        ...getImage({ image, composeFileName, props, service }),
         ...getPorts(ports),
+        ...props, // FIXME: Would love to type this stronger
       },
     }
   }
