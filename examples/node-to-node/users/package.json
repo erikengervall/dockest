@@ -7,7 +7,7 @@
     "docker:build": "docker build -t users .",
     "clean": "rm -rf ./dist",
     "build": "yarn clean && yarn tsc",
-    "start:dev": "concurrently \"yarn build --watch\" \"nodemon ./dist/index\"",
+    "start:dev": "concurrently \"yarn build --watch\" \"nodemon ./dist/users/index\"",
     "start": "ts-node ./index"
   },
   "dependencies": {
