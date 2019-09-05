@@ -1,0 +1,23 @@
+{
+  "name": "orders",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "docker:build": "docker build -t orders .",
+    "clean": "rm -rf ./dist",
+    "build": "yarn clean && yarn tsc",
+    "start:dev": "concurrently \"yarn build --watch\" \"nodemon ./dist/index\"",
+    "start": "ts-node ./index"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "concurrently": "^4.1.2",
+    "nodemon": "^1.19.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.2"
+  }
+}

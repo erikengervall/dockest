@@ -7,6 +7,7 @@ const dockerComposeUp = async (dockerComposeGeneratedPath: string, runner?: Runn
               -f ${dockerComposeGeneratedPath} \
               up \
               --no-recreate \
+              --build \
               --detach \
             `
 

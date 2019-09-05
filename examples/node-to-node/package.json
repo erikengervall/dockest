@@ -4,10 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "../node_modules/.bin/ts-node ./dockest.ts"
+    "test": "../node_modules/.bin/ts-node ./dockest.ts",
+    "test:unit": "../../node_modules/.bin/jest"
   },
   "dependencies": {
     "axios": "^0.19.0",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.0.2"
   }
 }

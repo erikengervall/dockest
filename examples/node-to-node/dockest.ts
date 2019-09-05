@@ -1,15 +1,35 @@
-import path from 'path'
+// import * as jest from 'jest'
+import {
+  EXTERNAL_PORT as usersExternalPort,
+  INTERNAL_PORT as usersInternalPort,
+  SERVICE_NAME as usersServiceName,
+  PATH as usersPath,
+} from './users/constants'
+// import {
+//   EXTERNAL_PORT as yetAnotherMicroserviceExternalPort,
+//   INTERNAL_PORT as yetAnotherMicroserviceInternalPort,
+//   SERVICE_NAME as yetAnotherMicroserviceServiceName,
+//   PATH as yetAnotherMicroservicePath,
+// } from './yet-another-microservice/constants'
 import Dockest, { logLevel, runners } from '../../src'
 
 const { GeneralPurposeRunner } = runners
 
-const nodeDepRunner = new GeneralPurposeRunner({
-  service: 'node_dep_runner',
-  ports: { '1337': '8080' },
+const usersRunner = new GeneralPurposeRunner({
+  service: usersServiceName,
+  ports: { [`${usersExternalPort}`]: `${usersInternalPort}` },
   props: {
-    build: path.resolve(__dirname, './node-dependency'),
+    build: usersPath,
   },
 })
+
+// const yetAnotherMicroservice = new GeneralPurposeRunner({
+//   service: yetAnotherMicroserviceServiceName,
+//   ports: { [`${yetAnotherMicroserviceExternalPort}`]: `${yetAnotherMicroserviceInternalPort}` },
+//   props: {
+//     build: yetAnotherMicroservicePath,
+//   },
+// })
 
 const dockest = new Dockest({
   jest: {
@@ -19,7 +39,7 @@ const dockest = new Dockest({
     logLevel: logLevel.DEBUG,
     dumpErrors: true,
   },
-  runners: [nodeDepRunner],
+  runners: [usersRunner],
 })
 
 dockest.run()
