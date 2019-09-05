@@ -6,14 +6,13 @@ const app = express()
 
 app.get('/orders/:userId', (req, res) => {
   const userId = req.params.userId
-  const result = ORDERS.find(order => order.userId === userId)
-  if (!result) {
-    return res.status(404).send(`Couldn't find any orders related to user with id ${userId}`)
+  const orders = ORDERS.filter(order => order.userId === userId)
+  if (orders.length === 0) {
+    return res.status(404).send(`Could not find orders`)
   }
 
-  res.status(200).json({
-    message: `${SERVICE_NAME} app says hi`,
-    result,
+  return res.status(200).json({
+    orders,
   })
 })
 

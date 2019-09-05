@@ -22,22 +22,18 @@ app.get('/orders/:userId', async (req, res) => {
     return res.status(404).send('Could not find user')
   }
 
+  let responseData
   try {
-    const result = await axios({
+    const ordersResponse = await axios({
       baseURL: userServiceBaseUrl,
       url: `/orders/${userId}`,
     })
-
-    return res.status(200).json({
-      message: `${SERVICE_NAME} says hi`,
-      result,
-    })
+    responseData = ordersResponse.data
   } catch (error) {
-    return res.status(error.status || 500).json({
-      message: 'Something went very wrong',
-      error,
-    })
+    return res.status(error.response.status).send(error.response.data)
   }
+
+  return res.status(200).json(responseData)
 })
 
 app.listen(INTERNAL_PORT, () => {
