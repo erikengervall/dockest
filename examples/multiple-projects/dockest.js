@@ -1,16 +1,16 @@
 const {
   default: Dockest,
   logLevel,
-  runners: { RedisRunner },
+  runners: { GeneralPurposeRunner },
 } = require('../../dist') // eslint-disable-line @typescript-eslint/no-var-requires
 
 /**
  * Placeholder runner in order for Dockest to not throw configuration errors due to lack of runners
  */
-const placeHolderRunner = new RedisRunner({
+const placeHolderRunner = new GeneralPurposeRunner({
   service: 'never_gonna_give_you_up',
   image: 'redis:5.0.3',
-  ports: { [RedisRunner.DEFAULT_PORT]: RedisRunner.DEFAULT_PORT },
+  ports: { '1337': '1337' },
 })
 
 const dockest = new Dockest({
