@@ -16,7 +16,6 @@ interface RequiredConfig {
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
-  composeFileName: string
   dev: { debug?: boolean }
   dumpErrors: boolean
   exitHandler: null | ((error: ErrorPayload) => any)

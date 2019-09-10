@@ -58,7 +58,6 @@ export const LOG_LEVEL = Object.freeze({
 
 export const DEFAULT_USER_CONFIG = Object.freeze({
   afterSetupSleep: 0,
-  composeFileName: 'docker-compose.yml',
   dev: { debug: false },
   dumpErrors: false,
   exitHandler: null,
