@@ -1,23 +1,23 @@
 import express from 'express'
 import axios from 'axios'
-import { INTERNAL_PORT, SERVICE_NAME } from './constants'
-import { BASE_URL as userServiceBaseUrl } from '../orders/constants'
-import { USERS } from '../database'
+import { USERS, SERVICE_NAME, PORT } from './constants'
 
 const app = express()
 
 app.get('/users/:userId', (req, res) => {
   const user = USERS.find(user => user.id === req.params.userId)
+
   if (!user) {
     return res.status(404).send('Could not find user')
   }
 
-  return res.status(200).send(user.name)
+  res.status(200).json(user)
 })
 
 app.get('/orders/:userId', async (req, res) => {
   const userId = req.params.userId
   const user = USERS.find(user => user.id === userId)
+
   if (!user) {
     return res.status(404).send('Could not find user')
   }
@@ -25,7 +25,7 @@ app.get('/orders/:userId', async (req, res) => {
   let responseData
   try {
     const ordersResponse = await axios({
-      baseURL: userServiceBaseUrl,
+      baseURL: `http://orders:1338/`,
       url: `/orders/${userId}`,
     })
     responseData = ordersResponse.data
@@ -36,6 +36,6 @@ app.get('/orders/:userId', async (req, res) => {
   return res.status(200).json(responseData)
 })
 
-app.listen(INTERNAL_PORT, () => {
-  console.log(`${SERVICE_NAME} listening on port ${INTERNAL_PORT}`) // eslint-disable-line no-console
+app.listen(PORT, () => {
+  console.log(`${SERVICE_NAME} listening on port ${PORT}`) // eslint-disable-line no-console
 })

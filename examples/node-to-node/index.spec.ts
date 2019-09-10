@@ -3,11 +3,11 @@ import { getUserNameById, getOrdersByUserId, notFound } from './index'
 describe('index.spec.js', () => {
   describe('getUserNameById', () => {
     describe('happy', () => {
-      it(`get user's name by id`, async () => {
+      it(`get user by id`, async () => {
         const userResponse = await getUserNameById('1')
 
         expect(userResponse.status).toEqual(200)
-        expect(userResponse.data).toEqual('John Doe')
+        expect(userResponse.data).toEqual({ id: '1', name: 'John Doe' })
       })
     })
 
@@ -27,30 +27,10 @@ describe('index.spec.js', () => {
   describe('getOrdersByUserId', () => {
     describe('happy', () => {
       it(`get user's orders`, async () => {
-        const ordersResponse = await getOrdersByUserId('2')
+        const ordersResponse = await getOrdersByUserId('1')
 
         expect(ordersResponse.status).toEqual(200)
-        expect(ordersResponse.data).toEqual({
-          orders: [
-            { id: '2', name: 'An awesome product #2', userId: '2' },
-            { id: '4', name: 'An awesome product #4', userId: '2' },
-            { id: '6', name: 'An awesome product #6', userId: '2' },
-            { id: '8', name: 'An awesome product #8', userId: '2' },
-            { id: '10', name: 'An awesome product #10', userId: '2' },
-          ],
-        })
-      })
-    })
-
-    describe('sad', () => {
-      it(`should throw 404 when querying user with no orders`, async () => {
-        try {
-          await getOrdersByUserId('3')
-          throw new Error(`Just in case above line doesn't throw - this will`)
-        } catch (error) {
-          expect(error.response.status).toEqual(404)
-          expect(error.response.data).toEqual('Could not find orders')
-        }
+        expect(ordersResponse.data).toEqual({ orders: [{ id: '1', name: 'An awesome product', userId: '1' }] })
       })
     })
   })

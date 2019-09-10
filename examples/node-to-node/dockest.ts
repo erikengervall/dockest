@@ -1,35 +1,6 @@
-// import * as jest from 'jest'
-import {
-  EXTERNAL_PORT as usersExternalPort,
-  INTERNAL_PORT as usersInternalPort,
-  SERVICE_NAME as usersServiceName,
-  PATH as usersPath,
-} from './users/constants'
-// import {
-//   EXTERNAL_PORT as yetAnotherMicroserviceExternalPort,
-//   INTERNAL_PORT as yetAnotherMicroserviceInternalPort,
-//   SERVICE_NAME as yetAnotherMicroserviceServiceName,
-//   PATH as yetAnotherMicroservicePath,
-// } from './yet-another-microservice/constants'
+import { SERVICE_NAME as USERS_SERVICE_NAME } from './users/constants'
+import { SERVICE_NAME as ORDERS_SERVICE_NAME } from './orders/constants'
 import Dockest, { logLevel, runners } from '../../src'
-
-const { GeneralPurposeRunner } = runners
-
-const usersRunner = new GeneralPurposeRunner({
-  service: usersServiceName,
-  ports: { [`${usersExternalPort}`]: `${usersInternalPort}` },
-  props: {
-    build: usersPath,
-  },
-})
-
-// const yetAnotherMicroservice = new GeneralPurposeRunner({
-//   service: yetAnotherMicroserviceServiceName,
-//   ports: { [`${yetAnotherMicroserviceExternalPort}`]: `${yetAnotherMicroserviceInternalPort}` },
-//   props: {
-//     build: yetAnotherMicroservicePath,
-//   },
-// })
 
 const dockest = new Dockest({
   jest: {
@@ -38,8 +9,22 @@ const dockest = new Dockest({
   opts: {
     logLevel: logLevel.DEBUG,
     dumpErrors: true,
+    afterSetupSleep: 1,
   },
-  runners: [usersRunner],
+  runners: [
+    new runners.GeneralPurposeRunner({
+      service: USERS_SERVICE_NAME,
+      ports: { '1337': '1337' },
+      build: './users',
+      networks: ['bueno'],
+    }),
+    new runners.GeneralPurposeRunner({
+      service: ORDERS_SERVICE_NAME,
+      ports: { '1338': '1338' },
+      build: './orders',
+      networks: ['bueno'],
+    }),
+  ],
 })
 
 dockest.run()

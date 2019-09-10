@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { BASE_URL as usersBaseUrl } from './users/constants'
+
+const USER_SERVICE_BASE_URL = `http://localhost:1337`
 
 export const getUserNameById = async (userId: string) => {
   const userResponse = await axios({
-    baseURL: usersBaseUrl,
+    baseURL: USER_SERVICE_BASE_URL,
     url: `/users/${userId}`,
   })
 
@@ -12,7 +13,7 @@ export const getUserNameById = async (userId: string) => {
 
 export const getOrdersByUserId = async (userId: string) => {
   const ordersResponse = await axios({
-    baseURL: usersBaseUrl,
+    baseURL: USER_SERVICE_BASE_URL,
     url: `/orders/${userId}`,
   })
 
@@ -21,7 +22,7 @@ export const getOrdersByUserId = async (userId: string) => {
 
 export const notFound = async () => {
   const notFoundResponse = await axios({
-    baseURL: usersBaseUrl,
+    baseURL: USER_SERVICE_BASE_URL,
     url: `/not-found`,
   })
 

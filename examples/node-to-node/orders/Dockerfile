@@ -10,11 +10,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
-RUN npm run build
 
-# Bundle app source
-COPY ./dist .
+COPY . .
 
-EXPOSE 8080
-
-CMD [ "node", "index.js" ]
+CMD [ "./node_modules/.bin/ts-node", "./index" ]
