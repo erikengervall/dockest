@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+
 import GeneralPurposeRunner from './index'
 
 const generalPurposeRunner1 = new GeneralPurposeRunner({ service: 'r1' })
@@ -9,11 +11,7 @@ describe('GeneralPurposeRunner', () => {
   })
 
   it('should fail validation', () => {
-    expect(
-      () =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        new GeneralPurposeRunner({}),
-    ).toThrow(/service: Schema-key missing in config/)
+    // @ts-ignore
+    expect(() => new GeneralPurposeRunner({})).toThrow(/service: Schema-key missing in config/)
   })
 })

@@ -6,28 +6,42 @@ import GeneralPurposeRunner, { GeneralPurposeRunnerConfig } from './GeneralPurpo
 import { ObjStrStr } from '../@types'
 import Logger from '../Logger'
 
-export type Service = string
-export type Commands = string[]
-export type ConnectionTimeout = number
-export type DependsOn = Runner[]
-export type Host = string
-export type Image = string | undefined
-export type Ports = ObjStrStr
-export interface Props {
-  [key: string]: string | number
-}
+export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
 
-export interface ComposeFile {
+export type RunnerConfig =
+  | KafkaRunnerConfig
+  | PostgresRunnerConfig
+  | RedisRunnerConfig
+  | ZooKeeperRunnerConfig
+  | GeneralPurposeRunnerConfig
+
+export interface ComposeService {
+  ports: string[]
+  networks?: { [key: string]: null }
+  volumes?: string[]
+  command?: string
+  container_name?: string
   depends_on?: string[]
-  image?: string
   environment?: {
     [key: string]: string | number
   }
-  build?: string
-  ports: string[]
+  labels?: string
+  links?: string
+  image?: string
+  build?:
+    | {
+        context: string
+        dockerfile: string
+        args: string
+        cache_from: string
+        labels: string
+        shm_size: string
+        target: string
+      }
+    | string
 }
 
-export type GetComposeService = (composeFileName: string) => { [key: string]: ComposeFile }
+export type GetComposeService = () => ComposeService
 
 export interface BaseRunner {
   getComposeService: GetComposeService
@@ -38,24 +52,19 @@ export interface BaseRunner {
 }
 
 export interface SharedRequiredConfigProps {
-  service: Service
+  service: string
 }
 
+export type DependsOn = Runner[]
 export interface SharedDefaultableConfigProps {
-  commands: Commands
-  connectionTimeout: ConnectionTimeout
+  build: string | undefined
+  commands: string[]
+  connectionTimeout: number
   dependsOn: DependsOn
-  host: Host
-  image: Image
-  ports: Ports
-  props: Props
+  host: string
+  image: string | undefined
+  networks: string[] | undefined
+  ports: ObjStrStr
+  props: { [key: string]: any }
+  responsivenessTimeout: number
 }
-
-export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
-
-export type RunnerConfig =
-  | KafkaRunnerConfig
-  | PostgresRunnerConfig
-  | RedisRunnerConfig
-  | ZooKeeperRunnerConfig
-  | GeneralPurposeRunnerConfig

@@ -1,11 +1,9 @@
 import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
-import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
-import getDependsOn from '../utils/getDependsOn'
-import getImage from '../utils/getImage'
-import getPorts from '../utils/getPorts'
+import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
+import composeFileHelper from '../composeFileHelper'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {
   database: string
@@ -23,7 +21,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
   ports: {
     [DEFAULT_PORT]: DEFAULT_PORT,
   },
-  responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
+  responsivenessTimeout: SHARED_DEFAULT_CONFIG_PROPS.responsivenessTimeout,
 }
 
 class PostgresRunner implements BaseRunner {
@@ -51,21 +49,16 @@ class PostgresRunner implements BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = composeFileName => {
-    const { database, dependsOn, image, password, ports, props, service, username } = this.runnerConfig
+  public getComposeService: GetComposeService = () => {
+    const { database, password, username } = this.runnerConfig
 
     return {
-      [service]: {
-        environment: {
-          POSTGRES_DB: database,
-          POSTGRES_PASSWORD: password,
-          POSTGRES_USER: username,
-        },
-        ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, props, service }),
-        ...getPorts(ports),
-        ...props, // FIXME: Would love to type this stronger
+      environment: {
+        POSTGRES_DB: database,
+        POSTGRES_PASSWORD: password,
+        POSTGRES_USER: username,
       },
+      ...composeFileHelper(this.runnerConfig),
     }
   }
 

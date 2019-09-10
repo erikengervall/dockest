@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+
 import PostgresRunner from './index'
 
 const postgresRunner1 = new PostgresRunner({
@@ -19,11 +21,9 @@ describe('PostgresRunner', () => {
   })
 
   it('should fail validation', () => {
-    expect(
-      () =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        new PostgresRunner({ database: '_', password: '_', username: '_' }),
-    ).toThrow(/service: Schema-key missing in config/)
+    // @ts-ignore
+    expect(() => new PostgresRunner({ database: '_', password: '_', username: '_' })).toThrow(
+      /service: Schema-key missing in config/,
+    )
   })
 })

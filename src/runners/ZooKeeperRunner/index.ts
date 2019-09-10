@@ -1,12 +1,10 @@
 import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
-import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
+import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import ConfigurationError from '../../errors/ConfigurationError'
-import getDependsOn from '../utils/getDependsOn'
-import getImage from '../utils/getImage'
-import getPorts from '../utils/getPorts'
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
+import composeFileHelper from '../composeFileHelper'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {
   service: string
@@ -23,7 +21,7 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 }
 
 class ZooKeeperRunner implements BaseRunner {
-  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_HOST = SHARED_DEFAULT_CONFIG_PROPS.host
   public static DEFAULT_PORT = DEFAULT_PORT
   public containerId = ''
   public initializer = ''
@@ -43,8 +41,8 @@ class ZooKeeperRunner implements BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = composeFileName => {
-    const { dependsOn, image, ports, props, service } = this.runnerConfig
+  public getComposeService: GetComposeService = () => {
+    const { ports } = this.runnerConfig
 
     const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
     if (!ZOOKEEPER_CLIENT_PORT) {
@@ -54,15 +52,10 @@ class ZooKeeperRunner implements BaseRunner {
     }
 
     return {
-      [service]: {
-        environment: {
-          ZOOKEEPER_CLIENT_PORT,
-        },
-        ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, props, service }),
-        ...getPorts(ports),
-        ...props, // FIXME: Would love to type this stronger
+      environment: {
+        ZOOKEEPER_CLIENT_PORT,
       },
+      ...composeFileHelper(this.runnerConfig),
     }
   }
 }

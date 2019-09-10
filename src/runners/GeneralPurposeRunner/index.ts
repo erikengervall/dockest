@@ -3,9 +3,7 @@ import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
 import { BaseRunner, GetComposeService, SharedRequiredConfigProps, SharedDefaultableConfigProps } from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
-import getDependsOn from '../utils/getDependsOn'
-import getImage from '../utils/getImage'
-import getPorts from '../utils/getPorts'
+import { defaultGetComposeService } from '../composeFileHelper'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {}
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {}
@@ -35,18 +33,7 @@ class GeneralPurposeRunner implements BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = composeFileName => {
-    const { dependsOn, image, ports, service, props } = this.runnerConfig
-
-    return {
-      [service]: {
-        ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, props, service }),
-        ...getPorts(ports),
-        ...props, // FIXME: Would love to type this stronger
-      },
-    }
-  }
+  public getComposeService: GetComposeService = () => defaultGetComposeService(this.runnerConfig)
 }
 
 export { GeneralPurposeRunnerConfig }

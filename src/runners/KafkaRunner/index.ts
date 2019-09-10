@@ -1,14 +1,12 @@
 import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
-import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
+import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import { ZooKeeperRunner } from '../index'
-import getDependsOn from '../utils/getDependsOn'
-import getImage from '../utils/getImage'
 import getKeyForVal from '../../utils/getKeyForVal'
-import getPorts from '../utils/getPorts'
 import Logger from '../../Logger'
 import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
+import composeFileHelper from '../composeFileHelper'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {}
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {
@@ -20,9 +18,10 @@ const DEFAULT_PORT_PLAINTEXT = '9092'
 const DEFAULT_PORT_SASL_SSL = '9094'
 const DEFAULT_PORT_SCHEMA_REGISTRY = '8081'
 const DEFAULT_PORT_SSL = '9093'
+const DEFAULT_AUTO_CREATE_TOPIC = true
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  autoCreateTopic: DEFAULT_CONFIG_PROPS.AUTO_CREATE_TOPIC,
+  autoCreateTopic: DEFAULT_AUTO_CREATE_TOPIC,
   ports: {
     [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
   },
@@ -52,8 +51,8 @@ class KafkaRunner implements BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = composeFileName => {
-    const { autoCreateTopic, dependsOn, image, ports, props, service } = this.runnerConfig
+  public getComposeService: GetComposeService = () => {
+    const { autoCreateTopic, dependsOn, ports, service } = this.runnerConfig
 
     const getZooKeeperConnect = (): { KAFKA_ZOOKEEPER_CONNECT: string } | {} => {
       const zooKeeperDependency = dependsOn.find(runner => runner instanceof ZooKeeperRunner)
@@ -72,18 +71,18 @@ class KafkaRunner implements BaseRunner {
     const getAdvertisedListeners = (): { KAFKA_ADVERTISED_LISTENERS: string } => {
       const exposedPlaintextPort = getKeyForVal(ports, DEFAULT_PORT_PLAINTEXT)
       const PLAINTEXT = !!exposedPlaintextPort
-        ? `PLAINTEXT://${service}:2${exposedPlaintextPort}, PLAINTEXT_HOST://${DEFAULT_CONFIG_PROPS.HOST}:${exposedPlaintextPort}`
+        ? `PLAINTEXT://${service}:2${exposedPlaintextPort}, PLAINTEXT_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedPlaintextPort}`
         : ''
 
       // TODO: Investigate exact behaviour for SSL & SASL_SSL
       const exposedSSLPort = getKeyForVal(ports, DEFAULT_PORT_SSL)
       const SSL = !!exposedSSLPort
-        ? `, SSL://${service}:2${DEFAULT_PORT_SSL}, SSL_HOST://${DEFAULT_CONFIG_PROPS.HOST}:${exposedSSLPort}`
+        ? `, SSL://${service}:2${DEFAULT_PORT_SSL}, SSL_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedSSLPort}`
         : ''
 
       const exposedSASLSSLPort = getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
       const SASL_SSL = !!exposedSASLSSLPort
-        ? `, SASL_SSL://${service}:2${DEFAULT_PORT_SASL_SSL}, SASL_SSL_HOST://${DEFAULT_CONFIG_PROPS.HOST}:${exposedSASLSSLPort}`
+        ? `, SASL_SSL://${service}:2${DEFAULT_PORT_SASL_SSL}, SASL_SSL_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedSASLSSLPort}`
         : ''
 
       return {
@@ -107,23 +106,18 @@ class KafkaRunner implements BaseRunner {
     }
 
     return {
-      [service]: {
-        environment: {
-          // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
-          ...getZooKeeperConnect(),
+      environment: {
+        // https://docs.confluent.io/current/installation/docker/config-reference.html#required-confluent-kafka-settings
+        ...getZooKeeperConnect(),
 
-          ...getAdvertisedListeners(),
-          ...getSecurityProtocolMap(),
+        ...getAdvertisedListeners(),
+        ...getSecurityProtocolMap(),
 
-          KAFKA_AUTO_CREATE_TOPICS_ENABLE: !!autoCreateTopic ? 'true' : 'false',
-          KAFKA_BROKER_ID: 1,
-          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
-        },
-        ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, props, service }),
-        ...getPorts(ports),
-        ...props, // FIXME: Would love to type this stronger
+        KAFKA_AUTO_CREATE_TOPICS_ENABLE: autoCreateTopic ? 'true' : 'false',
+        KAFKA_BROKER_ID: 1,
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1,
       },
+      ...composeFileHelper(this.runnerConfig), // Since this also returns `...props`, it could overwrite `environment`
     }
   }
 }

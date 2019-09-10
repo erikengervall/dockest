@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+
 import ZooKeeperRunner from './index'
 
 const ZooKeeperRunner1 = new ZooKeeperRunner({ service: 'zk1' })
@@ -9,11 +11,7 @@ describe('ZooKeeperRunner', () => {
   })
 
   it('should fail validation', () => {
-    expect(
-      () =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        new ZooKeeperRunner({}),
-    ).toThrow(/service: Schema-key missing in config/)
+    // @ts-ignore
+    expect(() => new ZooKeeperRunner({})).toThrow(/service: Schema-key missing in config/)
   })
 })

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+
 import KafkaRunner from './index'
 import ZooKeeperRunner from '../ZooKeeperRunner'
 
@@ -16,11 +18,7 @@ describe('KafkaRunner', () => {
   })
 
   it('should fail validation', () => {
-    expect(
-      () =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        new KafkaRunner({}),
-    ).toThrow(/service: Schema-key missing in config/)
+    // @ts-ignore
+    expect(() => new KafkaRunner({})).toThrow(/service: Schema-key missing in config/)
   })
 })

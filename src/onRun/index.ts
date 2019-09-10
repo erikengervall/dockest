@@ -8,14 +8,14 @@ import teardownSingle from '../utils/teardownSingle'
 
 const onRun = async (config: DockestConfig) => {
   const {
-    $: { dockerComposeGeneratedPath, perfStart },
+    $: { perfStart },
     opts: {
       afterSetupSleep,
       dev: { debug },
     },
   } = config
 
-  await dockerComposeUp(dockerComposeGeneratedPath)
+  await dockerComposeUp()
 
   await waitForRunnersReadiness(config)
 

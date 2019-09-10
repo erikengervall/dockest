@@ -1,17 +1,16 @@
-import { Runner } from '../runners/@types'
 import execaWrapper from '../utils/execaWrapper'
 
-const dockerComposeUp = async (dockerComposeGeneratedPath: string, runner?: Runner) => {
+const dockerComposeUp = async () => {
   const command = ` \
               docker-compose \
-              -f ${dockerComposeGeneratedPath} \
+              -f ${`${process.cwd()}/docker-compose-dockest.yml`} \
               up \
-              --no-recreate \
+              --force-recreate \
               --build \
               --detach \
             `
 
-  await execaWrapper(command, runner)
+  await execaWrapper(command)
 }
 
 export default dockerComposeUp
