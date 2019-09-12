@@ -44,7 +44,6 @@ const postgres2knexRunner = new PostgresRunner({
 const redis1ioredisRunner = new RedisRunner({
   service: env.redis1ioredis_service,
   image: 'redis:5.0.3',
-  password: env.redis1ioredis_password,
   ports: {
     [env.redis1ioredis_port]: RedisRunner.DEFAULT_PORT,
   },
