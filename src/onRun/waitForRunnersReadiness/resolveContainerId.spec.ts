@@ -13,9 +13,8 @@ describe('getContainerId', () => {
   it('should work', async () => {
     const containerId = await getContainerId(redisRunner)
 
-    expect(redisRunner.logger.debug).toHaveBeenCalledWith(expect.stringMatching('docker ps'))
-    expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker ps'), { shell: true })
-    expect(execa).lastReturnedWith({ stdout: mockedExecaStdout })
-    expect(containerId).toEqual(mockedExecaStdout)
+    expect(redisRunner.logger.debug).toMatchSnapshot()
+    expect(execa).toMatchSnapshot()
+    expect(containerId).toMatchSnapshot()
   })
 })
