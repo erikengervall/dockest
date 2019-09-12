@@ -1,5 +1,5 @@
-import fs from 'fs'
-import yaml from 'js-yaml'
+import { default as fsLib } from 'fs'
+import { default as yamlLib } from 'js-yaml'
 import { ComposeService, DependsOn } from '../runners/@types'
 import { DockestConfig } from '../index'
 import DockestError from '../errors/DockestError'
@@ -19,11 +19,6 @@ export interface ComposeFile {
   }
 }
 
-const composeFile: ComposeFile = {
-  version: '3',
-  services: {},
-}
-
 const getDepComposeServices = (dependsOn: DependsOn) =>
   dependsOn.reduce(
     (composeServices: { [key: string]: ComposeService }, { runnerConfig: { service }, getComposeService }) => ({
@@ -33,8 +28,13 @@ const getDepComposeServices = (dependsOn: DependsOn) =>
     {},
   )
 
-export default (config: DockestConfig) => {
-  for (const runner of config.runners) {
+export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
+  const composeFile: ComposeFile = {
+    version: '3',
+    services: {},
+  }
+
+  config.runners.forEach(runner => {
     const {
       runnerConfig: { service, dependsOn },
       getComposeService,
@@ -48,7 +48,7 @@ export default (config: DockestConfig) => {
       [service]: composeService,
       ...depComposeServices,
     }
-  }
+  })
 
   const servicesWithNetworks = keys(composeFile.services).filter(
     service => composeFile.services[service].networks !== undefined,
@@ -75,7 +75,6 @@ export default (config: DockestConfig) => {
       {},
     )
   }
-
   const yml = yaml.safeDump(composeFile)
 
   try {

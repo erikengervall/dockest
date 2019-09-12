@@ -12,7 +12,7 @@ jest.mock('../Logger')
 describe('assignRunnerSymbol', () => {
   it('should handle the base case and reset the symbols', () => {
     const runners = Array.from(
-      Array(LOG_SYMBOLS.length + 1),
+      Array(LOG_SYMBOLS.length),
       (_, index) => new GeneralPurposeRunner({ service: `${index}`, image: '_' }),
     )
     const dockestConfig = createDockestConfig({ runners })
@@ -20,9 +20,7 @@ describe('assignRunnerSymbol', () => {
     assignRunnerSymbol(dockestConfig)
 
     for (const runner of dockestConfig.runners) {
-      expect(runner.logger.setRunnerSymbol).toHaveBeenCalledWith(
-        expect.stringMatching(new RegExp(LOG_SYMBOLS.join('|'), 'gi')),
-      )
+      expect(runner.logger.setRunnerSymbol).toMatchSnapshot()
     }
   })
 })
