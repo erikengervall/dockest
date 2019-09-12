@@ -17,10 +17,9 @@ describe('execaWrapper', () => {
     it('should work', async () => {
       const result = await execaWrapper(command, redisRunner)
 
-      expect(redisRunner.logger.debug).toHaveBeenCalledWith(expect.stringContaining(command))
-      expect(execa).toHaveBeenCalledWith(command, { shell: true })
-      expect(redisRunner.logger.debug).toHaveBeenCalledWith(expect.stringContaining(command))
-      expect(result).toEqual(mockedExecaStdout)
+      expect(redisRunner.logger.debug).toMatchSnapshot()
+      expect(execa).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 
@@ -28,10 +27,9 @@ describe('execaWrapper', () => {
     it('should work', async () => {
       const result = await execaWrapper(command)
 
-      expect(Logger.debug).toHaveBeenCalledWith(expect.stringContaining(command))
-      expect(execa).toHaveBeenCalledWith(command, { shell: true })
-      expect(Logger.debug).toHaveBeenCalledWith(expect.stringContaining(command))
-      expect(result).toEqual(mockedExecaStdout)
+      expect(Logger.debug).toMatchSnapshot()
+      expect(execa).toMatchSnapshot()
+      expect(result).toMatchSnapshot()
     })
   })
 })

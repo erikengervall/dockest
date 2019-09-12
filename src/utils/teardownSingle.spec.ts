@@ -20,8 +20,7 @@ describe('teardownSingle', () => {
     it('should work', async () => {
       await teardownSingle(generalPurposeRunner)
 
-      expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker stop'), { shell: true })
-      expect(execa).toHaveBeenCalledWith(expect.stringMatching('docker rm'), { shell: true })
+      expect(execa).toMatchSnapshot()
     })
   })
 
@@ -34,10 +33,10 @@ describe('teardownSingle', () => {
         throw error
       })
 
-      await teardownSingle(generalPurposeRunner)
+      const result = await teardownSingle(generalPurposeRunner)
 
-      expect(generalPurposeRunner.logger.info).toHaveBeenCalled()
-      expect(generalPurposeRunner.logger.error).toHaveBeenCalled()
+      expect(generalPurposeRunner.logger.info).toMatchSnapshot()
+      expect(generalPurposeRunner.logger.error).toMatchSnapshot()
     })
   })
 })

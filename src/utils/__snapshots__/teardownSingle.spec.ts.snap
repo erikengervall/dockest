@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`teardownSingle happy should work 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "docker stop mockContainerId",
+      Object {
+        "shell": true,
+      },
+    ],
+    Array [
+      "docker rm mockContainerId --volumes",
+      Object {
+        "shell": true,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "stdout": "getContainerId 🌮",
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "stdout": "getContainerId 🌮",
+      },
+    },
+  ],
+}
+`;
+
+exports[`teardownSingle sad should log and swallow teardown errors 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Container teardown started",
+    ],
+    Array [
+      "Container teardown completed",
+      Object {
+        "nl": 1,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`teardownSingle sad should log and swallow teardown errors 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Unexpected error when stopping container",
+      Object {
+        "error": [Error: Unexpected teardown error],
+      },
+    ],
+    Array [
+      "Unexpected error when removing container",
+      Object {
+        "error": [Error: Unexpected teardown error],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
