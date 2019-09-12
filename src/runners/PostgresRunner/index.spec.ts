@@ -20,6 +20,8 @@ const postgresRunner2 = new PostgresRunner({
 describe('PostgresRunner', () => {
   it('should create unique instances', () => {
     expect(postgresRunner1).not.toBe(postgresRunner2)
+    expect(postgresRunner1).toMatchSnapshot()
+    expect(postgresRunner2).toMatchSnapshot()
   })
 
   it('should fail validation', () => {

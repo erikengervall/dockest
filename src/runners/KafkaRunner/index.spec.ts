@@ -3,7 +3,7 @@
 import KafkaRunner from './index'
 import ZooKeeperRunner from '../ZooKeeperRunner'
 
-const KafkaRunner1 = new KafkaRunner({
+const kafkaRunner1 = new KafkaRunner({
   dependsOn: [
     new ZooKeeperRunner({
       service: 'zk1',
@@ -13,7 +13,7 @@ const KafkaRunner1 = new KafkaRunner({
   service: 'k1',
   image: 'some/image:123',
 })
-const KafkaRunner2 = new KafkaRunner({
+const kafkaRunner2 = new KafkaRunner({
   dependsOn: [
     new ZooKeeperRunner({
       service: 'zk2',
@@ -26,7 +26,9 @@ const KafkaRunner2 = new KafkaRunner({
 
 describe('KafkaRunner', () => {
   it('should create unique instances', () => {
-    expect(KafkaRunner1).not.toBe(KafkaRunner2)
+    expect(kafkaRunner1).not.toBe(kafkaRunner2)
+    expect(kafkaRunner1).toMatchSnapshot()
+    expect(kafkaRunner2).toMatchSnapshot()
   })
 
   it('should fail validation', () => {

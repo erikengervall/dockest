@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getDependsOn should resolve service names from dependencies 1`] = `
+Object {
+  "depends_on": Array [
+    "redis1",
+    "redis2",
+  ],
+}
+`;

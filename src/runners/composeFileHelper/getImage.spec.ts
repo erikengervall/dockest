@@ -9,7 +9,7 @@ describe('getImage', () => {
 
       const result = getImage({ image, service })
 
-      expect(result).toEqual({ image })
+      expect(result).toMatchSnapshot()
     })
   })
 
@@ -19,7 +19,7 @@ describe('getImage', () => {
 
       const result = getImage({ build, service })
 
-      expect(result).toEqual({})
+      expect(result).toMatchSnapshot()
     })
   })
 })

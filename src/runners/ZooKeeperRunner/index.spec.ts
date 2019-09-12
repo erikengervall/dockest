@@ -8,6 +8,8 @@ const ZooKeeperRunner2 = new ZooKeeperRunner({ service: 'zk2', image: 'some/imag
 describe('ZooKeeperRunner', () => {
   it('should create unique instances', () => {
     expect(ZooKeeperRunner1).not.toBe(ZooKeeperRunner2)
+    expect(ZooKeeperRunner1).toMatchSnapshot()
+    expect(ZooKeeperRunner2).toMatchSnapshot()
   })
 
   it('should fail validation', () => {

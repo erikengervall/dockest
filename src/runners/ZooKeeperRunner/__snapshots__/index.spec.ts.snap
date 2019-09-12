@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ZooKeeperRunner should create unique instances 1`] = `
+ZooKeeperRunner {
+  "containerId": "",
+  "getComposeService": [Function],
+  "initializer": "",
+  "logger": Logger {
+    "debug": [Function],
+    "error": [Function],
+    "info": [Function],
+    "runnerService": "zk1",
+    "runnerSymbol": "🦇 ",
+    "setRunnerSymbol": [Function],
+    "warn": [Function],
+  },
+  "runnerConfig": Object {
+    "build": "",
+    "commands": Array [],
+    "connectionTimeout": 5,
+    "dependsOn": Array [],
+    "host": "localhost",
+    "image": "some/image:123",
+    "networks": undefined,
+    "ports": Object {
+      "2181": "2181",
+    },
+    "props": Object {},
+    "responsivenessTimeout": 30,
+    "service": "zk1",
+  },
+}
+`;
+
+exports[`ZooKeeperRunner should create unique instances 2`] = `
+ZooKeeperRunner {
+  "containerId": "",
+  "getComposeService": [Function],
+  "initializer": "",
+  "logger": Logger {
+    "debug": [Function],
+    "error": [Function],
+    "info": [Function],
+    "runnerService": "zk2",
+    "runnerSymbol": "🦇 ",
+    "setRunnerSymbol": [Function],
+    "warn": [Function],
+  },
+  "runnerConfig": Object {
+    "build": "",
+    "commands": Array [],
+    "connectionTimeout": 5,
+    "dependsOn": Array [],
+    "host": "localhost",
+    "image": "some/image:123",
+    "networks": undefined,
+    "ports": Object {
+      "2181": "2181",
+    },
+    "props": Object {},
+    "responsivenessTimeout": 30,
+    "service": "zk2",
+  },
+}
+`;

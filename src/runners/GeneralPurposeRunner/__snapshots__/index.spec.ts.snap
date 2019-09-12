@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GeneralPurposeRunner should create unique instances 1`] = `
+GeneralPurposeRunner {
+  "containerId": "",
+  "getComposeService": [Function],
+  "initializer": "",
+  "logger": Logger {
+    "debug": [Function],
+    "error": [Function],
+    "info": [Function],
+    "runnerService": "r1",
+    "runnerSymbol": "🦇 ",
+    "setRunnerSymbol": [Function],
+    "warn": [Function],
+  },
+  "runnerConfig": Object {
+    "build": "",
+    "commands": Array [],
+    "connectionTimeout": 5,
+    "dependsOn": Array [],
+    "host": "localhost",
+    "image": "some/image:123",
+    "networks": undefined,
+    "ports": Object {},
+    "props": Object {},
+    "responsivenessTimeout": 30,
+    "service": "r1",
+  },
+}
+`;
+
+exports[`GeneralPurposeRunner should create unique instances 2`] = `
+GeneralPurposeRunner {
+  "containerId": "",
+  "getComposeService": [Function],
+  "initializer": "",
+  "logger": Logger {
+    "debug": [Function],
+    "error": [Function],
+    "info": [Function],
+    "runnerService": "r2",
+    "runnerSymbol": "🦇 ",
+    "setRunnerSymbol": [Function],
+    "warn": [Function],
+  },
+  "runnerConfig": Object {
+    "build": "",
+    "commands": Array [],
+    "connectionTimeout": 5,
+    "dependsOn": Array [],
+    "host": "localhost",
+    "image": "some/image:123",
+    "networks": undefined,
+    "ports": Object {},
+    "props": Object {},
+    "responsivenessTimeout": 30,
+    "service": "r2",
+  },
+}
+`;

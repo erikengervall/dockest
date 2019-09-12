@@ -11,9 +11,7 @@ describe('getPorts', () => {
 
     const result = getPorts(ports)
 
-    expect(result).toEqual({
-      ports: ['1000:2000', '1001:2001', '1002:2002', 'anyString:works'],
-    })
+    expect(result).toMatchSnapshot()
   })
 })
 

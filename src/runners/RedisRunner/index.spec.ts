@@ -8,6 +8,8 @@ const RedisRunner2 = new RedisRunner({ service: 'r2', image: 'some/image:123' })
 describe('RedisRunner', () => {
   it('should create unique instances', () => {
     expect(RedisRunner1).not.toBe(RedisRunner2)
+    expect(RedisRunner1).toMatchSnapshot()
+    expect(RedisRunner2).toMatchSnapshot()
   })
 
   it('should fail validation', () => {

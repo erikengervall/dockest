@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPorts should properly map ports 1`] = `
+Object {
+  "ports": Array [
+    "1000:2000",
+    "1001:2001",
+    "1002:2002",
+    "anyString:works",
+  ],
+}
+`;

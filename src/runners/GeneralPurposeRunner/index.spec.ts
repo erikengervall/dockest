@@ -8,6 +8,8 @@ const generalPurposeRunner2 = new GeneralPurposeRunner({ service: 'r2', image: '
 describe('GeneralPurposeRunner', () => {
   it('should create unique instances', () => {
     expect(generalPurposeRunner1).not.toBe(generalPurposeRunner2)
+    expect(generalPurposeRunner1).toMatchSnapshot()
+    expect(generalPurposeRunner2).toMatchSnapshot()
   })
 
   it('should fail validation', () => {
