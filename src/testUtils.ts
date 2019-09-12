@@ -34,17 +34,23 @@ const createDockestConfig = (opts: { runners?: Runner[] }) => {
 export default ({ withRunnerCommands = false }) => {
   const withCmds = withRunnerCommands ? { commands: [runnerCommand] } : {}
 
-  const zooKeeperRunner = new ZooKeeperRunner({ service: 'zookeepeer', ...withCmds })
-  const kafkaRunner = new KafkaRunner({ service: 'kafka', dependsOn: [zooKeeperRunner], ...withCmds })
+  const zooKeeperRunner = new ZooKeeperRunner({ service: 'zookeepeer', image: 'some/image:123', ...withCmds })
+  const kafkaRunner = new KafkaRunner({
+    service: 'kafka',
+    image: 'some/image:123',
+    dependsOn: [zooKeeperRunner],
+    ...withCmds,
+  })
   const postgresRunner = new PostgresRunner({
     service: 'postgres',
+    image: 'some/image:123',
     database: '_',
     username: '_',
     password: '_',
     ...withCmds,
   })
-  const redisRunner = new RedisRunner({ service: 'redis', ...withCmds })
-  const generalPurposeRunner = new GeneralPurposeRunner({ service: 'general', ...withCmds })
+  const redisRunner = new RedisRunner({ service: 'redis', image: 'some/image:123', ...withCmds })
+  const generalPurposeRunner = new GeneralPurposeRunner({ service: 'general', image: 'some/image:123', ...withCmds })
   const initializedRunners = {
     kafkaRunner,
     postgresRunner,

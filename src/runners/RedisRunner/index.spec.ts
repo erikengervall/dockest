@@ -2,8 +2,8 @@
 
 import RedisRunner from './index'
 
-const RedisRunner1 = new RedisRunner({ service: 'r1' })
-const RedisRunner2 = new RedisRunner({ service: 'r2' })
+const RedisRunner1 = new RedisRunner({ service: 'r1', image: 'some/image:123' })
+const RedisRunner2 = new RedisRunner({ service: 'r2', image: 'some/image:123' })
 
 describe('RedisRunner', () => {
   it('should create unique instances', () => {

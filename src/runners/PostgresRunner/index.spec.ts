@@ -4,12 +4,14 @@ import PostgresRunner from './index'
 
 const postgresRunner1 = new PostgresRunner({
   service: 'pg1',
+  image: 'some/image:123',
   database: '_',
   password: '_',
   username: '_',
 })
 const postgresRunner2 = new PostgresRunner({
   service: 'pg2',
+  image: 'some/image:123',
   database: '_',
   password: '_',
   username: '_',

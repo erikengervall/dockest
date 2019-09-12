@@ -44,9 +44,23 @@ describe('waitForRunnersReadiness', () => {
   })
 
   it('should handle runners being dependend on by multiple runners', async () => {
-    const POPULAR_RUNNER = new GeneralPurposeRunner({ service: 'POPULAR_RUNNER' }) // abort itself POPULAR_RUNNER>
-    const FOLLOWER_ONE = new GeneralPurposeRunner({ service: 'FOLLOWER_ONE', dependsOn: [POPULAR_RUNNER] }) // start POPULAR_RUNNER, start itself FOLLOWER_ONE
-    const FOLLOWER_TWO = new GeneralPurposeRunner({ service: 'FOLLOWER_TWO', dependsOn: [POPULAR_RUNNER] }) // abort POPULAR_RUNNER, start itself FOLLOWER_TWO
+    // abort itself POPULAR_RUNNER>
+    const POPULAR_RUNNER = new GeneralPurposeRunner({
+      service: 'POPULAR_RUNNER',
+      image: 'some/image:123',
+    })
+    // start POPULAR_RUNNER, start itself FOLLOWER_ONE
+    const FOLLOWER_ONE = new GeneralPurposeRunner({
+      service: 'FOLLOWER_ONE',
+      image: 'some/image:123',
+      dependsOn: [POPULAR_RUNNER],
+    })
+    // abort POPULAR_RUNNER, start itself FOLLOWER_TWO
+    const FOLLOWER_TWO = new GeneralPurposeRunner({
+      service: 'FOLLOWER_TWO',
+      image: 'some/image:123',
+      dependsOn: [POPULAR_RUNNER],
+    })
     const runners = [FOLLOWER_ONE, POPULAR_RUNNER, FOLLOWER_TWO]
     const dockestConfig = createDockestConfig({ runners })
 

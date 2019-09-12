@@ -7,7 +7,7 @@ export default (schema: { [key: string]: any }, config: RunnerConfig) => {
 
   const { build, image } = config
   if (!image && !build) {
-    failures.push(`Missing both "image" and "build", at least one has to be present.`)
+    failures.push(`"image" and "build" are invalid, at least one has to be present. (image: ${image}, build: ${build})`)
   }
 
   if (failures.length > 0) {

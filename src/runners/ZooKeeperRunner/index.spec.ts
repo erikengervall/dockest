@@ -2,8 +2,8 @@
 
 import ZooKeeperRunner from './index'
 
-const ZooKeeperRunner1 = new ZooKeeperRunner({ service: 'zk1' })
-const ZooKeeperRunner2 = new ZooKeeperRunner({ service: 'zk2' })
+const ZooKeeperRunner1 = new ZooKeeperRunner({ service: 'zk1', image: 'some/image:123' })
+const ZooKeeperRunner2 = new ZooKeeperRunner({ service: 'zk2', image: 'some/image:123' })
 
 describe('ZooKeeperRunner', () => {
   it('should create unique instances', () => {

@@ -2,8 +2,8 @@
 
 import GeneralPurposeRunner from './index'
 
-const generalPurposeRunner1 = new GeneralPurposeRunner({ service: 'r1' })
-const generalPurposeRunner2 = new GeneralPurposeRunner({ service: 'r2' })
+const generalPurposeRunner1 = new GeneralPurposeRunner({ service: 'r1', image: 'some/image:123' })
+const generalPurposeRunner2 = new GeneralPurposeRunner({ service: 'r2', image: 'some/image:123' })
 
 describe('GeneralPurposeRunner', () => {
   it('should create unique instances', () => {
