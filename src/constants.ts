@@ -69,7 +69,7 @@ export const INTERNAL_CONFIG = Object.freeze({
   dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
   failedTeardowns: [],
   jestRanWithResult: false,
-  perfStart: Date.now(),
+  perfStart: 0,
 })
 
 export const PROCESS_TEST_ENV = 'dockest-test'
