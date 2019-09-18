@@ -4,7 +4,7 @@ title: Example
 sidebar_label: Example
 ---
 
-Check out [`example/dockest.ts`](https://github.com/erikengervall/dockest/tree/master/example) for an example.
+Check out [`examples/`](https://github.com/erikengervall/dockest/tree/master/examples) for practical examples.
 
 ## TypeScript
 
