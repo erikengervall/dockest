@@ -34,7 +34,7 @@ describe('validateTypes', () => {
 
       const failures = validateTypes(validationSchema, config)
 
-      expect(failures).toEqual([])
+      expect(failures).toMatchSnapshot()
     })
   })
 
@@ -54,8 +54,8 @@ describe('validateTypes', () => {
 
       const failures = validateTypes(validationSchema, config)
 
-      expect(failures.length).toEqual(1)
-      expect(failures[0]).toMatch('service: Expected string | Received 1 (number)')
+      expect(failures.length).toMatchSnapshot()
+      expect(failures[0]).toMatchSnapshot()
     })
   })
 })

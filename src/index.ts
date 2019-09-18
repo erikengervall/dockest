@@ -16,7 +16,6 @@ interface RequiredConfig {
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
-  composeFileName: string
   dev: { debug?: boolean }
   dumpErrors: boolean
   exitHandler: null | ((error: ErrorPayload) => any)
@@ -81,14 +80,15 @@ class Dockest {
     }
 
     // Validate service name uniqueness
-    const map: ObjStrStr = {}
+    const serviceMap: ObjStrStr = {}
     for (const runner of this.config.runners) {
-      if (map[runner.runnerConfig.service]) {
+      if (serviceMap[runner.runnerConfig.service]) {
         throw new ConfigurationError(
           `Service property has to be unique. Collision found for runner with service "${runner.runnerConfig.service}"`,
         )
       }
-      map[runner.runnerConfig.service] = runner.runnerConfig.service
+
+      serviceMap[runner.runnerConfig.service] = runner.runnerConfig.service
     }
   }
 }

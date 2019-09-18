@@ -1,6 +1,6 @@
 import { createMockProxy } from 'jest-mock-proxy'
 import execa from 'execa' // eslint-disable-line import/default
-import { ZooKeeperRunner, KafkaRunner, PostgresRunner, RedisRunner, SimpleRunner } from './runners'
+import { ZooKeeperRunner, KafkaRunner, PostgresRunner, RedisRunner, GeneralPurposeRunner } from './runners'
 import { Runner } from './runners/@types'
 import Logger from './Logger'
 import { DEFAULT_USER_CONFIG, INTERNAL_CONFIG } from './constants'
@@ -34,18 +34,30 @@ const createDockestConfig = (opts: { runners?: Runner[] }) => {
 export default ({ withRunnerCommands = false }) => {
   const withCmds = withRunnerCommands ? { commands: [runnerCommand] } : {}
 
-  const zooKeeperRunner = new ZooKeeperRunner({ service: 'zookeepeer', ...withCmds })
-  const kafkaRunner = new KafkaRunner({ service: 'kafka', dependsOn: [zooKeeperRunner], ...withCmds })
+  const zooKeeperRunner = new ZooKeeperRunner({ service: 'zookeepeer', image: 'some/image:123', ...withCmds })
+  const kafkaRunner = new KafkaRunner({
+    service: 'kafka',
+    image: 'some/image:123',
+    dependsOn: [zooKeeperRunner],
+    ...withCmds,
+  })
   const postgresRunner = new PostgresRunner({
     service: 'postgres',
+    image: 'some/image:123',
     database: '_',
     username: '_',
     password: '_',
     ...withCmds,
   })
-  const redisRunner = new RedisRunner({ service: 'redis', ...withCmds })
-  const simpleRunner = new SimpleRunner({ service: 'simple', ...withCmds })
-  const initializedRunners = { kafkaRunner, postgresRunner, redisRunner, zooKeeperRunner, simpleRunner }
+  const redisRunner = new RedisRunner({ service: 'redis', image: 'some/image:123', ...withCmds })
+  const generalPurposeRunner = new GeneralPurposeRunner({ service: 'general', image: 'some/image:123', ...withCmds })
+  const initializedRunners = {
+    kafkaRunner,
+    postgresRunner,
+    redisRunner,
+    zooKeeperRunner,
+    generalPurposeRunner,
+  }
 
   beforeEach(() => values(initializedRunners).forEach(runner => (runner.logger = createMockProxy())))
 
@@ -56,7 +68,7 @@ export default ({ withRunnerCommands = false }) => {
       KafkaRunner,
       PostgresRunner,
       RedisRunner,
-      SimpleRunner,
+      GeneralPurposeRunner,
     },
     execa,
     Logger,

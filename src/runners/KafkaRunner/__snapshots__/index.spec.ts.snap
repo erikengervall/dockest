@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KafkaRunner should create unique instances 1`] = `
+KafkaRunner {
+  "containerId": "",
+  "getComposeService": [Function],
+  "initializer": "",
+  "logger": Logger {
+    "debug": [Function],
+    "error": [Function],
+    "info": [Function],
+    "runnerService": "k1",
+    "runnerSymbol": "🦇 ",
+    "setRunnerSymbol": [Function],
+    "warn": [Function],
+  },
+  "runnerConfig": Object {
+    "autoCreateTopic": true,
+    "build": "",
+    "commands": Array [],
+    "connectionTimeout": 5,
+    "dependsOn": Array [
+      ZooKeeperRunner {
+        "containerId": "",
+        "getComposeService": [Function],
+        "initializer": "",
+        "logger": Logger {
+          "debug": [Function],
+          "error": [Function],
+          "info": [Function],
+          "runnerService": "zk1",
+          "runnerSymbol": "🦇 ",
+          "setRunnerSymbol": [Function],
+          "warn": [Function],
+        },
+        "runnerConfig": Object {
+          "build": "",
+          "commands": Array [],
+          "connectionTimeout": 5,
+          "dependsOn": Array [],
+          "host": "localhost",
+          "image": "some/image:123",
+          "networks": undefined,
+          "ports": Object {
+            "2181": "2181",
+          },
+          "props": Object {},
+          "responsivenessTimeout": 30,
+          "service": "zk1",
+        },
+      },
+    ],
+    "host": "localhost",
+    "image": "some/image:123",
+    "networks": undefined,
+    "ports": Object {
+      "9092": "9092",
+    },
+    "props": Object {},
+    "responsivenessTimeout": 30,
+    "service": "k1",
+  },
+}
+`;
+
+exports[`KafkaRunner should create unique instances 2`] = `
+KafkaRunner {
+  "containerId": "",
+  "getComposeService": [Function],
+  "initializer": "",
+  "logger": Logger {
+    "debug": [Function],
+    "error": [Function],
+    "info": [Function],
+    "runnerService": "k2",
+    "runnerSymbol": "🦇 ",
+    "setRunnerSymbol": [Function],
+    "warn": [Function],
+  },
+  "runnerConfig": Object {
+    "autoCreateTopic": true,
+    "build": "",
+    "commands": Array [],
+    "connectionTimeout": 5,
+    "dependsOn": Array [
+      ZooKeeperRunner {
+        "containerId": "",
+        "getComposeService": [Function],
+        "initializer": "",
+        "logger": Logger {
+          "debug": [Function],
+          "error": [Function],
+          "info": [Function],
+          "runnerService": "zk2",
+          "runnerSymbol": "🦇 ",
+          "setRunnerSymbol": [Function],
+          "warn": [Function],
+        },
+        "runnerConfig": Object {
+          "build": "",
+          "commands": Array [],
+          "connectionTimeout": 5,
+          "dependsOn": Array [],
+          "host": "localhost",
+          "image": "some/image:123",
+          "networks": undefined,
+          "ports": Object {
+            "2181": "2181",
+          },
+          "props": Object {},
+          "responsivenessTimeout": 30,
+          "service": "zk2",
+        },
+      },
+    ],
+    "host": "localhost",
+    "image": "some/image:123",
+    "networks": undefined,
+    "ports": Object {
+      "9092": "9092",
+    },
+    "props": Object {},
+    "responsivenessTimeout": 30,
+    "service": "k2",
+  },
+}
+`;

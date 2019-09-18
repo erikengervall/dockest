@@ -21,8 +21,9 @@ trash
 # Dockest dev
 #
 dist
-docker-compose-generated.yml
+docker-compose-dockest.yml
 typedoc
+dockest-error.json
 
 # Webstorm
 .idea/*

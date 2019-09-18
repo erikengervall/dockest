@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getContainerId should work 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Executing shell script: docker ps --quiet --filter \\"name=redis\\" --latest",
+    ],
+    Array [
+      "Successfully executed shell script docker ps --quiet --filter \\"name=redis\\" --latest",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`getContainerId should work 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "docker ps --quiet --filter \\"name=redis\\" --latest",
+      Object {
+        "shell": true,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "stdout": "getContainerId 🌮",
+      },
+    },
+  ],
+}
+`;
+
+exports[`getContainerId should work 3`] = `"getContainerId 🌮"`;

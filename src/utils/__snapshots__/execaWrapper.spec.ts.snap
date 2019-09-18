@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`execaWrapper with runner should work 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Executing shell script: run some CLI command :please:",
+    ],
+    Array [
+      "Successfully executed shell script run some CLI command :please:",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`execaWrapper with runner should work 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "run some CLI command :please:",
+      Object {
+        "shell": true,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "stdout": "getContainerId 🌮",
+      },
+    },
+  ],
+}
+`;
+
+exports[`execaWrapper with runner should work 3`] = `"getContainerId 🌮"`;
+
+exports[`execaWrapper without runner should work 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Executing shell script: run some CLI command :please:",
+    ],
+    Array [
+      "Successfully executed shell script run some CLI command :please:",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`execaWrapper without runner should work 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "run some CLI command :please:",
+      Object {
+        "shell": true,
+      },
+    ],
+    Array [
+      "run some CLI command :please:",
+      Object {
+        "shell": true,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "stdout": "getContainerId 🌮",
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "stdout": "getContainerId 🌮",
+      },
+    },
+  ],
+}
+`;
+
+exports[`execaWrapper without runner should work 3`] = `"getContainerId 🌮"`;

@@ -4,10 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "../node_modules/.bin/ts-node ./dockest.ts"
+    "test": "../node_modules/.bin/ts-node ./dockest.ts",
+    "test:unit": "../../node_modules/.bin/jest",
+    "test:unit:watch": "../../node_modules/.bin/jest --watch",
+    "start:dev": "concurrently \"cd ./users && yarn start:dev\" \"cd ./orders && yarn start:dev\""
   },
   "dependencies": {
     "axios": "^0.19.0",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "concurrently": "^4.1.2",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.0.2"
   }
 }

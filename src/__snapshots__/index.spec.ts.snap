@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dockest should be initializable and expose the main run method 1`] = `
+Dockest {
+  "config": Object {
+    "$": Object {
+      "dockerComposeGeneratedPath": "mocked-dirname/docker-compose-generated.yml",
+      "failedTeardowns": Array [],
+      "jestRanWithResult": false,
+      "perfStart": 0,
+    },
+    "jest": Object {},
+    "opts": Object {
+      "afterSetupSleep": 0,
+      "dev": Object {
+        "debug": false,
+      },
+      "dumpErrors": false,
+      "exitHandler": null,
+      "logLevel": 3,
+      "runInBand": true,
+    },
+    "runners": Array [
+      GeneralPurposeRunner {
+        "containerId": "",
+        "getComposeService": [Function],
+        "initializer": "",
+        "logger": Logger {
+          "debug": [Function],
+          "error": [Function],
+          "info": [Function],
+          "runnerService": "_",
+          "runnerSymbol": "🐼 ",
+          "setRunnerSymbol": [Function],
+          "warn": [Function],
+        },
+        "runnerConfig": Object {
+          "build": "",
+          "commands": Array [],
+          "connectionTimeout": 5,
+          "dependsOn": Array [],
+          "host": "localhost",
+          "image": "_",
+          "networks": undefined,
+          "ports": Object {},
+          "props": Object {},
+          "responsivenessTimeout": 30,
+          "service": "_",
+        },
+      },
+    ],
+  },
+  "run": [Function],
+  "validateConfig": [Function],
+}
+`;
+
+exports[`Dockest should export the expected members 1`] = `
+Object {
+  "default": [Function],
+  "execa": [Function],
+  "logLevel": Object {
+    "DEBUG": 4,
+    "ERROR": 1,
+    "INFO": 3,
+    "NOTHING": 0,
+    "WARN": 2,
+  },
+  "runners": Object {
+    "GeneralPurposeRunner": [Function],
+    "KafkaRunner": [Function],
+    "PostgresRunner": [Function],
+    "RedisRunner": [Function],
+    "ZooKeeperRunner": [Function],
+  },
+  "sleep": [Function],
+}
+`;

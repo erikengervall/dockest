@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validateTypes happy should work for valid config 1`] = `Array []`;
+
+exports[`validateTypes sad should return a failure for invalid config 1`] = `1`;
+
+exports[`validateTypes sad should return a failure for invalid config 2`] = `"service: Expected string | Received 1 (number)"`;

@@ -1,7 +1,7 @@
 ---
-id: runner_simple
-title: Simple
-sidebar_label: Simple
+id: runner_general_purpose
+title: General purpose
+sidebar_label: General purpose
 ---
 
 General purpose runner.
@@ -13,7 +13,7 @@ const opts = {
   service: 'insert-service-here', // Should match the Compose file's intended service
 }
 
-new RedisRunner(opts)
+new GeneralPurposeRunner(opts)
 ```
 
 ## Interface

@@ -2,41 +2,69 @@ import KafkaRunner, { KafkaRunnerConfig } from './KafkaRunner'
 import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
 import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
-import SimpleRunner, { SimpleRunnerConfig } from './SimpleRunner'
+import GeneralPurposeRunner, { GeneralPurposeRunnerConfig } from './GeneralPurposeRunner'
+import { ObjStrStr } from '../@types'
+import Logger from '../Logger'
 
-export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | SimpleRunner
+export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
 
 export type RunnerConfig =
   | KafkaRunnerConfig
   | PostgresRunnerConfig
   | RedisRunnerConfig
   | ZooKeeperRunnerConfig
-  | SimpleRunnerConfig
+  | GeneralPurposeRunnerConfig
 
-export interface ComposeFile {
+export interface ComposeService {
+  ports: string[]
+  networks?: { [key: string]: null }
+  volumes?: string[]
+  command?: string
+  container_name?: string
   depends_on?: string[]
-  image?: string
   environment?: {
     [key: string]: string | number
   }
-  props?: {
-    [key: string]: string | number
-  }
-  ports: string[]
+  labels?: string
+  links?: string
+  image?: string
+  build?:
+    | {
+        context: string
+        dockerfile: string
+        args: string
+        cache_from: string
+        labels: string
+        shm_size: string
+        target: string
+      }
+    | string
 }
 
-export type GetComposeService = (
-  composeFileName: string,
-) => {
-  [key: string]: ComposeFile
-}
+export type GetComposeService = () => ComposeService
 
 export interface BaseRunner {
   getComposeService: GetComposeService
+  containerId: string
+  initializer: string
+  runnerConfig: RunnerConfig
+  logger: Logger
 }
 
 export interface SharedRequiredConfigProps {
   service: string
 }
 
-export interface SharedDefaultableConfigProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
+export type DependsOn = Runner[]
+export interface SharedDefaultableConfigProps {
+  build: string | undefined
+  commands: string[]
+  connectionTimeout: number
+  dependsOn: DependsOn
+  host: string
+  image: string | undefined
+  networks: string[] | undefined
+  ports: ObjStrStr
+  props: { [key: string]: any }
+  responsivenessTimeout: number
+}

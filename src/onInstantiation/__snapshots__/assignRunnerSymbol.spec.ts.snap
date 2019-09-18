@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐞 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦃 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 3`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦖 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 4`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐥 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 5`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦋 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 6`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐼 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 7`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐉 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 8`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦚 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 9`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐒 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 10`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦄 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 11`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦂 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 12`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐙 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 13`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🐿 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 14`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦊 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`assignRunnerSymbol should handle the base case and reset the symbols 15`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "🦍 ",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;

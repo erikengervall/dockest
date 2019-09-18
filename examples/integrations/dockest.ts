@@ -26,6 +26,7 @@ const postgres1sequelizeRunner = new PostgresRunner({
 
 const postgres2knexRunner = new PostgresRunner({
   service: env.postgres2knex_service,
+  image: 'postgres:9.6',
   commands: [
     './node_modules/knex/bin/cli.js migrate:rollback',
     './node_modules/knex/bin/cli.js migrate:latest',
@@ -42,7 +43,7 @@ const postgres2knexRunner = new PostgresRunner({
 
 const redis1ioredisRunner = new RedisRunner({
   service: env.redis1ioredis_service,
-  password: env.redis1ioredis_password,
+  image: 'redis:5.0.3',
   ports: {
     [env.redis1ioredis_port]: RedisRunner.DEFAULT_PORT,
   },
@@ -50,6 +51,7 @@ const redis1ioredisRunner = new RedisRunner({
 
 const zookeeper1confluentincRunner = new ZooKeeperRunner({
   service: env.zookeeper1confluentinc_service,
+  image: 'confluentinc/cp-zookeeper:5.2.2',
   ports: {
     [env.zookeeper1confluentinc_port]: ZooKeeperRunner.DEFAULT_PORT,
   },
@@ -57,6 +59,7 @@ const zookeeper1confluentincRunner = new ZooKeeperRunner({
 
 const kafka1confluentincRunner = new KafkaRunner({
   service: env.kafka1confluentinc_service,
+  image: 'confluentinc/cp-kafka:5.2.2',
   dependsOn: [zookeeper1confluentincRunner],
   ports: {
     [env.kafka1confluentinc_port1]: KafkaRunner.DEFAULT_PORT_PLAINTEXT,
@@ -81,7 +84,6 @@ const dockest = new Dockest({
   },
   opts: {
     afterSetupSleep: 10,
-    composeFileName: 'docker-compose-dockest.yml',
     dev: {
       // debug: true,
     },

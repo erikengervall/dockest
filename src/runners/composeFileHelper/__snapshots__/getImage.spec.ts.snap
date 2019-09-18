@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getImage with user provided build should work with valid build 1`] = `Object {}`;
+
+exports[`getImage with user provided image should work with valid image 1`] = `
+Object {
+  "image": "postgres:9.6",
+}
+`;

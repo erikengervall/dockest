@@ -1,0 +1,25 @@
+{
+  "name": "users",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "docker:build": "docker build --no-cache -t users .",
+    "docker:run": "docker container run --rm -p 1337:1337 -t users",
+    "clean": "rm -rf ./dist",
+    "build": "yarn clean && yarn tsc",
+    "start:dev": "concurrently \"yarn build --watch\" \"nodemon ./dist/users/index\"",
+    "start": "ts-node ./index"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "express": "^4.17.1",
+    "ts-node": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "concurrently": "^4.1.2",
+    "nodemon": "^1.19.2",
+    "typescript": "^3.6.2"
+  }
+}

@@ -8,7 +8,7 @@ describe('helpers', () => {
 
       const result = getKeyForVal(haystack, needle)
 
-      expect(result).toEqual('d')
+      expect(result).toMatchSnapshot()
     })
 
     it('should return undefined if value does not exist', () => {
@@ -17,7 +17,7 @@ describe('helpers', () => {
 
       const result = getKeyForVal(haystack, needle)
 
-      expect(result).toEqual(undefined)
+      expect(result).toMatchSnapshot()
     })
 
     it('should return undefined if value does not exist (2)', () => {
@@ -26,7 +26,7 @@ describe('helpers', () => {
 
       const result = getKeyForVal(haystack, needle)
 
-      expect(result).toEqual(undefined)
+      expect(result).toMatchSnapshot()
     })
   })
 })

@@ -1,51 +1,31 @@
-import {
-  BaseRunner,
-  GetComposeService,
-  Runner,
-  SharedDefaultableConfigProps,
-  SharedRequiredConfigProps,
-} from '../@types'
-import { DEFAULT_CONFIG_PROPS, SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
-import { ObjStrStr } from '../../@types'
-import getDependsOn from '../utils/getDependsOn'
-import getImage from '../utils/getImage'
-import getPorts from '../utils/getPorts'
+import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
+import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
+import composeFileHelper from '../composeFileHelper'
 
-type RequiredConfigProps = {
+interface RequiredConfigProps extends SharedRequiredConfigProps {
   database: string
   password: string
   username: string
-} & SharedRequiredConfigProps
-
-type DefaultableConfigProps = {
-  commands: string[]
-  connectionTimeout: number
-  dependsOn: Runner[]
-  host: string
-  image: string | undefined
-  ports: ObjStrStr
+}
+interface DefaultableConfigProps extends SharedDefaultableConfigProps {
   responsivenessTimeout: number
-} & SharedDefaultableConfigProps
-
-type PostgresRunnerConfig = RequiredConfigProps & DefaultableConfigProps
+}
+interface PostgresRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
 const DEFAULT_PORT = '5432'
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  commands: DEFAULT_CONFIG_PROPS.COMMANDS,
-  connectionTimeout: DEFAULT_CONFIG_PROPS.CONNECTION_TIMEOUT,
-  dependsOn: DEFAULT_CONFIG_PROPS.DEPENDS_ON,
-  host: DEFAULT_CONFIG_PROPS.HOST,
-  image: DEFAULT_CONFIG_PROPS.IMAGE,
-  ports: { [DEFAULT_PORT]: DEFAULT_PORT },
-  responsivenessTimeout: DEFAULT_CONFIG_PROPS.RESPONSIVENESS_TIMEOUT,
+  ports: {
+    [DEFAULT_PORT]: DEFAULT_PORT,
+  },
+  responsivenessTimeout: SHARED_DEFAULT_CONFIG_PROPS.responsivenessTimeout,
 }
 
 class PostgresRunner implements BaseRunner {
-  public static DEFAULT_HOST = DEFAULT_CONFIG_PROPS.HOST
+  public static DEFAULT_HOST = SHARED_DEFAULT_CONFIG_PROPS.host
   public static DEFAULT_PORT = DEFAULT_PORT
   public containerId = ''
   public initializer = ''
@@ -69,20 +49,16 @@ class PostgresRunner implements BaseRunner {
     validateConfig(schema, this.runnerConfig)
   }
 
-  public getComposeService: GetComposeService = composeFileName => {
-    const { database, dependsOn, image, password, ports, service, username } = this.runnerConfig
+  public getComposeService: GetComposeService = () => {
+    const { database, password, username } = this.runnerConfig
 
     return {
-      [service]: {
-        environment: {
-          POSTGRES_DB: database,
-          POSTGRES_PASSWORD: password,
-          POSTGRES_USER: username,
-        },
-        ...getDependsOn(dependsOn),
-        ...getImage({ image, composeFileName, service }),
-        ...getPorts(ports),
+      environment: {
+        POSTGRES_DB: database,
+        POSTGRES_PASSWORD: password,
+        POSTGRES_USER: username,
       },
+      ...composeFileHelper(this.runnerConfig),
     }
   }
 

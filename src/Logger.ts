@@ -76,22 +76,24 @@ class Logger {
   }
 
   public static perf = (perfStart: number): void => {
-    const perfTime = Math.floor((Date.now() - perfStart) / 1000)
-    let hours: number | string = Math.floor(perfTime / 3600)
-    let minutes: number | string = Math.floor((perfTime - hours * 3600) / 60)
-    let seconds: number | string = perfTime - hours * 3600 - minutes * 60
+    if (perfStart !== 0) {
+      const perfTime = Math.floor((Date.now() - perfStart) / 1000)
+      let hours: number | string = Math.floor(perfTime / 3600)
+      let minutes: number | string = Math.floor((perfTime - hours * 3600) / 60)
+      let seconds: number | string = perfTime - hours * 3600 - minutes * 60
 
-    if (hours < 10) {
-      hours = `0${hours}`
-    }
-    if (minutes < 10) {
-      minutes = `0${minutes}`
-    }
-    if (seconds < 10) {
-      seconds = `0${seconds}`
-    }
+      if (hours < 10) {
+        hours = `0${hours}`
+      }
+      if (minutes < 10) {
+        minutes = `0${minutes}`
+      }
+      if (seconds < 10) {
+        seconds = `0${seconds}`
+      }
 
-    Logger.info(`Elapsed time: ${hours}:${minutes}:${seconds}`)
+      Logger.info(`Elapsed time: ${hours}:${minutes}:${seconds}`)
+    }
   }
 
   private runnerService = ''

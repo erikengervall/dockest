@@ -9,7 +9,7 @@ describe('hashCode', () => {
       const result = hashCode(service)
       const result2 = hashCode(service2)
 
-      expect(result).toEqual(-2021595073)
+      expect(result).toMatchSnapshot()
       expect(result).toEqual(result2)
     })
   })

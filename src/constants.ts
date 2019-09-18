@@ -1,3 +1,5 @@
+import path from 'path'
+
 export const COLORS = Object.freeze({
   MISC: {
     BLINK: '\x1b[5m',
@@ -58,7 +60,6 @@ export const LOG_LEVEL = Object.freeze({
 
 export const DEFAULT_USER_CONFIG = Object.freeze({
   afterSetupSleep: 0,
-  composeFileName: 'docker-compose.yml',
   dev: { debug: false },
   dumpErrors: false,
   exitHandler: null,
@@ -67,10 +68,10 @@ export const DEFAULT_USER_CONFIG = Object.freeze({
 })
 
 export const INTERNAL_CONFIG = Object.freeze({
-  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
+  dockerComposeGeneratedPath: `${path.dirname(__filename)}/docker-compose-generated.yml`,
   failedTeardowns: [],
   jestRanWithResult: false,
-  perfStart: Date.now(),
+  perfStart: 0,
 })
 
 export const PROCESS_TEST_ENV = 'dockest-test'
