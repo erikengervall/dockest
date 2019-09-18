@@ -24,6 +24,23 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
   </a>
 <p>
 
+## Example
+
+```TypeScript
+import Dockest, { runners } from 'dockest'
+
+const dockest = new Dockest({
+  runners: [
+    new runners.RedisRunner({
+      service: 'insert-service-name-here',
+    }),
+  ],
+})
+
+dockest.run()
+
+```
+
 ## Documentation
 
 Learn more about Dockest on the [official website](https://erikengervall.github.io/dockest/).
