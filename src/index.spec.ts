@@ -8,14 +8,13 @@ describe('Dockest', () => {
   })
 
   it('should be initializable and expose the main run method', () => {
-    const { GeneralPurposeRunner } = runners
-    const generalPurposeRunner = new GeneralPurposeRunner({
-      service: '_',
-      image: '_',
-    })
-
     const dockest = new Dockest({
-      runners: [generalPurposeRunner],
+      runners: [
+        new runners.GeneralPurposeRunner({
+          service: '_',
+          image: '_',
+        }),
+      ],
     })
 
     expect(dockest).toBeInstanceOf(Dockest)

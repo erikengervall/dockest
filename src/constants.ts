@@ -1,3 +1,5 @@
+import path from 'path'
+
 export const COLORS = Object.freeze({
   MISC: {
     BLINK: '\x1b[5m',
@@ -66,7 +68,7 @@ export const DEFAULT_USER_CONFIG = Object.freeze({
 })
 
 export const INTERNAL_CONFIG = Object.freeze({
-  dockerComposeGeneratedPath: `${__dirname}/docker-compose-generated.yml`,
+  dockerComposeGeneratedPath: `${path.dirname(__filename)}/docker-compose-generated.yml`,
   failedTeardowns: [],
   jestRanWithResult: false,
   perfStart: 0,

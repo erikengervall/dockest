@@ -4,7 +4,7 @@ exports[`Dockest should be initializable and expose the main run method 1`] = `
 Dockest {
   "config": Object {
     "$": Object {
-      "dockerComposeGeneratedPath": "/Users/erik.engervall/dev/dockest/src/docker-compose-generated.yml",
+      "dockerComposeGeneratedPath": "mocked-dirname/docker-compose-generated.yml",
       "failedTeardowns": Array [],
       "jestRanWithResult": false,
       "perfStart": 0,
