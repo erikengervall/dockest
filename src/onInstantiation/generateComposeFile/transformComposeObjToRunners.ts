@@ -51,5 +51,6 @@ export default (config: DockestConfig, composeObj: ComposeFile) =>
 
     return new GeneralPurposeRunner({
       service,
+      image: composeService.image,
     })
   })
