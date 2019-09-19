@@ -19,11 +19,6 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
 
-  # pull example images
-  - cd examples/integrations
-  - docker-compose -f docker-compose-dockest.yml pull
-  - cd ../../
-
   - yarn global add typescript
 
   - echo "*** <travis.before_install> complete ***"
