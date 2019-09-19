@@ -2,9 +2,9 @@
 
 exports[`Dockest should be initializable and expose the main run method 1`] = `
 Dockest {
+  "attachRunners": [Function],
   "config": Object {
     "$": Object {
-      "dockerComposeGeneratedPath": "mocked-dirname/docker-compose-generated.yml",
       "failedTeardowns": Array [],
       "jestRanWithResult": false,
       "perfStart": 0,
@@ -12,6 +12,7 @@ Dockest {
     "jest": Object {},
     "opts": Object {
       "afterSetupSleep": 0,
+      "composeFile": Array [],
       "dev": Object {
         "debug": false,
       },
@@ -30,7 +31,7 @@ Dockest {
           "error": [Function],
           "info": [Function],
           "runnerService": "_",
-          "runnerSymbol": "🐼 ",
+          "runnerSymbol": "🦇 ",
           "setRunnerSymbol": [Function],
           "warn": [Function],
         },

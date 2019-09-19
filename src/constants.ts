@@ -1,6 +1,4 @@
-import path from 'path'
-
-export const COLORS = Object.freeze({
+export const COLORS = {
   MISC: {
     BLINK: '\x1b[5m',
     BRIGHT: '\x1b[1m',
@@ -30,7 +28,7 @@ export const COLORS = Object.freeze({
     WHITE: '\x1b[47m',
     YELLOW: '\x1b[43m',
   },
-})
+}
 
 export const LOG_SYMBOLS: readonly string[] = [
   '🐉 ',
@@ -50,28 +48,31 @@ export const LOG_SYMBOLS: readonly string[] = [
   '🦚 ',
 ]
 
-export const LOG_LEVEL = Object.freeze({
+export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,
   WARN: 2,
   INFO: 3,
   DEBUG: 4,
-})
+}
 
-export const DEFAULT_USER_CONFIG = Object.freeze({
+export const DEFAULT_USER_CONFIG = {
   afterSetupSleep: 0,
   dev: { debug: false },
   dumpErrors: false,
   exitHandler: null,
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,
-})
+  composeFile: [],
+}
 
-export const INTERNAL_CONFIG = Object.freeze({
-  dockerComposeGeneratedPath: `${path.dirname(__filename)}/docker-compose-generated.yml`,
+export const INTERNAL_CONFIG = {
   failedTeardowns: [],
   jestRanWithResult: false,
   perfStart: 0,
-})
+}
 
 export const PROCESS_TEST_ENV = 'dockest-test'
+
+export const GENERATED_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated.yml'
+export const GENERATED_COMPOSE_FILE_PATH = `${process.cwd()}/${GENERATED_COMPOSE_FILE_NAME}`

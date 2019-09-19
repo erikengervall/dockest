@@ -27,6 +27,9 @@ const DEFAULT_CONFIG: DefaultableConfigProps = {
 class PostgresRunner implements BaseRunner {
   public static DEFAULT_HOST = SHARED_DEFAULT_CONFIG_PROPS.host
   public static DEFAULT_PORT = DEFAULT_PORT
+  public static ENVIRONMENT_DATABASE = 'POSTGRES_DB'
+  public static ENVIRONMENT_PASSWORD = 'POSTGRES_PASSWORD'
+  public static ENVIRONMENT_USERNAME = 'POSTGRES_USER'
   public containerId = ''
   public initializer = ''
   public runnerConfig: PostgresRunnerConfig
@@ -54,9 +57,9 @@ class PostgresRunner implements BaseRunner {
 
     return {
       environment: {
-        POSTGRES_DB: database,
-        POSTGRES_PASSWORD: password,
-        POSTGRES_USER: username,
+        [PostgresRunner.ENVIRONMENT_DATABASE]: database,
+        [PostgresRunner.ENVIRONMENT_PASSWORD]: password,
+        [PostgresRunner.ENVIRONMENT_USERNAME]: username,
       },
       ...composeFileHelper(this.runnerConfig),
     }

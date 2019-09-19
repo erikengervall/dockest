@@ -21,7 +21,7 @@ trash
 # Dockest dev
 #
 dist
-docker-compose-dockest.yml
+docker-compose.dockest-generated.yml
 typedoc
 dockest-error.json
 
