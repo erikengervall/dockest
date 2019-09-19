@@ -19,10 +19,10 @@ export default async (config: DockestConfig): Promise<void> => {
     exitInProgress = true
 
     if (config.$.jestRanWithResult) {
-      return // Program ran as expected
+      return
     }
 
-    Logger.error(`Exithandler invoked from process event ${errorPayload.trap}`)
+    Logger.error(`💥 Exithandler invoked: ${JSON.stringify(errorPayload, null, 2)}`)
 
     if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')

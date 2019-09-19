@@ -32,13 +32,15 @@
     "install:all": "./tools/scripts/install-all",
     "generate:typedoc": "yarn typedoc ./src",
     "test": "jest ./src --forceExit --detectOpenHandles",
+    "test:watch": "jest ./src --watch --forceExit --detectOpenHandles",
     "test:examples": "cd examples && yarn test && cd ..",
     "test:all": "yarn test && yarn test:examples",
     "lint": "yarn eslint ./src/**/*.ts"
   },
   "dependencies": {
     "execa": "^2.0.4",
-    "js-yaml": "^3.13.1"
+    "js-yaml": "^3.13.1",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "@types/execa": "^2.0.0",
@@ -46,12 +48,14 @@
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.7.2",
     "@types/prettier": "^1.18.2",
+    "@types/ramda": "^0.26.22",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "@typescript-eslint/typescript-estree": "^2.0.0",
     "eslint": "^6.2.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-no-only-tests": "^2.3.1",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.9.0",
     "jest-mock-proxy": "^3.0.0",

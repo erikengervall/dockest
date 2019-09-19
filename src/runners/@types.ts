@@ -41,6 +41,19 @@ export interface ComposeService {
     | string
 }
 
+export interface ComposeFile {
+  version: string
+  services: {
+    [key: string]: ComposeService
+  }
+  networks?: {
+    [key: string]: null
+  }
+  volumes?: {
+    [key: string]: null
+  }
+}
+
 export type GetComposeService = () => ComposeService
 
 export interface BaseRunner {

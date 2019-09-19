@@ -4,9 +4,6 @@ import Dockest, { logLevel, runners } from '../../src'
 const env: any = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
-/**
- * When passing the `image` prop in the runner opts, the service name no longer has to match a Docker compose service
- */
 const postgres1sequelizeRunner = new PostgresRunner({
   service: 'dockest_inline_service_name_postgres1sequelizeRunner',
   image: 'postgres:9.6',
@@ -63,35 +60,21 @@ const kafka1confluentincRunner = new KafkaRunner({
   dependsOn: [zookeeper1confluentincRunner],
   ports: {
     [env.kafka1confluentinc_port1]: KafkaRunner.DEFAULT_PORT_PLAINTEXT,
-    // [env.kafka1confluentinc_port2]: KafkaRunner.DEFAULT_PORT_SSL,
-    // [env.kafka1confluentinc_port3]: KafkaRunner.DEFAULT_PORT_SASL_SSL,
   },
 })
 
 const dockest = new Dockest({
-  runners: [
-    ...(process.env.DOCKEST_CI === 'true' || env.postgres1sequelize_enabled === 'true'
-      ? [postgres1sequelizeRunner]
-      : []),
-    ...(process.env.DOCKEST_CI === 'true' || env.postgres2knex_enabled === 'true' ? [postgres2knexRunner] : []),
-    ...(process.env.DOCKEST_CI === 'true' || env.redis1ioredis_enabled === 'true' ? [redis1ioredisRunner] : []),
-    ...(process.env.DOCKEST_CI === 'true' || env.kafka1confluentinc_enabled === 'true'
-      ? [kafka1confluentincRunner]
-      : []),
-  ],
-  jest: {
-    verbose: true,
-  },
   opts: {
     afterSetupSleep: 10,
     dev: {
       // debug: true,
     },
-    dumpErrors: false,
+    dumpErrors: true,
     exitHandler: ({ trap }) => console.log(`Hello ${trap}, nice to meet you 👋🏼`), // eslint-disable-line no-console
     logLevel: logLevel.DEBUG,
-    runInBand: true,
   },
 })
+
+dockest.attachRunners([postgres1sequelizeRunner, postgres2knexRunner, redis1ioredisRunner, kafka1confluentincRunner])
 
 dockest.run()

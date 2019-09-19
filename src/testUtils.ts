@@ -16,41 +16,55 @@ export const runnerCommand = 'runRunnerCommands 🌮'
 
 const { values } = Object
 
-const createDockestConfig = (opts: { runners?: Runner[] }) => {
-  const { runners = [] } = opts
+const createDockestConfig = (options: { runners?: Runner[]; opts?: any; realLoggers?: boolean }) => {
+  const { runners = [], opts = {}, realLoggers = false } = options
 
-  for (const runner of runners) {
-    runner.logger = createMockProxy()
+  if (realLoggers === false) {
+    for (const runner of runners) {
+      runner.logger = createMockProxy()
+    }
   }
 
   return {
     runners,
-    opts: DEFAULT_USER_CONFIG,
+    opts: { ...DEFAULT_USER_CONFIG, ...opts },
     jest: {},
     $: INTERNAL_CONFIG,
   }
 }
 
-export default ({ withRunnerCommands = false }) => {
+export default ({ withRunnerCommands = false, realLoggers = false }) => {
   const withCmds = withRunnerCommands ? { commands: [runnerCommand] } : {}
 
-  const zooKeeperRunner = new ZooKeeperRunner({ service: 'zookeepeer', image: 'some/image:123', ...withCmds })
+  const zooKeeperRunner = new ZooKeeperRunner({
+    service: 'zookeeper',
+    image: 'zookeeper/image:123',
+    ...withCmds,
+  })
   const kafkaRunner = new KafkaRunner({
     service: 'kafka',
-    image: 'some/image:123',
+    image: 'kafka/image:123',
     dependsOn: [zooKeeperRunner],
     ...withCmds,
   })
   const postgresRunner = new PostgresRunner({
     service: 'postgres',
-    image: 'some/image:123',
+    image: 'postgres/image:123',
     database: '_',
     username: '_',
     password: '_',
     ...withCmds,
   })
-  const redisRunner = new RedisRunner({ service: 'redis', image: 'some/image:123', ...withCmds })
-  const generalPurposeRunner = new GeneralPurposeRunner({ service: 'general', image: 'some/image:123', ...withCmds })
+  const redisRunner = new RedisRunner({
+    service: 'redis',
+    image: 'redis/image:123',
+    ...withCmds,
+  })
+  const generalPurposeRunner = new GeneralPurposeRunner({
+    service: 'general',
+    image: 'general/image:123',
+    ...withCmds,
+  })
   const initializedRunners = {
     kafkaRunner,
     postgresRunner,
@@ -59,7 +73,11 @@ export default ({ withRunnerCommands = false }) => {
     generalPurposeRunner,
   }
 
-  beforeEach(() => values(initializedRunners).forEach(runner => (runner.logger = createMockProxy())))
+  beforeEach(() => {
+    if (realLoggers === false) {
+      values(initializedRunners).forEach(runner => (runner.logger = createMockProxy()))
+    }
+  })
 
   return {
     initializedRunners,

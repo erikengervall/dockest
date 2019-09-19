@@ -21,9 +21,9 @@ interface DefaultableUserConfig {
   exitHandler: null | ((error: ErrorPayload) => any)
   logLevel: number
   runInBand: boolean
+  composeFile: string | string[]
 }
 interface InternalConfig {
-  dockerComposeGeneratedPath: string
   failedTeardowns: { service: string; containerId: string }[]
   jestRanWithResult: boolean
   perfStart: number
@@ -38,37 +38,34 @@ export interface DockestConfig {
 class Dockest {
   private config: DockestConfig
 
-  public constructor({
-    runners,
-    jest = {},
-    opts = {},
-  }: {
-    runners: ArrayAtLeastOne<Runner>
-    jest?: JestConfig
-    opts?: Partial<DefaultableUserConfig>
-  }) {
+  public constructor({ jest = {}, opts = {} }: { jest?: JestConfig; opts?: Partial<DefaultableUserConfig> }) {
     this.config = {
       jest,
-      runners,
+      runners: [],
       opts: { ...DEFAULT_USER_CONFIG, ...opts },
       $: { ...INTERNAL_CONFIG },
     }
     BaseError.DockestConfig = this.config
+  }
 
-    this.validateConfig()
-    onInstantiation(this.config)
+  public attachRunners = (runners: ArrayAtLeastOne<Runner>) => {
+    this.config.runners = runners
   }
 
   public run = async (): Promise<void> => {
     this.config.$.perfStart = Date.now()
 
+    onInstantiation(this.config)
+
+    this.validateConfig()
     await onRun(this.config)
   }
 
-  private validateConfig = async () => {
+  private validateConfig = () => {
     const schema: { [key in keyof RequiredConfig]: any } = {
       runners: validateTypes.isArray,
     }
+
     const failures = validateTypes(schema, this.config)
 
     if (failures.length > 0) {
