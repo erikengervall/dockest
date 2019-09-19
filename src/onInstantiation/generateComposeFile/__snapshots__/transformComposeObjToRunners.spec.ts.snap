@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transformComposeObjToRunners should detect conflict and use the already existing runner 1`] = `
+Array [
+  PostgresRunner {
+    "containerId": "",
+    "createResponsivenessCheckCmd": [Function],
+    "getComposeService": [Function],
+    "initializer": "",
+    "logger": Logger {
+      "debug": [Function],
+      "error": [Function],
+      "info": [Function],
+      "runnerService": "postgres",
+      "runnerSymbol": "🦇 ",
+      "setRunnerSymbol": [Function],
+      "warn": [Function],
+    },
+    "runnerConfig": Object {
+      "build": "",
+      "commands": Array [],
+      "connectionTimeout": 5,
+      "database": "_",
+      "dependsOn": Array [],
+      "host": "localhost",
+      "image": "postgres/image:123",
+      "networks": undefined,
+      "password": "_",
+      "ports": Object {
+        "5432": "5432",
+      },
+      "props": Object {},
+      "responsivenessTimeout": 30,
+      "service": "postgres",
+      "username": "_",
+    },
+  },
+]
+`;
+
+exports[`transformComposeObjToRunners should detect conflict and use the already existing runner 2`] = `
+Array [
+  PostgresRunner {
+    "containerId": "",
+    "createResponsivenessCheckCmd": [Function],
+    "getComposeService": [Function],
+    "initializer": "",
+    "logger": Logger {
+      "debug": [Function],
+      "error": [Function],
+      "info": [Function],
+      "runnerService": "postgres",
+      "runnerSymbol": "🦇 ",
+      "setRunnerSymbol": [Function],
+      "warn": [Function],
+    },
+    "runnerConfig": Object {
+      "build": "",
+      "commands": Array [],
+      "connectionTimeout": 5,
+      "database": "_",
+      "dependsOn": Array [],
+      "host": "localhost",
+      "image": "postgres/image:123",
+      "networks": undefined,
+      "password": "_",
+      "ports": Object {
+        "5432": "5432",
+      },
+      "props": Object {},
+      "responsivenessTimeout": 30,
+      "service": "postgres",
+      "username": "_",
+    },
+  },
+  RedisRunner {
+    "containerId": "",
+    "createResponsivenessCheckCmd": [Function],
+    "getComposeService": [Function],
+    "initializer": "",
+    "logger": Logger {
+      "debug": [Function],
+      "error": [Function],
+      "info": [Function],
+      "runnerService": "redis",
+      "runnerSymbol": "🦇 ",
+      "setRunnerSymbol": [Function],
+      "warn": [Function],
+    },
+    "runnerConfig": Object {
+      "build": "",
+      "commands": Array [],
+      "connectionTimeout": 5,
+      "dependsOn": Array [],
+      "host": "localhost",
+      "image": "redis/image:123",
+      "networks": undefined,
+      "password": "",
+      "ports": Object {
+        "6379": "6379",
+      },
+      "props": Object {},
+      "responsivenessTimeout": 30,
+      "service": "redis",
+    },
+  },
+]
+`;

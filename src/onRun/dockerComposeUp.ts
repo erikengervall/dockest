@@ -1,9 +1,10 @@
 import execaWrapper from '../utils/execaWrapper'
+import { GENERATED_COMPOSE_FILE_PATH } from '../constants'
 
 const dockerComposeUp = async () => {
   const command = ` \
               docker-compose \
-              -f ${`${process.cwd()}/docker-compose-dockest.yml`} \
+              -f ${`${GENERATED_COMPOSE_FILE_PATH}`} \
               up \
               --force-recreate \
               --build \

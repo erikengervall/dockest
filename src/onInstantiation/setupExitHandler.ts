@@ -22,7 +22,7 @@ export default async (config: DockestConfig): Promise<void> => {
       return // Program ran as expected
     }
 
-    Logger.error(`Exithandler invoked from process event ${errorPayload.trap}`)
+    Logger.error(`💥 Exithandler invoked: ${JSON.stringify(errorPayload, null, 2)}`)
 
     if (customExitHandler && typeof customExitHandler === 'function') {
       const error = errorPayload || new Error('Failed to extract error')
