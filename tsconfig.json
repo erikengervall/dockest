@@ -19,5 +19,5 @@
     "declaration": true
   },
   "include": ["src/**/*.*"],
-  "exclude": ["dist", "node_modules", "typedoc", "docs"]
+  "exclude": ["dist", "node_modules", "typedoc", "docs", "**/*.spec.*"]
 }
