@@ -1,0 +1,12 @@
+{
+  "seedUser": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "demo@demo.com"
+  },
+  "seedUser2": {
+    "firstName": "Johnny",
+    "lastName": "Boi",
+    "email": "spec@spec.com"
+  }
+}

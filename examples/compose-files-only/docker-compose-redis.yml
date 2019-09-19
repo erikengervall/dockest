@@ -4,4 +4,4 @@ services:
   composeRedis:
     image: 'redis:5.0.3'
     ports:
-      - '6378:6379'
+      - '1337:6379'
