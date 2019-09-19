@@ -6,8 +6,14 @@ import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import { defaultGetComposeService } from '../composeFileHelper'
 
 interface RequiredConfigProps extends SharedRequiredConfigProps {}
+interface OptionalConfigProps {
+  getResponsivenessCheckCommand: (containerId: string) => string
+}
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {}
-interface GeneralPurposeRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
+interface GeneralPurposeRunnerConfig
+  extends RequiredConfigProps,
+    Partial<OptionalConfigProps>,
+    DefaultableConfigProps {}
 
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
@@ -18,11 +24,22 @@ class GeneralPurposeRunner implements BaseRunner {
   public initializer = ''
   public runnerConfig: GeneralPurposeRunnerConfig
   public logger: Logger
+  public createResponsivenessCheckCmd: (() => string) | null = null
 
-  public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
+  public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps> & Partial<OptionalConfigProps>) {
     this.runnerConfig = {
       ...DEFAULT_CONFIG,
       ...config,
+    }
+
+    if (this.runnerConfig.getResponsivenessCheckCommand) {
+      this.createResponsivenessCheckCmd = () => {
+        if (!this.runnerConfig.getResponsivenessCheckCommand) {
+          throw new Error('Invalid state')
+        }
+        const command = this.runnerConfig.getResponsivenessCheckCommand(this.containerId)
+        return command
+      }
     }
 
     this.logger = new Logger(this)
