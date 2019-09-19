@@ -34,6 +34,7 @@ install:
 script:
   # run linting
   - yarn lint
+  - yarn build
 
   # generate typedoc markdown files
   - yarn generate:typedoc
