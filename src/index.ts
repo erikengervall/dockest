@@ -54,13 +54,14 @@ class Dockest {
 
   public run = async (): Promise<void> => {
     this.config.$.perfStart = Date.now()
-    this.validateConfig()
+
     onInstantiation(this.config)
 
+    this.validateConfig()
     await onRun(this.config)
   }
 
-  private validateConfig = async () => {
+  private validateConfig = () => {
     const schema: { [key in keyof RequiredConfig]: any } = {
       runners: validateTypes.isArray,
     }
