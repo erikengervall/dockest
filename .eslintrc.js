@@ -10,7 +10,7 @@ module.exports = {
     'plugin:import/warnings', // https://github.com/benmosher/eslint-plugin-import
     'plugin:import/typescript', // https://github.com/benmosher/eslint-plugin-import
   ],
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'no-only-tests'],
   parserOptions: {
     ecmaVersion: 2019, // Allows for the parsing of modern ECMAScript features
     sourceType: 'module', // Allows for the use of imports
@@ -25,6 +25,7 @@ module.exports = {
   },
   rules: {
     'no-console': 'error',
+    'no-only-tests/no-only-tests': 'error',
 
     // Typescript
     // "@typescript-eslint/indent": ["error", 2, { "VariableDeclarator": 2 }],
