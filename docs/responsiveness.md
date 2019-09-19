@@ -4,6 +4,10 @@ title: Responsiveness
 sidebar_label: Responsiveness
 ---
 
-Recursively attempts to determine the responsiveness of the Docker service by calling internal APIs of the service. For example a database would be called with a trivial `SELECT` query.
+The responsiveness healthcheck is used for determining when a container is ready. E.g. when the Database is ready or the HTTP server has started.
 
-The responsiveness healthcheck will fail once the responsivenessTimeout is reached.
+The standard runners (Redis, Postgres, ZooKeeper, Kafka) already have a healthcheck implemented. E.g. the PostgresRunner tries to run a trivial `SELECT` query.
+
+The responsiveness healthcheck will run until it succeeds or fail once the responsivenessTimeout is reached.
+
+In case you are using the GeneralPurposeRunner you can implement your own responsiveness check via the [`getResponsivenessCheckCommand` config option](runner_generalpurposerunner.md).
