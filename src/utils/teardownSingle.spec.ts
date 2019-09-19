@@ -33,7 +33,7 @@ describe('teardownSingle', () => {
         throw error
       })
 
-      const result = await teardownSingle(generalPurposeRunner)
+      await teardownSingle(generalPurposeRunner)
 
       expect(generalPurposeRunner.logger.info).toMatchSnapshot()
       expect(generalPurposeRunner.logger.error).toMatchSnapshot()
