@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import main from './app'
 import { sleep } from '../../../src'
-import { runOrSkip } from '../testUtils'
 
 jest.setTimeout(1000 * 60)
 const env: any = dotenv.config().parsed
@@ -43,57 +42,53 @@ const waitForEventConsumption = async (
   await recurse()
 }
 
-const specWrapper = () => {
-  const mockProductionCallback = jest.fn()
-  const mockConsumptionCallback = jest.fn()
-  const messages = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-  const key = 'arbitrary key 🌮'
+const mockProductionCallback = jest.fn()
+const mockConsumptionCallback = jest.fn()
+const messages = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+const key = 'arbitrary key 🌮'
 
-  beforeEach(() => {
-    mockProductionCallback.mockClear()
-    mockConsumptionCallback.mockClear()
-  })
+beforeEach(() => {
+  mockProductionCallback.mockClear()
+  mockConsumptionCallback.mockClear()
+})
 
-  describe('kafka-1-kafkajs', () => {
-    it('should be able to produce and consume kafka events', async () => {
-      const { consumer, emit, startConsuming, stopConsuming } = main(
-        key,
-        messages,
-        mockConsumptionCallback,
-        mockProductionCallback,
-      )
+describe('kafka-1-kafkajs', () => {
+  it('should be able to produce and consume kafka events', async () => {
+    const { consumer, emit, startConsuming, stopConsuming } = main(
+      key,
+      messages,
+      mockConsumptionCallback,
+      mockProductionCallback,
+    )
 
-      await waitForEventConsumption(
-        messages.length,
-        opts => {
-          consumer.on(
-            consumer.events.END_BATCH_PROCESS,
-            ({ payload: { batchSize } }: { payload: { batchSize: number } }) => {
-              opts.counter += batchSize
-            },
-          )
-        },
-        startConsuming,
-        emit,
-      )
-      await stopConsuming()
+    await waitForEventConsumption(
+      messages.length,
+      opts => {
+        consumer.on(
+          consumer.events.END_BATCH_PROCESS,
+          ({ payload: { batchSize } }: { payload: { batchSize: number } }) => {
+            opts.counter += batchSize
+          },
+        )
+      },
+      startConsuming,
+      emit,
+    )
+    await stopConsuming()
 
-      expect(mockProductionCallback).toHaveBeenCalledWith({
-        acks: 1,
-        messages: messages.map(message => ({ key, value: message })),
+    expect(mockProductionCallback).toHaveBeenCalledWith({
+      acks: 1,
+      messages: messages.map(message => ({ key, value: message })),
+      topic: env.kafka1confluentinc_topic,
+    })
+    messages.forEach(message => {
+      expect(mockConsumptionCallback).toHaveBeenCalledWith({
+        messageHeaders: {},
+        messageKey: key,
+        messageValue: message,
+        partition: 0,
         topic: env.kafka1confluentinc_topic,
-      })
-      messages.forEach(message => {
-        expect(mockConsumptionCallback).toHaveBeenCalledWith({
-          messageHeaders: {},
-          messageKey: key,
-          messageValue: message,
-          partition: 0,
-          topic: env.kafka1confluentinc_topic,
-        })
       })
     })
   })
-}
-
-runOrSkip(env.kafka1confluentinc_enabled, specWrapper)
+})
