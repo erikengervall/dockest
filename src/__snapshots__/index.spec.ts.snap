@@ -18,6 +18,7 @@ Dockest {
       },
       "dumpErrors": false,
       "exitHandler": null,
+      "guessRunnerType": false,
       "logLevel": 3,
       "runInBand": true,
     },

@@ -22,6 +22,7 @@ interface DefaultableUserConfig {
   logLevel: number
   runInBand: boolean
   composeFile: string | string[]
+  guessRunnerType: boolean
 }
 interface InternalConfig {
   failedTeardowns: { service: string; containerId: string }[]

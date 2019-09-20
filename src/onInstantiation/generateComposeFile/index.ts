@@ -24,7 +24,9 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
   // merge all config
   const composeObjFromComposeFile = createComposeObjFromComposeFile(configFiles)
 
-  config.runners = transformComposeObjToRunners(config, composeObjFromComposeFile)
+  if (config.opts.guessRunnerType) {
+    config.runners = transformComposeObjToRunners(config, composeObjFromComposeFile)
+  }
 
   // write final config to fs
   fs.writeFileSync(GENERATED_COMPOSE_FILE_PATH, yaml.safeDump(composeObjFromComposeFile))

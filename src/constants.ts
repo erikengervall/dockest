@@ -64,6 +64,7 @@ export const DEFAULT_USER_CONFIG = {
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,
   composeFile: [],
+  guessRunnerType: false,
 }
 
 export const INTERNAL_CONFIG = {
