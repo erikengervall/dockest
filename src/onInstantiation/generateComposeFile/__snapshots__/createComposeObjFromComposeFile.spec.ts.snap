@@ -11,17 +11,17 @@ Object {
       },
       "image": "postgres:9.6",
       "ports": Array [
-        "5433:5432",
+        "5433:5432/tcp",
       ],
     },
     "composeRedis": Object {
       "image": "redis:5.0.3",
       "ports": Array [
-        "6378:6379",
+        "6378:6379/tcp",
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
 
@@ -31,11 +31,11 @@ Object {
     "composeRedis": Object {
       "image": "im:a:duplicate",
       "ports": Array [
-        "6378:6379",
+        "6378:6379/tcp",
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
 
@@ -50,7 +50,7 @@ Object {
       },
       "image": "postgres:9.6",
       "ports": Array [
-        "5433:5432",
+        "5433:5432/tcp",
       ],
     },
     "dockest_kafka1confluentinc": Object {
@@ -67,7 +67,7 @@ Object {
       },
       "image": "confluentinc/cp-kafka:5.2.2",
       "ports": Array [
-        "9092:9092",
+        "9092:9092/tcp",
       ],
     },
     "dockest_postgres2knex": Object {
@@ -78,13 +78,13 @@ Object {
       },
       "image": "postgres:9.6",
       "ports": Array [
-        "5434:5432",
+        "5434:5432/tcp",
       ],
     },
     "dockest_redis1ioredis": Object {
       "image": "redis:5.0.3",
       "ports": Array [
-        "6378:6379",
+        "6378:6379/tcp",
       ],
     },
     "dockest_zookeeper1confluentinc": Object {
@@ -93,11 +93,11 @@ Object {
       },
       "image": "confluentinc/cp-zookeeper:5.2.2",
       "ports": Array [
-        "2181:2181",
+        "2181:2181/tcp",
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
 
@@ -107,10 +107,10 @@ Object {
     "composeRedis": Object {
       "image": "redis:5.0.3",
       "ports": Array [
-        "6378:6379",
+        "6378:6379/tcp",
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
