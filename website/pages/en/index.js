@@ -5,11 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react') // eslint-disable-line @typescript-eslint/no-var-requires
+const React = require('react')
 
-const CompLibrary = require('../../core/CompLibrary.js') // eslint-disable-line @typescript-eslint/no-var-requires
+const CompLibrary = require('../../core/CompLibrary.js')
 
-const MarkdownBlock = CompLibrary.MarkdownBlock /* Used to read markdown */
 const Container = CompLibrary.Container
 const GridBlock = CompLibrary.GridBlock
 
@@ -83,7 +82,6 @@ class HomeSplash extends React.Component {
 class Index extends React.Component {
   render() {
     const { config: siteConfig, language = '' } = this.props
-    const docUrl = createLinkGenerator({ siteConfig, language })
 
     const Block = props => (
       <Container padding={['bottom', 'top']} id={props.id} background={props.background}>
@@ -91,7 +89,7 @@ class Index extends React.Component {
       </Container>
     )
 
-    const Features = props => (
+    const Features = () => (
       <div id="feature">
         <Block layout="fourColumn">
           {[
