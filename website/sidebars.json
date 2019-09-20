@@ -1,32 +1,19 @@
 {
   "docs": {
-    "Getting started": [
-      "introduction",
-      "example"
-    ],
+    "Getting started": ["introduction", "example"],
     "Interfaces": [
       "dockest_constructor",
       "jest",
       {
         "type": "subcategory",
         "label": "Runners",
-        "ids": [
-          "runner_redis",
-          "runner_postgres",
-          "runner_zookeeper",
-          "runner_kafka"
-        ]
+        "ids": ["runner_redis", "runner_postgres", "runner_zookeeper", "runner_kafka", "runner_generalpurposerunner"]
       }
     ],
-    "Healthchecks": [
-      "connectivity",
-      "responsiveness"
-    ]
+    "Healthchecks": ["connectivity", "responsiveness"]
   },
   "dockest": {
-    "Introduction": [
-      "typedoc/index"
-    ],
+    "Introduction": ["typedoc/index"],
     "Classes": [
       "typedoc/classes/baseerror",
       "typedoc/classes/configurationerror",

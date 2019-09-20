@@ -3,6 +3,7 @@
 exports[`GeneralPurposeRunner should create unique instances 1`] = `
 GeneralPurposeRunner {
   "containerId": "",
+  "createResponsivenessCheckCmd": null,
   "getComposeService": [Function],
   "initializer": "",
   "logger": Logger {
@@ -33,6 +34,7 @@ GeneralPurposeRunner {
 exports[`GeneralPurposeRunner should create unique instances 2`] = `
 GeneralPurposeRunner {
   "containerId": "",
+  "createResponsivenessCheckCmd": null,
   "getComposeService": [Function],
   "initializer": "",
   "logger": Logger {

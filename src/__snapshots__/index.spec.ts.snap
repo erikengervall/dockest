@@ -24,6 +24,7 @@ Dockest {
     "runners": Array [
       GeneralPurposeRunner {
         "containerId": "",
+        "createResponsivenessCheckCmd": null,
         "getComposeService": [Function],
         "initializer": "",
         "logger": Logger {
