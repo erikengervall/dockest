@@ -4,7 +4,11 @@ import createComposeObjFromComposeFile from './createComposeObjFromComposeFile'
 import createComposeObjFromRunners from './createComposeObjFromRunners'
 import transformComposeObjToRunners from './transformComposeObjToRunners'
 import { DockestConfig } from '../../index'
-import { GENERATED_COMPOSE_FILE_PATH, GENERATED_RUNNER_COMPOSE_FILE_PATH } from '../../constants'
+import {
+  GENERATED_COMPOSE_FILE_PATH,
+  GENERATED_RUNNER_COMPOSE_FILE_PATH,
+  GENERATED_RUNNER_COMPOSE_FILE_NAME,
+} from '../../constants'
 
 export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
   // create runner config on fs
@@ -19,7 +23,7 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
       configFiles.push(config.opts.composeFile)
     }
   }
-  configFiles.push(GENERATED_RUNNER_COMPOSE_FILE_PATH)
+  configFiles.push(GENERATED_RUNNER_COMPOSE_FILE_NAME)
 
   // merge all config
   const composeObjFromComposeFile = createComposeObjFromComposeFile(configFiles)
