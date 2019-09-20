@@ -5,14 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react') // eslint-disable-line @typescript-eslint/no-var-requires
+const React = require('react')
 
 const styles = {
   badgeWrapper: {
     textAlign: 'right',
-  },
-  badge: {
-    // marginRight: 5,
   },
 }
 
@@ -58,23 +55,23 @@ class Footer extends React.Component {
           </div>
 
           <div style={styles.badgeWrapper}>
-            <a href="https://travis-ci.com/erikengervall/dockest" style={styles.badge}>
+            <a href="https://travis-ci.com/erikengervall/dockest">
               <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat" />
             </a>
 
-            <a href="https://www.npmjs.com/package/dockest" style={styles.badge}>
+            <a href="https://www.npmjs.com/package/dockest">
               <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat" />
             </a>
 
-            <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE" style={styles.badge}>
+            <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
               <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat" />
             </a>
 
-            <a href="https://www.npmjs.com/package/dockest?activeTab=versions" style={styles.badge}>
+            <a href="https://www.npmjs.com/package/dockest?activeTab=versions">
               <img alt="npm" src="https://img.shields.io/npm/v/dockest" />
             </a>
 
-            <a href="https://snyk.io/test/github/erikengervall/dockest" style={styles.badge}>
+            <a href="https://snyk.io/test/github/erikengervall/dockest">
               <img alt="snyk" src="https://snyk.io/test/github/erikengervall/dockest/badge.svg" />
             </a>
           </div>

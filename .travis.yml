@@ -34,8 +34,7 @@ script:
   # generate typedoc markdown files
   - yarn generate:typedoc
 
-  # publish docusaurus website
-  # only merge when pushed to master
+  # publish docusaurus website on commits to master
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
     git config --global user.name "${GH_NAME}";
     git config --global user.email "${GH_EMAIL}";
