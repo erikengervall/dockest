@@ -1,5 +1,6 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
+import path from 'path'
 import createComposeObjFromComposeFile from './createComposeObjFromComposeFile'
 import testUtils from '../../testUtils'
 
@@ -9,16 +10,13 @@ describe('createComposeObjFromComposeFile', () => {
   const yamlMock: any = {
     safeLoad: jest.fn(composeYml => yaml.safeLoad(composeYml)),
   }
-  const fsMock: any = {
-    readFileSync: jest.fn((filePath, encoding) => fs.readFileSync(`${process.cwd()}${filePath}`, encoding)),
-  }
+
   const nodeProcessMock: any = {
-    cwd: jest.fn(() => '/fixtures/'),
+    cwd: jest.fn(() => path.join(process.cwd(), 'fixtures')),
   }
 
   beforeEach(() => {
     yamlMock.safeLoad.mockClear()
-    fsMock.readFileSync.mockClear()
     nodeProcessMock.cwd.mockClear()
   })
 
@@ -27,7 +25,7 @@ describe('createComposeObjFromComposeFile', () => {
       opts: { composeFile: 'docker-compose-single-redis.yml' },
     })
 
-    const composeObj = createComposeObjFromComposeFile(dockestConfig, fsMock, yamlMock, nodeProcessMock)
+    const composeObj = createComposeObjFromComposeFile(dockestConfig, yamlMock, nodeProcessMock)
 
     expect(composeObj).toMatchSnapshot()
   })
@@ -37,7 +35,7 @@ describe('createComposeObjFromComposeFile', () => {
       opts: { composeFile: 'docker-compose-complicated.yml' },
     })
 
-    const composeObj = createComposeObjFromComposeFile(dockestConfig, fsMock, yamlMock, nodeProcessMock)
+    const composeObj = createComposeObjFromComposeFile(dockestConfig, yamlMock, nodeProcessMock)
 
     expect(composeObj).toMatchSnapshot()
   })
@@ -48,7 +46,7 @@ describe('createComposeObjFromComposeFile', () => {
         opts: { composeFile: ['docker-compose-single-redis.yml', 'docker-compose-single-postgres.yml'] },
       })
 
-      const composeObj = createComposeObjFromComposeFile(dockestConfig, fsMock, yamlMock, nodeProcessMock)
+      const composeObj = createComposeObjFromComposeFile(dockestConfig, yamlMock, nodeProcessMock)
 
       expect(composeObj).toMatchSnapshot()
     })
@@ -58,7 +56,7 @@ describe('createComposeObjFromComposeFile', () => {
         opts: { composeFile: ['docker-compose-single-redis.yml', 'docker-compose-single-redis-duplicate.yml'] },
       })
 
-      const composeObj = createComposeObjFromComposeFile(dockestConfig, fsMock, yamlMock, nodeProcessMock)
+      const composeObj = createComposeObjFromComposeFile(dockestConfig, yamlMock, nodeProcessMock)
 
       expect(composeObj).toMatchSnapshot()
     })

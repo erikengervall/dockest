@@ -1,31 +1,50 @@
-import { default as fsLib } from 'fs'
-import { mergeDeepRight } from 'ramda'
 import { default as yamlLib } from 'js-yaml'
+import execa from 'execa'
+import * as path from 'path'
 import { DockestConfig } from '../../index'
 import { ComposeFile } from '../../runners/@types'
 
-export default (config: DockestConfig, fs = fsLib, yaml = yamlLib, nodeProcess = process): ComposeFile => {
-  const getComposeObjFromComposeFile = (fileName: string) => {
-    const composeYml = fs.readFileSync(`${nodeProcess.cwd()}/${fileName}`, 'utf8')
+export default (config: DockestConfig, yaml = yamlLib, nodeProcess = process): ComposeFile => {
+  const getComposeObjFromComposeYmlString = (composeYml: string) => {
     const composeObj: ComposeFile = yaml.safeLoad(composeYml)
-
     return composeObj
   }
+
+  const cwd = nodeProcess.cwd()
 
   let composeObj = {
     version: '3',
     services: {},
   }
 
-  const { composeFile } = config.opts
+  let { composeFile } = config.opts
   if (composeFile.length > 0) {
-    const composeObjsFromFile = Array.isArray(composeFile)
-      ? composeFile.map(fileName => getComposeObjFromComposeFile(fileName))
-      : [getComposeObjFromComposeFile(composeFile)]
+    if (!Array.isArray(composeFile)) {
+      composeFile = [composeFile]
+    }
+    const result = execa.sync(
+      'docker-compose',
+      composeFile
+        .slice()
+        .reverse()
+        .reduce(
+          (result, composeFilePath) => {
+            result.unshift('-f', path.join(cwd, composeFilePath))
+            return result
+          },
+          ['config'],
+        ),
+      {
+        reject: false,
+      },
+    )
 
-    composeObjsFromFile.forEach(composeObjFromFile => {
-      composeObj = mergeDeepRight(composeObj, composeObjFromFile)
-    })
+    if (result.exitCode !== 0) {
+      console.error(`🚨 Invalid docker-compose config: \n ${result.stderr}`)
+      throw new TypeError('Invalid docker-compose config.')
+    }
+
+    composeObj = getComposeObjFromComposeYmlString(result.stdout)
   }
 
   return composeObj
