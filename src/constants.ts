@@ -75,4 +75,6 @@ export const INTERNAL_CONFIG = {
 export const PROCESS_TEST_ENV = 'dockest-test'
 
 export const GENERATED_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated.yml'
+export const GENERATED_RUNNER_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated-runner.yml'
 export const GENERATED_COMPOSE_FILE_PATH = `${process.cwd()}/${GENERATED_COMPOSE_FILE_NAME}`
+export const GENERATED_RUNNER_COMPOSE_FILE_PATH = `${process.cwd()}/${GENERATED_RUNNER_COMPOSE_FILE_NAME}`
