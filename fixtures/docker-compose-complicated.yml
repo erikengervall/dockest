@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   dockest_inline_service_name_postgres1sequelizeRunner:
     environment:

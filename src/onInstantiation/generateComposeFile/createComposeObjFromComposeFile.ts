@@ -5,7 +5,7 @@ export default (composeFiles: string[], nodeProcess = process): ComposeFile => {
   const cwd = nodeProcess.cwd()
 
   let composeObj = {
-    version: '3',
+    version: '3.7',
     services: {},
   }
 

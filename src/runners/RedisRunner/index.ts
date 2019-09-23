@@ -12,13 +12,16 @@ interface DefaultableConfigProps extends SharedDefaultableConfigProps {
 }
 interface RedisRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT = '6379'
+const DEFAULT_PORT = 6379
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
   password: '',
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
+  ports: [
+    {
+      published: DEFAULT_PORT,
+      target: DEFAULT_PORT,
+    },
+  ],
   responsivenessTimeout: SHARED_DEFAULT_CONFIG_PROPS.responsivenessTimeout,
 }
 

@@ -45,7 +45,7 @@ Dockest {
           "host": "localhost",
           "image": "_",
           "networks": undefined,
-          "ports": Object {},
+          "ports": Array [],
           "props": Object {},
           "responsivenessTimeout": 30,
           "service": "_",

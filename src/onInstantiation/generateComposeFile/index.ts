@@ -20,7 +20,15 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
     }
   }
 
-  const { version: dockerComposeFileVersion } = createComposeObjFromComposeFile(configFiles)
+  let { version: dockerComposeFileVersion } = createComposeObjFromComposeFile(configFiles)
+  let versionNumber = parseFloat(dockerComposeFileVersion)
+  if (Math.trunc(versionNumber) < 3) {
+    throw new TypeError(`Incompatible docker-compose file version. Please use version '3.x'.`)
+  } else if (versionNumber !== 3.7) {
+    console.warn(`You should upgrade to docker-compose file version '3.7'. Dockest automatically uses that version.`)
+    dockerComposeFileVersion = '3.7'
+  }
+
   const composeObjFromRunners = createComposeObjFromRunners(config, dockerComposeFileVersion)
 
   fs.writeFileSync(GENERATED_RUNNER_COMPOSE_FILE_PATH, yaml.safeDump(composeObjFromRunners))

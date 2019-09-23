@@ -1,6 +1,5 @@
 import { RedisRunner, PostgresRunner, GeneralPurposeRunner, ZooKeeperRunner, KafkaRunner } from '../../runners'
 import { DockestConfig } from '../../index'
-import { ObjStrStr } from '../../@types'
 import { ComposeFile } from '../../runners/@types'
 import ConfigurationError from '../../errors/ConfigurationError'
 
@@ -27,11 +26,7 @@ export default (config: DockestConfig, composeObj: ComposeFile) =>
       return new RedisRunner({
         service,
         image: composeService.image,
-        ports: composeService.ports.reduce((acc: ObjStrStr, curr: string) => {
-          const [host, container] = curr.split(':')
-          acc[host] = container
-          return acc
-        }, {}),
+        ports: composeService.ports,
         props: composeService.environment,
       })
     }
@@ -47,11 +42,7 @@ export default (config: DockestConfig, composeObj: ComposeFile) =>
       return new PostgresRunner({
         service,
         image: composeService.image,
-        ports: composeService.ports.reduce((acc: ObjStrStr, curr: string) => {
-          const [host, container] = curr.split(':')
-          acc[host] = container
-          return acc
-        }, {}),
+        ports: composeService.ports,
         props: composeService.environment,
         database: `${composeService.environment[PostgresRunner.ENVIRONMENT_DATABASE]}`,
         password: `${composeService.environment[PostgresRunner.ENVIRONMENT_PASSWORD]}`,
@@ -70,11 +61,7 @@ export default (config: DockestConfig, composeObj: ComposeFile) =>
       return new ZooKeeperRunner({
         service,
         image: composeService.image,
-        ports: composeService.ports.reduce((acc: ObjStrStr, curr: string) => {
-          const [host, container] = curr.split(':')
-          acc[host] = container
-          return acc
-        }, {}),
+        ports: composeService.ports,
         props: composeService.environment,
       })
     }
@@ -90,11 +77,7 @@ export default (config: DockestConfig, composeObj: ComposeFile) =>
       return new KafkaRunner({
         service,
         image: composeService.image,
-        ports: composeService.ports.reduce((acc: ObjStrStr, curr: string) => {
-          const [host, container] = curr.split(':')
-          acc[host] = container
-          return acc
-        }, {}),
+        ports: composeService.ports,
         props: composeService.environment,
       })
     }

@@ -15,12 +15,15 @@ interface DefaultableConfigProps extends SharedDefaultableConfigProps {
 }
 interface PostgresRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT = '5432'
+const DEFAULT_PORT = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
+  ports: [
+    {
+      target: DEFAULT_PORT,
+      published: DEFAULT_PORT,
+    },
+  ],
   responsivenessTimeout: SHARED_DEFAULT_CONFIG_PROPS.responsivenessTimeout,
 }
 

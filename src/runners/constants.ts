@@ -8,7 +8,7 @@ export const SHARED_DEFAULT_CONFIG_PROPS: SharedDefaultableConfigProps = {
   host: 'localhost',
   image: undefined,
   networks: undefined,
-  ports: {},
+  ports: [],
   props: {},
   responsivenessTimeout: 30,
 }

@@ -13,13 +13,23 @@ const dockest = new Dockest({
 dockest.attachRunners([
   new runners.GeneralPurposeRunner({
     service: USERS_SERVICE_NAME,
-    ports: { '1337': '1337' },
+    ports: [
+      {
+        published: 1337,
+        target: 1337,
+      },
+    ],
     build: './users',
     networks: ['bueno'],
   }),
   new runners.GeneralPurposeRunner({
     service: ORDERS_SERVICE_NAME,
-    ports: { '1338': '1338' },
+    ports: [
+      {
+        published: 1338,
+        target: 1338,
+      },
+    ],
     build: './orders',
     networks: ['bueno'],
   }),

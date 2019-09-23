@@ -19,7 +19,7 @@ const composeFileHelper = (runnerConfig: RunnerConfig): ComposeService => {
     ...getImage({ image, build, service }),
     ...(build ? { build } : {}),
     ...(networks ? { networks } : {}),
-    ...getPorts(ports),
+    ports,
     ...props, // FIXME: Would love to type this stronger
   }
 }

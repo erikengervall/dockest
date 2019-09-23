@@ -7,7 +7,12 @@ const {
 const placeHolderRunner = new GeneralPurposeRunner({
   service: 'never_gonna_give_you_up',
   image: 'redis:5.0.3',
-  ports: { '1337': '1337' },
+  ports: [
+    {
+      published: 1337,
+      target: 1337,
+    },
+  ],
 })
 
 const dockest = new Dockest({

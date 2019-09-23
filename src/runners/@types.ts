@@ -3,7 +3,6 @@ import PostgresRunner, { PostgresRunnerConfig } from './PostgresRunner'
 import RedisRunner, { RedisRunnerConfig } from './RedisRunner'
 import ZooKeeperRunner, { ZooKeeperRunnerConfig } from './ZooKeeperRunner'
 import GeneralPurposeRunner, { GeneralPurposeRunnerConfig } from './GeneralPurposeRunner'
-import { ObjStrStr } from '../@types'
 import Logger from '../Logger'
 
 export type Runner = KafkaRunner | PostgresRunner | RedisRunner | ZooKeeperRunner | GeneralPurposeRunner
@@ -16,7 +15,7 @@ export type RunnerConfig =
   | GeneralPurposeRunnerConfig
 
 export interface ComposeService {
-  ports: string[]
+  ports: PortBindingType[]
   networks?: { [key: string]: null }
   volumes?: string[]
   command?: string
@@ -70,6 +69,12 @@ export interface SharedRequiredConfigProps {
 }
 
 export type DependsOn = Runner[]
+
+export type PortBindingType = {
+  published: number
+  target: number
+}
+
 export interface SharedDefaultableConfigProps {
   build: string | undefined
   commands: string[]
@@ -78,7 +83,7 @@ export interface SharedDefaultableConfigProps {
   host: string
   image: string | undefined
   networks: string[] | undefined
-  ports: ObjStrStr
+  ports: PortBindingType[]
   props: { [key: string]: any }
   responsivenessTimeout: number
 }

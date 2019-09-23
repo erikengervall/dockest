@@ -3,13 +3,13 @@ import { Runner } from '../../runners/@types'
 import DockestError from '../../errors/DockestError'
 import sleep from '../../utils/sleep'
 
-const acquireConnection = (host: string, port: string): Promise<void> =>
+const acquireConnection = (host: string, port: number): Promise<void> =>
   new Promise((resolve, reject) => {
     let connected = false
     let timeoutId: NodeJS.Timeout | null = null
 
     const netSocket = net
-      .createConnection({ host, port: Number(port) })
+      .createConnection({ host, port })
       .on('connect', () => {
         if (timeoutId) {
           clearTimeout(timeoutId)
@@ -34,7 +34,7 @@ export default async (runner: Runner) => {
     logger,
   } = runner
 
-  for (const port in ports) {
+  for (const { published: port } of ports) {
     const recurse = async (connectionTimeout: number) => {
       logger.debug(`Checking connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`)
 

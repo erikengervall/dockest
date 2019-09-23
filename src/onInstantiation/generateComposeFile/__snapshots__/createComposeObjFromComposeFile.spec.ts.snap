@@ -11,17 +11,23 @@ Object {
       },
       "image": "postgres:9.6",
       "ports": Array [
-        "5433:5432/tcp",
+        Object {
+          "published": 5433,
+          "target": 5432,
+        },
       ],
     },
     "composeRedis": Object {
       "image": "redis:5.0.3",
       "ports": Array [
-        "6378:6379/tcp",
+        Object {
+          "published": 6378,
+          "target": 6379,
+        },
       ],
     },
   },
-  "version": "3.0",
+  "version": "3.7",
 }
 `;
 
@@ -31,11 +37,14 @@ Object {
     "composeRedis": Object {
       "image": "im:a:duplicate",
       "ports": Array [
-        "6378:6379/tcp",
+        Object {
+          "published": 6378,
+          "target": 6379,
+        },
       ],
     },
   },
-  "version": "3.0",
+  "version": "3.7",
 }
 `;
 
@@ -50,7 +59,10 @@ Object {
       },
       "image": "postgres:9.6",
       "ports": Array [
-        "5433:5432/tcp",
+        Object {
+          "published": 5433,
+          "target": 5432,
+        },
       ],
     },
     "dockest_kafka1confluentinc": Object {
@@ -67,7 +79,10 @@ Object {
       },
       "image": "confluentinc/cp-kafka:5.2.2",
       "ports": Array [
-        "9092:9092/tcp",
+        Object {
+          "published": 9092,
+          "target": 9092,
+        },
       ],
     },
     "dockest_postgres2knex": Object {
@@ -78,13 +93,19 @@ Object {
       },
       "image": "postgres:9.6",
       "ports": Array [
-        "5434:5432/tcp",
+        Object {
+          "published": 5434,
+          "target": 5432,
+        },
       ],
     },
     "dockest_redis1ioredis": Object {
       "image": "redis:5.0.3",
       "ports": Array [
-        "6378:6379/tcp",
+        Object {
+          "published": 6378,
+          "target": 6379,
+        },
       ],
     },
     "dockest_zookeeper1confluentinc": Object {
@@ -93,11 +114,14 @@ Object {
       },
       "image": "confluentinc/cp-zookeeper:5.2.2",
       "ports": Array [
-        "2181:2181/tcp",
+        Object {
+          "published": 2181,
+          "target": 2181,
+        },
       ],
     },
   },
-  "version": "3.0",
+  "version": "3.7",
 }
 `;
 
@@ -107,10 +131,13 @@ Object {
     "composeRedis": Object {
       "image": "redis:5.0.3",
       "ports": Array [
-        "6378:6379/tcp",
+        Object {
+          "published": 6378,
+          "target": 6379,
+        },
       ],
     },
   },
-  "version": "3.0",
+  "version": "3.7",
 }
 `;

@@ -12,12 +12,15 @@ interface RequiredConfigProps extends SharedRequiredConfigProps {
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {}
 interface ZooKeeperRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT = '2181'
+const DEFAULT_PORT = 2181
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
+  ports: [
+    {
+      published: DEFAULT_PORT,
+      target: DEFAULT_PORT,
+    },
+  ],
 }
 
 class ZooKeeperRunner implements BaseRunner {
@@ -46,8 +49,8 @@ class ZooKeeperRunner implements BaseRunner {
   public getComposeService: GetComposeService = () => {
     const { ports } = this.runnerConfig
 
-    const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
-    if (!ZOOKEEPER_CLIENT_PORT) {
+    const zookeeperClientPortBinding = ports.find(portBinding => portBinding.published === DEFAULT_PORT)
+    if (!zookeeperClientPortBinding) {
       throw new ConfigurationError(
         `Could not resolve required environment variable ZOOKEEPER_CLIENT_PORT. Expected ${DEFAULT_PORT} to appear as value in ports object`,
       )
@@ -55,7 +58,7 @@ class ZooKeeperRunner implements BaseRunner {
 
     return {
       environment: {
-        ZOOKEEPER_CLIENT_PORT,
+        ZOOKEEPER_CLIENT_PORT: zookeeperClientPortBinding.target,
       },
       ...composeFileHelper(this.runnerConfig),
     }

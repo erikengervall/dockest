@@ -1,7 +1,6 @@
 import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import { ZooKeeperRunner } from '../index'
-import getKeyForVal from '../../utils/getKeyForVal'
 import Logger from '../../Logger'
 import trim from '../../utils/trim'
 import validateConfig from '../../utils/validateConfig'
@@ -14,17 +13,20 @@ interface DefaultableConfigProps extends SharedDefaultableConfigProps {
 }
 interface KafkaRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT_PLAINTEXT = '9092'
-const DEFAULT_PORT_SASL_SSL = '9094'
-const DEFAULT_PORT_SCHEMA_REGISTRY = '8081'
-const DEFAULT_PORT_SSL = '9093'
+const DEFAULT_PORT_PLAINTEXT = 9092
+const DEFAULT_PORT_SASL_SSL = 9094
+const DEFAULT_PORT_SCHEMA_REGISTRY = 8081
+const DEFAULT_PORT_SSL = 9093
 const DEFAULT_AUTO_CREATE_TOPIC = true
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
   autoCreateTopic: DEFAULT_AUTO_CREATE_TOPIC,
-  ports: {
-    [DEFAULT_PORT_PLAINTEXT]: DEFAULT_PORT_PLAINTEXT,
-  },
+  ports: [
+    {
+      published: DEFAULT_PORT_PLAINTEXT,
+      target: DEFAULT_PORT_PLAINTEXT,
+    },
+  ],
 }
 
 class KafkaRunner implements BaseRunner {
@@ -63,28 +65,32 @@ class KafkaRunner implements BaseRunner {
         return {}
       }
 
-      const exposedZooKeeperPort = getKeyForVal(zooKeeperDependency.runnerConfig.ports, ZooKeeperRunner.DEFAULT_PORT)
+      const exposedZooKeeperPortBinding = zooKeeperDependency.runnerConfig.ports.find(
+        portBinding => portBinding.published === ZooKeeperRunner.DEFAULT_PORT,
+      )
+      const port = exposedZooKeeperPortBinding ? exposedZooKeeperPortBinding.published : undefined
 
       return {
-        KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${exposedZooKeeperPort}`,
+        KAFKA_ZOOKEEPER_CONNECT: `${zooKeeperDependency.runnerConfig.service}:${port}`,
       }
     }
 
     const getAdvertisedListeners = (): { KAFKA_ADVERTISED_LISTENERS: string } => {
-      const exposedPlaintextPort = getKeyForVal(ports, DEFAULT_PORT_PLAINTEXT)
-      const PLAINTEXT = !!exposedPlaintextPort
-        ? `PLAINTEXT://${service}:2${exposedPlaintextPort}, PLAINTEXT_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedPlaintextPort}`
+      const exposedPlaintextPortBinding = ports.find(portBinding => portBinding.target === DEFAULT_PORT_PLAINTEXT)
+
+      const PLAINTEXT = !!exposedPlaintextPortBinding
+        ? `PLAINTEXT://${service}:2${exposedPlaintextPortBinding.published}, PLAINTEXT_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedPlaintextPortBinding.published}`
         : ''
 
       // TODO: Investigate exact behaviour for SSL & SASL_SSL
-      const exposedSSLPort = getKeyForVal(ports, DEFAULT_PORT_SSL)
-      const SSL = !!exposedSSLPort
-        ? `, SSL://${service}:2${DEFAULT_PORT_SSL}, SSL_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedSSLPort}`
+      const exposedSSLPortBinding = ports.find(portBinding => portBinding.target === DEFAULT_PORT_SSL)
+      const SSL = !!exposedSSLPortBinding
+        ? `, SSL://${service}:2${DEFAULT_PORT_SSL}, SSL_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedSSLPortBinding.published}`
         : ''
 
-      const exposedSASLSSLPort = getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
-      const SASL_SSL = !!exposedSASLSSLPort
-        ? `, SASL_SSL://${service}:2${DEFAULT_PORT_SASL_SSL}, SASL_SSL_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedSASLSSLPort}`
+      const exposedSASLSSLPortBinding = ports.find(portBinding => portBinding.target === DEFAULT_PORT_SASL_SSL)
+      const SASL_SSL = !!exposedSASLSSLPortBinding
+        ? `, SASL_SSL://${service}:2${DEFAULT_PORT_SASL_SSL}, SASL_SSL_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedSASLSSLPortBinding.published}`
         : ''
 
       return {
@@ -93,13 +99,13 @@ class KafkaRunner implements BaseRunner {
     }
 
     const getSecurityProtocolMap = (): { KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: string } => {
-      const exposedPlaintextPort = !!getKeyForVal(ports, DEFAULT_PORT_PLAINTEXT)
+      const exposedPlaintextPort = !!ports.find(portBinding => portBinding.target === DEFAULT_PORT_PLAINTEXT)
       const PLAINTEXT = exposedPlaintextPort ? 'PLAINTEXT:PLAINTEXT, PLAINTEXT_HOST:PLAINTEXT' : ''
 
-      const exposedSSLPort = !!getKeyForVal(ports, DEFAULT_PORT_SSL)
+      const exposedSSLPort = !!ports.find(portBinding => portBinding.target === DEFAULT_PORT_SSL)
       const SSL = exposedSSLPort ? ', SSL:SSL, SSL_HOST:SSL' : ''
 
-      const exposedSASLSSLPort = !!getKeyForVal(ports, DEFAULT_PORT_SASL_SSL)
+      const exposedSASLSSLPort = !!ports.find(portBinding => portBinding.target === DEFAULT_PORT_SASL_SSL)
       const SASL_SSL = exposedSASLSSLPort ? ', SASL_SSL:SASL_SSL, SASL_SSL_HOST:SASL_SSL' : ''
 
       return {
