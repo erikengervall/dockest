@@ -14,6 +14,6 @@ describe('RedisRunner', () => {
 
   it('should fail validation', () => {
     // @ts-ignore
-    expect(() => new RedisRunner({})).toThrow(/service: Schema-key missing in config/)
+    expect(() => new RedisRunner({}).validateConfig()).toThrow(/service: Schema-key missing in config/)
   })
 })

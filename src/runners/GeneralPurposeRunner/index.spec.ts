@@ -14,6 +14,6 @@ describe('GeneralPurposeRunner', () => {
 
   it('should fail validation', () => {
     // @ts-ignore
-    expect(() => new GeneralPurposeRunner({})).toThrow(/service: Schema-key missing in config/)
+    expect(() => new GeneralPurposeRunner({}).validateConfig()).toThrow(/service: Schema-key missing in config/)
   })
 })

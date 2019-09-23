@@ -43,7 +43,9 @@ class GeneralPurposeRunner implements BaseRunner {
     }
 
     this.logger = new Logger(this)
+  }
 
+  public validateConfig() {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }

@@ -36,7 +36,9 @@ class RedisRunner implements BaseRunner {
       ...config,
     }
     this.logger = new Logger(this)
+  }
 
+  public validateConfig() {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }

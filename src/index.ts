@@ -80,6 +80,7 @@ class Dockest {
     // Validate service name uniqueness
     const serviceMap: ObjStrStr = {}
     for (const runner of this.config.runners) {
+      runner.validateConfig()
       if (serviceMap[runner.runnerConfig.service]) {
         throw new ConfigurationError(
           `Service property has to be unique. Collision found for runner with service "${runner.runnerConfig.service}"`,

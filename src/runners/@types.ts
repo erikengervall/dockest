@@ -62,6 +62,7 @@ export interface BaseRunner {
   initializer: string
   runnerConfig: RunnerConfig
   logger: Logger
+  validateConfig: () => void
 }
 
 export interface SharedRequiredConfigProps {

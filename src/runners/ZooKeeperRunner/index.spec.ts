@@ -14,6 +14,6 @@ describe('ZooKeeperRunner', () => {
 
   it('should fail validation', () => {
     // @ts-ignore
-    expect(() => new ZooKeeperRunner({})).toThrow(/service: Schema-key missing in config/)
+    expect(() => new ZooKeeperRunner({}).validateConfig()).toThrow(/service: Schema-key missing in config/)
   })
 })

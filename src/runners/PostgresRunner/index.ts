@@ -41,7 +41,9 @@ class PostgresRunner implements BaseRunner {
       ...configUserInput,
     }
     this.logger = new Logger(this)
+  }
 
+  public validateConfig() {
     // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
     const schema: { [key in keyof RequiredConfigProps]: () => void } = {
       database: validateTypes.isString,
