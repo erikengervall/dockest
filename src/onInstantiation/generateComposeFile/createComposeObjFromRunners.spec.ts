@@ -9,7 +9,7 @@ describe('createComposeObjFromRunners', () => {
       runners: [initializedRunners.postgresRunner],
     })
 
-    const composeObj = createComposeObjFromRunners(dockestConfig)
+    const composeObj = createComposeObjFromRunners(dockestConfig, '3.0')
 
     expect(composeObj).toMatchSnapshot()
   })
@@ -19,7 +19,7 @@ describe('createComposeObjFromRunners', () => {
       runners: Object.values(initializedRunners),
     })
 
-    const composeObj = createComposeObjFromRunners(dockestConfig)
+    const composeObj = createComposeObjFromRunners(dockestConfig, '3.0')
 
     expect(composeObj).toMatchSnapshot()
   })

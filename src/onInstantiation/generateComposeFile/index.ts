@@ -11,10 +11,6 @@ import {
 } from '../../constants'
 
 export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
-  // create runner config on fs
-  const composeObjFromRunners = createComposeObjFromRunners(config)
-  fs.writeFileSync(GENERATED_RUNNER_COMPOSE_FILE_PATH, yaml.safeDump(composeObjFromRunners))
-
   const configFiles = []
   if (config.opts.composeFile) {
     if (Array.isArray(config.opts.composeFile)) {
@@ -23,6 +19,11 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
       configFiles.push(config.opts.composeFile)
     }
   }
+
+  const { version: dockerComposeFileVersion } = createComposeObjFromComposeFile(configFiles)
+  const composeObjFromRunners = createComposeObjFromRunners(config, dockerComposeFileVersion)
+
+  fs.writeFileSync(GENERATED_RUNNER_COMPOSE_FILE_PATH, yaml.safeDump(composeObjFromRunners))
   configFiles.push(GENERATED_RUNNER_COMPOSE_FILE_NAME)
 
   // merge all config

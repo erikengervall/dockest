@@ -51,7 +51,7 @@ Object {
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
 
@@ -70,6 +70,6 @@ Object {
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
