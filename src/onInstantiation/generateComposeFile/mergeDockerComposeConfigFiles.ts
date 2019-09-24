@@ -21,7 +21,9 @@ export default (cwd: string, composeFiles: string[]) => {
   )
 
   if (result.exitCode !== 0) {
-    console.error(`🚨 Invalid docker-compose config: \n ${result.stderr}`)
+    console.error(
+      `🚨 Invalid docker-compose config: \n ${result.stderr}\n\n You can declare the given option via your runner definition or preferably the compose file. \n`,
+    )
     throw new TypeError('Invalid docker-compose config.')
   }
 

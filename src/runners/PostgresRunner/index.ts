@@ -1,4 +1,10 @@
-import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
+import {
+  BaseRunner,
+  GetComposeService,
+  SharedDefaultableConfigProps,
+  SharedRequiredConfigProps,
+  ComposeService,
+} from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
@@ -44,6 +50,16 @@ class PostgresRunner implements BaseRunner {
       ...configUserInput,
     }
     this.logger = new Logger(this)
+  }
+
+  public mergeConfig({ ports, build, image, networks, ...composeService }: ComposeService) {
+    this.runnerConfig = {
+      ...this.runnerConfig,
+      ...composeService,
+      ...(image ? { image } : {}),
+      ...(ports ? { ports } : {}),
+      ...(networks ? { networks: Object.keys(networks) } : {}),
+    }
   }
 
   public validateConfig() {

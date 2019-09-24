@@ -43,4 +43,6 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
 
   // write final config to fs
   fs.writeFileSync(GENERATED_COMPOSE_FILE_PATH, yaml.safeDump(composeObjFromComposeFile))
+
+  return { composeFileConfig: composeObjFromComposeFile }
 }

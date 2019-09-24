@@ -1,4 +1,10 @@
-import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
+import {
+  BaseRunner,
+  GetComposeService,
+  SharedDefaultableConfigProps,
+  SharedRequiredConfigProps,
+  ComposeService,
+} from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import { ZooKeeperRunner } from '../index'
 import Logger from '../../Logger'
@@ -48,6 +54,16 @@ class KafkaRunner implements BaseRunner {
     this.logger = new Logger(this)
   }
 
+  public mergeConfig({ ports, build, image, networks, ...composeService }: ComposeService) {
+    this.runnerConfig = {
+      ...this.runnerConfig,
+      ...composeService,
+      ...(image ? { image } : {}),
+      ...(ports ? { ports } : {}),
+      ...(networks ? { networks: Object.keys(networks) } : {}),
+    }
+  }
+
   public validateConfig() {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
@@ -78,7 +94,7 @@ class KafkaRunner implements BaseRunner {
     const getAdvertisedListeners = (): { KAFKA_ADVERTISED_LISTENERS: string } => {
       const exposedPlaintextPortBinding = ports.find(portBinding => portBinding.target === DEFAULT_PORT_PLAINTEXT)
 
-      const PLAINTEXT = !!exposedPlaintextPortBinding
+      const PLAINTEXT = exposedPlaintextPortBinding
         ? `PLAINTEXT://${service}:2${exposedPlaintextPortBinding.published}, PLAINTEXT_HOST://${SHARED_DEFAULT_CONFIG_PROPS.host}:${exposedPlaintextPortBinding.published}`
         : ''
 

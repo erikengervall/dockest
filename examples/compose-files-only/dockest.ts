@@ -8,6 +8,7 @@ const dockest = new Dockest({
     afterSetupSleep: 2,
     dumpErrors: true,
     logLevel: logLevel.DEBUG,
+    guessRunnerType: true,
     composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
   },
 })
