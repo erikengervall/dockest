@@ -65,7 +65,7 @@ class ZooKeeperRunner implements BaseRunner {
   public getComposeService: GetComposeService = () => {
     const { ports } = this.runnerConfig
 
-    const zookeeperClientPortBinding = ports.find(portBinding => portBinding.published === DEFAULT_PORT)
+    const zookeeperClientPortBinding = ports.find(portBinding => portBinding.target === DEFAULT_PORT)
     if (!zookeeperClientPortBinding) {
       throw new ConfigurationError(
         `Could not resolve required environment variable ZOOKEEPER_CLIENT_PORT. Expected ${DEFAULT_PORT} to appear as value in ports object`,

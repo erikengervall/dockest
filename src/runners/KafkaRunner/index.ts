@@ -82,7 +82,7 @@ class KafkaRunner implements BaseRunner {
       }
 
       const exposedZooKeeperPortBinding = zooKeeperDependency.runnerConfig.ports.find(
-        portBinding => portBinding.published === ZooKeeperRunner.DEFAULT_PORT,
+        portBinding => portBinding.target === ZooKeeperRunner.DEFAULT_PORT,
       )
       const port = exposedZooKeeperPortBinding ? exposedZooKeeperPortBinding.published : undefined
 
