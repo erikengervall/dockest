@@ -1,3 +1,4 @@
+import isDocker from 'is-docker'
 import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
 import { ErrorPayload, ObjStrStr, ArrayAtLeastOne } from './@types'
 import { JestConfig } from './onRun/runJest'
@@ -28,6 +29,7 @@ interface InternalConfig {
   failedTeardowns: { service: string; containerId: string }[]
   jestRanWithResult: boolean
   perfStart: number
+  isInsideDockerContainer: boolean
 }
 export interface DockestConfig {
   runners: ArrayAtLeastOne<Runner>
@@ -55,6 +57,7 @@ class Dockest {
 
   public run = async (): Promise<void> => {
     this.config.$.perfStart = Date.now()
+    this.config.$.isInsideDockerContainer = isDocker()
 
     const { composeFileConfig } = onInstantiation(this.config)
 
