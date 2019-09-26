@@ -1,3 +1,4 @@
+import execa from 'execa'
 import { ComposeService, DependsOn, ComposeFile } from '../../runners/@types'
 import { DockestConfig } from '../../index'
 
@@ -18,6 +19,16 @@ export default (config: DockestConfig, dockerComposeFileVersion: string) => {
     services: {},
   }
 
+  const extra_hosts: string[] = []
+
+  if (!config.$.isInsideDockerContainer) {
+    if (process.platform === 'linux') {
+      const command = `ip -4 addr show docker0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'`
+      const result = execa.sync(command, { reject: false })
+      extra_hosts.push(`host.docker.internal:${result.stdout}`)
+    }
+  }
+
   config.runners.forEach(runner => {
     const {
       runnerConfig: { service, dependsOn },
@@ -29,7 +40,7 @@ export default (config: DockestConfig, dockerComposeFileVersion: string) => {
 
     composeObj.services = {
       ...composeObj.services,
-      [service]: composeService,
+      [service]: { ...composeService, extra_hosts },
       ...depComposeServices,
     }
   })

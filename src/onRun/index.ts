@@ -24,7 +24,7 @@ const onRun = async (config: DockestConfig) => {
 
   if (isInsideDockerContainer) {
     await createBridgeNetwork()
-    await joinBridgeNetwork(hostname)
+    await joinBridgeNetwork(hostname, 'host.dockest-runner.internal')
   }
 
   await waitForRunnersReadiness(config)

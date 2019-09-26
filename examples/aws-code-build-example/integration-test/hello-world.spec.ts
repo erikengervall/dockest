@@ -1,11 +1,11 @@
 import http from 'http'
 import fetch from 'node-fetch'
-import isDocker from 'is-docker'
+import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper'
 
-const TARGET_HOST = isDocker() ? 'website' : 'localhost'
+const TARGET_HOST = getServiceAddress('website', 9000)
 
 // hostname is either our docker container hostname or if not run inside a docker container the docker host
-const HOSTNAME = isDocker() ? process.env.HOSTNAME : 'host.docker.internal'
+const HOSTNAME = getHostAddress()
 const PORT = 8080
 
 let server: http.Server
@@ -38,7 +38,7 @@ test('can send a request to the container and it can send a request to us', asyn
       })
   })
 
-  const res = await fetch(`http://${TARGET_HOST}:9000`, {
+  const res = await fetch(`http://${TARGET_HOST}`, {
     method: 'post',
     body: `http://${HOSTNAME}:${PORT}`,
   }).then(res => res.text())
