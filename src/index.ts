@@ -60,6 +60,13 @@ class Dockest {
     this.config.$.perfStart = Date.now()
     this.config.$.isInsideDockerContainer = isDocker()
 
+    if (this.config.$.isInsideDockerContainer) {
+      this.config.runners.forEach(runner => {
+        runner.isBridgeNetworkMode = true
+        runner.runnerConfig.host = runner.runnerConfig.service
+      })
+    }
+
     const { composeFileConfig } = onInstantiation(this.config)
 
     for (const runner of this.config.runners) {

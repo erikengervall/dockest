@@ -43,6 +43,7 @@ class PostgresRunner implements BaseRunner {
   public initializer = ''
   public runnerConfig: PostgresRunnerConfig
   public logger: Logger
+  public isBridgeNetworkMode = false
 
   public constructor(configUserInput: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.runnerConfig = {

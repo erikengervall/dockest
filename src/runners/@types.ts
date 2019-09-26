@@ -62,6 +62,7 @@ export interface BaseRunner {
   runnerConfig: RunnerConfig
   logger: Logger
   validateConfig: () => void
+  isBridgeNetworkMode: boolean
 }
 
 export interface SharedRequiredConfigProps {
@@ -80,7 +81,7 @@ export interface SharedDefaultableConfigProps {
   commands: string[]
   connectionTimeout: number
   dependsOn: DependsOn
-  host: string | ((containerId: string) => string)
+  host: string
   image: string | undefined
   networks: string[] | undefined
   ports: PortBindingType[]

@@ -36,6 +36,7 @@ class ZooKeeperRunner implements BaseRunner {
   public initializer = ''
   public runnerConfig: ZooKeeperRunnerConfig
   public logger: Logger
+  public isBridgeNetworkMode = false
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps>) {
     this.runnerConfig = {

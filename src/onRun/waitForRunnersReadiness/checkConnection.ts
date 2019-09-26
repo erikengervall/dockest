@@ -30,16 +30,13 @@ export { testables }
 
 export default async (runner: Runner) => {
   const {
-    runnerConfig: { service, connectionTimeout, ports },
+    runnerConfig: { host, service, connectionTimeout, ports },
     logger,
   } = runner
 
-  const host =
-    typeof runner.runnerConfig.host === 'function'
-      ? runner.runnerConfig.host(runner.containerId)
-      : runner.runnerConfig.host
+  const portKey = runner.isBridgeNetworkMode ? 'target' : 'published'
 
-  for (const { published: port } of ports) {
+  for (const { [portKey]: port } of ports) {
     const recurse = async (connectionTimeout: number) => {
       logger.debug(`Checking connection (${host}:${port}) (Timeout in: ${connectionTimeout}s)`)
 
