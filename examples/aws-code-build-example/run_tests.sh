@@ -7,6 +7,7 @@ yarn pack --filename examples/aws-code-build-example/dockest.tgz
 cd examples/aws-code-build-example
 
 # build dockest
+yarn install
 yarn test
 
 # build with dockest inside docker container

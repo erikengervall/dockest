@@ -20,4 +20,4 @@ This test should also pass when not being run inside a container.
 
 # Development
 
-Dockest must be bundeled as a .tgz and put inside this folder, because the codebuild container cannot resolve the parent directories.
+Dockest must be bundeled as a .tgz and put inside this folder, because the codebuild container cannot resolve the parent directories (check `run_tests.sh`).
