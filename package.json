@@ -30,12 +30,12 @@
     "build:watch": "rm -rf ./dist && tsc --watch",
     "dev:setup": "./tools/scripts/setup && yarn install:all",
     "install:all": "./tools/scripts/install-all",
-    "generate:typedoc": "yarn typedoc ./src",
+    "generate:typedoc": "typedoc ./src",
     "test": "jest ./src --forceExit --detectOpenHandles",
     "test:watch": "jest ./src --watch --forceExit --detectOpenHandles",
     "test:examples": "cd examples && yarn test && cd ..",
     "test:all": "yarn test && yarn test:examples",
-    "lint": "yarn eslint ./src/**/*.ts"
+    "lint": "eslint \"./src/**/*.ts\""
   },
   "dependencies": {
     "execa": "^2.0.4",
