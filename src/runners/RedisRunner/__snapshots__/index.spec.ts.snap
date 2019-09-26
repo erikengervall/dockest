@@ -6,6 +6,7 @@ RedisRunner {
   "createResponsivenessCheckCmd": [Function],
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],
@@ -43,6 +44,7 @@ RedisRunner {
   "createResponsivenessCheckCmd": [Function],
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],

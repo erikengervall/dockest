@@ -6,6 +6,7 @@ GeneralPurposeRunner {
   "createResponsivenessCheckCmd": null,
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],
@@ -37,6 +38,7 @@ GeneralPurposeRunner {
   "createResponsivenessCheckCmd": null,
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],

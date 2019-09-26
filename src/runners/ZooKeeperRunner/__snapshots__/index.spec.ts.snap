@@ -5,6 +5,7 @@ ZooKeeperRunner {
   "containerId": "",
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],
@@ -40,6 +41,7 @@ ZooKeeperRunner {
   "containerId": "",
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],
