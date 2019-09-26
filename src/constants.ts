@@ -72,6 +72,7 @@ export const INTERNAL_CONFIG = {
   jestRanWithResult: false,
   perfStart: 0,
   isInsideDockerContainer: false,
+  hostname: process.env.HOSTNAME || 'host.docker.internal',
 }
 
 export const PROCESS_TEST_ENV = 'dockest-test'

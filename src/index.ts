@@ -30,6 +30,7 @@ interface InternalConfig {
   jestRanWithResult: boolean
   perfStart: number
   isInsideDockerContainer: boolean
+  hostname: string
 }
 export interface DockestConfig {
   runners: ArrayAtLeastOne<Runner>
