@@ -1,14 +1,14 @@
 import dockerComposeUp from './dockerComposeUp'
 import runJest from './runJest'
 import waitForRunnersReadiness from './waitForRunnersReadiness'
-import { DockestConfig } from '../index'
-import Logger from '../Logger'
-import sleepForX from '../utils/sleepForX'
-import teardownSingle from '../utils/teardownSingle'
 import createBridgeNetwork from './createBridgeNetwork'
 import joinBridgeNetwork from './joinBridgeNetwork'
 import removeBridgeNetwork from './removeBridgeNetwork'
 import leaveBridgeNetwork from './leaveBridgeNetwork'
+import { DockestConfig } from '../index'
+import Logger from '../Logger'
+import sleepForX from '../utils/sleepForX'
+import teardownSingle from '../utils/teardownSingle'
 
 const onRun = async (config: DockestConfig) => {
   const {
