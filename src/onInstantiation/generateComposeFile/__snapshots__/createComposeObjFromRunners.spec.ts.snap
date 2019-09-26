@@ -4,7 +4,6 @@ exports[`createComposeObjFromRunners should create composeObj from all initializ
 Object {
   "services": Object {
     "general": Object {
-      "extra_hosts": Array [],
       "image": "general/image:123",
       "ports": Array [],
     },
@@ -20,7 +19,6 @@ Object {
         "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR": 1,
         "KAFKA_ZOOKEEPER_CONNECT": "zookeeper:2181",
       },
-      "extra_hosts": Array [],
       "image": "kafka/image:123",
       "ports": Array [
         Object {
@@ -35,7 +33,6 @@ Object {
         "POSTGRES_PASSWORD": "_",
         "POSTGRES_USER": "_",
       },
-      "extra_hosts": Array [],
       "image": "postgres/image:123",
       "ports": Array [
         Object {
@@ -45,7 +42,6 @@ Object {
       ],
     },
     "redis": Object {
-      "extra_hosts": Array [],
       "image": "redis/image:123",
       "ports": Array [
         Object {
@@ -58,7 +54,6 @@ Object {
       "environment": Object {
         "ZOOKEEPER_CLIENT_PORT": 2181,
       },
-      "extra_hosts": Array [],
       "image": "zookeeper/image:123",
       "ports": Array [
         Object {
@@ -81,7 +76,6 @@ Object {
         "POSTGRES_PASSWORD": "_",
         "POSTGRES_USER": "_",
       },
-      "extra_hosts": Array [],
       "image": "postgres/image:123",
       "ports": Array [
         Object {
