@@ -50,6 +50,7 @@ class ZooKeeperRunner implements BaseRunner {
       ...this.runnerConfig,
       ...composeService,
       ...(image ? { image } : {}),
+      ...(build ? { build } : {}),
       ...(ports ? { ports } : {}),
       ...(networks ? { networks: Object.keys(networks) } : {}),
     }

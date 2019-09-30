@@ -1,5 +1,5 @@
-import { ComposeFile } from '../../runners/@types'
 import mergeDockerComposeConfigFiles from './mergeDockerComposeConfigFiles'
+import { ComposeFile } from '../../runners/@types'
 
 export default (composeFiles: string[], nodeProcess = process): ComposeFile => {
   const cwd = nodeProcess.cwd()

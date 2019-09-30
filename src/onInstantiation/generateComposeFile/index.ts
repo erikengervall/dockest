@@ -21,11 +21,11 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
   }
 
   let { version: dockerComposeFileVersion } = createComposeObjFromComposeFile(configFiles)
-  let versionNumber = parseFloat(dockerComposeFileVersion)
+  const versionNumber = parseFloat(dockerComposeFileVersion)
   if (Math.trunc(versionNumber) < 3) {
     throw new TypeError(`Incompatible docker-compose file version. Please use version '3.x'.`)
   } else if (versionNumber !== 3.7) {
-    console.warn(`You should upgrade to docker-compose file version '3.7'. Dockest automatically uses that version.`)
+    console.warn(`You should upgrade to docker-compose file version '3.7'. Dockest automatically uses that version.`) // eslint-disable-line no-console
     dockerComposeFileVersion = '3.7'
   }
 
