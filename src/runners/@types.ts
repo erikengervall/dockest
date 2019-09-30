@@ -76,7 +76,7 @@ export type PortBindingType = {
 }
 
 export interface SharedDefaultableConfigProps {
-  build: string | undefined
+  build: string | undefined | any
   commands: string[]
   connectionTimeout: number
   dependsOn: DependsOn

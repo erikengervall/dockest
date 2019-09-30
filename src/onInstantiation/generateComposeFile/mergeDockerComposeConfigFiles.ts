@@ -1,5 +1,5 @@
-import execa from 'execa'
 import path from 'path'
+import execa from 'execa' // eslint-disable-line import/default
 import getComposeObjFromComposeYmlString from './getComposeObjFromComposeYmlString'
 
 export default (cwd: string, composeFiles: string[]) => {
@@ -21,6 +21,7 @@ export default (cwd: string, composeFiles: string[]) => {
   )
 
   if (result.exitCode !== 0) {
+    // eslint-disable-next-line no-console
     console.error(
       `🚨 Invalid docker-compose config: \n ${result.stderr}\n\n You can declare the given option via your runner definition or preferably the compose file. \n`,
     )
