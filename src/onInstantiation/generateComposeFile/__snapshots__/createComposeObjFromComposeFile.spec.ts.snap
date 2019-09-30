@@ -9,7 +9,7 @@ Object {
         "POSTGRES_PASSWORD": "is",
         "POSTGRES_USER": "ramda",
       },
-      "image": "postgres:9.6",
+      "image": "postgres:9.6-alpine",
       "ports": Array [
         Object {
           "published": 5433,
@@ -18,7 +18,7 @@ Object {
       ],
     },
     "composeRedis": Object {
-      "image": "redis:5.0.3",
+      "image": "redis:5.0.3-alpine",
       "ports": Array [
         Object {
           "published": 6378,
@@ -57,7 +57,7 @@ Object {
         "POSTGRES_PASSWORD": "is",
         "POSTGRES_USER": "ramda",
       },
-      "image": "postgres:9.6",
+      "image": "postgres:9.6-alpine",
       "ports": Array [
         Object {
           "published": 5433,
@@ -91,7 +91,7 @@ Object {
         "POSTGRES_PASSWORD": "is",
         "POSTGRES_USER": "ramda",
       },
-      "image": "postgres:9.6",
+      "image": "postgres:9.6-alpine",
       "ports": Array [
         Object {
           "published": 5434,
@@ -100,7 +100,7 @@ Object {
       ],
     },
     "dockest_redis1ioredis": Object {
-      "image": "redis:5.0.3",
+      "image": "redis:5.0.3-alpine",
       "ports": Array [
         Object {
           "published": 6378,
@@ -129,7 +129,7 @@ exports[`createComposeObjFromComposeFile should create composeObj from single se
 Object {
   "services": Object {
     "composeRedis": Object {
-      "image": "redis:5.0.3",
+      "image": "redis:5.0.3-alpine",
       "ports": Array [
         Object {
           "published": 6378,
