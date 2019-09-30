@@ -6,7 +6,7 @@ const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners
 
 const postgres1sequelizeRunner = new PostgresRunner({
   service: 'dockest_inline_service_name_postgres1sequelizeRunner',
-  image: 'postgres:9.6',
+  image: 'postgres:9.6-alpine',
   commands: [
     'sequelize db:migrate:undo:all',
     'sequelize db:migrate',
@@ -26,7 +26,7 @@ const postgres1sequelizeRunner = new PostgresRunner({
 
 const postgres2knexRunner = new PostgresRunner({
   service: env.postgres2knex_service,
-  image: 'postgres:9.6',
+  image: 'postgres:9.6-alpine',
   commands: [
     './node_modules/knex/bin/cli.js migrate:rollback',
     './node_modules/knex/bin/cli.js migrate:latest',
@@ -46,7 +46,7 @@ const postgres2knexRunner = new PostgresRunner({
 
 const redis1ioredisRunner = new RedisRunner({
   service: env.redis1ioredis_service,
-  image: 'redis:5.0.3',
+  image: 'redis:5.0.3-alpine',
   ports: [
     {
       published: env.redis1ioredis_port,

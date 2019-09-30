@@ -5,7 +5,7 @@ services:
       POSTGRES_DB: nobueno
       POSTGRES_PASSWORD: is
       POSTGRES_USER: ramda
-    image: 'postgres:9.6'
+    image: 'postgres:9.6-alpine'
     ports:
       - '5433:5432'
   dockest_postgres2knex:
@@ -13,11 +13,11 @@ services:
       POSTGRES_DB: nobueno
       POSTGRES_PASSWORD: is
       POSTGRES_USER: ramda
-    image: 'postgres:9.6'
+    image: 'postgres:9.6-alpine'
     ports:
       - '5434:5432'
   dockest_redis1ioredis:
-    image: 'redis:5.0.3'
+    image: 'redis:5.0.3-alpine'
     ports:
       - '6378:6379'
   dockest_kafka1confluentinc:
