@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`helpers getKeyForVal should return key if value exist on object 1`] = `"d"`;
-
-exports[`helpers getKeyForVal should return undefined if value does not exist (2) 1`] = `undefined`;
-
-exports[`helpers getKeyForVal should return undefined if value does not exist 1`] = `undefined`;

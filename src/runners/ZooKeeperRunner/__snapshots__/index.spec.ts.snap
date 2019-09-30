@@ -22,9 +22,12 @@ ZooKeeperRunner {
     "host": "localhost",
     "image": "some/image:123",
     "networks": undefined,
-    "ports": Object {
-      "2181": "2181",
-    },
+    "ports": Array [
+      Object {
+        "published": 2181,
+        "target": 2181,
+      },
+    ],
     "props": Object {},
     "responsivenessTimeout": 30,
     "service": "zk1",
@@ -54,9 +57,12 @@ ZooKeeperRunner {
     "host": "localhost",
     "image": "some/image:123",
     "networks": undefined,
-    "ports": Object {
-      "2181": "2181",
-    },
+    "ports": Array [
+      Object {
+        "published": 2181,
+        "target": 2181,
+      },
+    ],
     "props": Object {},
     "responsivenessTimeout": 30,
     "service": "zk2",

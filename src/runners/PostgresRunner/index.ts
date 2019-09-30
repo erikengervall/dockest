@@ -1,4 +1,10 @@
-import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
+import {
+  BaseRunner,
+  GetComposeService,
+  SharedDefaultableConfigProps,
+  SharedRequiredConfigProps,
+  ComposeService,
+} from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
@@ -15,12 +21,15 @@ interface DefaultableConfigProps extends SharedDefaultableConfigProps {
 }
 interface PostgresRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT = '5432'
+const DEFAULT_PORT = 5432
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
+  ports: [
+    {
+      target: DEFAULT_PORT,
+      published: DEFAULT_PORT,
+    },
+  ],
   responsivenessTimeout: SHARED_DEFAULT_CONFIG_PROPS.responsivenessTimeout,
 }
 
@@ -41,7 +50,19 @@ class PostgresRunner implements BaseRunner {
       ...configUserInput,
     }
     this.logger = new Logger(this)
+  }
 
+  public mergeConfig({ ports, build, image, networks, ...composeService }: ComposeService) {
+    this.runnerConfig = {
+      ...this.runnerConfig,
+      ...composeService,
+      ...(image ? { image } : {}),
+      ...(ports ? { ports } : {}),
+      ...(networks ? { networks: Object.keys(networks) } : {}),
+    }
+  }
+
+  public validateConfig() {
     // TODO: Can this type be generalized and receive RequiredConfigProps as an argument?
     const schema: { [key in keyof RequiredConfigProps]: () => void } = {
       database: validateTypes.isString,

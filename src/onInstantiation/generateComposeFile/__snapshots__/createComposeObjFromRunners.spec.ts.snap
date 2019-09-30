@@ -21,7 +21,10 @@ Object {
       },
       "image": "kafka/image:123",
       "ports": Array [
-        "9092:9092",
+        Object {
+          "published": 9092,
+          "target": 9092,
+        },
       ],
     },
     "postgres": Object {
@@ -32,26 +35,35 @@ Object {
       },
       "image": "postgres/image:123",
       "ports": Array [
-        "5432:5432",
+        Object {
+          "published": 5432,
+          "target": 5432,
+        },
       ],
     },
     "redis": Object {
       "image": "redis/image:123",
       "ports": Array [
-        "6379:6379",
+        Object {
+          "published": 6379,
+          "target": 6379,
+        },
       ],
     },
     "zookeeper": Object {
       "environment": Object {
-        "ZOOKEEPER_CLIENT_PORT": "2181",
+        "ZOOKEEPER_CLIENT_PORT": 2181,
       },
       "image": "zookeeper/image:123",
       "ports": Array [
-        "2181:2181",
+        Object {
+          "published": 2181,
+          "target": 2181,
+        },
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;
 
@@ -66,10 +78,13 @@ Object {
       },
       "image": "postgres/image:123",
       "ports": Array [
-        "5432:5432",
+        Object {
+          "published": 5432,
+          "target": 5432,
+        },
       ],
     },
   },
-  "version": "3",
+  "version": "3.0",
 }
 `;

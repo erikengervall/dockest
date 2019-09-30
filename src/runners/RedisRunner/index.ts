@@ -1,7 +1,13 @@
 import Logger from '../../Logger'
 import validateConfig from '../../utils/validateConfig'
 import validateTypes from '../../utils/validateTypes'
-import { BaseRunner, GetComposeService, SharedRequiredConfigProps, SharedDefaultableConfigProps } from '../@types'
+import {
+  BaseRunner,
+  GetComposeService,
+  SharedRequiredConfigProps,
+  SharedDefaultableConfigProps,
+  ComposeService,
+} from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import { defaultGetComposeService } from '../composeFileHelper'
 
@@ -12,13 +18,16 @@ interface DefaultableConfigProps extends SharedDefaultableConfigProps {
 }
 interface RedisRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT = '6379'
+const DEFAULT_PORT = 6379
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
   password: '',
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
+  ports: [
+    {
+      published: DEFAULT_PORT,
+      target: DEFAULT_PORT,
+    },
+  ],
   responsivenessTimeout: SHARED_DEFAULT_CONFIG_PROPS.responsivenessTimeout,
 }
 
@@ -36,7 +45,19 @@ class RedisRunner implements BaseRunner {
       ...config,
     }
     this.logger = new Logger(this)
+  }
 
+  public mergeConfig({ ports, build, image, networks, ...composeService }: ComposeService) {
+    this.runnerConfig = {
+      ...this.runnerConfig,
+      ...composeService,
+      ...(image ? { image } : {}),
+      ...(ports ? { ports } : {}),
+      ...(networks ? { networks: Object.keys(networks) } : {}),
+    }
+  }
+
+  public validateConfig() {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }

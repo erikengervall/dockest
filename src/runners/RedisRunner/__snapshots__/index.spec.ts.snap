@@ -24,9 +24,12 @@ RedisRunner {
     "image": "some/image:123",
     "networks": undefined,
     "password": "",
-    "ports": Object {
-      "6379": "6379",
-    },
+    "ports": Array [
+      Object {
+        "published": 6379,
+        "target": 6379,
+      },
+    ],
     "props": Object {},
     "responsivenessTimeout": 30,
     "service": "r1",
@@ -58,9 +61,12 @@ RedisRunner {
     "image": "some/image:123",
     "networks": undefined,
     "password": "",
-    "ports": Object {
-      "6379": "6379",
-    },
+    "ports": Array [
+      Object {
+        "published": 6379,
+        "target": 6379,
+      },
+    ],
     "props": Object {},
     "responsivenessTimeout": 30,
     "service": "r2",

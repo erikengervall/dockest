@@ -26,7 +26,7 @@ describe('PostgresRunner', () => {
 
   it('should fail validation', () => {
     // @ts-ignore
-    expect(() => new PostgresRunner({ database: '_', password: '_', username: '_' })).toThrow(
+    expect(() => new PostgresRunner({ database: '_', password: '_', username: '_' }).validateConfig()).toThrow(
       /service: Schema-key missing in config/,
     )
   })

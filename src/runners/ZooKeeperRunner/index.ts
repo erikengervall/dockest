@@ -1,4 +1,10 @@
-import { BaseRunner, GetComposeService, SharedDefaultableConfigProps, SharedRequiredConfigProps } from '../@types'
+import {
+  BaseRunner,
+  GetComposeService,
+  SharedDefaultableConfigProps,
+  SharedRequiredConfigProps,
+  ComposeService,
+} from '../@types'
 import { SHARED_DEFAULT_CONFIG_PROPS } from '../constants'
 import ConfigurationError from '../../errors/ConfigurationError'
 import Logger from '../../Logger'
@@ -12,12 +18,15 @@ interface RequiredConfigProps extends SharedRequiredConfigProps {
 interface DefaultableConfigProps extends SharedDefaultableConfigProps {}
 interface ZooKeeperRunnerConfig extends RequiredConfigProps, DefaultableConfigProps {}
 
-const DEFAULT_PORT = '2181'
+const DEFAULT_PORT = 2181
 const DEFAULT_CONFIG: DefaultableConfigProps = {
   ...SHARED_DEFAULT_CONFIG_PROPS,
-  ports: {
-    [DEFAULT_PORT]: DEFAULT_PORT,
-  },
+  ports: [
+    {
+      published: DEFAULT_PORT,
+      target: DEFAULT_PORT,
+    },
+  ],
 }
 
 class ZooKeeperRunner implements BaseRunner {
@@ -34,7 +43,19 @@ class ZooKeeperRunner implements BaseRunner {
       ...config,
     }
     this.logger = new Logger(this)
+  }
 
+  public mergeConfig({ ports, build, image, networks, ...composeService }: ComposeService) {
+    this.runnerConfig = {
+      ...this.runnerConfig,
+      ...composeService,
+      ...(image ? { image } : {}),
+      ...(ports ? { ports } : {}),
+      ...(networks ? { networks: Object.keys(networks) } : {}),
+    }
+  }
+
+  public validateConfig() {
     const schema: { [key in keyof RequiredConfigProps]: any } = {
       service: validateTypes.isString,
     }
@@ -44,8 +65,8 @@ class ZooKeeperRunner implements BaseRunner {
   public getComposeService: GetComposeService = () => {
     const { ports } = this.runnerConfig
 
-    const ZOOKEEPER_CLIENT_PORT = Object.keys(ports).find(key => ports[key] === DEFAULT_PORT)
-    if (!ZOOKEEPER_CLIENT_PORT) {
+    const zookeeperClientPortBinding = ports.find(portBinding => portBinding.target === DEFAULT_PORT)
+    if (!zookeeperClientPortBinding) {
       throw new ConfigurationError(
         `Could not resolve required environment variable ZOOKEEPER_CLIENT_PORT. Expected ${DEFAULT_PORT} to appear as value in ports object`,
       )
@@ -53,7 +74,7 @@ class ZooKeeperRunner implements BaseRunner {
 
     return {
       environment: {
-        ZOOKEEPER_CLIENT_PORT,
+        ZOOKEEPER_CLIENT_PORT: zookeeperClientPortBinding.target,
       },
       ...composeFileHelper(this.runnerConfig),
     }

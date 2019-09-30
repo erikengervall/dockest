@@ -13,9 +13,10 @@ const onRun = async (config: DockestConfig) => {
       afterSetupSleep,
       dev: { debug },
     },
+    runners,
   } = config
 
-  await dockerComposeUp()
+  await dockerComposeUp(runners.map(runner => runner.runnerConfig.service))
 
   await waitForRunnersReadiness(config)
 

@@ -1,5 +1,5 @@
 export const complicated = {
-  version: '3',
+  version: '3.7',
   services: {
     kafka: {
       environment: {
@@ -13,14 +13,24 @@ export const complicated = {
       // eslint-disable-next-line @typescript-eslint/camelcase
       depends_on: ['zookeeper'],
       image: 'kafka/image:123',
-      ports: ['9092:9092'],
+      ports: [
+        {
+          published: 9092,
+          target: 9092,
+        },
+      ],
     },
     zookeeper: {
       environment: {
         ZOOKEEPER_CLIENT_PORT: '2181',
       },
       image: 'zookeeper/image:123',
-      ports: ['2181:2181'],
+      ports: [
+        {
+          published: 2181,
+          target: 2181,
+        },
+      ],
     },
     postgres: {
       environment: {
@@ -29,11 +39,21 @@ export const complicated = {
         POSTGRES_USER: '_',
       },
       image: 'postgres/image:123',
-      ports: ['5432:5432'],
+      ports: [
+        {
+          published: 5432,
+          target: 5432,
+        },
+      ],
     },
     redis: {
       image: 'redis/image:123',
-      ports: ['6379:6379'],
+      ports: [
+        {
+          published: 6379,
+          target: 6379,
+        },
+      ],
     },
     general: {
       image: 'general/image:123',
@@ -43,7 +63,7 @@ export const complicated = {
 }
 
 export const singlePostgres = {
-  version: '3',
+  version: '3.7',
   services: {
     postgres: {
       environment: {
@@ -52,23 +72,33 @@ export const singlePostgres = {
         POSTGRES_USER: '_',
       },
       image: 'postgres/image:123',
-      ports: ['5432:5432'],
+      ports: [
+        {
+          published: 5432,
+          target: 5432,
+        },
+      ],
     },
   },
 }
 
 export const singleRedis = {
-  version: '3',
+  version: '3.7',
   services: {
     redis: {
       image: 'redis/image:123',
-      ports: ['6379:6379'],
+      ports: [
+        {
+          published: 6379,
+          target: 6379,
+        },
+      ],
     },
   },
 }
 
 export const postgresAndRedis = {
-  version: '3',
+  version: '3.7',
   services: {
     ...singlePostgres.services,
     ...singleRedis.services,

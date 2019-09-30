@@ -6,9 +6,11 @@ import { DockestConfig } from '../index'
 
 const onInstantiation = (config: DockestConfig) => {
   setLogLevel(config)
-  generateComposeFile(config)
+  const { composeFileConfig } = generateComposeFile(config)
   assignRunnerSymbol(config)
   setupExitHandler(config)
+
+  return { composeFileConfig }
 }
 
 export default onInstantiation

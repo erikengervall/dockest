@@ -12,9 +12,9 @@ const getDepComposeServices = (dependsOn: DependsOn) =>
     {},
   )
 
-export default (config: DockestConfig) => {
+export default (config: DockestConfig, dockerComposeFileVersion: string) => {
   const composeObj: ComposeFile = {
-    version: '3',
+    version: dockerComposeFileVersion,
     services: {},
   }
 

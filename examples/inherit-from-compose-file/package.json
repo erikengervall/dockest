@@ -1,0 +1,11 @@
+{
+  "name": "example-1",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "../node_modules/.bin/ts-node ./dockest.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

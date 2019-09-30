@@ -1,31 +1,16 @@
-import { default as fsLib } from 'fs'
-import { mergeDeepRight } from 'ramda'
-import { default as yamlLib } from 'js-yaml'
-import { DockestConfig } from '../../index'
 import { ComposeFile } from '../../runners/@types'
+import mergeDockerComposeConfigFiles from './mergeDockerComposeConfigFiles'
 
-export default (config: DockestConfig, fs = fsLib, yaml = yamlLib, nodeProcess = process): ComposeFile => {
-  const getComposeObjFromComposeFile = (fileName: string) => {
-    const composeYml = fs.readFileSync(`${nodeProcess.cwd()}/${fileName}`, 'utf8')
-    const composeObj: ComposeFile = yaml.safeLoad(composeYml)
-
-    return composeObj
-  }
+export default (composeFiles: string[], nodeProcess = process): ComposeFile => {
+  const cwd = nodeProcess.cwd()
 
   let composeObj = {
-    version: '3',
+    version: '3.7',
     services: {},
   }
 
-  const { composeFile } = config.opts
-  if (composeFile.length > 0) {
-    const composeObjsFromFile = Array.isArray(composeFile)
-      ? composeFile.map(fileName => getComposeObjFromComposeFile(fileName))
-      : [getComposeObjFromComposeFile(composeFile)]
-
-    composeObjsFromFile.forEach(composeObjFromFile => {
-      composeObj = mergeDeepRight(composeObj, composeObjFromFile)
-    })
+  if (composeFiles.length > 0) {
+    composeObj = mergeDockerComposeConfigFiles(cwd, composeFiles)
   }
 
   return composeObj

@@ -33,6 +33,6 @@ describe('KafkaRunner', () => {
 
   it('should fail validation', () => {
     // @ts-ignore
-    expect(() => new KafkaRunner({})).toThrow(/service: Schema-key missing in config/)
+    expect(() => new KafkaRunner({}).validateConfig()).toThrow(/service: Schema-key missing in config/)
   })
 })

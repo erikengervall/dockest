@@ -26,9 +26,12 @@ Array [
       "image": "postgres/image:123",
       "networks": undefined,
       "password": "_",
-      "ports": Object {
-        "5432": "5432",
-      },
+      "ports": Array [
+        Object {
+          "published": 5432,
+          "target": 5432,
+        },
+      ],
       "props": Object {
         "POSTGRES_DB": "_",
         "POSTGRES_PASSWORD": "_",
@@ -62,9 +65,12 @@ Array [
       "image": "redis/image:123",
       "networks": undefined,
       "password": "",
-      "ports": Object {
-        "6379": "6379",
-      },
+      "ports": Array [
+        Object {
+          "published": 6379,
+          "target": 6379,
+        },
+      ],
       "props": Object {},
       "responsivenessTimeout": 30,
       "service": "redis",
