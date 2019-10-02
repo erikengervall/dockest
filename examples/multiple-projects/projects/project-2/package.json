@@ -1,6 +1,5 @@
 {
-  "name": "project-2",
+  "name": "example--multiple-projects--project-2",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "private": true
 }
