@@ -1,4 +1,4 @@
-import isDocker from 'is-docker'
+import isDocker from 'is-docker' // eslint-disable-line import/default
 import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
 import { ErrorPayload, ObjStrStr, ArrayAtLeastOne } from './@types'
 import { JestConfig } from './onRun/runJest'
