@@ -31,6 +31,7 @@ class GeneralPurposeRunner implements BaseRunner {
   public runnerConfig: GeneralPurposeRunnerConfig
   public logger: Logger
   public createResponsivenessCheckCmd: (() => string) | null = null
+  public isBridgeNetworkMode = false
 
   public constructor(config: RequiredConfigProps & Partial<DefaultableConfigProps> & Partial<OptionalConfigProps>) {
     this.runnerConfig = {

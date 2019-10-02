@@ -1,6 +1,10 @@
 import dockerComposeUp from './dockerComposeUp'
 import runJest from './runJest'
 import waitForRunnersReadiness from './waitForRunnersReadiness'
+import createBridgeNetwork from './createBridgeNetwork'
+import joinBridgeNetwork from './joinBridgeNetwork'
+import removeBridgeNetwork from './removeBridgeNetwork'
+import leaveBridgeNetwork from './leaveBridgeNetwork'
 import { DockestConfig } from '../index'
 import Logger from '../Logger'
 import sleepForX from '../utils/sleepForX'
@@ -8,7 +12,7 @@ import teardownSingle from '../utils/teardownSingle'
 
 const onRun = async (config: DockestConfig) => {
   const {
-    $: { perfStart },
+    $: { perfStart, isInsideDockerContainer, hostname },
     opts: {
       afterSetupSleep,
       dev: { debug },
@@ -17,6 +21,11 @@ const onRun = async (config: DockestConfig) => {
   } = config
 
   await dockerComposeUp(runners.map(runner => runner.runnerConfig.service))
+
+  if (isInsideDockerContainer) {
+    await createBridgeNetwork()
+    await joinBridgeNetwork(hostname, 'host.dockest-runner.internal')
+  }
 
   await waitForRunnersReadiness(config)
 
@@ -48,6 +57,11 @@ const onRun = async (config: DockestConfig) => {
 
   for (const runner of config.runners) {
     await teardownSingle(runner)
+  }
+
+  if (isInsideDockerContainer) {
+    await leaveBridgeNetwork(hostname)
+    await removeBridgeNetwork()
   }
 
   Logger.perf(perfStart)

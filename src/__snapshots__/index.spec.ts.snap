@@ -6,6 +6,8 @@ Dockest {
   "config": Object {
     "$": Object {
       "failedTeardowns": Array [],
+      "hostname": "host.docker.internal",
+      "isInsideDockerContainer": false,
       "jestRanWithResult": false,
       "perfStart": 0,
     },
@@ -28,6 +30,7 @@ Dockest {
         "createResponsivenessCheckCmd": null,
         "getComposeService": [Function],
         "initializer": "",
+        "isBridgeNetworkMode": false,
         "logger": Logger {
           "debug": [Function],
           "error": [Function],

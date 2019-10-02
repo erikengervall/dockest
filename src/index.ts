@@ -1,3 +1,4 @@
+import isDocker from 'is-docker' // eslint-disable-line import/default
 import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
 import { ErrorPayload, ObjStrStr, ArrayAtLeastOne } from './@types'
 import { JestConfig } from './onRun/runJest'
@@ -28,6 +29,8 @@ interface InternalConfig {
   failedTeardowns: { service: string; containerId: string }[]
   jestRanWithResult: boolean
   perfStart: number
+  isInsideDockerContainer: boolean
+  hostname: string
 }
 export interface DockestConfig {
   runners: ArrayAtLeastOne<Runner>
@@ -55,6 +58,14 @@ class Dockest {
 
   public run = async (): Promise<void> => {
     this.config.$.perfStart = Date.now()
+    this.config.$.isInsideDockerContainer = isDocker()
+
+    if (this.config.$.isInsideDockerContainer) {
+      this.config.runners.forEach(runner => {
+        runner.isBridgeNetworkMode = true
+        runner.runnerConfig.host = runner.runnerConfig.service
+      })
+    }
 
     const { composeFileConfig } = onInstantiation(this.config)
 

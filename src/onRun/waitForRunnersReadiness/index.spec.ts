@@ -3,6 +3,7 @@ import _resolveContainerId from './resolveContainerId'
 import _checkConnection from './checkConnection'
 import _checkResponsiveness from './checkResponsiveness'
 import _runRunnerCommands from './runRunnerCommands'
+import _fixRunnerHostAccessOnLinux from './fixRunnerHostAccessOnLinux'
 import testUtils from '../../testUtils'
 
 const {
@@ -15,11 +16,13 @@ const checkConnection = _checkConnection as jest.Mock
 const checkResponsiveness = _checkResponsiveness as jest.Mock
 const resolveContainerId = _resolveContainerId as jest.Mock
 const runRunnerCommands = _runRunnerCommands as jest.Mock
+const fixRunnerHostAccessOnLinux = _fixRunnerHostAccessOnLinux as jest.Mock
 
 jest.mock('./resolveContainerId')
 jest.mock('./checkConnection')
 jest.mock('./checkResponsiveness')
 jest.mock('./runRunnerCommands')
+jest.mock('./fixRunnerHostAccessOnLinux')
 
 describe('waitForRunnersReadiness', () => {
   const runners = [generalPurposeRunner]
@@ -29,6 +32,7 @@ describe('waitForRunnersReadiness', () => {
     checkConnection.mockClear()
     checkResponsiveness.mockClear()
     runRunnerCommands.mockClear()
+    fixRunnerHostAccessOnLinux.mockClear()
   })
 
   it('should work for a simple one-runner application', async () => {

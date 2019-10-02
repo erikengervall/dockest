@@ -71,6 +71,8 @@ export const INTERNAL_CONFIG = {
   failedTeardowns: [],
   jestRanWithResult: false,
   perfStart: 0,
+  isInsideDockerContainer: false,
+  hostname: process.env.HOSTNAME || 'host.docker.internal',
 }
 
 export const PROCESS_TEST_ENV = 'dockest-test'
@@ -79,3 +81,5 @@ export const GENERATED_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated.yml
 export const GENERATED_RUNNER_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated-runner.yml'
 export const GENERATED_COMPOSE_FILE_PATH = `${process.cwd()}/${GENERATED_COMPOSE_FILE_NAME}`
 export const GENERATED_RUNNER_COMPOSE_FILE_PATH = `${process.cwd()}/${GENERATED_RUNNER_COMPOSE_FILE_NAME}`
+
+export const BRIDGE_NETWORK_NAME = `dockest_bridge_network`

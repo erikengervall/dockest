@@ -38,6 +38,7 @@ export interface ComposeService {
         target: string
       }
     | string
+  extra_hosts?: string[]
 }
 
 export interface ComposeFile {
@@ -62,6 +63,7 @@ export interface BaseRunner {
   runnerConfig: RunnerConfig
   logger: Logger
   validateConfig: () => void
+  isBridgeNetworkMode: boolean
 }
 
 export interface SharedRequiredConfigProps {

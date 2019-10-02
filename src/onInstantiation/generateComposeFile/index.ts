@@ -43,6 +43,9 @@ export default (config: DockestConfig, yaml = yamlLib, fs = fsLib) => {
 
   // write final config to fs
   fs.writeFileSync(GENERATED_COMPOSE_FILE_PATH, yaml.safeDump(composeObjFromComposeFile))
+  // set environment variable that can be used with the test-helpers
+  // jest.runCLI will pass this environment variable into the testcase runners
+  process.env.DOCKEST_INTERNAL_CONFIG = JSON.stringify(composeObjFromComposeFile)
 
   return { composeFileConfig: composeObjFromComposeFile }
 }

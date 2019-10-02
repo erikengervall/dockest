@@ -2,13 +2,23 @@ import checkConnection from './checkConnection'
 import checkResponsiveness from './checkResponsiveness'
 import resolveContainerId from './resolveContainerId'
 import runRunnerCommands from './runRunnerCommands'
+import fixRunnerHostAccessOnLinux from './fixRunnerHostAccessOnLinux'
 import { Runner } from '../../runners/@types'
 import { DockestConfig } from '../../index'
+import joinBridgeNetwork from '../joinBridgeNetwork'
 
 const setupRunner = async (runner: Runner, initializer: string) => {
   runner.logger.info('Setup initiated')
 
   await resolveContainerId(runner)
+  if (runner.isBridgeNetworkMode) {
+    await joinBridgeNetwork(runner.containerId, runner.runnerConfig.service)
+  }
+
+  if (process.platform === 'linux' && !runner.isBridgeNetworkMode) {
+    await fixRunnerHostAccessOnLinux(runner)
+  }
+
   await checkConnection(runner)
   await checkResponsiveness(runner)
   await runRunnerCommands(runner)

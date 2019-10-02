@@ -6,6 +6,7 @@ PostgresRunner {
   "createResponsivenessCheckCmd": [Function],
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],
@@ -45,6 +46,7 @@ PostgresRunner {
   "createResponsivenessCheckCmd": [Function],
   "getComposeService": [Function],
   "initializer": "",
+  "isBridgeNetworkMode": false,
   "logger": Logger {
     "debug": [Function],
     "error": [Function],

@@ -29,7 +29,7 @@ export default (config: DockestConfig, dockerComposeFileVersion: string) => {
 
     composeObj.services = {
       ...composeObj.services,
-      [service]: composeService,
+      [service]: { ...composeService },
       ...depComposeServices,
     }
   })
