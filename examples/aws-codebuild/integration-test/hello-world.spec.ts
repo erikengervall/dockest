@@ -1,6 +1,6 @@
 import http from 'http'
-import fetch from 'node-fetch'
-import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper'
+import fetch from 'node-fetch' // eslint-disable-line import/no-unresolved
+import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper' // eslint-disable-line import/no-unresolved
 
 const TARGET_HOST = getServiceAddress('website', 9000)
 
@@ -33,7 +33,7 @@ test('can send a request to the container and it can send a request to us', asyn
         done()
       })
       .listen(PORT, () => {
-        console.log(`Serving on http://${HOSTNAME}:${PORT}`)
+        console.log(`Serving on http://${HOSTNAME}:${PORT}`) // eslint-disable-line no-console
         resolve()
       })
   })

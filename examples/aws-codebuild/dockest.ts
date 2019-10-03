@@ -1,4 +1,4 @@
-import Dockest, { runners, logLevel } from 'dockest'
+import Dockest, { runners, logLevel } from 'dockest' // eslint-disable-line import/no-unresolved
 
 const runner = new runners.GeneralPurposeRunner({
   service: 'website',

@@ -1,9 +1,6 @@
 {
-  "name": "aws--codebuild-example",
+  "name": "example--aws-codebuild",
   "version": "1.0.0",
-  "main": "index.js",
-  "author": "n1ru4l <laurinquast@googlemail.com>",
-  "license": "MIT",
   "private": true,
   "devDependencies": {
     "@types/jest": "24.0.18",

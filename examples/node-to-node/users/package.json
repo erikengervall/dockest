@@ -1,8 +1,7 @@
 {
-  "name": "users",
+  "name": "example--node-to-node--users",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "private": true,
   "scripts": {
     "docker:build": "docker build --no-cache -t users .",
     "docker:run": "docker container run --rm -p 1337:1337 -t users",

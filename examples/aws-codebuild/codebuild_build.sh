@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# src: https://github.com/aws/aws-codebuild-docker-images/blob/master/local_builds/codebuild_build.sh
+
 function allOSRealPath() {
     if isOSWindows
     then
@@ -107,6 +109,7 @@ then
     docker_command+=" -e \"SOURCE=$(allOSRealPath $PWD)\""
 else
     for index in "${!source_dirs[@]}"; do
+        echo "-- $index"
         if [ $index -eq 0 ]
         then
             docker_command+=" -e \"SOURCE=$(allOSRealPath ${source_dirs[$index]})\""

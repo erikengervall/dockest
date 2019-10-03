@@ -1,8 +1,6 @@
 {
-  "name": "example-2",
+  "name": "example--multiple-projects",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "test": "node ./dockest.js"
   },

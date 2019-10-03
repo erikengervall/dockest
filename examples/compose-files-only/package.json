@@ -1,8 +1,7 @@
 {
-  "name": "example-1",
-  "version": "0.0.1",
-  "main": "index.js",
-  "license": "MIT",
+  "name": "example--compose-files-only",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "test": "../node_modules/.bin/ts-node ./dockest.ts"
   },

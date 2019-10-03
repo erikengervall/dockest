@@ -1,8 +1,7 @@
 {
-  "name": "orders",
+  "name": "example--node-to-node--orders",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "private": true,
   "scripts": {
     "docker:build": "docker build --no-cache -t orders .",
     "docker:run": "docker container run --rm -p 1338:1338 -t orders",

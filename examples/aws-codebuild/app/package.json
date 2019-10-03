@@ -1,8 +1,6 @@
 {
-  "name": "app",
+  "name": "example--aws-codebuild--app",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "private": true,
   "dependencies": {
     "body-parser": "1.19.0",
