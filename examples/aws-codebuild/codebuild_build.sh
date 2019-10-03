@@ -109,6 +109,7 @@ then
     docker_command+=" -e \"SOURCE=$(allOSRealPath $PWD)\""
 else
     for index in "${!source_dirs[@]}"; do
+        echo "-- $index"
         if [ $index -eq 0 ]
         then
             docker_command+=" -e \"SOURCE=$(allOSRealPath ${source_dirs[$index]})\""
@@ -184,4 +185,6 @@ echo ""
 echo $exposed_command
 echo ""
 
+echo "EARLY EXIT 🍃🍃🍃🍃🍃🍃🍃🍃🍃🍃🍃"
+exit 1
 eval $docker_command

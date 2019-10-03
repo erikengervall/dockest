@@ -3,13 +3,13 @@ set -euxo pipefail
 
 cd ../..
 yarn build
-yarn pack --filename examples/aws-code-build-example/dockest.tgz
-cd examples/aws-code-build-example
+yarn pack --filename examples/aws-codebuild/dockest.tgz
+cd examples/aws-codebuild
 
 # build dockest
 yarn cache clean
 yarn install --no-lockfile
-yarn test
+#yarn test
 
 # build with dockest inside docker container
 rm -rf node_modules

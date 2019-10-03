@@ -1,4 +1,4 @@
-# aws-code-build-example
+# aws-codebuild
 
 Exampel that showcases usage with AWS Codebuild
 
