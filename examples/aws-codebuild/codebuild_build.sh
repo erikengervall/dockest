@@ -185,6 +185,4 @@ echo ""
 echo $exposed_command
 echo ""
 
-echo "EARLY EXIT 🍃🍃🍃🍃🍃🍃🍃🍃🍃🍃🍃"
-exit 1
 eval $docker_command
