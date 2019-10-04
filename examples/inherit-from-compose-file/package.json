@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "../node_modules/.bin/ts-node ./dockest.ts"
+    "test": "ts-node ./dockest.ts"
   }
 }

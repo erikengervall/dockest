@@ -15,8 +15,5 @@
     "test:4": "cd inherit-from-compose-file && yarn test && cd ..",
     "test:aws-codebuild": "cd aws-codebuild && ./run_tests.sh",
     "test": "yarn test:1 && yarn test:2 && yarn test:3 && yarn test:4 && yarn test:aws-codebuild"
-  },
-  "devDependencies": {
-    "ts-node": "^8.3.0"
   }
 }
