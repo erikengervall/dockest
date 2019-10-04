@@ -1,5 +1,5 @@
 {
-  "name": "example--multiple-projects",
+  "name": "@example/multiple-projects",
   "version": "1.0.0",
   "scripts": {
     "test": "node ./dockest.js"

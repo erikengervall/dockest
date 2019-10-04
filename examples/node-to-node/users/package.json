@@ -1,5 +1,5 @@
 {
-  "name": "example--node-to-node--users",
+  "name": "@example/node-to-node--users",
   "version": "1.0.0",
   "private": true,
   "scripts": {

@@ -1,5 +1,5 @@
 {
-  "name": "example--aws-codebuild--app",
+  "name": "@example/aws-codebuild--app",
   "version": "1.0.0",
   "private": true,
   "dependencies": {

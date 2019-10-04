@@ -1,5 +1,5 @@
 {
-  "name": "example--node-to-node--orders",
+  "name": "@example/node-to-node--orders",
   "version": "1.0.0",
   "private": true,
   "scripts": {

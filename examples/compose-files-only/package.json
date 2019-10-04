@@ -1,5 +1,5 @@
 {
-  "name": "example--compose-files-only",
+  "name": "@example/compose-files-only",
   "version": "1.0.0",
   "private": true,
   "scripts": {
