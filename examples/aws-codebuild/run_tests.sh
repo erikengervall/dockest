@@ -9,7 +9,7 @@ cd examples/aws-codebuild
 # build dockest
 yarn cache clean
 yarn install --no-lockfile
-#yarn test
+yarn test
 
 # build with dockest inside docker container
 rm -rf node_modules
