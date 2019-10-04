@@ -31,7 +31,7 @@ Dockest has a few system requirements in order to work:
 
 **Setup and testing**
 
-- `yarn dev:setup` Installs all dependencies and necessary git-hooks
+- `yarn install:all` Installs all dependencies
 - `yarn test:all` Runs `yarn test` and `yarn test:example`
   - `yarn test` Unit tests for the library itself
   - `yarn test:example` Integration tests using Dockest
