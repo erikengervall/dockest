@@ -1,17 +1,4 @@
-import Dockest, { runners, logLevel } from 'dockest' // eslint-disable-line import/no-unresolved
-
-const runner = new runners.GeneralPurposeRunner({
-  service: 'website',
-  build: './app',
-  ports: [
-    {
-      target: 9000,
-      published: 9000,
-    },
-  ],
-  responsivenessTimeout: 5,
-  connectionTimeout: 5,
-})
+import Dockest, { runners, logLevel } from 'dockest'
 
 const dockest = new Dockest({
   opts: {
@@ -19,6 +6,19 @@ const dockest = new Dockest({
   },
 })
 
-dockest.attachRunners([runner])
+dockest.attachRunners([
+  new runners.GeneralPurposeRunner({
+    service: 'website',
+    build: './app',
+    ports: [
+      {
+        target: 9000,
+        published: 9000,
+      },
+    ],
+    responsivenessTimeout: 5,
+    connectionTimeout: 5,
+  }),
+])
 
 dockest.run()

@@ -1,6 +1,6 @@
 # aws-codebuild
 
-Exampel that showcases usage with AWS Codebuild
+Example that showcases usage with AWS Codebuild.
 
 It can be reused for any CI System that runs your build inside a docker container with an injected docker socket.
 

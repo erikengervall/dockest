@@ -1,6 +1,6 @@
 import http from 'http'
-import fetch from 'node-fetch' // eslint-disable-line import/no-unresolved
-import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper' // eslint-disable-line import/no-unresolved
+import fetch from 'node-fetch'
+import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper'
 
 const TARGET_HOST = getServiceAddress('website', 9000)
 
