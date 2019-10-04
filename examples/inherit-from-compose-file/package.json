@@ -1,8 +1,0 @@
-{
-  "name": "@example/inherit-from-compose-file",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "test": "ts-node ./dockest.ts"
-  }
-}

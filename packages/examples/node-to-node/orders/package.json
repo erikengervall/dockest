@@ -1,0 +1,13 @@
+{
+  "name": "@examples/node-to-node--orders",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./index",
+    "docker:build": "docker build --no-cache -t orders .",
+    "docker:run": "docker container run --rm -p 1338:1338 -t orders"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

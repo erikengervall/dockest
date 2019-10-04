@@ -1,10 +1,9 @@
 {
   "name": "dockest",
-  "version": "1.0.3",
   "private": true,
   "workspaces": [
-    "examples/*",
-    "examples/node-to-node/*"
+    "packages/lib",
+    "packages/examples/*"
   ],
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
   "keywords": [
@@ -30,23 +29,12 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "prepare": "yarn build",
-    "clean": "rimraf ./dist",
-    "build": "yarn clean && tsc",
-    "build:watch": "yarn clean && tsc --watch",
-    "install:all": "./tools/scripts/install-all",
-    "generate:typedoc": "typedoc ./src",
-    "test": "jest ./src --forceExit --detectOpenHandles",
-    "test:watch": "jest ./src --watch --forceExit --detectOpenHandles",
-    "test:examples": "lerna run test --stream",
-    "test:all": "yarn test && yarn test:examples",
-    "lint": "eslint \"./src/**/*.ts\""
-  },
-  "dependencies": {
-    "execa": "^2.0.4",
-    "is-docker": "^2.0.0",
-    "js-yaml": "^3.13.1",
-    "ramda": "^0.26.1"
+    "1": "yarn test --scope @examples/node-to-node",
+    "clean": "lerna clean --yes && rimraf node_modules",
+    "build": "lerna run build",
+    "test": "lerna run test --stream",
+    "generate:typedoc": "typedoc ./packages/lib",
+    "lint": "eslint \"./packages/lib/**/*.ts\""
   },
   "devDependencies": {
     "@types/execa": "^2.0.0",
