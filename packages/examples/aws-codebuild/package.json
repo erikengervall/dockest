@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "ts-node dockest.ts",
+    "test": "./run_tests.sh",
+    "test:dockest": "ts-node dockest.ts",
     "clean:node_modules": "rimraf ./node_modules"
   },
   "dependencies": {
