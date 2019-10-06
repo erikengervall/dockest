@@ -1,10 +1,6 @@
-const {
-  default: Dockest,
-  logLevel,
-  runners: { GeneralPurposeRunner },
-} = require('../../../dist') // eslint-disable-line @typescript-eslint/no-var-requires
+import Dockest, { logLevel, runners } from '../../lib/src'
 
-const placeHolderRunner = new GeneralPurposeRunner({
+const placeHolderRunner = new runners.GeneralPurposeRunner({
   service: 'never_gonna_give_you_up',
   image: 'redis:5.0.3',
   ports: [
@@ -22,9 +18,6 @@ const dockest = new Dockest({
   },
   opts: {
     logLevel: logLevel.DEBUG,
-    dev: {
-      // debug: true,
-    },
   },
 })
 

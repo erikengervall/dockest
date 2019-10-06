@@ -29,15 +29,14 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "1": "yarn test --scope @examples/node-to-node",
     "clean": "lerna clean --yes && rimraf node_modules",
     "build": "lerna run build",
-    "test": "lerna run test --stream",
+    "build:lib": "lerna run build --scope lib",
+    "test": "yarn build:lib && lerna run test --stream",
     "generate:typedoc": "typedoc ./packages/lib",
     "lint": "eslint \"./packages/lib/**/*.ts\""
   },
   "devDependencies": {
-    "@types/execa": "^2.0.0",
     "@types/jest": "^24.0.18",
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.7.2",

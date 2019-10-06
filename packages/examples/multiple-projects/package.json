@@ -2,10 +2,6 @@
   "name": "@examples/multiple-projects",
   "version": "1.0.0",
   "scripts": {
-    "test": "node ./dockest.js"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.17",
-    "jest": "^24.8.0"
+    "test": "ts-node ./dockest"
   }
 }

@@ -1,8 +1,9 @@
 'use strict'
+/* eslint-disable @typescript-eslint/no-var-requires */
 
-const bodyParser = require('body-parser') // eslint-disable-line @typescript-eslint/no-var-requires
-const app = require('express')() // eslint-disable-line @typescript-eslint/no-var-requires
-const fetch = require('node-fetch') // eslint-disable-line @typescript-eslint/no-var-requires
+const bodyParser = require('body-parser')
+const app = require('express')()
+const fetch = require('node-fetch')
 
 app.use(bodyParser.text())
 
