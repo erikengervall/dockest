@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": "./packages/lib/src",
+    "paths": {
+      "src": ["./*"]
+    },
+    "outDir": "./dist",
     "esModuleInterop": true,
     "lib": ["es2019"],
     "module": "commonjs",
@@ -10,6 +15,9 @@
     "target": "es2019",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "declaration": true
+  },
+  "include": ["./packages/lib/src/**/*.*"],
+  "exclude": ["dist", "node_modules", "typedoc", "docs", "**/*.spec.*"]
 }

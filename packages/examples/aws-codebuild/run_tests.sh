@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euxo pipefail
 
-cd ../..
+cd ../../../
 yarn tsc
-yarn pack --filename examples/aws-codebuild/dockest.tgz
+yarn pack --filename packages/examples/aws-codebuild/dockest.tgz
 cd examples/aws-codebuild
 
 # build dockest
