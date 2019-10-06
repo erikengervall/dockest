@@ -29,8 +29,8 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "clean": "lerna clean --yes && rimraf node_modules",
-    "build": "lerna run build",
+    "clean": "lerna clean --yes && rimraf ./dist && rimraf ./node_modules",
+    "build": "lerna run build --stream",
     "build:lib": "lerna run build --scope lib",
     "test": "yarn build:lib && lerna run test --stream",
     "lint": "eslint \"./packages/lib/**/*.ts\"",
