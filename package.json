@@ -33,8 +33,8 @@
     "build": "lerna run build",
     "build:lib": "lerna run build --scope lib",
     "test": "yarn build:lib && lerna run test --stream",
-    "generate:typedoc": "typedoc ./packages/lib",
-    "lint": "eslint \"./packages/lib/**/*.ts\""
+    "lint": "eslint \"./packages/lib/**/*.ts\"",
+    "generate:typedoc": "typedoc ./packages/lib"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
