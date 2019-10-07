@@ -12,7 +12,8 @@ import teardownSingle from '../utils/teardownSingle'
 
 const onRun = async (config: DockestConfig) => {
   const {
-    $: { perfStart, isInsideDockerContainer, hostname },
+    $: { perfStart, isInsideDockerContainer, hostname, dockerLogs },
+    $,
     opts: {
       afterSetupSleep,
       dev: { debug },
@@ -20,7 +21,20 @@ const onRun = async (config: DockestConfig) => {
     runners,
   } = config
 
-  await dockerComposeUp(runners.map(runner => runner.runnerConfig.service))
+  const dockerComposeUpProcess = dockerComposeUp(runners.map(runner => runner.runnerConfig.service))
+  $.dockerComposeUpProcess = dockerComposeUpProcess
+
+  if (dockerComposeUpProcess.stdout) {
+    dockerComposeUpProcess.stdout.on('data', chunk => {
+      dockerLogs.push(chunk.toString())
+    })
+  }
+
+  if (dockerComposeUpProcess.stderr) {
+    dockerComposeUpProcess.stderr.on('data', chunk => {
+      dockerLogs.push(chunk.toString())
+    })
+  }
 
   if (isInsideDockerContainer) {
     await createBridgeNetwork()
@@ -58,6 +72,11 @@ const onRun = async (config: DockestConfig) => {
   for (const runner of config.runners) {
     await teardownSingle(runner)
   }
+
+  dockerComposeUpProcess.cancel()
+  await dockerComposeUpProcess
+
+  Logger.info('Docker Container Logs\n' + dockerLogs.join(''))
 
   if (isInsideDockerContainer) {
     await leaveBridgeNetwork(hostname)

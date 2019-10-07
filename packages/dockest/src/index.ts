@@ -1,4 +1,5 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
+import { ExecaChildProcess } from 'execa'
 import { DEFAULT_USER_CONFIG, LOG_LEVEL, INTERNAL_CONFIG } from './constants'
 import { ErrorPayload, ObjStrStr, ArrayAtLeastOne } from './@types'
 import { JestConfig } from './onRun/runJest'
@@ -31,6 +32,8 @@ interface InternalConfig {
   isInsideDockerContainer: boolean
   jestRanWithResult: boolean
   perfStart: number
+  dockerLogs: string[]
+  dockerComposeUpProcess?: ExecaChildProcess
 }
 export interface DockestConfig {
   runners: ArrayAtLeastOne<Runner>

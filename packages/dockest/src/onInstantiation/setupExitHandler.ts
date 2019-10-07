@@ -6,7 +6,7 @@ import teardownSingle from '../utils/teardownSingle'
 
 export default async (config: DockestConfig): Promise<void> => {
   const {
-    $: { perfStart },
+    $: { perfStart, dockerLogs, dockerComposeUpProcess },
     opts: { exitHandler: customExitHandler },
     runners,
   } = config
@@ -32,6 +32,12 @@ export default async (config: DockestConfig): Promise<void> => {
     for (const runner of runners) {
       await teardownSingle(runner)
     }
+
+    if (dockerComposeUpProcess) {
+      await dockerComposeUpProcess.cancel()
+    }
+
+    Logger.error('Docker Container Logs: \n\n' + dockerLogs.join('\n'))
 
     if (config.opts.dumpErrors === true) {
       dumpError({
