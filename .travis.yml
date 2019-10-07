@@ -23,13 +23,13 @@ before_install:
 
   - echo "*** <travis.before_install> complete ***"
 install:
-  - yarn install
+  - yarn
 
   - echo "*** <travis.install> complete ***"
 script:
   # run linting
-  - yarn lint
   - yarn build
+  - yarn lint
 
   # generate typedoc markdown files
   - yarn generate:typedoc
