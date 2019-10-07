@@ -32,8 +32,8 @@
   "scripts": {
     "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
     "build": "lerna run build --stream",
-    "test": "lerna run test --stream",
     "lint": "eslint \"./packages/lib/**/*.ts\"",
+    "test": "lerna run test --stream",
     "generate:typedoc": "typedoc ./packages/lib"
   },
   "devDependencies": {
@@ -60,6 +60,7 @@
     "prettier-eslint": "^9.0.0",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.1.0",
+    "ts-node": "^8.4.1",
     "typedoc": "^0.15.0",
     "typedoc-plugin-markdown": "^2.2.8",
     "typescript": "^3.6.3"
