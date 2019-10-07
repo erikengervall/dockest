@@ -32,7 +32,7 @@
   "scripts": {
     "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
     "build": "lerna run build --stream",
-    "test": "yarn build && lerna run test --stream",
+    "test": "lerna run test --stream",
     "lint": "eslint \"./packages/lib/**/*.ts\"",
     "generate:typedoc": "typedoc ./packages/lib"
   },
