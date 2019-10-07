@@ -4,7 +4,7 @@ const { seedCake } = require('./data.json') // eslint-disable-line @typescript-e
 
 const redis = new Redis({
   host: 'localhost',
-  port: 1337,
+  port: 6369,
 })
 
 const app = () => {

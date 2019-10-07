@@ -7,5 +7,5 @@ The `postgres-service` inherit the image and ports from the `docker-compose.yml`
 # Exposed ports
 
 - Postgres
-  - 7002
+  - 5434
   - 5432

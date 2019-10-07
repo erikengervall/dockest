@@ -7,11 +7,11 @@ The `postgres-service` inherit the image and ports from the `docker-compose.yml`
 # Exposed ports
 
 - Postgres sequelize
-  - 5433
+  - 5435
 - Postgres knex
-  - 5434
+  - 5436
 - Redis
-  - 6378
+  - 6380
 - ZooKeeper
   - 2181
 - Kafka

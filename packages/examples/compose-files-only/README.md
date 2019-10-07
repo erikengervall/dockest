@@ -7,4 +7,4 @@ Run Dockest without any attachedRunners.
 - Postgres
   - 5433
 - Redis
-  - 1337
+  - 6380

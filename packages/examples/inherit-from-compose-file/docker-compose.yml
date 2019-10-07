@@ -4,4 +4,4 @@ services:
   postgres-service:
     image: 'postgres:9.6-alpine'
     ports:
-      - '7002:5432'
+      - '5434:5432'

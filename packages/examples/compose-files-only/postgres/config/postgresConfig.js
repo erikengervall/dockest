@@ -3,7 +3,7 @@ const config = {
   password: 'is',
   database: 'nobueno',
   host: 'localhost',
-  port: 5433,
+  port: 5422,
   dialect: 'postgres',
   logging: false,
 }
