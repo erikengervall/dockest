@@ -3,15 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "./run_tests.sh",
-    "test:dockest": "ts-node dockest.ts",
-    "clean:node_modules": "rimraf ./node_modules"
-  },
-  "dependencies": {
-    "dockest": "file:./dockest.tgz"
-  },
-  "devDependencies": {
-    "@types/node-fetch": "2.5.2",
-    "node-fetch": "2.6.0"
+    "test": "(cd ./src && ./run_tests.sh)"
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "@examples/aws-codebuild--src",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node dockest.ts"
+  },
+  "dependencies": {
+    "dockest": "file:./dockest.tgz"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.11",
+    "@types/node-fetch": "2.5.2",
+    "execa": "^2.0.5",
+    "is-docker": "^2.0.0",
+    "jest": "^24.9.0",
+    "js-yaml": "^3.13.1",
+    "node-fetch": "2.6.0",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}
