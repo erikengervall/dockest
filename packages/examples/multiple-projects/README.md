@@ -5,4 +5,4 @@ Showcases how to run Dockest with multiple jest projects.
 # Exposed ports
 
 - Redis
-  - 6381
+  - 6382

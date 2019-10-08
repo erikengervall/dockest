@@ -15,7 +15,7 @@ const placeHolderRunner = new runners.GeneralPurposeRunner({
   image: 'redis:5.0.3',
   ports: [
     {
-      published: 6381,
+      published: 6382,
       target: 6379,
     },
   ],
