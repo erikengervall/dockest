@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI parallell
 
 on: [push]
 
@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -18,10 +18,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: lint & test
         run: |
-          yarn --version
           yarn
           yarn build
-          yarn lint
-          yarn test
+          yarn test --concurrency 3
         env:
           CI: true
