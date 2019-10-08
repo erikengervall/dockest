@@ -12,6 +12,7 @@ before_install:
   # print relevant versions
   - docker --version
   - docker-compose --version
+  - yarn --version
 
   # upgrading docker-compose to match Dockest's development version: v1.23.2
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose

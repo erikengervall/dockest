@@ -19,6 +19,7 @@ jobs:
       - name: yarn, build, and test
         run: |
           yarn
+          yarn --version
           yarn build
           yarn lint
           yarn test
