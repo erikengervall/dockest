@@ -1,0 +1,14 @@
+{
+  "name": "@examples/node-to-node--users",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./index",
+    "docker:build": "docker build --no-cache -t users .",
+    "docker:run": "docker container run --rm -p 1337:1337 -t users"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "express": "^4.17.1"
+  }
+}

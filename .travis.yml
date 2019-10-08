@@ -12,6 +12,7 @@ before_install:
   # print relevant versions
   - docker --version
   - docker-compose --version
+  - yarn --version
 
   # upgrading docker-compose to match Dockest's development version: v1.23.2
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
@@ -23,13 +24,13 @@ before_install:
 
   - echo "*** <travis.before_install> complete ***"
 install:
-  - yarn install:all
+  - yarn
 
   - echo "*** <travis.install> complete ***"
 script:
   # run linting
-  - yarn lint
   - yarn build
+  - yarn lint
 
   # generate typedoc markdown files
   - yarn generate:typedoc
@@ -46,4 +47,4 @@ script:
 
   # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   # - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-  - yarn test:all
+  - yarn test

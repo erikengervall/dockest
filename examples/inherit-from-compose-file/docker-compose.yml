@@ -1,7 +1,0 @@
-version: '3.7'
-
-services:
-  postgres-service:
-    image: 'postgres:9.6-alpine'
-    ports:
-      - '7002:5432'
