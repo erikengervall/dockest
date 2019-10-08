@@ -11,7 +11,7 @@ The `postgres-service` inherit the image and ports from the `docker-compose.yml`
 - Postgres knex
   - 5436
 - Redis
-  - 6380
+  - 6381
 - ZooKeeper
   - 2181
 - Kafka
