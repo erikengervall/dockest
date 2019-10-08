@@ -1,0 +1,20 @@
+{
+  "name": "@examples/compose-files-only",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "ts-node ./dockest.ts"
+  },
+  "dependencies": {
+    "ioredis": "^4.14.0",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.0",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.0.13",
+    "@types/pg": "^7.11.1",
+    "@types/sequelize": "^4.28.4"
+  }
+}
