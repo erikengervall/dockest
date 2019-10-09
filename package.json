@@ -19,7 +19,7 @@
   "scripts": {
     "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
     "build": "lerna run build --stream",
-    "lint": "eslint \"./packages/lib/**/*.ts\"",
+    "lint": "eslint \"./packages/**/*.ts\"",
     "test": "lerna run test --stream",
     "generate:typedoc": "typedoc ./packages/lib",
     "snyk:protect": "snyk protect"
