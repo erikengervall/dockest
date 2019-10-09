@@ -1,6 +1,6 @@
 import transformComposeObjToRunners from './transformComposeObjToRunners'
 import testUtils from '../../testUtils'
-import { postgresAndRedis } from '../../../../../fixtures/composeObj'
+import { postgresAndRedis } from '../../../fixtures/composeObj'
 
 const { createDockestConfig, initializedRunners } = testUtils({ realLoggers: true })
 

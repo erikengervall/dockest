@@ -3,7 +3,7 @@ import { testables } from './checkConnection'
 
 const { acquireConnection } = testables
 const host = 'localhost'
-const port = '1337'
+const port = 1337
 
 jest.mock('net', () => ({
   createConnection: jest.fn(function() {

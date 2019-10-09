@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./packages/dockest/src",
-    "paths": {
-      "src": ["./*"]
-    },
     "outDir": "./dist",
     "esModuleInterop": true,
     "lib": ["es2019"],
@@ -18,6 +14,6 @@
     "resolveJsonModule": true,
     "declaration": true
   },
-  "include": ["./packages/dockest/src/**/*.*"],
-  "exclude": ["dist", "node_modules", "typedoc", "docs", "**/*.spec.*"]
+  "include": ["./src"],
+  "exclude": ["./src/**/*.spec.ts"]
 }
