@@ -13,6 +13,7 @@
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
+    "dockest": "*",
     "@types/ioredis": "^4.0.13",
     "@types/pg": "^7.11.1",
     "@types/sequelize": "^4.28.4"
