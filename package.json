@@ -21,7 +21,7 @@
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/**/*.ts\"",
     "test": "lerna run test --stream",
-    "generate:typedoc": "typedoc ./packages/lib",
+    "generate:typedoc": "typedoc ./packages/dockest",
     "snyk:protect": "snyk protect"
   },
   "devDependencies": {
