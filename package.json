@@ -34,7 +34,8 @@
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/lib/**/*.ts\"",
     "test": "lerna run test --stream",
-    "generate:typedoc": "typedoc ./packages/lib"
+    "generate:typedoc": "typedoc ./packages/lib",
+    "snyk:protect": "snyk protect"
   },
   "devDependencies": {
     "@types/execa": "^2.0.0",
@@ -59,6 +60,7 @@
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
     "rimraf": "^3.0.0",
+    "snyk": "^1.232.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typedoc": "^0.15.0",
@@ -75,5 +77,6 @@
       "eslint --fix",
       "git add"
     ]
-  }
+  },
+  "snyk": true
 }
