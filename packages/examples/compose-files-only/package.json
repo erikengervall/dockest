@@ -16,7 +16,7 @@
     "@types/ioredis": "^4.0.13",
     "@types/pg": "^7.11.1",
     "@types/sequelize": "^4.28.4",
-    "dockest": "1.0.0",
+    "dockest": "*",
     "typescript": "^3.6.3"
   }
 }
