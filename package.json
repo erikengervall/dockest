@@ -60,6 +60,7 @@
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
     "rimraf": "^3.0.0",
+    "snyk": "^1.232.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typedoc": "^0.15.0",
@@ -77,8 +78,5 @@
       "git add"
     ]
   },
-  "snyk": true,
-  "dependencies": {
-    "snyk": "^1.232.0"
-  }
+  "snyk": true
 }
