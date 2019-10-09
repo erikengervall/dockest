@@ -6,6 +6,7 @@
     "test": "ts-node ./dockest.ts"
   },
   "devDependencies": {
-    "dockest": "*"
+    "dockest": "*",
+    "typescript": "^3.6.3"
   }
 }

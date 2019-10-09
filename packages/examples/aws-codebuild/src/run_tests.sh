@@ -1,10 +1,9 @@
 #!/bin/bash
 set -euxo pipefail
 
-cd ../../../../
-yarn build
-yarn pack --filename ./packages/examples/aws-codebuild/src/dockest.tgz
-cd ./packages/examples/aws-codebuild/src
+cd ../../../dockest
+yarn pack --filename ../examples/aws-codebuild/src/dockest.tgz
+cd ../examples/aws-codebuild/src
 
 # build dockest
 yarn cache clean
