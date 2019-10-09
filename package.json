@@ -34,7 +34,8 @@
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/lib/**/*.ts\"",
     "test": "lerna run test --stream",
-    "generate:typedoc": "typedoc ./packages/lib"
+    "generate:typedoc": "typedoc ./packages/lib",
+    "snyk:protect": "snyk protect"
   },
   "devDependencies": {
     "@types/execa": "^2.0.0",
@@ -75,5 +76,9 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.232.0"
   }
 }
