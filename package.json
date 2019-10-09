@@ -1,9 +1,9 @@
 {
-  "name": "dockest",
+  "name": "dockest-monorepo",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "packages/lib",
+    "packages/dockest",
     "packages/examples/*"
   ],
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",

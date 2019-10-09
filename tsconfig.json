@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./packages/lib/src",
+    "baseUrl": "./packages/dockest/src",
     "paths": {
       "src": ["./*"]
     },
@@ -18,6 +18,6 @@
     "resolveJsonModule": true,
     "declaration": true
   },
-  "include": ["./packages/lib/src/**/*.*"],
+  "include": ["./packages/dockest/src/**/*.*"],
   "exclude": ["dist", "node_modules", "typedoc", "docs", "**/*.spec.*"]
 }
