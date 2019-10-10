@@ -21,7 +21,7 @@
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/**/*.ts\"",
     "test": "lerna run test --stream",
-    "generate:typedoc": "typedoc ./packages/dockest",
+    "generate:typedoc": "typedoc --tsconfig ./packages/dockest/tsconfig.json ./packages/dockest",
     "snyk:protect": "snyk protect"
   },
   "devDependencies": {
