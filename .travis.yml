@@ -40,10 +40,10 @@ script:
     git config --global user.name "${GH_NAME}";
     git config --global user.email "${GH_EMAIL}";
     echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc;
-    cd website
-    yarn
+    cd website;
+    yarn;
     GIT_USER="${GH_NAME}" yarn publish-gh-pages;
-    cd ../
+    cd ../;
     fi
 
   # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
