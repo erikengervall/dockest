@@ -6,18 +6,11 @@ sidebar_label: Introduction
 
 ## Motivation
 
-The motivation for Dockest, along with real world examples, can be read in this [blog article](https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163).
-
-<br>
-**TL;DR** *(excerpts from the article)*
+The original motivation for Dockest, along with real world examples, can be read in this [blog article](https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163).
 
 > Dockest was born out of frustration and with a vision to make developers’ lives slightly less miserable.
 
-> ## Dockest’s core concepts
->
-> Dockest provides abstraction for your Docker services’ lifecycles as well as making sure that your unit tests are executed. Adopting Dockest is super easy regardless if you’ve got existing tests or not and doesn’t necessarily require additional CI pipeline steps.
->
-> Dockest’s core concept is composed of runners. Runners are references to Docker services, listed in your Compose file, that your application depend on. The runners are structured to be independent of one another, not only to simplify the configuration of Dockest itself, but also to lower the threshold for anyone to contribute with new runners for unsupported Docker services.
+Dockest provides an abstraction for your Docker services’ lifecycles during integration testing, freeing developers from convoluted and flaky shell scripts. Adopting Dockest is super easy regardless if you’ve got existing tests or not and doesn’t necessarily require additional CI pipeline steps.
 
 ## Requirements
 
@@ -31,7 +24,8 @@ Dockest has a few system requirements in order to work:
 
 **Setup and testing**
 
-- `yarn install:all` Installs all dependencies
-- `yarn test:all` Runs `yarn test` and `yarn test:example`
-  - `yarn test` Unit tests for the library itself
-  - `yarn test:example` Integration tests using Dockest
+This repo uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) and [lerna](https://github.com/lerna/lerna).
+
+- `yarn` Installs all dependencies. Bear in mind that yarn workspaces [hoists](https://yarnpkg.com/lang/en/docs/workspaces/#toc-limitations-caveats) dependencies to root
+- `yarn build` Builds packages that requires building, most importantly the library itself
+- `yarn test` Tests packages by using the library. The library itself is also unit tested with Jest

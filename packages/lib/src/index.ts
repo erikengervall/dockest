@@ -17,20 +17,20 @@ interface RequiredConfig {
 }
 interface DefaultableUserConfig {
   afterSetupSleep: number
+  composeFile: string | string[]
   dev: { debug?: boolean }
   dumpErrors: boolean
   exitHandler: null | ((error: ErrorPayload) => any)
+  guessRunnerType: boolean
   logLevel: number
   runInBand: boolean
-  composeFile: string | string[]
-  guessRunnerType: boolean
 }
 interface InternalConfig {
   failedTeardowns: { service: string; containerId: string }[]
+  hostname: string
+  isInsideDockerContainer: boolean
   jestRanWithResult: boolean
   perfStart: number
-  isInsideDockerContainer: boolean
-  hostname: string
 }
 export interface DockestConfig {
   runners: ArrayAtLeastOne<Runner>

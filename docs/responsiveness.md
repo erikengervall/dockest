@@ -10,4 +10,6 @@ The standard runners (Redis, Postgres, ZooKeeper, Kafka) already have a healthch
 
 The responsiveness healthcheck will run until it succeeds or fail once the responsivenessTimeout is reached.
 
+### WIP
+
 In case you are using the GeneralPurposeRunner you can implement your own responsiveness check via the [`getResponsivenessCheckCommand` config option](runner_generalpurposerunner.md).
