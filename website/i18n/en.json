@@ -49,10 +49,6 @@
         "title": "Shared props",
         "sidebar_label": "Shared props"
       },
-      "runner_general_purpose": {
-        "title": "General purpose",
-        "sidebar_label": "General purpose"
-      },
       "runner_zookeeper": {
         "title": "ZooKeeper",
         "sidebar_label": "ZooKeeper"
