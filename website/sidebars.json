@@ -1,9 +1,6 @@
 {
   "docs": {
-    "Getting started": [
-      "introduction",
-      "example"
-    ],
+    "Getting started": ["introduction", "getting-started"],
     "Interfaces": [
       "dockest_constructor",
       "jest",
@@ -11,6 +8,7 @@
         "type": "subcategory",
         "label": "Runners",
         "ids": [
+          "runner_sharedprops",
           "runner_redis",
           "runner_postgres",
           "runner_zookeeper",
@@ -19,15 +17,10 @@
         ]
       }
     ],
-    "Healthchecks": [
-      "connectivity",
-      "responsiveness"
-    ]
+    "Healthchecks": ["connectivity", "responsiveness"]
   },
   "dockest": {
-    "Introduction": [
-      "typedoc/index"
-    ],
+    "Introduction": ["typedoc/index"],
     "Classes": [
       "typedoc/classes/baseerror",
       "typedoc/classes/configurationerror",
@@ -57,9 +50,7 @@
     ]
   },
   "lib": {
-    "Introduction": [
-      "typedoc/index"
-    ],
+    "Introduction": ["typedoc/index"],
     "Classes": [
       "typedoc/classes/baseerror",
       "typedoc/classes/configurationerror",
@@ -98,9 +89,7 @@
     ]
   },
   "execa": {
-    "Introduction": [
-      "typedoc/index"
-    ],
+    "Introduction": ["typedoc/index"],
     "Modules": [
       "typedoc/modules/execa",
       "typedoc/interfaces/execa.commonoptions",

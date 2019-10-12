@@ -13,9 +13,9 @@
         "title": "Dockest constructor",
         "sidebar_label": "Dockest constructor"
       },
-      "example": {
-        "title": "Example",
-        "sidebar_label": "Example"
+      "getting-started": {
+        "title": "Getting Started",
+        "sidebar_label": "Getting Started"
       },
       "introduction": {
         "title": "Introduction",
@@ -25,13 +25,13 @@
         "title": "Jest",
         "sidebar_label": "Jest"
       },
-      "req": {
-        "title": "Req",
-        "sidebar_label": "Req"
-      },
       "responsiveness": {
         "title": "Responsiveness",
         "sidebar_label": "Responsiveness"
+      },
+      "runner_generalpurposerunner": {
+        "title": "GeneralPurposeRunner",
+        "sidebar_label": "GeneralPurposeRunner"
       },
       "runner_kafka": {
         "title": "Kafka",
@@ -44,6 +44,14 @@
       "runner_redis": {
         "title": "Redis",
         "sidebar_label": "Redis"
+      },
+      "runner_sharedprops": {
+        "title": "Shared props",
+        "sidebar_label": "Shared props"
+      },
+      "runner_general_purpose": {
+        "title": "General purpose",
+        "sidebar_label": "General purpose"
       },
       "runner_zookeeper": {
         "title": "ZooKeeper",
@@ -65,6 +73,10 @@
         "title": "DockestError",
         "sidebar_label": "DockestError"
       },
+      "typedoc/classes/generalpurposerunner": {
+        "title": "GeneralPurposeRunner",
+        "sidebar_label": "GeneralPurposeRunner"
+      },
       "typedoc/classes/kafkarunner": {
         "title": "KafkaRunner",
         "sidebar_label": "KafkaRunner"
@@ -73,6 +85,10 @@
         "title": "Logger",
         "sidebar_label": "Logger"
       },
+      "typedoc/classes/maxbuffererrorclass": {
+        "title": "MaxBufferErrorClass",
+        "sidebar_label": "MaxBufferErrorClass"
+      },
       "typedoc/classes/postgresrunner": {
         "title": "PostgresRunner",
         "sidebar_label": "PostgresRunner"
@@ -80,10 +96,6 @@
       "typedoc/classes/redisrunner": {
         "title": "RedisRunner",
         "sidebar_label": "RedisRunner"
-      },
-      "typedoc/classes/simplerunner": {
-        "title": "SimpleRunner",
-        "sidebar_label": "SimpleRunner"
       },
       "typedoc/classes/zookeeperrunner": {
         "title": "ZooKeeperRunner",
@@ -101,6 +113,14 @@
         "title": "ComposeFile",
         "sidebar_label": "ComposeFile"
       },
+      "typedoc/interfaces/composeservice": {
+        "title": "ComposeService",
+        "sidebar_label": "ComposeService"
+      },
+      "typedoc/interfaces/defaultableconfigprops": {
+        "title": "DefaultableConfigProps",
+        "sidebar_label": "DefaultableConfigProps"
+      },
       "typedoc/interfaces/defaultableuserconfig": {
         "title": "DefaultableUserConfig",
         "sidebar_label": "DefaultableUserConfig"
@@ -112,6 +132,62 @@
       "typedoc/interfaces/errorpayload": {
         "title": "ErrorPayload",
         "sidebar_label": "ErrorPayload"
+      },
+      "typedoc/interfaces/execa.commonoptions": {
+        "title": "CommonOptions",
+        "sidebar_label": "CommonOptions"
+      },
+      "typedoc/interfaces/execa.execachildpromise": {
+        "title": "ExecaChildPromise",
+        "sidebar_label": "ExecaChildPromise"
+      },
+      "typedoc/interfaces/execa.execaerror": {
+        "title": "ExecaError",
+        "sidebar_label": "ExecaError"
+      },
+      "typedoc/interfaces/execa.execareturnbase": {
+        "title": "ExecaReturnBase",
+        "sidebar_label": "ExecaReturnBase"
+      },
+      "typedoc/interfaces/execa.execareturnvalue": {
+        "title": "ExecaReturnValue",
+        "sidebar_label": "ExecaReturnValue"
+      },
+      "typedoc/interfaces/execa.execasyncerror": {
+        "title": "ExecaSyncError",
+        "sidebar_label": "ExecaSyncError"
+      },
+      "typedoc/interfaces/execa.execasyncreturnvalue": {
+        "title": "ExecaSyncReturnValue",
+        "sidebar_label": "ExecaSyncReturnValue"
+      },
+      "typedoc/interfaces/execa.killoptions": {
+        "title": "KillOptions",
+        "sidebar_label": "KillOptions"
+      },
+      "typedoc/interfaces/execa.nodeoptions": {
+        "title": "NodeOptions",
+        "sidebar_label": "NodeOptions"
+      },
+      "typedoc/interfaces/execa.options": {
+        "title": "Options",
+        "sidebar_label": "Options"
+      },
+      "typedoc/interfaces/execa.syncoptions": {
+        "title": "SyncOptions",
+        "sidebar_label": "SyncOptions"
+      },
+      "typedoc/interfaces/generalpurposerunnerconfig": {
+        "title": "GeneralPurposeRunnerConfig",
+        "sidebar_label": "GeneralPurposeRunnerConfig"
+      },
+      "typedoc/interfaces/getstream.options": {
+        "title": "Options",
+        "sidebar_label": "Options"
+      },
+      "typedoc/interfaces/getstream.optionswithencoding": {
+        "title": "OptionsWithEncoding",
+        "sidebar_label": "OptionsWithEncoding"
       },
       "typedoc/interfaces/internalconfig": {
         "title": "InternalConfig",
@@ -125,17 +201,53 @@
         "title": "JestLib",
         "sidebar_label": "JestLib"
       },
+      "typedoc/interfaces/kafkarunnerconfig": {
+        "title": "KafkaRunnerConfig",
+        "sidebar_label": "KafkaRunnerConfig"
+      },
+      "typedoc/interfaces/npmrunpath.envoptions": {
+        "title": "EnvOptions",
+        "sidebar_label": "EnvOptions"
+      },
+      "typedoc/interfaces/npmrunpath.processenv": {
+        "title": "ProcessEnv",
+        "sidebar_label": "ProcessEnv"
+      },
+      "typedoc/interfaces/npmrunpath.runpathoptions": {
+        "title": "RunPathOptions",
+        "sidebar_label": "RunPathOptions"
+      },
       "typedoc/interfaces/objstrstr": {
         "title": "ObjStrStr",
         "sidebar_label": "ObjStrStr"
+      },
+      "typedoc/interfaces/optionalconfigprops": {
+        "title": "OptionalConfigProps",
+        "sidebar_label": "OptionalConfigProps"
+      },
+      "typedoc/interfaces/pathkey.options": {
+        "title": "Options",
+        "sidebar_label": "Options"
       },
       "typedoc/interfaces/payload": {
         "title": "Payload",
         "sidebar_label": "Payload"
       },
+      "typedoc/interfaces/postgresrunnerconfig": {
+        "title": "PostgresRunnerConfig",
+        "sidebar_label": "PostgresRunnerConfig"
+      },
+      "typedoc/interfaces/redisrunnerconfig": {
+        "title": "RedisRunnerConfig",
+        "sidebar_label": "RedisRunnerConfig"
+      },
       "typedoc/interfaces/requiredconfig": {
         "title": "RequiredConfig",
         "sidebar_label": "RequiredConfig"
+      },
+      "typedoc/interfaces/requiredconfigprops": {
+        "title": "RequiredConfigProps",
+        "sidebar_label": "RequiredConfigProps"
       },
       "typedoc/interfaces/shareddefaultableconfigprops": {
         "title": "SharedDefaultableConfigProps",
@@ -144,6 +256,26 @@
       "typedoc/interfaces/sharedrequiredconfigprops": {
         "title": "SharedRequiredConfigProps",
         "sidebar_label": "SharedRequiredConfigProps"
+      },
+      "typedoc/interfaces/zookeeperrunnerconfig": {
+        "title": "ZooKeeperRunnerConfig",
+        "sidebar_label": "ZooKeeperRunnerConfig"
+      },
+      "typedoc/modules/execa": {
+        "title": "execa",
+        "sidebar_label": "execa"
+      },
+      "typedoc/modules/getstream": {
+        "title": "getStream",
+        "sidebar_label": "getStream"
+      },
+      "typedoc/modules/npmrunpath": {
+        "title": "npmRunPath",
+        "sidebar_label": "npmRunPath"
+      },
+      "typedoc/modules/pathkey": {
+        "title": "pathKey",
+        "sidebar_label": "pathKey"
       }
     },
     "links": {
@@ -155,7 +287,8 @@
       "Interfaces": "Interfaces",
       "Healthchecks": "Healthchecks",
       "Introduction": "Introduction",
-      "Classes": "Classes"
+      "Classes": "Classes",
+      "Modules": "Modules"
     }
   },
   "pages-strings": {

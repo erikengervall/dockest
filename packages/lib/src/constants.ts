@@ -58,21 +58,21 @@ export const LOG_LEVEL = {
 
 export const DEFAULT_USER_CONFIG = {
   afterSetupSleep: 0,
+  composeFile: [],
   dev: { debug: false },
   dumpErrors: false,
   exitHandler: null,
+  guessRunnerType: false,
   logLevel: LOG_LEVEL.INFO,
   runInBand: true,
-  composeFile: [],
-  guessRunnerType: false,
 }
 
 export const INTERNAL_CONFIG = {
   failedTeardowns: [],
+  hostname: process.env.HOSTNAME || 'host.docker.internal',
+  isInsideDockerContainer: false,
   jestRanWithResult: false,
   perfStart: 0,
-  isInsideDockerContainer: false,
-  hostname: process.env.HOSTNAME || 'host.docker.internal',
 }
 
 export const PROCESS_TEST_ENV = 'dockest-test'

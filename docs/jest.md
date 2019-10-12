@@ -12,6 +12,6 @@ sidebar_label: Jest
 | projects  | false    | string[] | ['.']           | https://jestjs.io/docs/en/cli.html#projects-path1-pathn-                                                                                                     |
 | runInBand | false    | boolean  | true            | https://jestjs.io/docs/en/cli.html#runinband                                                                                                                 |
 
-Note that due to Jest running all tests in parallel per default, Dockest defaults the `runInBand` option to `true`. This will cause jest to run its tests sequentially and thus avoid potential race conditions if tests perform read/write operations on the same entry. The downside of this is an overall longer runtime.
+_Note: Jest runs tests in parallel per default, which is why Dockest defaults `runInBand` to `true`. This will cause jest to run sequentially in order to avoid race conditions for I/O operations. This may lead to longer runtimes._
 
 A complete list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation.
