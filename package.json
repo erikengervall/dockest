@@ -34,7 +34,6 @@
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/lib/**/*.ts\"",
     "test": "lerna run test --stream",
-    "publish-gh-pages": "lerna run publish-gh-pages",
     "generate:typedoc": "typedoc ./packages/lib",
     "snyk:protect": "snyk protect"
   },
