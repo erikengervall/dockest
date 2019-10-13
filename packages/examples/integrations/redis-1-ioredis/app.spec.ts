@@ -7,7 +7,7 @@ describe('redis-1-ioredis', () => {
     const { redis } = app()
 
     const value = await redis.get(seedCake.key)
-    expect(value).toEqual(seedCake.value)
+    expect(value).toMatchSnapshot()
   })
 
   it('should handle flushall', async () => {
