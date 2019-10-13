@@ -75,6 +75,9 @@ const kafka1confluentincRunner = new KafkaRunner({
 })
 
 const dockest = new Dockest({
+  jest: {
+    updateSnapshot: true,
+  },
   opts: {
     afterSetupSleep: 20,
     dev: {
