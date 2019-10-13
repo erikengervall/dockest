@@ -77,9 +77,6 @@ const kafka1confluentincRunner = new KafkaRunner({
 const dockest = new Dockest({
   opts: {
     afterSetupSleep: 20,
-    dev: {
-      // debug: true,
-    },
     dumpErrors: true,
     exitHandler: ({ trap }) => console.log(`Hello ${trap}, nice to meet you 👋🏼`), // eslint-disable-line no-console
     logLevel: logLevel.DEBUG,
