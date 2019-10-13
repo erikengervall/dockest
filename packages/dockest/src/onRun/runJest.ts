@@ -110,7 +110,7 @@ const validateJestConfig = (config: JestConfig) => {
 
   // Validate jest.lib
   if (!config.lib) {
-    throw new ConfigurationError('Jest libray missing')
+    throw new ConfigurationError('Jest library missing')
   }
 
   // Validate jest version
