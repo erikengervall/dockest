@@ -1,13 +1,10 @@
 import Dockest, { runners, logLevel } from '../../lib/src'
 
 const dockest = new Dockest({
-  jest: {
-    verbose: true,
-  },
   opts: {
     dumpErrors: true,
     logLevel: logLevel.DEBUG,
-    composeFile: ['docker-compose.yml'],
+    composeFile: 'docker-compose.yml',
   },
 })
 
