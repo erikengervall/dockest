@@ -1,19 +1,10 @@
 {
-  "name": "dockest",
+  "name": "dockest-monorepo",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "packages/lib",
+    "packages/dockest",
     "packages/examples/*"
-  ],
-  "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
-  "keywords": [
-    "docker",
-    "docker-compose",
-    "jest",
-    "nodejs",
-    "node",
-    "integration testing"
   ],
   "homepage": "https://github.com/erikengervall/dockest#readme",
   "bugs": {
@@ -21,10 +12,6 @@
   },
   "license": "MIT",
   "author": "Erik Engervall <erik@engervall.com> (http://engervall.com)",
-  "files": [
-    "dist/**/*"
-  ],
-  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/erikengervall/dockest.git"
@@ -32,9 +19,9 @@
   "scripts": {
     "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
     "build": "lerna run build --stream",
-    "lint": "eslint \"./packages/lib/**/*.ts\"",
+    "lint": "eslint \"./packages/**/*.ts\"",
     "test": "lerna run test --stream",
-    "generate:typedoc": "typedoc ./packages/lib",
+    "generate:typedoc": "typedoc --tsconfig ./packages/dockest/tsconfig.json ./packages/dockest",
     "snyk:protect": "snyk protect"
   },
   "devDependencies": {

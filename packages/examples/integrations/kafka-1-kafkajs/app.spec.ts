@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
+import { sleep } from 'dockest'
 import main from './app'
-import { sleep } from '../../../lib/src'
 
 jest.setTimeout(1000 * 60)
 const env: any = dotenv.config().parsed

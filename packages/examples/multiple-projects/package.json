@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "test": "ts-node ./dockest"
+  },
+  "devDependencies": {
+    "dockest": "*",
+    "typescript": "^3.6.3"
   }
 }

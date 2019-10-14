@@ -1,4 +1,4 @@
-import Dockest, { logLevel, runners } from '../../lib/src'
+import Dockest, { logLevel, runners } from 'dockest'
 
 const dockest = new Dockest({
   jest: {

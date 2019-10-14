@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import Dockest, { logLevel, runners } from '../../lib/src'
+import Dockest, { logLevel, runners } from 'dockest'
 
 const env: any = dotenv.config().parsed
 const { KafkaRunner, PostgresRunner, RedisRunner, ZooKeeperRunner } = runners

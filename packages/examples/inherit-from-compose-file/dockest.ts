@@ -1,4 +1,4 @@
-import Dockest, { runners, logLevel } from '../../lib/src'
+import Dockest, { runners, logLevel } from 'dockest'
 
 const dockest = new Dockest({
   opts: {

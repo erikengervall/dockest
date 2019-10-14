@@ -1,4 +1,4 @@
-import { COLORS, PROCESS_TEST_ENV } from './packages/lib/src/constants'
+import { COLORS, PROCESS_TEST_ENV } from './src/constants'
 
 const { keys } = Object
 

@@ -4,5 +4,9 @@
   "private": true,
   "scripts": {
     "test": "ts-node ./dockest.ts"
+  },
+  "devDependencies": {
+    "dockest": "*",
+    "typescript": "^3.6.3"
   }
 }
