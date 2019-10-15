@@ -9,13 +9,60 @@ interface JestLib {
 }
 
 export interface JestConfig {
-  forceExit?: boolean
   lib?: JestLib
+
+  // Jest CLI options
+  bail?: boolean
+  cache?: boolean
+  changedFilesWithAncestor?: boolean
+  changedSince?: boolean
+  ci?: boolean
+  clearCache?: boolean
+  collectCoverageFrom?: string
+  colors?: boolean
+  config?: string
+  coverage?: boolean
+  debug?: boolean
+  detectOpenHandles?: boolean
+  env?: boolean
+  errorOnDeprecated?: boolean
+  expand?: boolean
+  findRelatedTests?: string
+  forceExit?: boolean
+  help?: boolean
+  init?: boolean
+  json?: boolean
+  outputFile?: string
+  lastCommit?: boolean
+  listTests?: boolean
+  logHeapUsage?: boolean
+  maxConcurrency?: number
+  maxWorkers?: number | string
+  noStackTrace?: boolean
+  notify?: boolean
+  onlyChanged?: boolean
+  passWithNoTests?: boolean
   projects?: string[]
+  reporters?: boolean
   runInBand?: boolean
+  runTestsByPath?: boolean
+  setupTestFrameworkScriptFile?: string
+  showConfig?: boolean
   silent?: boolean
+  testNamePattern?: string
+  testLocationInResults?: boolean
+  testPathPattern?: string
+  testPathIgnorePatterns?: string[]
+  testRunner?: string
+  testSequencer?: string
+  testTimeout?: number
+  updateSnapshot?: boolean
+  useStderr?: boolean
   verbose?: boolean
+  version?: boolean
+  watch?: boolean
   watchAll?: boolean
+  watchman?: boolean
 }
 
 const DEFAULT_CONFIG = {
@@ -63,7 +110,7 @@ const validateJestConfig = (config: JestConfig) => {
 
   // Validate jest.lib
   if (!config.lib) {
-    throw new ConfigurationError('Jest libray missing')
+    throw new ConfigurationError('Jest library missing')
   }
 
   // Validate jest version
