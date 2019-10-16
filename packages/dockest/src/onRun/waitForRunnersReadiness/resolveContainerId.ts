@@ -2,7 +2,7 @@ import { Runner } from '../../runners/@types'
 import DockestError from '../../errors/DockestError'
 import execaWrapper from '../../utils/execaWrapper'
 import sleep from '../../utils/sleep'
-import { GENERATED_COMPOSE_FILE_PATH } from "../../constants"
+import { GENERATED_COMPOSE_FILE_PATH } from '../../constants'
 
 const getContainerId = async (runner: Runner): Promise<string> => {
   const {
