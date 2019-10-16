@@ -2,17 +2,18 @@ import { Runner } from '../../runners/@types'
 import DockestError from '../../errors/DockestError'
 import execaWrapper from '../../utils/execaWrapper'
 import sleep from '../../utils/sleep'
+import { GENERATED_COMPOSE_FILE_PATH } from '../../constants'
 
 const getContainerId = async (runner: Runner): Promise<string> => {
   const {
     runnerConfig: { service },
   } = runner
   const command = ` \
-                docker ps \
-                  --quiet \
-                  --filter \
-                  "name=${service}" \
-                --latest \
+                docker-compose \
+                  -f ${GENERATED_COMPOSE_FILE_PATH} \
+                  ps \
+                    -q \
+                    "${service}"
               `
 
   const containerId = await execaWrapper(command, runner)
