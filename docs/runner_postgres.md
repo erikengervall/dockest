@@ -19,12 +19,12 @@ new PostgresRunner({
 
 This interface is an extension of the [shared props](runner_sharedprops).
 
-| Prop     | Required | Type                                    | Default                               | Description                                                                                 |
-| -------- | -------- | --------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------- |
-| database | true     | string                                  | -                                     | Database's name                                                                             |
-| password | true     | string                                  | -                                     | Database's password                                                                         |
-| username | true     | string                                  | -                                     | Database's username                                                                         |
-| ports    | false    | { published: number, target: number }[] | `[{ published: 5432, target: 5432 }]` | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1) |
+| Prop     | Required | Type                                    | Default                               | Description                                                                                |
+| -------- | -------- | --------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| database | true     | string                                  | -                                     | Database's name                                                                            |
+| password | true     | string                                  | -                                     | Database's password                                                                        |
+| username | true     | string                                  | -                                     | Database's username                                                                        |
+| ports    | false    | { published: number, target: number }[] | `[{ published: 5432, target: 5432 }]` | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#long-syntax-1) |
 
 ## Static members
 

@@ -1,7 +1,7 @@
 ---
 id: runner_sharedprops
-title: Shared props
-sidebar_label: Shared props
+title: Shared runner props
+sidebar_label: Shared runner props
 ---
 
 These props are available for all Runners
@@ -16,6 +16,6 @@ These props are available for all Runners
 | host                  | false    | string                                  | 'localhost'       | Hostname                                                                                                                                                                                                 |
 | image                 | false    | string &#124; undefined                 | undefined         | Specify the [image](https://docs.docker.com/compose/compose-file/#image) to start the container from                                                                                                     |
 | networks              | false    | string[]                                | []                | Networks used for determining which containers can communicate between each other through the service name as a host ([Learn more](https://docs.docker.com/compose/networking/#specify-custom-networks)) |
-| ports                 | false    | { published: number, target: number }[] | Depends on Runner | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1)                                                                                                              |
+| ports                 | false    | { published: number, target: number }[] | Depends on Runner | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#long-syntax-1)                                                                                                               |
 | props                 | false    | { [key: string]: any }                  | {}                | Arbitrary props that'll be passed to the Compose service                                                                                                                                                 |
 | responsivenessTimeout | false    | number                                  | 10                | How long to wait for the resource to be reachable                                                                                                                                                        |

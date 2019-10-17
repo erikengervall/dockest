@@ -16,10 +16,10 @@ new RedisRunner({
 
 This interface is an extension of the [shared props](runner_sharedprops).
 
-| Prop     | Required | Type                                    | Default                               | Description                                                                                 |
-| -------- | -------- | --------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------- |
-| password | false    | string                                  | ''                                    | Password to redis instance                                                                  |
-| ports    | false    | { published: number, target: number }[] | `[{ published: 6379, target: 6379 }]` | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1) |
+| Prop     | Required | Type                                    | Default                               | Description                                                                                |
+| -------- | -------- | --------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| password | false    | string                                  | ''                                    | Password to redis instance                                                                 |
+| ports    | false    | { published: number, target: number }[] | `[{ published: 6379, target: 6379 }]` | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#long-syntax-1) |
 
 ## Static members
 

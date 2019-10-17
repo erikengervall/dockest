@@ -28,7 +28,7 @@ This interface is an extension of the [shared props](runner_sharedprops).
 | ---------------- | -------- | --------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | dependsOn        | true     | Runner[]                                | `[]`                                  | Defines the service's [dependencies](https://docs.docker.com/compose/compose-file/#depends_on) |
 | autoCreateTopics | false    | boolean                                 | `true`                                | Whether or not Kafka should auto-create topics                                                 |
-| ports            | false    | { published: number, target: number }[] | `[{ published: 9092, target: 9092 }]` | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#short-syntax-1)    |
+| ports            | false    | { published: number, target: number }[] | `[{ published: 9092, target: 9092 }]` | [{ hostPort: containerPort }](https://docs.docker.com/compose/compose-file/#long-syntax-1)     |
 
 ## Static members
 

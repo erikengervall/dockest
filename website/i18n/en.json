@@ -46,8 +46,8 @@
         "sidebar_label": "Redis"
       },
       "runner_sharedprops": {
-        "title": "Shared props",
-        "sidebar_label": "Shared props"
+        "title": "Shared runner props",
+        "sidebar_label": "Shared runner props"
       },
       "runner_zookeeper": {
         "title": "ZooKeeper",
