@@ -9,7 +9,7 @@
         "title": "Connectivity",
         "sidebar_label": "Connectivity"
       },
-      "dockest_constructor": {
+      "dockest-constructor": {
         "title": "Dockest constructor",
         "sidebar_label": "Dockest constructor"
       },
@@ -29,27 +29,27 @@
         "title": "Responsiveness",
         "sidebar_label": "Responsiveness"
       },
-      "runner_generalpurposerunner": {
-        "title": "GeneralPurposeRunner",
-        "sidebar_label": "GeneralPurposeRunner"
+      "runner-general-purpose-runner": {
+        "title": "General Purpose Runner",
+        "sidebar_label": "General Purpose Runner"
       },
-      "runner_kafka": {
+      "runner-kafka": {
         "title": "Kafka",
         "sidebar_label": "Kafka"
       },
-      "runner_postgres": {
+      "runner-postgres": {
         "title": "Postgres",
         "sidebar_label": "Postgres"
       },
-      "runner_redis": {
+      "runner-redis": {
         "title": "Redis",
         "sidebar_label": "Redis"
       },
-      "runner_sharedprops": {
+      "runner-shared-props": {
         "title": "Shared runner props",
         "sidebar_label": "Shared runner props"
       },
-      "runner_zookeeper": {
+      "runner-zookeeper": {
         "title": "ZooKeeper",
         "sidebar_label": "ZooKeeper"
       },
@@ -272,6 +272,10 @@
       "typedoc/modules/pathkey": {
         "title": "pathKey",
         "sidebar_label": "pathKey"
+      },
+      "use-cases": {
+        "title": "Use cases",
+        "sidebar_label": "Use cases"
       }
     },
     "links": {

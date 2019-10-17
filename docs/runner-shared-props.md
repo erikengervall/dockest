@@ -1,5 +1,5 @@
 ---
-id: runner_sharedprops
+id: runner-shared-props
 title: Shared runner props
 sidebar_label: Shared runner props
 ---

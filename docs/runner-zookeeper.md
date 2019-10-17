@@ -1,5 +1,5 @@
 ---
-id: runner_zookeeper
+id: runner-zookeeper
 title: ZooKeeper
 sidebar_label: ZooKeeper
 ---

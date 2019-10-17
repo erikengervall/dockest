@@ -24,8 +24,8 @@ Dockest has a few system requirements in order to work:
 
 **Setup and testing**
 
-This repo uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) and [lerna](https://github.com/lerna/lerna).
+This repo uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) together with [lerna](https://github.com/lerna/lerna).
 
-- `yarn` Installs all dependencies. Bear in mind that yarn workspaces [hoists](https://yarnpkg.com/lang/en/docs/workspaces/#toc-limitations-caveats) dependencies to root
-- `yarn build` Builds packages that requires building, most importantly the library itself
-- `yarn test` Tests packages by using the library. The library itself is also unit tested with Jest
+- `yarn` Installs all dependencies. Bear in mind that yarn workspaces [hoists](https://yarnpkg.com/lang/en/docs/workspaces/#toc-limitations-caveats) dependencies
+- `yarn build` Transpiles packages that requires transpiling
+- `yarn test` Tests packages by using the library. The library itself is also unit tested using Jest

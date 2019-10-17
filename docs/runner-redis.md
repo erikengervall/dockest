@@ -1,5 +1,5 @@
 ---
-id: runner_redis
+id: runner-redis
 title: Redis
 sidebar_label: Redis
 ---

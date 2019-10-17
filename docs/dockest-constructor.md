@@ -1,5 +1,5 @@
 ---
-id: dockest_constructor
+id: dockest-constructor
 title: Dockest constructor
 sidebar_label: Dockest constructor
 ---

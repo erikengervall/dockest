@@ -1,5 +1,5 @@
 ---
-id: runner_postgres
+id: runner-postgres
 title: Postgres
 sidebar_label: Postgres
 ---

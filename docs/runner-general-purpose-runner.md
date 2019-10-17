@@ -1,7 +1,7 @@
 ---
-id: runner_generalpurposerunner
-title: GeneralPurposeRunner
-sidebar_label: GeneralPurposeRunner
+id: runner-general-purpose-runner
+title: General Purpose Runner
+sidebar_label: General Purpose Runner
 ---
 
 ## Minimal working example

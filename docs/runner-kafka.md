@@ -1,5 +1,5 @@
 ---
-id: runner_kafka
+id: runner-kafka
 title: Kafka
 sidebar_label: Kafka
 ---
