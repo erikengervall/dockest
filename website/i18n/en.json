@@ -272,10 +272,6 @@
       "typedoc/modules/pathkey": {
         "title": "pathKey",
         "sidebar_label": "pathKey"
-      },
-      "use-cases": {
-        "title": "Use cases",
-        "sidebar_label": "Use cases"
       }
     },
     "links": {
