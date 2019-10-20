@@ -1,6 +1,6 @@
 # aws-codebuild
 
-Example that showcases usage with AWS Codebuild.
+Example that showcases usage with AWS CodeBuild.
 
 It can be reused for any CI System that runs your build inside a docker container with an injected docker socket.
 
@@ -18,9 +18,9 @@ This test should also pass when not being run inside a container.
 - Dockest uses the target ports on the containers (instead of the published on the host)
 - Services can be accessed via their service name as the hostname
 
-# Development
+## Development
 
-Dockest must be bundeled as a .tgz and put inside this folder, because the codebuild container cannot resolve the parent directories (check `run_tests.sh`).
+Dockest must be bundeled as a .tgz and put inside this folder, because the CodeBuild container cannot resolve the parent directories (check `run_tests.sh`).
 
 # Exposed ports
 
