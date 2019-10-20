@@ -57,33 +57,9 @@ it('should cache an arbitrary number', async () => {
 
 ## Configure Dockest
 
-Next step is to transform this unit test into an integration test by creating a `dockest.ts` file. There's two ways of passing resources to Dockest, either by attaching runners in code or by creating a Compose file.
+Next step is to transform this unit test into an integration test by creating a `dockest.ts` file. There's two ways of passing resources to Dockest, either by referencing a Compose file or attaching runners programmatically.
 
 ### Alternative 1
-
-Attach a RedisRunner to Dockest using `dockest.attachRunners`.
-
-```ts
-import Dockest, { runners } from 'dockest'
-
-const dockest = new Dockest({})
-
-dockest.attachRunners([
-  new runners.RedisRunner({
-    host: 'localhost',
-    ports: [
-      {
-        published: 6379,
-        target: 6379,
-      },
-    ],
-  }),
-])
-
-dockest.run()
-```
-
-### Alternative 2
 
 Create a Compose file containing a Redis store `dockest_redis`:
 
@@ -108,6 +84,30 @@ const dockest = new Dockest({
     composeFile: 'docker-compose-redis.yml',
   },
 })
+
+dockest.run()
+```
+
+### Alternative 2
+
+Attach a RedisRunner to Dockest using `dockest.attachRunners`.
+
+```ts
+import Dockest, { runners } from 'dockest'
+
+const dockest = new Dockest({})
+
+dockest.attachRunners([
+  new runners.RedisRunner({
+    host: 'localhost',
+    ports: [
+      {
+        published: 6379,
+        target: 6379,
+      },
+    ],
+  }),
+])
 
 dockest.run()
 ```
