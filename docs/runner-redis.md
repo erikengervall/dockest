@@ -14,7 +14,7 @@ new RedisRunner({
 
 ## Interface
 
-This interface is an extension of the [shared props](runner_sharedprops).
+This interface is an extension of the [shared props](runner-sharedprops).
 
 | Prop     | Required | Type                                    | Default                               | Description                                                                                |
 | -------- | -------- | --------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
