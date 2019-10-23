@@ -1,5 +1,5 @@
 ---
-id: dockest_constructor
+id: dockest-constructor
 title: Dockest constructor
 sidebar_label: Dockest constructor
 ---
@@ -18,9 +18,9 @@ const docker = new Dockest({
 
 | Prop    | Required | Type   | Default                                  | Description                         |
 | ------- | -------- | ------ | ---------------------------------------- | ----------------------------------- |
-| runners | true     | array  | []                                       | [Runner instances](runner_redis.md) |
+| runners | true     | array  | []                                       | [Runner instances](runner-redis.md) |
 | jest    | false    | object | see docs for [Jest](jest.md)             | Jest configuration                  |
-| opts    | false    | object | see [below](dockest_constructor.md#opts) | Dockest configuration               |
+| opts    | false    | object | see [below](dockest-constructor.md#opts) | Dockest configuration               |
 
 ## opts
 

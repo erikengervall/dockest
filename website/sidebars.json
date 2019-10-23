@@ -2,18 +2,18 @@
   "docs": {
     "Getting started": ["introduction", "getting-started"],
     "Interfaces": [
-      "dockest_constructor",
+      "dockest-constructor",
       "jest",
       {
         "type": "subcategory",
         "label": "Runners",
         "ids": [
-          "runner_sharedprops",
-          "runner_redis",
-          "runner_postgres",
-          "runner_zookeeper",
-          "runner_kafka",
-          "runner_generalpurposerunner"
+          "runner-shared-props",
+          "runner-redis",
+          "runner-postgres",
+          "runner-zookeeper",
+          "runner-kafka",
+          "runner-general-purpose-runner"
         ]
       }
     ],

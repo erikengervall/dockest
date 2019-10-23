@@ -12,4 +12,4 @@ The responsiveness healthcheck will run until it succeeds or fail once the respo
 
 ### WIP
 
-In case you are using the GeneralPurposeRunner you can implement your own responsiveness check via the [`getResponsivenessCheckCommand` config option](runner_generalpurposerunner.md).
+In case you are using the GeneralPurposeRunner you can implement your own responsiveness check via the [`getResponsivenessCheckCommand` config option](runner-general-purpose-runner.md).
