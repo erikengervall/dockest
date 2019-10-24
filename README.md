@@ -57,6 +57,8 @@ If you don't see your idea listed, and you think it fits into the goals of this 
 
 Thanks to [Juan Lulkin](https://github.com/joaomilho) for the logo ❤️
 
+Thanks to [Laurin Quast](https://github.com/n1ru4l) for great ideas and contributions 💙
+
 ## License
 
 MIT
