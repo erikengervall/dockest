@@ -1,6 +1,6 @@
 {
   "name": "@examples/compose-files-only",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha.0",
   "private": true,
   "scripts": {
     "test": "ts-node ./dockest.ts"
@@ -16,7 +16,7 @@
     "@types/ioredis": "^4.0.13",
     "@types/pg": "^7.11.1",
     "@types/sequelize": "^4.28.4",
-    "dockest": "*",
+    "dockest": "^2.0.0-alpha.0",
     "typescript": "^3.6.3"
   }
 }

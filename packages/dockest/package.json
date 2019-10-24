@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "1.0.3",
+  "version": "2.0.0-alpha.0",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
