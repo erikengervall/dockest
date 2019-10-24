@@ -1,12 +1,12 @@
 {
   "name": "@examples/inherit-from-compose-file",
-  "version": "2.0.0-alpha.0",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "test": "ts-node ./dockest.ts"
   },
   "devDependencies": {
-    "dockest": "^2.0.0-alpha.0",
+    "dockest": "^1.0.3",
     "typescript": "^3.6.3"
   }
 }
