@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-alpha.1] - 2019-10-24
+
+### Added
+
+- Introduced monorepo structure using yarn workspaces and lerna
+- Use compose CLI for merging compose files #82
+- Allow containers to connect to host machine/dockest inside container support #91
+
+### Changed
+
+- Broke out runners from Dockest constructor and introduced `attachRunners` method
+- Started moving towards relying heavier on compose files rather than supplying runners that'll generate compose files
+
 ## [1.0.3] - 2019-08-30
 
 ### Added
