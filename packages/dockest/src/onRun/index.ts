@@ -5,6 +5,9 @@ import createBridgeNetwork from './createBridgeNetwork'
 import joinBridgeNetwork from './joinBridgeNetwork'
 import removeBridgeNetwork from './removeBridgeNetwork'
 import leaveBridgeNetwork from './leaveBridgeNetwork'
+import { createDockerEventEmitter } from './createDockerEventEmitter'
+import { createServiceDockerEventStream } from './createServiceDockerEventStream'
+import { createContainerStartCheck } from './createContainerStartCheck'
 import { DockestConfig } from '../index'
 import Logger from '../Logger'
 import sleepForX from '../utils/sleepForX'
@@ -20,6 +23,12 @@ const onRun = async (config: DockestConfig) => {
     },
     runners,
   } = config
+
+  const emitter = createDockerEventEmitter(runners)
+
+  const containerStartedTasks = runners.map(runner =>
+    createContainerStartCheck(runner, createServiceDockerEventStream(runner.runnerConfig.service, emitter)),
+  )
 
   const dockerComposeUpProcess = dockerComposeUp(runners.map(runner => runner.runnerConfig.service))
   $.dockerComposeUpProcess = dockerComposeUpProcess
@@ -40,6 +49,9 @@ const onRun = async (config: DockestConfig) => {
     await createBridgeNetwork()
     await joinBridgeNetwork(hostname, 'host.dockest-runner.internal')
   }
+
+  // every single container should start
+  await Promise.all(containerStartedTasks.map(task => task.done))
 
   await waitForRunnersReadiness(config)
 
@@ -74,7 +86,8 @@ const onRun = async (config: DockestConfig) => {
   }
 
   dockerComposeUpProcess.cancel()
-  await dockerComposeUpProcess
+  await dockerComposeUpProcess.catch(() => {})
+  emitter.destroy()
 
   Logger.info('Docker Container Logs\n' + dockerLogs.join(''))
 
