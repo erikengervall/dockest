@@ -7,7 +7,7 @@ const dockerComposeUp = (serviceNames: string[]) => {
               -f ${`${GENERATED_COMPOSE_FILE_PATH}`} \
               up \
               --force-recreate \
-              --build \
+              --no-build \
               ${serviceNames.join(' ')} \
             `
 
