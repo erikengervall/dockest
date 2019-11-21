@@ -49,9 +49,9 @@
     "snyk": "^1.232.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
-    "typedoc": "^0.15.0",
+    "typedoc": "^0.15.2",
     "typedoc-plugin-markdown": "^2.2.8",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.2"
   },
   "husky": {
     "hooks": {

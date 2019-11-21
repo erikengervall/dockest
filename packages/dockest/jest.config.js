@@ -7,7 +7,7 @@ module.exports = {
     },
     'jest-mock-proxy': {},
   },
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', 'dist'],
   setupFiles: ['./jest.setup.ts'],
   roots: ['./src'],
   projects: ['<rootDir>/src'],

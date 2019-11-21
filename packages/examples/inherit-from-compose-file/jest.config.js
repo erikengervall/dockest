@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = {
   roots: ['<rootDir>/tests'],
   transform: {
