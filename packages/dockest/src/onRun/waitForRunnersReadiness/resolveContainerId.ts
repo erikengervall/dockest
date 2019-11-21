@@ -12,9 +12,9 @@ const getContainerId = async (runner: Runner): Promise<string> => {
                 docker-compose \
                   -f ${GENERATED_COMPOSE_FILE_PATH} \
                   ps \
-                    -q \
-                    "${service}"
-              `
+                  -q \
+                  "${service}"
+                `
 
   const containerId = await execaWrapper(command, runner)
 

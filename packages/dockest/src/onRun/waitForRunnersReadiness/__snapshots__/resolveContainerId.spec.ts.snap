@@ -4,10 +4,10 @@ exports[`getContainerId should work 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [
-      "Executing shell script: docker ps --quiet --filter \\"name=redis\\" --latest",
+      "Executing shell script: docker-compose -f /Users/erik.engervall/dev/dockest/packages/dockest/docker-compose.dockest-generated.yml ps -q \\"redis\\"",
     ],
     Array [
-      "Successfully executed shell script docker ps --quiet --filter \\"name=redis\\" --latest",
+      "Successfully executed shell script docker-compose -f /Users/erik.engervall/dev/dockest/packages/dockest/docker-compose.dockest-generated.yml ps -q \\"redis\\"",
     ],
   ],
   "results": Array [
@@ -27,7 +27,7 @@ exports[`getContainerId should work 2`] = `
 [MockFunction] {
   "calls": Array [
     Array [
-      "docker ps --quiet --filter \\"name=redis\\" --latest",
+      "docker-compose -f /Users/erik.engervall/dev/dockest/packages/dockest/docker-compose.dockest-generated.yml ps -q \\"redis\\"",
       Object {
         "shell": true,
       },

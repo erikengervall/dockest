@@ -20,7 +20,8 @@
     "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/**/*.ts\"",
-    "test": "lerna run test --stream",
+    "test": "yarn test:unit && lerna run test --stream",
+    "test:unit": "lerna run test:unit --stream",
     "generate:typedoc": "typedoc --tsconfig ./packages/dockest/tsconfig.json ./packages/dockest"
   },
   "devDependencies": {
