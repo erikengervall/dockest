@@ -1,8 +1,6 @@
-import { COLORS, PROCESS_TEST_ENV } from './src/constants'
+import { COLORS } from './src/constants'
 
 const { keys } = Object
-
-process.env.NODE_ENV = PROCESS_TEST_ENV
 
 const deepClearObj = (o: { [key: string]: any }): any =>
   keys(o).forEach(k => (typeof o[k] === 'object' ? deepClearObj(o[k]) : (o[k] = '')))
