@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "ts-node dockest.ts"
+    "test:examples": "ts-node dockest.ts"
   },
   "dependencies": {
     "dockest": "file:./dockest.tgz"

@@ -3,13 +3,13 @@
   "version": "2.0.0-alpha.1",
   "private": true,
   "scripts": {
-    "test": "ts-node ./dockest.ts"
+    "test:examples": "ts-node ./dockest.ts"
   },
   "dependencies": {
     "axios": "^0.19.0"
   },
   "devDependencies": {
-    "dockest": "^2.0.0-alpha.1",
+    "dockest": "*",
     "typescript": "^3.6.3"
   }
 }

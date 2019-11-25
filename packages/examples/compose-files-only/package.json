@@ -3,7 +3,7 @@
   "version": "2.0.0-alpha.1",
   "private": true,
   "scripts": {
-    "test": "ts-node ./dockest.ts"
+    "test:examples": "ts-node ./dockest.ts"
   },
   "dependencies": {
     "ioredis": "^4.14.0",
@@ -16,7 +16,7 @@
     "@types/ioredis": "^4.0.13",
     "@types/pg": "^7.11.1",
     "@types/sequelize": "^4.28.4",
-    "dockest": "^2.0.0-alpha.1",
+    "dockest": "*",
     "typescript": "^3.6.3"
   }
 }

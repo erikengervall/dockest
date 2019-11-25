@@ -3002,6 +3002,14 @@ dockerfile-ast@0.0.16:
   dependencies:
     vscode-languageserver-types "^3.5.0"
 
+dockest@*:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/dockest/-/dockest-1.0.3.tgz#374d20808d62d7ff75abef4f79a913a3c5fed12f"
+  integrity sha512-LerLs7RPsfN3rm1qDUxEGHy+SfxRKnwHhrRSyJNpRhykaNaJAPOVS0kPc710KFkFlgHdRW4csiF2D4KtqrjYEg==
+  dependencies:
+    execa "^2.0.4"
+    js-yaml "^3.13.1"
+
 doctrine@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"

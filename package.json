@@ -17,10 +17,12 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
+    "clean": "lerna clean --yes && rimraf ./node_modules ./packages/dockest/dist && yarn --force",
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/**/*.ts\"",
-    "test": "yarn test:unit && lerna run test --stream",
+    "test": "yarn test:unit && lerna run test:examples --stream",
+    "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
+    "test:examples": "lerna run test:examples --stream",
     "test:unit": "lerna run test:unit --stream",
     "generate:typedoc": "typedoc --tsconfig ./packages/dockest/tsconfig.json ./packages/dockest"
   },
