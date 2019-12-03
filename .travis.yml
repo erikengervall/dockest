@@ -31,9 +31,6 @@ install:
 script:
   - yarn lint
 
-  # generate typedoc markdown files
-  - yarn generate:typedoc
-
   # publish docusaurus website on commits to master
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
     git config --global user.name "${GH_NAME}";
@@ -45,6 +42,4 @@ script:
     cd ../;
     fi
 
-  # - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  # - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   - yarn test

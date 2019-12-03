@@ -27,10 +27,6 @@ const siteConfig = {
       doc: 'introduction',
       label: 'Docs',
     },
-    {
-      doc: 'typedoc/index',
-      label: 'Types',
-    },
   ],
 
   /* path to images for header/footer */

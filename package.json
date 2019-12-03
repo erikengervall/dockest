@@ -26,8 +26,7 @@
     "test": "yarn test:unit && lerna run test:examples --stream",
     "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
     "test:examples": "lerna run test:examples --stream",
-    "test:unit": "lerna run test:unit --stream",
-    "generate:typedoc": "typedoc --tsconfig ./packages/dockest/tsconfig.json ./packages/dockest"
+    "test:unit": "lerna run test:unit --stream"
   },
   "devDependencies": {
     "@types/prettier": "^1.18.4",
@@ -46,9 +45,7 @@
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.1",
     "rimraf": "^3.0.0",
-    "snyk": "^1.254.0",
-    "typedoc": "^0.15.2",
-    "typedoc-plugin-markdown": "^2.2.11"
+    "snyk": "^1.254.0"
   },
   "husky": {
     "hooks": {
