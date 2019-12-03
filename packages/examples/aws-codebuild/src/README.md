@@ -7,7 +7,8 @@ It can be reused for any CI System that runs your build inside a docker containe
 ## Running the build
 
 ```bash
-./run_tests.sh
+./codebuild_prebuild.sh
+./codebuild_test.sh
 ```
 
 This test should also pass when not being run inside a container.
@@ -20,7 +21,7 @@ This test should also pass when not being run inside a container.
 
 ## Development
 
-Dockest must be bundeled as a .tgz and put inside this folder, because the CodeBuild container cannot resolve the parent directories (check `run_tests.sh`).
+Dockest must be bundeled as a .tgz and put inside this folder, because the CodeBuild container cannot resolve the parent directories (check `codebuild_prebuild.sh`).
 
 # Exposed ports
 
