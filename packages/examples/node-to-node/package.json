@@ -3,13 +3,17 @@
   "version": "2.0.0-alpha.1",
   "private": true,
   "scripts": {
-    "test:examples": "ts-node ./dockest.ts"
+    "test:examples": "node_modules/.bin/ts-node ./dockest"
   },
   "dependencies": {
     "axios": "^0.19.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.23",
     "dockest": "2.0.0-alpha.1",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "ts-node": "^8.5.4",
     "typescript": "^3.6.3"
   }
 }
