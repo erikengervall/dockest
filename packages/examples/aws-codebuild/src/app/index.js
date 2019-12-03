@@ -1,4 +1,3 @@
-'use strict'
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const bodyParser = require('body-parser')

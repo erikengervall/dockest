@@ -3,6 +3,6 @@
   "version": "2.0.0-alpha.0",
   "private": true,
   "scripts": {
-    "test:examples": "(cd ./src && ./run_tests.sh)"
+    "test:examples": "(cd ./src && ./build.sh && ./run_tests.sh)"
   }
 }

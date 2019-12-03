@@ -1,14 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-cd ../../../dockest
-yarn pack --filename ../examples/aws-codebuild/src/dockest.tgz
-cd ../examples/aws-codebuild/src
-
-# build dockest
-yarn cache clean
-yarn install --no-lockfile
-yarn test
+yarn test:codebuild:buildspec
 
 # build with dockest inside docker container
 # image source: https://github.com/n1ru4l/docker-image-node-10-with-docker-and-compose

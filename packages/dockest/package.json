@@ -26,6 +26,7 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
+    "clean": "rimraf ./dist",
     "build": "tsc",
     "generate:typedoc": "typedoc .",
     "test:unit": "jest . --forceExit --detectOpenHandles"
@@ -45,7 +46,8 @@
     "typedoc": "^0.15.3"
   },
   "devDependencies": {
+    "@types/execa": "^2.0.0",
     "@types/js-yaml": "^3.12.1",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.2"
   }
 }

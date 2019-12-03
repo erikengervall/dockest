@@ -24,12 +24,10 @@ before_install:
 
   - echo "*** <travis.before_install> complete ***"
 install:
-  - yarn install:deps
+  - yarn build
 
   - echo "*** <travis.install> complete ***"
 script:
-  # run linting
-  - yarn build
   - yarn lint
 
   # generate typedoc markdown files

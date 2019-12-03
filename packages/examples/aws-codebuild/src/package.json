@@ -4,13 +4,16 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "ts-node dockest.ts #This scripts has to be `test` due to aws-codebuild"
+    "clean": "rimraf ./dockest.tgz",
+    "build": "./build.sh",
+    "test:codebuild:buildspec": "ts-node dockest.ts"
   },
   "dependencies": {
     "dockest": "file:./dockest.tgz"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
+    "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.7.11",
     "@types/node-fetch": "2.5.2",
     "execa": "^2.0.5",
