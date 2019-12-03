@@ -1,11 +1,6 @@
 {
   "name": "dockest-monorepo",
   "version": "1.0.0",
-  "private": true,
-  "workspaces": [
-    "packages/dockest",
-    "packages/examples/*"
-  ],
   "homepage": "https://github.com/erikengervall/dockest#readme",
   "bugs": {
     "url": "https://github.com/erikengervall/dockest/issues"
@@ -17,7 +12,8 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "clean": "lerna clean --yes && rimraf ./node_modules ./packages/dockest/dist && yarn --force",
+    "clean": "lerna clean --yes && rimraf ./node_modules ./packages/dockest/dist && yarn --force && lerna exec \"yarn --force\" --stream",
+    "install:deps": "yarn && lerna exec \"yarn\" --stream",
     "build": "lerna run build --stream",
     "lint": "eslint \"./packages/**/*.ts\"",
     "test": "yarn test:unit && lerna run test:examples --stream",

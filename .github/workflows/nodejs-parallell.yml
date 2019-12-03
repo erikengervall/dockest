@@ -18,7 +18,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: lint & test
         run: |
-          yarn
+          yarn install:deps
           yarn build
           yarn test --concurrency 3
         env:

@@ -19,7 +19,7 @@ jobs:
       - name: lint & test
         run: |
           yarn --version
-          yarn
+          yarn install:deps
           yarn build
           yarn lint
           yarn test

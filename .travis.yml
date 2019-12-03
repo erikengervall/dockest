@@ -24,7 +24,7 @@ before_install:
 
   - echo "*** <travis.before_install> complete ***"
 install:
-  - yarn
+  - yarn install:deps
 
   - echo "*** <travis.install> complete ***"
 script:
