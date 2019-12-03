@@ -19,7 +19,7 @@ jobs:
       - name: lint & test
         run: |
           yarn --version
-          yarn build
+          yarn prepare-packages
           yarn lint
           yarn test
         env:
