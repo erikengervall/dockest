@@ -1,1 +1,1 @@
-test('it works', () => {})
+test('it works', () => ({}))
