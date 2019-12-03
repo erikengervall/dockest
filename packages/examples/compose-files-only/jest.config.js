@@ -6,6 +6,6 @@ module.exports = {
       diagnostics: false, // https://huafu.github.io/ts-jest/user/config/diagnostics
     },
   },
-  testPathIgnorePatterns: ['/node_modules/', 'dist'],
+  testPathIgnorePatterns: ['/node_modules/'],
   setupFiles: ['./jest.setup.ts'],
 }

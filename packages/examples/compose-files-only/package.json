@@ -15,8 +15,9 @@
   "devDependencies": {
     "@types/ioredis": "^4.0.13",
     "@types/pg": "^7.11.1",
-    "@types/sequelize": "^4.28.4",
-    "dockest": "*",
+    "@types/sequelize": "4.28.1",
+    "@types/validator": "10.11.3",
+    "dockest": "2.0.0-alpha.1",
     "typescript": "^3.6.3"
   }
 }

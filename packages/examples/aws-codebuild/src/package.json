@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test:examples": "ts-node dockest.ts"
+    "test": "ts-node dockest.ts #This scripts has to be `test` due to aws-codebuild"
   },
   "dependencies": {
     "dockest": "file:./dockest.tgz"

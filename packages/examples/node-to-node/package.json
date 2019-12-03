@@ -9,7 +9,7 @@
     "axios": "^0.19.0"
   },
   "devDependencies": {
-    "dockest": "*",
+    "dockest": "2.0.0-alpha.1",
     "typescript": "^3.6.3"
   }
 }

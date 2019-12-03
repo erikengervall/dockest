@@ -1,6 +1,9 @@
 import Redis from 'ioredis'
 
-const { seedCake } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
+const seedCake = {
+  key: 'thecakeistein',
+  value: 'lie',
+}
 
 const redis = new Redis({
   host: 'localhost',

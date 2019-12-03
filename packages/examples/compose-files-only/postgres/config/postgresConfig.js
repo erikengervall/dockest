@@ -9,15 +9,9 @@ const config = {
 }
 
 const postgresConfig = {
-  development: {
-    ...config,
-  },
-  test: {
-    ...config,
-  },
-  production: {
-    ...config,
-  },
+  development: { ...config },
+  test: { ...config },
+  production: { ...config },
 }
 
 module.exports = postgresConfig

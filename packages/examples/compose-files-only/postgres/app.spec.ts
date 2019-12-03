@@ -1,7 +1,12 @@
 import { execa } from 'dockest'
+
 import app from './app'
 
-const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
+const seedUser = {
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'demo@demo.com',
+}
 
 beforeAll(async () => {
   await execa('sequelize db:migrate:undo:all')
