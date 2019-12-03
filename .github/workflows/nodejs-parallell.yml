@@ -18,6 +18,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: lint & test
         run: |
+          yarn
           yarn prepare-packages
           yarn lint
           yarn test --concurrency 3
