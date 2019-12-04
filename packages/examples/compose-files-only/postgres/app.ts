@@ -1,6 +1,10 @@
 import postgres1sequelize from './models'
 
-const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
+const seedUser = {
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'demo@demo.com',
+}
 
 const getFirstEntry = async () =>
   postgres1sequelize.UserModel.findOne({

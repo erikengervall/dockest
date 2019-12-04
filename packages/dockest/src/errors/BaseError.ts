@@ -1,5 +1,4 @@
 import { DockestConfig } from '../index'
-import { PROCESS_TEST_ENV } from '../constants'
 import dumpError from '../utils/dumpError'
 
 export default class BaseError extends Error {
@@ -18,7 +17,7 @@ export default class BaseError extends Error {
       Error.captureStackTrace(this, BaseError)
     }
 
-    if (process.env.NODE_ENV !== PROCESS_TEST_ENV && BaseError.DockestConfig.opts.dumpErrors === true) {
+    if (process.env.NODE_ENV !== 'test' && BaseError.DockestConfig.opts.dumpErrors === true) {
       dumpError({
         message: this.message,
         stack: this.stack,

@@ -1,11 +1,6 @@
 {
   "name": "dockest-monorepo",
   "version": "1.0.0",
-  "private": true,
-  "workspaces": [
-    "packages/dockest",
-    "packages/examples/*"
-  ],
   "homepage": "https://github.com/erikengervall/dockest#readme",
   "bugs": {
     "url": "https://github.com/erikengervall/dockest/issues"
@@ -17,41 +12,42 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "clean": "lerna clean --yes && rimraf ./dist ./node_modules && yarn",
-    "build": "lerna run build --stream",
+    "clean": "lerna run clean --stream && lerna clean --yes && rimraf ./node_modules && yarn && yarn prep",
+    "yarn:locks": "yarn --force && lerna exec \"yarn --force\" --ignore @examples/aws-codebuild--src",
+    "yarn:upgrade": "yarn upgrade --latest && lerna exec \"yarn upgrade --latest\"",
+    "prep-root:install:deps": "yarn",
+    "prep-root": "yarn prep-root:install:deps",
+    "prep-dockest:install:deps": "lerna exec \"yarn\" --stream --scope dockest",
+    "prep-dockest:build": "yarn lerna run build --stream --scope dockest",
+    "prep-dockest": "yarn prep-dockest:install:deps && yarn prep-dockest:build",
+    "prep-examples:install:deps": "lerna exec \"yarn\" --stream --scope @examples/* --ignore @examples/aws-codebuild--src",
+    "prep-examples:build": "yarn lerna run build --stream --scope @examples/*",
+    "prep-examples": "yarn prep-examples:install:deps && yarn prep-examples:build",
+    "prep": "yarn prep-root && yarn prep-dockest && yarn prep-examples",
     "lint": "eslint \"./packages/**/*.ts\"",
-    "test": "lerna run test --stream",
-    "generate:typedoc": "typedoc --tsconfig ./packages/dockest/tsconfig.json ./packages/dockest"
+    "test": "yarn test:unit && yarn test:examples",
+    "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
+    "test:examples": "lerna run test:examples --stream",
+    "test:unit": "lerna run test:unit --stream"
   },
   "devDependencies": {
-    "@types/execa": "^2.0.0",
-    "@types/jest": "^24.0.18",
-    "@types/js-yaml": "^3.12.1",
-    "@types/node": "^12.7.11",
-    "@types/prettier": "^1.18.3",
-    "@typescript-eslint/eslint-plugin": "^2.3.2",
-    "@typescript-eslint/parser": "^2.3.2",
-    "@typescript-eslint/typescript-estree": "^2.3.2",
-    "concurrently": "^4.1.2",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
+    "@types/prettier": "^1.18.4",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "@typescript-eslint/typescript-estree": "^2.10.0",
+    "concurrently": "^5.0.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-no-only-tests": "^2.3.1",
     "eslint-plugin-prettier": "^3.1.1",
-    "husky": "^3.0.8",
-    "jest": "^24.9.0",
-    "jest-mock-proxy": "^3.0.0",
-    "lerna": "^3.16.4",
-    "lint-staged": ">=9.4.1",
-    "prettier": "^1.18.2",
-    "prettier-eslint": "^9.0.0",
+    "husky": "^3.1.0",
+    "lerna": "^3.19.0",
+    "lint-staged": ">=9.5.0",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.1",
     "rimraf": "^3.0.0",
-    "snyk": "^1.232.0",
-    "ts-jest": "^24.1.0",
-    "ts-node": "^8.4.1",
-    "typedoc": "^0.15.0",
-    "typedoc-plugin-markdown": "^2.2.8",
-    "typescript": "^3.6.3"
+    "snyk": "^1.254.0"
   },
   "husky": {
     "hooks": {

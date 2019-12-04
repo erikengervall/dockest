@@ -1,6 +1,9 @@
 import app from './app'
 
-const { seedCake } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
+const seedCake = {
+  key: 'thecakeistein',
+  value: 'lie',
+}
 
 describe('redis', () => {
   it('should retrieve seeded value', async () => {

@@ -10,4 +10,4 @@ phases:
 
   build:
     commands:
-      - yarn test
+      - yarn test:codebuild:buildspec

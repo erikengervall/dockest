@@ -3,6 +3,7 @@
   "version": "2.0.0-alpha.0",
   "private": true,
   "scripts": {
-    "test": "(cd ./src && ./run_tests.sh)"
+    "build": "(cd ./src && ./codebuild_prebuild.sh)",
+    "test:examples": "(cd ./src && ./codebuild_test.sh)"
   }
 }

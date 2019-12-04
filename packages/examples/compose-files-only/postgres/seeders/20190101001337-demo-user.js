@@ -1,8 +1,12 @@
-const { seedUser } = require('../data.json') // eslint-disable-line @typescript-eslint/no-var-requires
+const seedUser = {
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'demo@demo.com',
+}
 
 const demoUserSeeder = {
-  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Users', [seedUser], {}), // eslint-disable-line @typescript-eslint/no-unused-vars
-  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Users', {}, {}), // eslint-disable-line @typescript-eslint/no-unused-vars
+  up: queryInterface => queryInterface.bulkInsert('Users', [seedUser], {}),
+  down: queryInterface => queryInterface.bulkDelete('Users', {}, {}),
 }
 
 module.exports = demoUserSeeder

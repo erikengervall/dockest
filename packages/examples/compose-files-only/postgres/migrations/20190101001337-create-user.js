@@ -25,7 +25,7 @@ const createUserMigration = {
         type: Sequelize.DATE,
       },
     }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Users'), // eslint-disable-line @typescript-eslint/no-unused-vars
+  down: queryInterface => queryInterface.dropTable('Users'),
 }
 
 module.exports = createUserMigration
