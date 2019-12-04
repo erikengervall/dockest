@@ -23,7 +23,7 @@
     "@types/pg": "^7.4.14",
     "@types/sequelize": "4.28.8",
     "@types/validator": "12.0.1",
-    "dockest": "2.0.0-alpha.1",
+    "dockest": "file:../../dockest",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
     "ts-node": "^8.5.4",
