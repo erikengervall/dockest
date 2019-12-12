@@ -28,7 +28,9 @@
     "test": "yarn test:unit && yarn test:examples",
     "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
     "test:examples": "lerna run test:examples --stream",
-    "test:unit": "lerna run test:unit --stream"
+    "test:unit": "lerna run test:unit --stream",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "devDependencies": {
     "@types/prettier": "^1.18.4",
@@ -46,8 +48,7 @@
     "lint-staged": ">=9.5.0",
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.1",
-    "rimraf": "^3.0.0",
-    "snyk": "^1.254.0"
+    "rimraf": "^3.0.0"
   },
   "husky": {
     "hooks": {
@@ -60,5 +61,8 @@
       "git add"
     ]
   },
-  "snyk": true
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.258.2"
+  }
 }
