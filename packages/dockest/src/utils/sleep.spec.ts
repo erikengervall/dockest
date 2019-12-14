@@ -1,4 +1,4 @@
-import sleep from './sleep'
+import { sleep } from './sleep'
 
 const defaultSleep = 1000
 const flakynessBuffer = 5

@@ -1,32 +1,28 @@
-const dotenv = require('dotenv') // eslint-disable-line @typescript-eslint/no-var-requires
-
-const env = dotenv.config().parsed
-
 const postgresConfig = {
   development: {
-    username: env.postgres1sequelize_username,
-    password: env.postgres1sequelize_password,
-    database: env.postgres1sequelize_database,
-    host: env.postgres1sequelize_host,
-    port: Number(env.postgres1sequelize_port),
+    username: 'ramda',
+    password: 'is',
+    database: 'nobueno',
+    host: 'localhost',
+    port: 5435,
     dialect: 'postgres',
     logging: false,
   },
   test: {
-    username: env.postgres1sequelize_username,
-    password: env.postgres1sequelize_password,
-    database: env.postgres1sequelize_database,
-    host: env.postgres1sequelize_host,
-    port: Number(env.postgres1sequelize_port),
+    username: 'ramda',
+    password: 'is',
+    database: 'nobueno',
+    host: 'localhost',
+    port: 5435,
     dialect: 'postgres',
     logging: false,
   },
   production: {
-    username: env.postgres1sequelize_username,
-    password: env.postgres1sequelize_password,
-    database: env.postgres1sequelize_database,
-    host: env.postgres1sequelize_host,
-    port: Number(env.postgres1sequelize_port),
+    username: 'ramda',
+    password: 'is',
+    database: 'nobueno',
+    host: 'localhost',
+    port: 5435,
     dialect: 'postgres',
     logging: false,
   },

@@ -3,7 +3,7 @@
 Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.
 
 <p align="center">
-  <a href='https://erikengervall.github.io/dockest/'><img alt="dockest logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/dockest/master/tools/logo/logo.png"></a>
+  <a href='https://erikengervall.github.io/dockest/'><img alt="dockest logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/dockest/master/resources/img/logo.png"></a>
 </p>
 
 <br>
@@ -26,18 +26,35 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 ## Example
 
+`docker-compose.yml`
+
+```yml
+version: '3.7'
+
+services:
+  myRedis:
+    image: 'redis:5.0.3-alpine'
+    ports:
+      - published: 6379
+        target: 6379
+```
+
+`dockest.ts`
+
 ```ts
-import Dockest, { runners } from 'dockest'
+import { Dockest, logLevel } from 'dockest'
 
 const dockest = new Dockest()
 
-dockest.attachRunners([
-  new runners.RedisRunner({
-    service: 'my-service',
-  }),
-])
+const dockestServices = [
+  {
+    serviceName: 'myRedis',
+    commands: [],
+    healthchecks: [],
+  },
+]
 
-dockest.run()
+dockest.run(dockestServices)
 ```
 
 ## Documentation

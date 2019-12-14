@@ -1,34 +1,39 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
-import { ComposeFile } from '../runners/@types'
+import { DockerComposeFile } from '../@types'
+import { DOCKEST_ATTACH_TO_PROCESS, DOCKEST_HOST_ADDRESS, DEFAULT_HOST_NAME } from '../constants'
+import { DockestError } from '../Errors'
 
 const isInsideDockerContainer = isDocker()
+const dockestConfig = process.env[DOCKEST_ATTACH_TO_PROCESS]
 
-if (!process.env.DOCKEST_INTERNAL_CONFIG) {
-  throw new Error('Not executed inside dockest context.')
+if (!dockestConfig) {
+  throw new DockestError('Config not attached to process: Not executed inside dockest context')
 }
 
-const config: ComposeFile = JSON.parse(process.env.DOCKEST_INTERNAL_CONFIG)
+const config: DockerComposeFile = JSON.parse(dockestConfig)
 
 export const getHostAddress = () => {
   if (!isInsideDockerContainer) {
-    return `host.docker.internal`
+    return DEFAULT_HOST_NAME
   }
 
-  return `host.dockest-runner.internal`
+  return DOCKEST_HOST_ADDRESS
 }
 
 export const getServiceAddress = (serviceName: string, targetPort: number | string) => {
   const service = config.services[serviceName]
   if (!service) {
-    throw new Error(`Service "${serviceName}" does not exist.`)
+    throw new DockestError(`Service "${serviceName}" does not exist`)
   }
+
   const portBinding = service.ports.find(portBinding => portBinding.target === targetPort)
   if (!portBinding) {
-    throw new Error(`Service "${serviceName}" has no target port ${portBinding}.`)
+    throw new DockestError(`Service "${serviceName}" has no target port ${portBinding}`)
   }
 
   if (isInsideDockerContainer) {
     return `${serviceName}:${portBinding.target}`
   }
+
   return `localhost:${portBinding.published}`
 }

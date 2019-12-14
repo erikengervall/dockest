@@ -42,5 +42,6 @@ test('can send a request to the container and it can send a request to us', asyn
     method: 'post',
     body: `http://${HOSTNAME}:${PORT}`,
   }).then(res => res.text())
+
   expect(res).toEqual('OK.')
 })

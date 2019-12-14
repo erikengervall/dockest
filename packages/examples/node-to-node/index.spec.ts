@@ -15,7 +15,7 @@ describe('index.spec.js', () => {
       it(`should throw 404 when querying user that doesn't exist`, async () => {
         try {
           await getUserNameById('4')
-          throw new Error(`Just in case above line doesn't throw - this will`)
+          throw new Error(`Guarantees failure`)
         } catch (error) {
           expect(error.response.status).toEqual(404)
           expect(error.response.data).toEqual('Could not find user')
@@ -39,7 +39,7 @@ describe('index.spec.js', () => {
     it(`should throw 404 when querying undeclared endpoint`, async () => {
       try {
         await notFound()
-        throw new Error(`Just in case above line doesn't throw - this will`)
+        throw new Error(`Guarantees failure`)
       } catch (error) {
         expect(error.response.status).toEqual(404)
       }

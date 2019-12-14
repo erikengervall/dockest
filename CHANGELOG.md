@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Removed `typedoc`
+- Removed concept of `Runners`
+- Removed `attachRunners` method
+
+### Changed
+
+- Introduced `DockestServices`, serving as the mapping between Compose Services and the services required in the integration test.
+- Introduced custom healthchecks. The custom healthchecks can be passed as an attribute on the `DockestServices`.
 
 ## [2.0.0-alpha.1] - 2019-10-24
 

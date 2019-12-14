@@ -3,6 +3,8 @@
   "version": "2.0.0-alpha.1",
   "private": true,
   "scripts": {
+    "link": "yarn link dockest",
+    "unlink": "yarn unlink dockest",
     "test:examples": "node_modules/.bin/ts-node ./dockest"
   },
   "dependencies": {

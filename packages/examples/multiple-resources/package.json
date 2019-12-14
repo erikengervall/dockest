@@ -3,10 +3,11 @@
   "version": "2.0.0-alpha.1",
   "private": true,
   "scripts": {
+    "dev:examples:link": "yarn link dockest",
+    "dev:examples:unlink": "yarn unlink dockest",
     "test:examples": "node_modules/.bin/ts-node ./dockest"
   },
   "dependencies": {
-    "dotenv": "^8.0.0",
     "ioredis": "^4.14.0",
     "kafkajs": "^1.10.0",
     "knex": "^0.20.3",
@@ -16,7 +17,6 @@
     "sequelize-cli": "^5.4.0"
   },
   "devDependencies": {
-    "@types/dotenv": "^8.2.0",
     "@types/ioredis": "^4.0.13",
     "@types/jest": "^24.0.23",
     "@types/kafkajs": "^1.8.2",
