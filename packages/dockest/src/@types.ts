@@ -33,8 +33,8 @@ export interface DockerComposeFile {
   }
 }
 
-export interface Healthcheck {
-  (composeService: DockerComposeFileService, containerId: string): string
+export interface Healthcheck<T = DockerComposeFileService> {
+  (composeService: T, containerId: string): string
 }
 
 export interface DockestService {

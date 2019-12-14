@@ -1,7 +1,15 @@
-import { Healthcheck } from '../@types'
+import { Healthcheck, DockerComposeFileService } from '../@types'
+
+interface DockerComposeFileServicePostgres extends DockerComposeFileService {
+  environment: {
+    POSTGRES_DB: string
+    POSTGRES_PASSWORD: string
+    POSTGRES_USER: string
+  }
+}
 
 export const defaultHealthchecks: {
-  postgres: Healthcheck
+  postgres: Healthcheck<DockerComposeFileServicePostgres>
   redis: Healthcheck
   web: Healthcheck
 } = {
