@@ -1,0 +1,29 @@
+{
+  "name": "@examples/multiple-compose-files",
+  "version": "2.0.0-alpha.2",
+  "private": true,
+  "scripts": {
+    "dev:examples:link": "yarn link dockest",
+    "dev:examples:unlink": "yarn unlink dockest",
+    "test:examples": "node_modules/.bin/ts-node ./dockest"
+  },
+  "dependencies": {
+    "ioredis": "^4.14.0",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.0",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.0.13",
+    "@types/jest": "^24.0.23",
+    "@types/pg": "^7.11.1",
+    "@types/sequelize": "4.28.8",
+    "@types/validator": "12.0.1",
+    "dockest": "file:../../dockest",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.6.3"
+  }
+}

@@ -1,53 +1,3 @@
-export const COLORS = {
-  MISC: {
-    BLINK: '\x1b[5m',
-    BRIGHT: '\x1b[1m',
-    DIM: '\x1b[2m',
-    HIDDEN: '\x1b[8m',
-    RESET: '\x1b[0m',
-    REVERSE: '\x1b[7m',
-    UNDERSCORE: '\x1b[4m',
-  },
-  FG: {
-    BLACK: '\x1b[30m',
-    BLUE: '\x1b[34m',
-    CYAN: '\x1b[36m',
-    GREEN: '\x1b[32m',
-    MAGENTA: '\x1b[35m',
-    RED: '\x1b[31m',
-    WHITE: '\x1b[37m',
-    YELLOW: '\x1b[33m',
-  },
-  BG: {
-    BLACK: '\x1b[40m',
-    BLUE: '\x1b[44m',
-    CYAN: '\x1b[46m',
-    GREEN: '\x1b[42m',
-    MAGENTA: '\x1b[45m',
-    RED: '\x1b[41m',
-    WHITE: '\x1b[47m',
-    YELLOW: '\x1b[43m',
-  },
-}
-
-export const LOG_SYMBOLS: readonly string[] = [
-  '🐉 ',
-  '🐒 ',
-  '🐙 ',
-  '🐞 ',
-  '🐥 ',
-  '🐼 ',
-  '🐿 ',
-  '🦂 ',
-  '🦃 ',
-  '🦄 ',
-  '🦊 ',
-  '🦋 ',
-  '🦍 ',
-  '🦖 ',
-  '🦚 ',
-]
-
 export const LOG_LEVEL = {
   NOTHING: 0,
   ERROR: 1,
@@ -56,32 +6,31 @@ export const LOG_LEVEL = {
   DEBUG: 4,
 }
 
-export const DEFAULT_USER_CONFIG = {
-  afterSetupSleep: 0,
-  composeFile: [],
-  dev: { debug: false },
-  dumpErrors: false,
-  exitHandler: null,
-  guessRunnerType: false,
+export const GENERATED_COMPOSE_FILE_PATH = `${process.cwd()}/docker-compose.dockest-generated.yml`
+
+export const DOCKEST_ATTACH_TO_PROCESS = 'DOCKEST_ATTACH_TO_PROCESS'
+
+export const BRIDGE_NETWORK_NAME = `dockest_bridge_network`
+
+export const DOCKEST_HOST_ADDRESS = 'host.dockest-runner.internal'
+export const DEFAULT_HOST_NAME = 'host.docker.internal'
+
+export const DEFAULT_OPTS = {
+  composeFile: 'docker-compose.yml',
+  jestOpts: {
+    projects: ['.'],
+    runInBand: true,
+  },
   logLevel: LOG_LEVEL.INFO,
-  runInBand: true,
 }
 
-export const INTERNAL_CONFIG = {
-  failedTeardowns: [],
-  hostname: process.env.HOSTNAME || 'host.docker.internal',
+export const DEFAULT_$ = {
+  dockestServices: [],
+  hostname: process.env.HOSTNAME || DEFAULT_HOST_NAME,
   isInsideDockerContainer: false,
   jestRanWithResult: false,
   perfStart: 0,
+  runners: [],
 }
 
-export const GENERATED_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated.yml'
-export const GENERATED_RUNNER_COMPOSE_FILE_NAME = 'docker-compose.dockest-generated-runner.yml'
-export const GENERATED_COMPOSE_FILE_PATH = `${
-  process.env.NODE_ENV === 'test' ? 'mock' : process.cwd()
-}/${GENERATED_COMPOSE_FILE_NAME}`
-export const GENERATED_RUNNER_COMPOSE_FILE_PATH = `${
-  process.env.NODE_ENV === 'test' ? 'mock' : process.cwd()
-}/${GENERATED_RUNNER_COMPOSE_FILE_NAME}`
-
-export const BRIDGE_NETWORK_NAME = `dockest_bridge_network`
+export const MINIMUM_JEST_VERSION = '20.0.0'

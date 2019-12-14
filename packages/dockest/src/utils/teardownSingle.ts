@@ -1,56 +1,33 @@
-import execaWrapper from './execaWrapper'
-import { Runner } from '../runners/@types'
+import { execaWrapper } from './execaWrapper'
+import { Runner } from '../@types'
+import { DockestError } from '../Errors'
 
-const stopContainerById = async (runner: Runner): Promise<void> => {
-  const { containerId, logger } = runner
-  logger.debug('Container being stopped')
+const stopContainerById = async (runner: Runner) => {
+  const { containerId } = runner
+  const logPrefix = '[Stop Container]'
+  const command = `docker stop ${containerId}`
 
-  try {
-    const command = `docker stop ${containerId}`
-
-    await execaWrapper(command, runner)
-  } catch (error) {
-    return logger.error('Unexpected error when stopping container', { error })
-  }
-
-  logger.debug('Container stopped')
+  await execaWrapper(command, { runner, logPrefix, logStdout: true })
 }
 
-const removeContainerById = async (runner: Runner): Promise<void> => {
-  const { containerId, logger } = runner
-  logger.debug('Container being removed')
+const removeContainerById = async (runner: Runner) => {
+  const { containerId } = runner
+  const logPrefix = '[Remove Container]'
 
-  try {
-    const command = `docker rm ${containerId} --volumes`
-
-    await execaWrapper(command, runner)
-  } catch (error) {
-    return logger.error('Unexpected error when removing container', { error })
-  }
-
-  logger.debug('Container removed')
+  const command = `docker rm ${containerId} --volumes`
+  await execaWrapper(command, { runner, logPrefix, logStdout: true })
 }
 
-export default async (runner: Runner): Promise<void> => {
-  const { containerId, logger } = runner
+export const teardownSingle = async (runner: Runner) => {
+  const {
+    containerId,
+    dockestService: { serviceName },
+  } = runner
 
   if (!containerId) {
-    return logger.error('Cannot teardown container without a containerId')
+    throw new DockestError(`Invalid containerId (${containerId}) for service (${serviceName})`, { runner })
   }
 
-  // Teardown runner's dependencies
-  for (const depRunner of runner.runnerConfig.dependsOn) {
-    const { logger } = depRunner
-
-    logger.info('Container teardown started')
-    await stopContainerById(depRunner)
-    await removeContainerById(depRunner)
-    logger.info('Container teardown completed', { nl: 1 })
-  }
-
-  // Teardown runner
-  logger.info('Container teardown started')
   await stopContainerById(runner)
   await removeContainerById(runner)
-  logger.info('Container teardown completed', { nl: 1 })
 }

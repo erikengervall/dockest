@@ -1,0 +1,47 @@
+services:
+  dockest_postgres1sequelize:
+    environment:
+      POSTGRES_DB: nobueno
+      POSTGRES_PASSWORD: is
+      POSTGRES_USER: ramda
+    image: 'postgres:9.6-alpine'
+    ports:
+      - published: 5435
+        target: 5432
+  dockest_kafka1confluentinc:
+    depends_on:
+      - dockest_zookeeper1confluentinc
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: >-
+        PLAINTEXT://dockest_kafka1confluentinc:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'dockest_zookeeper1confluentinc:2181'
+    image: 'confluentinc/cp-kafka:5.2.2'
+    ports:
+      - published: 9092
+        target: 9092
+  dockest_postgres2knex:
+    environment:
+      POSTGRES_DB: nobueno
+      POSTGRES_PASSWORD: is
+      POSTGRES_USER: ramda
+    image: 'postgres:9.6-alpine'
+    ports:
+      - published: 5436
+        target: 5432
+  dockest_redis1ioredis:
+    image: 'redis:5.0.3-alpine'
+    ports:
+      - published: 6381
+        target: 6379
+  dockest_zookeeper1confluentinc:
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    image: 'confluentinc/cp-zookeeper:5.2.2'
+    ports:
+      - published: 2181
+        target: 2181
+version: '3.7'

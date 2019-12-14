@@ -1,4 +1,4 @@
-import hashCode from './hashCode'
+import { hashCode } from './hashCode'
 
 describe('hashCode', () => {
   describe('happy', () => {
@@ -9,7 +9,7 @@ describe('hashCode', () => {
       const result = hashCode(service)
       const result2 = hashCode(service2)
 
-      expect(result).toMatchSnapshot()
+      expect(result).toMatchInlineSnapshot(`-2021595073`)
       expect(result).toEqual(result2)
     })
   })

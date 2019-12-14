@@ -24,6 +24,7 @@ const createLinkGenerator = ({ siteConfig, language = '' }) => {
   const { baseUrl, docsUrl } = siteConfig
   const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`
   const langPart = `${language ? `${language}/` : ''}`
+
   return doc => `${baseUrl}${docsPart}${langPart}${doc}`
 }
 
@@ -68,7 +69,6 @@ class HomeSplash extends React.Component {
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
             <Button href={docUrl('introduction')}>Documentation</Button>
-
             <Button target="_blank" href={siteConfig.repoUrl}>
               Github
             </Button>
@@ -94,12 +94,18 @@ class Index extends React.Component {
         <Block layout="fourColumn">
           {[
             {
-              title: 'Just JavaScript (via TS)',
-              content: `Dockest is a pure JavaScript library that handles the entire lifecycle of your docker services during integration testing`,
+              title: 'Good old JavaScript',
+              content:
+                'Dockest abstracts away the need for extensive Docker knowledge and eliminates funky bash scripts',
             },
             {
               title: 'Completely modular and extendable',
-              content: `Dockest is built with modularity in mind and extending the library with new services is a breeze`,
+              content:
+                'Dockest is built with modularity in mind, making the introduction of new types of services is a breeze',
+            },
+            {
+              title: 'Extends your development environment',
+              content: 'Dockest utilizes Docker Compose, the very same tool most developers use during development',
             },
           ]}
         </Block>

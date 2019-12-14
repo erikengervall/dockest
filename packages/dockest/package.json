@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "files": [
@@ -26,6 +26,8 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
+    "dev:dockest:link": "yarn link",
+    "dev:dockest:unlink": "yarn unlink",
     "clean": "node_modules/.bin/rimraf ./dist",
     "build": "node_modules/.bin/tsc",
     "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
@@ -39,8 +41,8 @@
     "@types/execa": "^2.0.0",
     "@types/jest": "^24.0.23",
     "@types/js-yaml": "^3.12.1",
+    "chalk": "^3.0.0",
     "jest": "^24.9.0",
-    "jest-mock-proxy": "^3.0.0",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.2"
   }

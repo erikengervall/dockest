@@ -1,10 +1,12 @@
 {
   "name": "@examples/aws-codebuild--src",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha.2",
   "private": true,
   "main": "index.js",
   "scripts": {
     "clean": "node_modules/.bin/rimraf ./dockest.tgz ./yarn.lock",
+    "dev:examples:link": "yarn link dockest",
+    "dev:examples:unlink": "yarn unlink dockest",
     "test:codebuild:buildspec": "node_modules/.bin/ts-node dockest"
   },
   "dependencies": {

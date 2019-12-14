@@ -1,4 +1,4 @@
-import app from './app'
+import { app } from './app'
 
 const { seedBanana } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 

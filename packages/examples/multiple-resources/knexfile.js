@@ -1,15 +1,11 @@
-const dotenv = require('dotenv') // eslint-disable-line @typescript-eslint/no-var-requires
-
-const env = dotenv.config().parsed
-
 const dbConfig = {
   client: 'postgresql',
   connection: {
-    host: env.postgres2knex_host,
-    database: env.postgres2knex_database,
-    user: env.postgres2knex_username,
-    password: env.postgres2knex_password,
-    port: Number(env.postgres2knex_port),
+    host: 'localhost',
+    database: 'nobueno',
+    user: 'ramda',
+    password: 'is',
+    port: 5436,
   },
   migrations: {
     directory: './postgres-2-knex/migrations',

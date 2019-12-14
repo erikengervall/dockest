@@ -1,54 +1,55 @@
 import readline from 'readline'
+import { yellowBright, redBright, greenBright } from 'chalk'
 import { LOG_LEVEL } from './constants'
-import { Runner } from './runners/@types'
 
-interface Payload {
-  data?: { [key: string]: any }
-  icon?: string
-  nl?: number
-  pnl?: number
+interface LoggerPayload {
+  data?: {
+    [key: string]: any
+  }
+  endingNewLines?: number
   service?: string
+  startingNewLines?: number
+  success?: boolean
   symbol?: string
-  error?: Error
 }
 
-type LogMethod = (message: string, payload?: Payload) => void
+export type LogMethod = (message: string, payload?: LoggerPayload) => void
 
-const getLogArgs = (message: string, payload: Payload): string[] => {
-  const { data, service, symbol, nl = 0, pnl = 0 } = payload
+const getLogArgs = (message: string, payload: LoggerPayload): string[] => {
+  const { data = undefined, service, symbol, endingNewLines = 0, startingNewLines = 0, success } = payload
   let logArgs: string[] = []
 
-  if (!!pnl && pnl > 0) {
-    logArgs = logArgs.concat(new Array(pnl).fill('\n'))
+  if (startingNewLines > 0) {
+    logArgs = logArgs.concat(new Array(startingNewLines).fill('\n'))
   }
 
   const derivedService = service || 'Dockest'
   const derivedSymbol = symbol || '🌈'
-  logArgs.push(`${derivedSymbol} ${derivedService} ${derivedSymbol} ${message}`)
+  logArgs.push(`${derivedSymbol} ${derivedService} ${derivedSymbol} ${success ? greenBright(message) : message}`)
 
-  if (!!data && Logger.logLevel === LOG_LEVEL.DEBUG) {
+  if (data && Logger.logLevel === LOG_LEVEL.DEBUG) {
     logArgs.push(JSON.stringify(data, null, 2))
   }
 
-  if (!!nl && nl > 0) {
-    logArgs = logArgs.concat(new Array(nl).fill('\n'))
+  if (endingNewLines > 0) {
+    logArgs = logArgs.concat(new Array(endingNewLines).fill('\n'))
   }
 
   return logArgs
 }
 
-class Logger {
+export class Logger {
   public static logLevel: number = LOG_LEVEL.INFO
 
   public static error: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.ERROR) {
-      console.error(...getLogArgs(message, payload)) // eslint-disable-line no-console
+      console.error(...getLogArgs(message, payload).map(logArg => redBright(logArg))) // eslint-disable-line no-console
     }
   }
 
   public static warn: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.WARN) {
-      console.warn(...getLogArgs(message, payload)) // eslint-disable-line no-console
+      console.warn(...getLogArgs(message, payload).map(logArg => yellowBright(logArg))) // eslint-disable-line no-console
     }
   }
 
@@ -64,7 +65,7 @@ class Logger {
     }
   }
 
-  public static replacePrevLine = (m: string, isLast = false): void => {
+  public static replacePrevLine = (m: string, isLast = false) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     readline.cursorTo(process.stdout, 0, null)
@@ -75,7 +76,7 @@ class Logger {
     }
   }
 
-  public static perf = (perfStart: number): void => {
+  public static measurePerformance = (perfStart: number, opts: { logPrefix?: string } = {}) => {
     if (perfStart !== 0) {
       const perfTime = Math.floor((Date.now() - perfStart) / 1000)
       let hours: number | string = Math.floor(perfTime / 3600)
@@ -92,32 +93,29 @@ class Logger {
         seconds = `0${seconds}`
       }
 
-      Logger.info(`Elapsed time: ${hours}:${minutes}:${seconds}`)
+      Logger.info(`${opts.logPrefix || ''} Elapsed time: ${hours}:${minutes}:${seconds}`)
     }
   }
 
-  private runnerService = ''
+  private serviceName = ''
   private runnerSymbol = '🦇 '
-  public constructor(runner?: Runner) {
-    this.runnerService = runner ? runner.runnerConfig.service : ''
+  public constructor(serviceName?: string) {
+    this.serviceName = serviceName || 'UNKNOWN'
   }
 
-  public setRunnerSymbol = (symbol: string): void => {
+  public setRunnerSymbol = (symbol: string) => {
     this.runnerSymbol = symbol
   }
 
   public error: LogMethod = (message, payload = {}) =>
-    Logger.error(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+    Logger.error(message, { ...payload, service: this.serviceName, symbol: this.runnerSymbol })
 
   public warn: LogMethod = (message, payload = {}) =>
-    Logger.warn(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+    Logger.warn(message, { ...payload, service: this.serviceName, symbol: this.runnerSymbol })
 
   public info: LogMethod = (message, payload = {}) =>
-    Logger.info(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+    Logger.info(message, { ...payload, service: this.serviceName, symbol: this.runnerSymbol })
 
   public debug: LogMethod = (message, payload = {}) =>
-    Logger.debug(message, { ...payload, service: this.runnerService, symbol: this.runnerSymbol })
+    Logger.debug(message, { ...payload, service: this.serviceName, symbol: this.runnerSymbol })
 }
-
-export { LogMethod }
-export default Logger

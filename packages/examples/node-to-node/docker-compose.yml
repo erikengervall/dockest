@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  orders:
+    build:
+      context: ./orders
+    networks:
+      bueno: null
+    ports:
+      - published: 1338
+        target: 1338
+  users:
+    build:
+      context: ./users
+    networks:
+      bueno: null
+    ports:
+      - published: 1337
+        target: 1337
+
+networks:
+  bueno: {}

@@ -1,5 +1,5 @@
 import { execa } from 'dockest'
-import app from './app'
+import { app } from './app'
 
 const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
 

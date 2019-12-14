@@ -1,8 +1,10 @@
 {
   "name": "@examples/node-to-node",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "private": true,
   "scripts": {
+    "link": "yarn link dockest",
+    "unlink": "yarn unlink dockest",
     "test:examples": "node_modules/.bin/ts-node ./dockest"
   },
   "dependencies": {

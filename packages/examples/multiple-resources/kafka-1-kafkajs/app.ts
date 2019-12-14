@@ -1,14 +1,10 @@
-import dotenv from 'dotenv'
-
 const { Kafka, logLevel } = require('kafkajs') // eslint-disable-line @typescript-eslint/no-var-requires
 
 type JestFn = (_: any) => void
 
-const env: any = dotenv.config().parsed
-
 const kafka = new Kafka({
-  brokers: [env.kafka1confluentinc_broker1],
-  clientId: env.kafka1confluentinc_client_id,
+  brokers: ['localhost:9092'],
+  clientId: 'dockest_example',
   logLevel: logLevel.NOTHING,
   retry: {
     initialRetryTime: 2500,
@@ -19,11 +15,11 @@ const kafka = new Kafka({
 const createConsumer = (
   mockConsumptionCallback: JestFn,
 ): { consumer: any; startConsuming: () => Promise<void>; stopConsuming: () => Promise<void> } => {
-  const consumer = kafka.consumer({ groupId: env.kafka1confluentinc_consumer_group_id })
+  const consumer = kafka.consumer({ groupId: 'dockest_group_1' })
 
   const startConsuming = async () => {
     await consumer.connect()
-    await consumer.subscribe({ topic: env.kafka1confluentinc_topic })
+    await consumer.subscribe({ topic: 'dockesttopic' })
     await consumer.run({
       eachMessage: async ({
         topic,
@@ -62,7 +58,7 @@ const produceMessage = (
   const producer = kafka.producer()
   const payload = {
     acks: process.env.NODE_ENV === 'test' ? 1 : -1, // https://kafka.js.org/docs/producing#options
-    topic: env.kafka1confluentinc_topic,
+    topic: 'dockesttopic',
     messages: messages.map((message: string) => ({ key, value: message })),
   }
 
@@ -78,9 +74,12 @@ const produceMessage = (
   }
 }
 
-const app = (key: string, messages: string[], mockConsumptionCallback: JestFn, mockProductionCallback: JestFn) => ({
+export const app = (
+  key: string,
+  messages: string[],
+  mockConsumptionCallback: JestFn,
+  mockProductionCallback: JestFn,
+) => ({
   ...createConsumer(mockConsumptionCallback),
   ...produceMessage(key, messages, mockProductionCallback),
 })
-
-export default app

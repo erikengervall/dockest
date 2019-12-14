@@ -14,7 +14,7 @@ Dockest provides an abstraction for your Docker services’ lifecycles during in
 
 ## Use cases
 
-All use cases has a corresponding example application under [`packages/examples`](https://github.com/erikengervall/dockest/tree/master/packages/examples).
+Dockest can be used in a variety of use cases and situations, some of which can be found under [`packages/examples`](https://github.com/erikengervall/dockest/tree/master/packages/examples).
 
 ### AWS CodeBuild
 
@@ -26,17 +26,13 @@ Cool, can I run it locally?
 
 > [You can now locally test and debug your AWS CodeBuild builds using the new CodeBuild local agent.](https://hub.docker.com/r/amazon/aws-codebuild-local)
 
-### Node to node
+### Node.js to Node.js
 
-Dockest can of course also build and run application services as part of your integration tests!
-
-### Application with lots of resources
-
-Integration testing applications with multiple resources requires a lot of work. With Dockest, the setup phase of multiple resources is made a lot easier and comprehensive.
+Dockest can of course also build and run application services as part of your integration tests.
 
 ## System requirements
 
-Dockest has a few system requirements in order to work:
+In order to run Dockest, there's a few system requirements:
 
 - Dockest uses Jest's programmatic CLI and requires Jest **v20.0.0** or newer to work
 - [Docker](https://www.docker.com/)
@@ -46,8 +42,6 @@ Dockest has a few system requirements in order to work:
 
 **Setup and testing**
 
-This repo uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) together with [lerna](https://github.com/lerna/lerna), which means that all `yarn` scripts can be run from root.
+This is a monorepo using [lerna](https://github.com/lerna/lerna), meaning all scripts can be run from root.
 
-- `yarn` Installs all dependencies. Bear in mind that yarn workspaces [hoists](https://yarnpkg.com/lang/en/docs/workspaces/#toc-limitations-caveats) dependencies
-- `yarn build` Compiles typescript
-- `yarn test` Runs unit tests for the library itself as well as a number of integration tests found under `packages/examples`
+`yarn prep` will executes the necessary scripts to install dependencies for all packages (including root) as well as build whatever needs building.
