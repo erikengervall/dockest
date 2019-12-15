@@ -11,6 +11,7 @@ describe('createRunners', () => {
       expect(result).toMatchInlineSnapshot(`
         Array [
           Object {
+            "containerId": "",
             "dockerComposeFileService": Object {
               "image": "redis:5.0.3-alpine",
               "ports": Array [
@@ -21,8 +22,6 @@ describe('createRunners', () => {
               ],
             },
             "dockestService": Object {
-              "commands": Array [],
-              "healthchecks": Array [],
               "serviceName": "redis",
             },
             "logger": Logger {
