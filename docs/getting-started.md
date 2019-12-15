@@ -66,7 +66,7 @@ version: '3.7'
 
 services:
   myRedis:
-    image: 'redis:5.0.3-alpine'
+    image: redis:5.0.3-alpine
     ports:
       - published: 6379
         target: 6379
@@ -82,8 +82,6 @@ const dockest = new Dockest()
 const services = [
   {
     serviceName: 'myRedis', // Match with configuration in docker-compose.yml
-    commands: [],
-    healthchecks: [],
   },
 ]
 
