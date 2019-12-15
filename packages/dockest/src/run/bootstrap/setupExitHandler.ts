@@ -1,6 +1,6 @@
+import fs from 'fs'
 import { BaseError } from '../../Errors'
 import { DockestConfig } from '../../@types'
-import { dumpError } from '../../utils/dumpError'
 import { Logger } from '../../Logger'
 import { teardownSingle } from '../../utils/teardownSingle'
 
@@ -72,11 +72,18 @@ export const setupExitHandler = async (config: DockestConfig) => {
     }
 
     if (config.opts.dumpErrors === true) {
-      dumpError({
+      const dumpPath = `${process.cwd()}/dockest-error.json`
+      const dumpPayload = {
         errorPayload,
         timestamp: new Date(),
         __configuration: config,
-      })
+      }
+
+      try {
+        fs.writeFileSync(dumpPath, JSON.stringify(dumpPayload, null, 2))
+      } catch (dumpError) {
+        Logger.debug(`Failed to dump error to ${dumpPath}`, { data: { dumpError, dumpPayload } })
+      }
     }
 
     Logger.measurePerformance(perfStart, { logPrefix })

@@ -2,13 +2,13 @@ import { default as jestLib } from 'jest'
 import isDocker from 'is-docker' // eslint-disable-line import/default
 import { BaseError, ConfigurationError } from './Errors'
 import { bootstrap } from './run/bootstrap'
+import { debugMode } from './run/debugMode'
 import { DEFAULT_OPTS, DEFAULT_$, MINIMUM_JEST_VERSION } from './constants'
 import { DockestConfig, DockestService } from './@types'
 import { Logger } from './Logger'
 import { runJest } from './run/runJest'
 import { startServices } from './run/startServices'
 import { teardown } from './run/teardown'
-import { waitForeverIfDev } from './run/waitForeverIfDev'
 import { waitForServices } from './run/waitForServices'
 
 export { defaultHealthchecks } from './utils/defaultHealthchecks'
@@ -49,7 +49,7 @@ export class Dockest {
     await bootstrap(this.config)
     await startServices(this.config)
     await waitForServices(this.config)
-    await waitForeverIfDev(this.config)
+    await debugMode(this.config)
     const { success } = await runJest(this.config)
     await teardown(this.config)
     success ? process.exit(0) : process.exit(1)

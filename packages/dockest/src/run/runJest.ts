@@ -3,7 +3,9 @@ import { DockestConfig } from '../@types'
 import { Logger } from '../Logger'
 
 export const runJest = async (config: DockestConfig) => {
-  const { jestLib, jestOpts } = config.opts
+  const {
+    opts: { jestLib, jestOpts },
+  } = config
 
   Logger.info('DockestServices running, running Jest', { endingNewLines: 1 })
 

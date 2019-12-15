@@ -1,4 +1,3 @@
-import { dumpError } from './utils/dumpError'
 import { Runner, DockestConfig } from './@types'
 
 export interface Payload {
@@ -17,17 +16,6 @@ export class BaseError extends Error {
     // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, BaseError)
-    }
-
-    if (process.env.NODE_ENV !== 'test' && BaseError.DockestConfig.opts.dumpErrors === true) {
-      dumpError({
-        message: this.message,
-        name: this.name,
-        payload: this.payload,
-        stack: this.stack,
-        timestamp: new Date(),
-        dockestConfig: BaseError.DockestConfig,
-      })
     }
   }
 }

@@ -1,5 +1,5 @@
-import { mergeComposeFiles } from './index'
-import { createConfig } from '../../../test-utils'
+import { mergeComposeFiles } from './mergeComposeFiles'
+import { createConfig } from '../../test-utils'
 
 const nodeProcess: any = { cwd: () => __dirname }
 

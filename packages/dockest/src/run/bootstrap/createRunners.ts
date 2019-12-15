@@ -2,12 +2,14 @@ import { ConfigurationError } from '../../Errors'
 import { DockestConfig, DockerComposeFile, Runner } from '../../@types'
 import { Logger } from '../../Logger'
 
-export const createRunners = (config: DockestConfig, dockerComposeFile: DockerComposeFile) =>
-  (config.$.runners = config.$.dockestServices.map(dockestService => {
-    const dockerComposeFileService = dockerComposeFile.services[dockestService.serviceName]
+export const createRunners = (config: DockestConfig, dockerComposeFile: DockerComposeFile) => {
+  config.$.runners = config.$.dockestServices.map(dockestService => {
+    const { serviceName } = dockestService
+
+    const dockerComposeFileService = dockerComposeFile.services[serviceName]
     if (!dockerComposeFileService) {
       throw new ConfigurationError(
-        `Unable to find compose service "${dockestService.serviceName}", make sure that the serviceName corresponds with your compose file's service`,
+        `Unable to find compose service "${serviceName}", make sure that the serviceName corresponds with your compose file's service`,
       )
     }
 
@@ -15,13 +17,14 @@ export const createRunners = (config: DockestConfig, dockerComposeFile: DockerCo
       containerId: '',
       dockerComposeFileService,
       dockestService,
-      logger: new Logger(dockestService.serviceName),
+      logger: new Logger(serviceName),
     }
 
     if (config.$.isInsideDockerContainer) {
       runner.isBridgeNetworkMode = config.$.isInsideDockerContainer
-      runner.host = dockestService.serviceName
+      runner.host = serviceName
     }
 
     return runner
-  }))
+  })
+}

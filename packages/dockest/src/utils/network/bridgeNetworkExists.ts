@@ -4,6 +4,7 @@ import { Logger } from '../../Logger'
 
 export const bridgeNetworkExists = async () => {
   const command = `docker network ls \
+                    --filter driver=bridge
                     --filter name=${BRIDGE_NETWORK_NAME} \
                     --quiet`
 
@@ -12,7 +13,7 @@ export const bridgeNetworkExists = async () => {
     .then(trimmedStdout => !!trimmedStdout)
 
   if (networkExists) {
-    Logger.info(`Found existing network with name ${BRIDGE_NETWORK_NAME}`)
+    Logger.info(`Using existing network "${BRIDGE_NETWORK_NAME}"`)
   }
 
   return networkExists
