@@ -2,7 +2,7 @@ import http from 'http'
 import fetch from 'node-fetch'
 import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper'
 
-const TARGET_HOST = getServiceAddress('website', 9000)
+const TARGET_HOST = getServiceAddress('aws_codebuild_website', 9000)
 
 // hostname is either our docker container hostname or if not run inside a docker container the docker host
 const HOSTNAME = getHostAddress()

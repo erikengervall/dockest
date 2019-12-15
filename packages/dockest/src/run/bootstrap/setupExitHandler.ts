@@ -33,7 +33,6 @@ export const setupExitHandler = async (config: DockestConfig) => {
     if (config.$.jestRanWithResult) {
       return
     }
-
     if (errorPayload.reason instanceof BaseError) {
       const {
         payload: { error, runner, ...restPayload },
@@ -54,15 +53,18 @@ export const setupExitHandler = async (config: DockestConfig) => {
 
       error && (logPayload.data.error = error)
 
-      restPayload && (logPayload.data.restPayload = restPayload)
+      restPayload &&
+        typeof restPayload === 'object' &&
+        Object.keys(restPayload).length > 0 &&
+        (logPayload.data.restPayload = restPayload)
 
       Logger.error(`${logPrefix} ${message}`, logPayload)
     } else {
-      Logger.error(`${logPrefix} ${errorPayload}`)
+      Logger.error(`${logPrefix} ${JSON.stringify(errorPayload, null, 2)}`)
     }
 
     if (customExitHandler && typeof customExitHandler === 'function') {
-      await customExitHandler(errorPayload.reason || new Error('Failed to extract error'))
+      await customExitHandler(errorPayload)
     }
 
     for (const runner of runners) {

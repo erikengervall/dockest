@@ -7,15 +7,4 @@ const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
 })
 
-run([
-  {
-    serviceName: 'users',
-    commands: [],
-    healthchecks: [],
-  },
-  {
-    serviceName: 'orders',
-    commands: [],
-    healthchecks: [],
-  },
-])
+run([{ serviceName: 'node_to_node_users' }, { serviceName: 'node_to_node_orders' }])

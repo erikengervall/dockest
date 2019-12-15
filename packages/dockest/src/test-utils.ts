@@ -18,8 +18,6 @@ export const createConfig = (
 
 export const DOCKEST_SERVICE: DockestService = {
   serviceName: 'redis',
-  commands: [],
-  healthchecks: [],
 }
 
 export const DOCKER_COMPOSE_FILE: DockerComposeFile = {

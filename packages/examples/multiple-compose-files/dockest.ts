@@ -3,13 +3,13 @@ import { Dockest, logLevel, defaultHealthchecks } from 'dockest'
 const dockest = new Dockest({
   composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
   dumpErrors: true,
-  logLevel: logLevel.INFO,
+  logLevel: logLevel.DEBUG,
   runInBand: true,
 })
 
 dockest.run([
   {
-    serviceName: 'composePostgres',
+    serviceName: 'multiple_compose_files_postgres',
     commands: [
       'sequelize db:migrate:undo:all',
       'sequelize db:migrate',
@@ -19,9 +19,5 @@ dockest.run([
     healthchecks: [defaultHealthchecks.postgres],
   },
 
-  {
-    serviceName: 'composeRedis',
-    commands: [],
-    healthchecks: [],
-  },
+  { serviceName: 'multiple_compose_files_redis' },
 ])

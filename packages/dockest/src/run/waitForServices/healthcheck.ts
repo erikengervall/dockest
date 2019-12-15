@@ -5,9 +5,10 @@ import { Runner } from '../../@types'
 
 const logPrefix = '[Check Responsiveness]'
 
-export const checkResponsiveness = async (runner: Runner, containerId: string) => {
+export const checkResponsiveness = async (runner: Runner) => {
   const {
-    dockestService: { healthchecks },
+    containerId,
+    dockestService: { healthchecks = [] },
     logger,
   } = runner
   const responsivenessTimeout = 30
@@ -15,7 +16,7 @@ export const checkResponsiveness = async (runner: Runner, containerId: string) =
   await Promise.all(
     healthchecks.map(async healthcheck => {
       const recurse = async (responsivenessTimeout: number, runner: Runner) => {
-        logger.debug(`${logPrefix} Timeout in ${responsivenessTimeout}s`) // FIXME: Try getting replacePrevLine in here
+        logger.debug(`${logPrefix} Timeout in ${responsivenessTimeout}s`) // FIXME: Try getting replacePrevLine in here (may prove difficult if it runs in parallel)
 
         if (responsivenessTimeout <= 0) {
           throw new DockestError(`${logPrefix} Timed out`, { runner })

@@ -12,8 +12,9 @@ export const createRunners = (config: DockestConfig, dockerComposeFile: DockerCo
     }
 
     const runner: Runner = {
-      dockestService,
+      containerId: '',
       dockerComposeFileService,
+      dockestService,
       logger: new Logger(dockestService.serviceName),
     }
 

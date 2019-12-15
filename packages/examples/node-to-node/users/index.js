@@ -4,7 +4,7 @@ const express = require('express')
 const axios = require('axios')
 
 const PORT = 1337
-const SERVICE_NAME = 'users'
+const SERVICE_NAME = 'node_to_node_users'
 
 const USERS = [
   {
@@ -33,18 +33,17 @@ app.get('/orders/:userId', async (req, res) => {
     return res.status(404).send('Could not find user')
   }
 
-  let responseData
+  let response
   try {
-    const ordersResponse = await axios({
-      baseURL: `http://orders:1338/`,
+    response = await axios({
+      baseURL: `http://node_to_node_orders:1338/`,
       url: `/orders/${userId}`,
     })
-    responseData = ordersResponse.data
   } catch (error) {
     return res.status(error.response.status).send(error.response.data)
   }
 
-  return res.status(200).json(responseData)
+  return res.status(200).json(response.data)
 })
 
 app.listen(PORT, () => {

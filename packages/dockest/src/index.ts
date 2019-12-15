@@ -11,7 +11,7 @@ import { teardown } from './run/teardown'
 import { waitForeverIfDev } from './run/waitForeverIfDev'
 import { waitForServices } from './run/waitForServices'
 
-export { defaultHealthchecks } from './utils/healthchecks'
+export { defaultHealthchecks } from './utils/defaultHealthchecks'
 export { execaWrapper as execa } from './utils/execaWrapper'
 export { LOG_LEVEL as logLevel } from './constants'
 
