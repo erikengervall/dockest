@@ -30,8 +30,7 @@
     "dev:dockest:unlink": "yarn unlink",
     "clean": "node_modules/.bin/rimraf ./dist",
     "build": "node_modules/.bin/tsc",
-    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles",
-    "snyk:test": "snyk test"
+    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "execa": "^3.4.0",
@@ -44,7 +43,6 @@
     "@types/js-yaml": "^3.12.1",
     "chalk": "^3.0.0",
     "jest": "^24.9.0",
-    "snyk": "^1.260.0",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.2"
   }
