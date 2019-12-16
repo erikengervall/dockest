@@ -33,7 +33,6 @@ export class Dockest {
     Logger.logLevel = this.config.opts.logLevel
     BaseError.DockestConfig = this.config
 
-    // Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
     if (this.config.opts.jestLib.getVersion() < MINIMUM_JEST_VERSION) {
       throw new ConfigurationError(
         `Outdated Jest version (${this.config.opts.jestLib.getVersion()}). Upgrade to at least ${MINIMUM_JEST_VERSION}`,
