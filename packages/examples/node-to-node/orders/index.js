@@ -3,7 +3,7 @@
 const express = require('express')
 
 const PORT = 1338
-const SERVICE_NAME = 'orders'
+const SERVICE_NAME = 'node_to_node_orders'
 
 const ORDERS = [{ userId: '1', id: '1', name: 'An awesome product' }]
 

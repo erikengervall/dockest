@@ -1,7 +1,7 @@
 const config = {
-  username: 'ramda',
-  password: 'is',
-  database: 'nobueno',
+  database: 'what',
+  username: 'is',
+  password: 'love',
   host: 'localhost',
   port: 5433,
   dialect: 'postgres',

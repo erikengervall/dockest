@@ -4,7 +4,8 @@ import { Dockest, logLevel, defaultHealthchecks } from 'dockest'
 const dockest = new Dockest({
   composeFile: 'docker-compose.yml',
   dumpErrors: true,
-  exitHandler: ({ trap }) => console.log(`Hello ${trap}, nice to meet you 👋🏼`), // eslint-disable-line no-console
+  exitHandler: errorPayload =>
+    console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
   jestLib: jest,
   jestOpts: { updateSnapshot: true },
   logLevel: logLevel.DEBUG,
@@ -13,7 +14,7 @@ const dockest = new Dockest({
 
 dockest.run([
   {
-    serviceName: 'dockest_postgres1sequelize',
+    serviceName: 'multiple_resources_postgres1sequelize',
     commands: [
       'sequelize db:migrate:undo:all',
       'sequelize db:migrate',
@@ -22,28 +23,15 @@ dockest.run([
     ],
     healthchecks: [defaultHealthchecks.postgres],
   },
-
   {
-    serviceName: 'dockest_postgres2knex',
+    serviceName: 'multiple_resources_postgres2knex',
     commands: ['knex migrate:rollback', 'knex migrate:latest', 'knex seed:run'],
     healthchecks: [defaultHealthchecks.postgres],
   },
-
   {
-    serviceName: 'dockest_redis1ioredis',
-    commands: [],
+    serviceName: 'multiple_resources_redis',
     healthchecks: [defaultHealthchecks.redis],
   },
-
-  {
-    serviceName: 'dockest_zookeeper1confluentinc',
-    commands: [],
-    healthchecks: [],
-  },
-
-  {
-    serviceName: 'dockest_kafka1confluentinc',
-    commands: [],
-    healthchecks: [],
-  },
+  { serviceName: 'multiple_resources_zookeeper' },
+  { serviceName: 'multiple_resources_kafka' },
 ])

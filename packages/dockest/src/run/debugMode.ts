@@ -2,7 +2,7 @@ import { DockestConfig } from '../@types'
 import { Logger } from '../Logger'
 import { sleep } from '../utils/sleep'
 
-export const waitForeverIfDev = async (config: DockestConfig) => {
+export const debugMode = async (config: DockestConfig) => {
   const {
     opts: { debug },
     $: { runners },

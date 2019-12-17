@@ -1,5 +1,5 @@
-import { mergeComposeFiles } from './index'
-import { createConfig } from '../../../test-utils'
+import { mergeComposeFiles } from './mergeComposeFiles'
+import { createConfig } from '../../test-utils'
 
 const nodeProcess: any = { cwd: () => __dirname }
 
@@ -51,7 +51,7 @@ describe('mergeComposeFiles', () => {
 
   describe('sad', () => {
     it('should throw if invalid name of compose file', async () => {
-      const config = createConfig({}, { composeFile: ['invalid.yml'] })
+      const config = createConfig({}, { composeFile: ['this-file-does-not-exist.yml'] })
 
       const promise = mergeComposeFiles(config, nodeProcess)
 

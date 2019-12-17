@@ -7,10 +7,10 @@ import { writeComposeFile } from './writeComposeFile'
 import { DockestConfig } from '../../@types'
 
 export const bootstrap = async (config: DockestConfig) => {
+  setupExitHandler(config)
   const { mergedComposeFiles } = await mergeComposeFiles(config)
   const { composeFileAsObject } = parseComposeFile(mergedComposeFiles)
   writeComposeFile(mergedComposeFiles, composeFileAsObject)
   createRunners(config, composeFileAsObject)
   configureLogger(config)
-  setupExitHandler(config)
 }

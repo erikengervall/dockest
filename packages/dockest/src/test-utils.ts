@@ -18,13 +18,11 @@ export const createConfig = (
 
 export const DOCKEST_SERVICE: DockestService = {
   serviceName: 'redis',
-  commands: [],
-  healthchecks: [],
 }
 
 export const DOCKER_COMPOSE_FILE: DockerComposeFile = {
   services: {
-    redis: {
+    [DOCKEST_SERVICE.serviceName]: {
       image: 'redis:5.0.3-alpine',
       ports: [
         {

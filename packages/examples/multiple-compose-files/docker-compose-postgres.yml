@@ -1,12 +1,12 @@
 version: '3.7'
 
 services:
-  composePostgres:
-    environment:
-      POSTGRES_DB: nobueno
-      POSTGRES_PASSWORD: is
-      POSTGRES_USER: ramda
-    image: 'postgres:9.6-alpine'
+  multiple_compose_files_postgres:
+    image: postgres:9.6-alpine
     ports:
       - published: 5433
         target: 5432
+    environment:
+      POSTGRES_DB: what
+      POSTGRES_USER: is
+      POSTGRES_PASSWORD: love

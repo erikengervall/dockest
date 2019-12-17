@@ -1,22 +1,23 @@
 version: '3.7'
 
 services:
-  orders:
+  node_to_node_orders:
+    ports:
+      - published: 1338
+        target: 1338
     build:
       context: ./orders
     networks:
       bueno: null
+
+  node_to_node_users:
     ports:
-      - published: 1338
-        target: 1338
-  users:
+      - published: 1337
+        target: 1337
     build:
       context: ./users
     networks:
       bueno: null
-    ports:
-      - published: 1337
-        target: 1337
 
 networks:
   bueno: {}

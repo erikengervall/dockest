@@ -33,4 +33,7 @@ export const DEFAULT_$ = {
   runners: [],
 }
 
+/**
+ * Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
+ */
 export const MINIMUM_JEST_VERSION = '20.0.0'

@@ -7,8 +7,6 @@ const dockest = new Dockest({
 
 dockest.run([
   {
-    serviceName: 'website',
-    commands: [],
-    healthchecks: [],
+    serviceName: 'aws_codebuild_website',
   },
 ])

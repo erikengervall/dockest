@@ -6,11 +6,12 @@ const config = createConfig({ dockestServices: [DOCKEST_SERVICE] }, {})
 describe('createRunners', () => {
   describe('happy', () => {
     it('should work', () => {
-      const result = createRunners(config, DOCKER_COMPOSE_FILE)
+      createRunners(config, DOCKER_COMPOSE_FILE)
 
-      expect(result).toMatchInlineSnapshot(`
+      expect(config.$.runners).toMatchInlineSnapshot(`
         Array [
           Object {
+            "containerId": "",
             "dockerComposeFileService": Object {
               "image": "redis:5.0.3-alpine",
               "ports": Array [
@@ -21,8 +22,6 @@ describe('createRunners', () => {
               ],
             },
             "dockestService": Object {
-              "commands": Array [],
-              "healthchecks": Array [],
               "serviceName": "redis",
             },
             "logger": Logger {

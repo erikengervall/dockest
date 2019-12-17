@@ -1,6 +1,6 @@
+import fs from 'fs'
 import { BaseError } from '../../Errors'
 import { DockestConfig } from '../../@types'
-import { dumpError } from '../../utils/dumpError'
 import { Logger } from '../../Logger'
 import { teardownSingle } from '../../utils/teardownSingle'
 
@@ -33,7 +33,6 @@ export const setupExitHandler = async (config: DockestConfig) => {
     if (config.$.jestRanWithResult) {
       return
     }
-
     if (errorPayload.reason instanceof BaseError) {
       const {
         payload: { error, runner, ...restPayload },
@@ -54,15 +53,18 @@ export const setupExitHandler = async (config: DockestConfig) => {
 
       error && (logPayload.data.error = error)
 
-      restPayload && (logPayload.data.restPayload = restPayload)
+      restPayload &&
+        typeof restPayload === 'object' &&
+        Object.keys(restPayload).length > 0 &&
+        (logPayload.data.restPayload = restPayload)
 
       Logger.error(`${logPrefix} ${message}`, logPayload)
     } else {
-      Logger.error(`${logPrefix} ${errorPayload}`)
+      Logger.error(`${logPrefix} ${JSON.stringify(errorPayload, null, 2)}`)
     }
 
     if (customExitHandler && typeof customExitHandler === 'function') {
-      await customExitHandler(errorPayload.reason || new Error('Failed to extract error'))
+      await customExitHandler(errorPayload)
     }
 
     for (const runner of runners) {
@@ -70,11 +72,18 @@ export const setupExitHandler = async (config: DockestConfig) => {
     }
 
     if (config.opts.dumpErrors === true) {
-      dumpError({
+      const dumpPath = `${process.cwd()}/dockest-error.json`
+      const dumpPayload = {
         errorPayload,
         timestamp: new Date(),
         __configuration: config,
-      })
+      }
+
+      try {
+        fs.writeFileSync(dumpPath, JSON.stringify(dumpPayload, null, 2))
+      } catch (dumpError) {
+        Logger.debug(`Failed to dump error to ${dumpPath}`, { data: { dumpError, dumpPayload } })
+      }
     }
 
     Logger.measurePerformance(perfStart, { logPrefix })

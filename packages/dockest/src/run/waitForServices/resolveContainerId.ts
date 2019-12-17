@@ -10,6 +10,7 @@ const getContainerId = async (runner: Runner) => {
   const {
     dockestService: { serviceName },
   } = runner
+
   const command = `docker-compose \
                     -f ${GENERATED_COMPOSE_FILE_PATH} \
                     ps \

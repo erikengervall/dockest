@@ -12,10 +12,8 @@ const logPrefix = '[Setup]'
 const waitForRunner = async (runner: Runner) => {
   runner.logger.debug(`${logPrefix} Initiating...`)
 
-  const containerId = await resolveContainerId(runner)
-
   if (runner.isBridgeNetworkMode) {
-    await joinBridgeNetwork(containerId, runner.dockestService.serviceName)
+    await joinBridgeNetwork(runner.containerId, runner.dockestService.serviceName)
   }
 
   if (process.platform === 'linux' && !runner.isBridgeNetworkMode) {
@@ -23,7 +21,7 @@ const waitForRunner = async (runner: Runner) => {
   }
 
   await checkConnection(runner)
-  await checkResponsiveness(runner, containerId)
+  await checkResponsiveness(runner)
   await runRunnerCommands(runner)
 
   runner.logger.info(`${logPrefix} Success`, { success: true, endingNewLines: 1 })
@@ -35,6 +33,8 @@ export const waitForServices = async (config: DockestConfig) => {
     opts: { afterSetupSleep, runInBand },
   } = config
   const setupPromises = []
+
+  await Promise.all(runners.map(resolveContainerId))
 
   for (const runner of runners) {
     if (!!runInBand) {

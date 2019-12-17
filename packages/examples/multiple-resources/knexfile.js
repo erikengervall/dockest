@@ -1,10 +1,10 @@
 const dbConfig = {
   client: 'postgresql',
   connection: {
+    database: 'dont',
+    user: 'hurtme',
+    password: 'nomore',
     host: 'localhost',
-    database: 'nobueno',
-    user: 'ramda',
-    password: 'is',
     port: 5436,
   },
   migrations: {

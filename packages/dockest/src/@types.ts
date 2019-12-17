@@ -1,10 +1,10 @@
 import { Logger } from './Logger'
 
 export interface Runner {
+  containerId: string
   dockerComposeFileService: DockerComposeFileService
   dockestService: DockestService
   logger: Logger
-  containerId?: string
   host?: string
   isBridgeNetworkMode?: boolean
 }
@@ -33,15 +33,23 @@ export interface DockerComposeFile {
   }
 }
 
-export interface Healthcheck {
-  (composeService: DockerComposeFileService, containerId: string): string
+export interface DockerComposeFileServicePostgres extends DockerComposeFileService {
+  environment?: {
+    POSTGRES_DB?: string
+    POSTGRES_PASSWORD?: string
+    POSTGRES_USER?: string
+  }
+}
+
+export interface Healthcheck<T = DockerComposeFileService> {
+  (composeService: T, containerId: string): string
 }
 
 export interface DockestService {
   [key: string]: any
   serviceName: string
-  commands: string[]
-  healthchecks: Healthcheck[]
+  commands?: string[]
+  healthchecks?: Healthcheck[]
 }
 
 export interface DockestConfig {

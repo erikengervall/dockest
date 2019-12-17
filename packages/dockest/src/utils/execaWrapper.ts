@@ -16,15 +16,13 @@ export const execaWrapper = async (command: string, opts: Opts = {}) => {
   const logger = runner ? runner.logger : Logger
 
   logger.debug(`${logPrefix} <${trimmedCommand}>`)
-  const { exitCode, stderr, stdout } = execa.commandSync(trimmedCommand, {
+
+  const result = execa.commandSync(trimmedCommand, {
     shell: true,
     ...execaOpts,
   })
-  logStdout && logger.debug(`${logPrefix} Success (${stdout})`, { success: true })
 
-  return {
-    exitCode,
-    stderr,
-    stdout,
-  }
+  logStdout && logger.debug(`${logPrefix} Success (${result.stdout})`, { success: true })
+
+  return result
 }
