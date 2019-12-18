@@ -7,6 +7,22 @@ name: Node.js CI
 on: [push]
 
 jobs:
+  ####### Context
+  print:
+    name: Print job context data
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Print context 🎉
+        env:
+          GH_REF: ${{ github.ref }}
+        run: |
+          echo "GH_REF: ${GH_REF}"
+
   ####### Lint
   lint:
     name: Lint
