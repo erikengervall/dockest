@@ -85,21 +85,6 @@ jobs:
           if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
           cd packages/playground && yarn publish ${NPM_TAG}
 
-
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - name: npm publish
-        env:
-          IS_ALPHA: ${{contains(github.ref, 'alpha')}}
-          IS_BETA: ${{contains(github.ref, 'beta')}}
-        run: |
-          if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
-          if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
-          cd packages/dockest && npm publish ${NPM_TAG}
-
   ####### Deploy website
   website:
     name: Deploy website
