@@ -55,16 +55,14 @@ class Footer extends React.Component {
           </div>
 
           <div style={styles.badgeWrapper}>
-            <a href="https://travis-ci.com/erikengervall/dockest">
-              <img alt="licence" src="https://img.shields.io/travis/com/erikengervall/dockest.svg?style=flat" />
-            </a>
+            <img alt="licence" src="https://github.com/erikengervall/dockest/workflows/Node.js%20CI/badge.svg" />
 
             <a href="https://www.npmjs.com/package/dockest">
-              <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg?style=flat" />
+              <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest.svg" />
             </a>
 
             <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
-              <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg?style=flat" />
+              <img alt="licence" src="https://img.shields.io/npm/l/dockest.svg" />
             </a>
 
             <a href="https://www.npmjs.com/package/dockest?activeTab=versions">
