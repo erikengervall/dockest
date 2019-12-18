@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - GitHub Actions: Pipeline automation for npm & website releases
-- Drop pipeline support for Node.js 8.x due to its [EOL end of 2019](https://blog.risingstack.com/update-nodejs-8-end-of-life-no-support/)
+- Drop pipeline support for Node.js 8.x due to its [EOL end of 2019](https://nodejs.org/en/about/releases/)
 
 ### Removed
 
