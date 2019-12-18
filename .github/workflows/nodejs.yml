@@ -7,9 +7,9 @@ name: Node.js CI
 on: [push]
 
 jobs:
-  ####### Context
+  ####### Print: Prints some context relating to the job to make future debugging easier
   print:
-    name: Print job context data
+    name: Print context
     runs-on: ubuntu-latest
 
     steps:
@@ -86,13 +86,14 @@ jobs:
       - run: yarn install
       - name: yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           IS_ALPHA: ${{ contains(github.ref, 'alpha')}}
           IS_BETA: ${{ contains(github.ref, 'beta')}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
           if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
-          cd packages/dockest && yarn publish ${NPM_TAG}
+          cd packages/dockest
+          yarn publish ${NPM_TAG}
 
   ####### Deploy website
   website:
@@ -106,8 +107,15 @@ jobs:
         with:
           node-version: 12.x
       - name: Deploy website
+        env:
+          GH_EMAIL: ${{ secrets.GH_EMAIL }}
+          GH_NAME: ${{ secrets.GH_NAME }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GIT_USER: ${{ secrets.GH_NAME }}
         run: |
-          git config --global user.name "${{secrets.GH_NAME}}"
-          git config --global user.email "${{secrets.GH_EMAIL}}"
-          echo "machine github.com login ${{secrets.GH_NAME}} password ${{secrets.GH_TOKEN}}" > ~/.netrc
-          cd website && yarn install && GIT_USER="${{secrets.GH_NAME}}" yarn run publish-gh-pages
+          git config --global user.name "${GH_NAME}"
+          git config --global user.email "${GH_EMAIL}"
+          echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
+          cd website
+          yarn install
+          yarn publish-gh-pages
