@@ -30,8 +30,7 @@
     "test": "yarn test:unit && yarn test:examples",
     "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
     "test:examples": "lerna run test:examples --stream",
-    "test:unit": "lerna run test:unit --stream",
-    "release": "node ./resources/scripts/release"
+    "test:unit": "lerna run test:unit --stream"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",

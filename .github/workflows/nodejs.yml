@@ -1,19 +1,14 @@
 name: Node.js CI
 
-### github.ref
-# tags   refs/tags/v0.0.1
-# master refs/heads/master
-
 on: [push]
 
 jobs:
-  ####### Lint
-  lint:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [8.x, 10.x, 12.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -21,78 +16,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: lint
+      - name: lint & test
         run: |
+          yarn --version
           yarn prep
           yarn lint
-
-  ####### Test
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: test
-        run: |
-          yarn prep
           yarn test
-
-  ####### Deploy website if tag
-  website:
-    runs-on: ubuntu-latest
-
-    if: startsWith(github.ref, 'refs/tags/')
-
-    needs: [lint, build]
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: website
-        run: |
-          git config --global user.name "${{secrets.GH_NAME}}"
-          git config --global user.email "${{secrets.GH_EMAIL}}"
-          echo "machine github.com login ${{secrets.GH_NAME}} password ${{secrets.GH_TOKEN}}" > ~/.netrc
-          cd website && yarn install && GIT_USER="${{secrets.GH_NAME}}" yarn run publish-gh-pages
-
-  ####### Publish to npm if tag
-  npm_publish:
-    runs-on: ubuntu-latest
-
-    if: startsWith(github.ref, 'refs/tags/')
-
-    needs: [lint, build]
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm publish
         env:
-          IS_ALPHA: ${{contains(github.ref, 'alpha')}}
-          IS_BETA: ${{contains(github.ref, 'beta')}}
-        run: |
-          if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
-          if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
-          cd packages/dockest && npm publish ${NPM_TAG}
+          CI: true
