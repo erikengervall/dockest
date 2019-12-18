@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-jest
+id: version-1.0.4-jest
 title: Jest
 sidebar_label: Jest
 original_id: jest

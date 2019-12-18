@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-runner_redis
+id: version-1.0.4-runner_redis
 title: Redis
 sidebar_label: Redis
 original_id: runner_redis

@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-runner_postgres
+id: version-1.0.4-runner_postgres
 title: Postgres
 sidebar_label: Postgres
 original_id: runner_postgres

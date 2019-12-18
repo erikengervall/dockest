@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-connectivity
+id: version-1.0.4-connectivity
 title: Connectivity
 sidebar_label: Connectivity
 original_id: connectivity

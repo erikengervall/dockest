@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-runner_zookeeper
+id: version-1.0.4-runner_zookeeper
 title: ZooKeeper
 sidebar_label: ZooKeeper
 original_id: runner_zookeeper

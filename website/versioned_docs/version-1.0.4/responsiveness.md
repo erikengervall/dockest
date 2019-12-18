@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-responsiveness
+id: version-1.0.4-responsiveness
 title: Responsiveness
 sidebar_label: Responsiveness
 original_id: responsiveness

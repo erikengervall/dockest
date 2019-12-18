@@ -15,12 +15,11 @@ const CWD = process.cwd()
 
 const versions = require(`${CWD}/versions.json`)
 
-function Versions(props) {
-  const { config: siteConfig } = props
-  const latestVersion = versions.filter(v => !v.includes('alpha') && !v.includes('beta'))[0]
+function Versions({ config: siteConfig }) {
   const repoUrl = `https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}`
+
+  const stableReleases = versions.filter(v => !v.includes('alpha') && !v.includes('beta'))
   const preReleases = versions.filter(v => v.includes('alpha') || v.includes('beta'))
-  // const pastVersions = versions.filter(v => !v.includes('alpha') && !v.includes('beta') && v !== latestVersion)
 
   return (
     <div className="docMainWrapper wrapper">
@@ -30,24 +29,7 @@ function Versions(props) {
             <h1>{siteConfig.title} Versions</h1>
           </header>
 
-          <h3 id="latest">Current version (Stable)</h3>
-          <p>Latest stable version of Dockest</p>
-          <table className="versions">
-            <tbody>
-              <tr>
-                <th>{latestVersion}</th>
-                <td>
-                  <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/introduction`}>Documentation</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p>
-            This is the version that is installed when running{' '}
-            <span style={{ fontWeight: 'bold' }}>yarn add dockest</span>
-          </p>
-
-          <h3 id="rc">Latest version</h3>
+          <h3 id="master">Latest version</h3>
           <p>Here you can find the latest unreleased documentation and code</p>
           <table className="versions">
             <tbody>
@@ -63,15 +45,17 @@ function Versions(props) {
             </tbody>
           </table>
 
-          <h3 id="archive">Pre-relase Versions</h3>
-          <p>Here you can find previous versions of the documentation</p>
+          <h3 id="stable-releases">Stable versions</h3>
+          <p>Here you can find the current as well as previous versions of the documentation</p>
           <table className="versions">
             <tbody>
-              {preReleases.map(version => (
-                <tr>
-                  <th>{version}</th>
+              {stableReleases.map((stableRelease, i) => (
+                <tr key={stableRelease}>
+                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{stableRelease}</th>
                   <td>
-                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${version}/introduction`}>Documentation</a>
+                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${stableRelease}/introduction`}>
+                      Documentation
+                    </a>
                   </td>
                 </tr>
               ))}
@@ -82,15 +66,15 @@ function Versions(props) {
             <a href={siteConfig.npmUrl}>npm</a>
           </p>
 
-          {/* <h3 id="archive">Past Versions</h3>
+          <h3 id="pre-releases">Pre-releases</h3>
           <p>Here you can find previous versions of the documentation</p>
           <table className="versions">
             <tbody>
-              {pastVersions.map(version => (
-                <tr>
-                  <th>{version}</th>
+              {preReleases.map((preRelease, i) => (
+                <tr key={preRelease}>
+                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{preRelease}</th>
                   <td>
-                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${version}/introduction`}>Documentation</a>
+                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${preRelease}/introduction`}>Documentation</a>
                   </td>
                 </tr>
               ))}
@@ -99,7 +83,7 @@ function Versions(props) {
           <p>
             You can find past versions of this project on <a href={repoUrl}>GitHub</a> or{' '}
             <a href={siteConfig.npmUrl}>npm</a>
-          </p> */}
+          </p>
         </div>
       </Container>
     </div>

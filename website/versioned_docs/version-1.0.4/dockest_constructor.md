@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-dockest_constructor
+id: version-1.0.4-dockest_constructor
 title: Dockest constructor
 sidebar_label: Dockest constructor
 original_id: dockest_constructor

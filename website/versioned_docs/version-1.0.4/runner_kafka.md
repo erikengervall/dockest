@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-runner_kafka
+id: version-1.0.4-runner_kafka
 title: Kafka
 sidebar_label: Kafka
 original_id: runner_kafka

@@ -1,5 +1,5 @@
 ---
-id: version-1.0.x-example
+id: version-1.0.4-example
 title: Example
 sidebar_label: Example
 original_id: example
