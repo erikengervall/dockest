@@ -1,0 +1,51 @@
+name: Node.js CI sequential
+
+on: [push]
+
+jobs:
+  ####### Lint
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: yarn prep
+      - run: yarn lint
+
+  ####### Unit tests
+  unit_tests:
+    name: 'Dockest: Unit tests'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn prep
+      - run: yarn test:unit
+
+  ####### Integration tests
+  integration_tests:
+    name: 'Examples: Integration tests'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn prep
+      - run: yarn test:examples
