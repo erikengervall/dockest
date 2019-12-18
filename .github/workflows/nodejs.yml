@@ -9,6 +9,7 @@ on: [push]
 jobs:
   ####### Lint
   lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,17 +18,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
+        name: Use Node.js ${{ matrix.node-version }}
         with:
           node-version: ${{ matrix.node-version }}
-      - name: lint
-        run: |
-          yarn prep
-          yarn lint
+      - run: yarn prep
+      - run: yarn lint
 
-  ####### Test
-  test:
+  ####### Unit tests
+  unit_tests:
+    name: Unit tests for Dockest lib
     runs-on: ubuntu-latest
 
     strategy:
@@ -36,22 +36,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
+        name: Use Node.js ${{ matrix.node-version }}
         with:
           node-version: ${{ matrix.node-version }}
-      - name: test
-        run: |
-          yarn prep
-          yarn test
+      - run: yarn prep
+      - run: yarn test:unit
 
-  ####### Deploy website if tag
-  website:
+  ####### Integration tests
+  integration_tests:
+    name: Integration tests for examples
     runs-on: ubuntu-latest
-
-    if: startsWith(github.ref, 'refs/tags/')
-
-    needs: [lint, build]
 
     strategy:
       matrix:
@@ -59,35 +54,43 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
+        name: Use Node.js ${{ matrix.node-version }}
         with:
           node-version: ${{ matrix.node-version }}
-      - name: website
-        run: |
-          git config --global user.name "${{secrets.GH_NAME}}"
-          git config --global user.email "${{secrets.GH_EMAIL}}"
-          echo "machine github.com login ${{secrets.GH_NAME}} password ${{secrets.GH_TOKEN}}" > ~/.netrc
-          cd website && yarn install && GIT_USER="${{secrets.GH_NAME}}" yarn run publish-gh-pages
+      - run: yarn prep
+      - run: yarn test:examples
 
-  ####### Publish to npm if tag
+  ####### Publish to npm
   npm_publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
-
+    needs: [lint, unit_tests, integration_tests]
     if: startsWith(github.ref, 'refs/tags/')
-
-    needs: [lint, build]
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
+          registry-url: https://registry.npmjs.org/
+      - run: yarn install
+      - name: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          IS_ALPHA: ${{ contains(github.ref, 'alpha')}}
+          IS_BETA: ${{ contains(github.ref, 'beta')}}
+        run: |
+          if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
+          if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
+          cd packages/playground && yarn publish ${NPM_TAG}
+
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
       - name: npm publish
         env:
           IS_ALPHA: ${{contains(github.ref, 'alpha')}}
@@ -96,3 +99,21 @@ jobs:
           if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
           if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
           cd packages/dockest && npm publish ${NPM_TAG}
+
+  ####### Deploy website
+  website:
+    name: Deploy website
+    runs-on: ubuntu-latest
+    needs: [npm_publish]
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Deploy website
+        run: |
+          git config --global user.name "${{secrets.GH_NAME}}"
+          git config --global user.email "${{secrets.GH_EMAIL}}"
+          echo "machine github.com login ${{secrets.GH_NAME}} password ${{secrets.GH_TOKEN}}" > ~/.netrc
+          cd website && yarn install && GIT_USER="${{secrets.GH_NAME}}" yarn run publish-gh-pages
