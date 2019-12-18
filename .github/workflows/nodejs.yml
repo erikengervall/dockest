@@ -38,7 +38,7 @@ jobs:
 
   ####### Unit tests
   unit_tests:
-    name: Unit tests for Dockest lib
+    name: 'Dockest: Unit tests'
     runs-on: ubuntu-latest
 
     strategy:
@@ -55,7 +55,7 @@ jobs:
 
   ####### Integration tests
   integration_tests:
-    name: Integration tests for examples
+    name: 'Examples: Integration tests'
     runs-on: ubuntu-latest
 
     strategy:
