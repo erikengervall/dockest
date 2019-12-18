@@ -3,23 +3,19 @@ name: Node.js CI parallell
 on: [push]
 
 jobs:
-  build:
+  parallel_test:
+    name: Parallel test
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
       - name: lint & test
         run: |
           yarn prep
           yarn lint
-          yarn test --concurrency 3
+          yarn test --concurrency 5
         env:
           CI: true
