@@ -1,7 +1,8 @@
 ---
-id: getting-started
+id: version-2.0.0-alpha.x-getting-started
 title: Getting Started
 sidebar_label: Getting Started
+original_id: getting-started
 ---
 
 ## Install

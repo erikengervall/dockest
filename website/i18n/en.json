@@ -20,13 +20,76 @@
       "introduction": {
         "title": "Introduction",
         "sidebar_label": "Introduction"
+      },
+      "version-1.0.4/version-1.0.4-connectivity": {
+        "title": "Connectivity",
+        "sidebar_label": "Connectivity"
+      },
+      "version-1.0.4/version-1.0.4-dockest_constructor": {
+        "title": "Dockest constructor",
+        "sidebar_label": "Dockest constructor"
+      },
+      "version-1.0.4/version-1.0.4-example": {
+        "title": "Example",
+        "sidebar_label": "Example"
+      },
+      "version-1.0.4/version-1.0.4-introduction": {
+        "title": "Introduction",
+        "sidebar_label": "Introduction"
+      },
+      "version-1.0.4/version-1.0.4-jest": {
+        "title": "Jest",
+        "sidebar_label": "Jest"
+      },
+      "version-1.0.4/version-1.0.4-req": {
+        "title": "Req",
+        "sidebar_label": "Req"
+      },
+      "version-1.0.4/version-1.0.4-responsiveness": {
+        "title": "Responsiveness",
+        "sidebar_label": "Responsiveness"
+      },
+      "version-1.0.4/version-1.0.4-runner_kafka": {
+        "title": "Kafka",
+        "sidebar_label": "Kafka"
+      },
+      "version-1.0.4/version-1.0.4-runner_postgres": {
+        "title": "Postgres",
+        "sidebar_label": "Postgres"
+      },
+      "version-1.0.4/version-1.0.4-runner_redis": {
+        "title": "Redis",
+        "sidebar_label": "Redis"
+      },
+      "version-1.0.4/version-1.0.4-runner_zookeeper": {
+        "title": "ZooKeeper",
+        "sidebar_label": "ZooKeeper"
+      },
+      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-defaults": {
+        "title": "Defaults",
+        "sidebar_label": "Defaults"
+      },
+      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-getting-started": {
+        "title": "Getting Started",
+        "sidebar_label": "Getting Started"
+      },
+      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-interfaces": {
+        "title": "Interfaces",
+        "sidebar_label": "Interfaces"
+      },
+      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-introduction": {
+        "title": "Introduction",
+        "sidebar_label": "Introduction"
       }
     },
     "links": {
       "Docs": "Docs"
     },
     "categories": {
-      "Getting started": "Getting started"
+      "Documentation": "Documentation",
+      "Getting started": "Getting started",
+      "Interfaces": "Interfaces",
+      "Healthchecks": "Healthchecks"
     }
   },
   "pages-strings": {
