@@ -1,6 +1,6 @@
 {
   "name": "@examples/node-to-node--orders",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "private": true,
   "scripts": {
     "start": "node ./index",

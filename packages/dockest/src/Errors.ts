@@ -13,8 +13,8 @@ export class BaseError extends Error {
     super(message)
     this.payload = payload
 
-    // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
+      // Maintains proper stack trace for where our error was thrown (only available on V8)
       Error.captureStackTrace(this, BaseError)
     }
   }
