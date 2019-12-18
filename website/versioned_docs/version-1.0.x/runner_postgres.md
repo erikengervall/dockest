@@ -45,5 +45,5 @@ new PostgresRunner(opts)
 
 ## Healthchecks
 
-1. Runs [connectivity](connectivity.md) check
-2. Runs [responsiveness](responsiveness.md) check by querying the database with `select 1`
+1. Runs [connectivity](connectivity) check
+2. Runs [responsiveness](responsiveness) check by querying the database with `select 1`

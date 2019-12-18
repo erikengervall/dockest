@@ -109,7 +109,7 @@ Finally, run `yarn test` or `npm run test`.
 
 - Merging of Compose file (if multiple)
 - Spin up services (only those provided via `run`)
-- Perform [connectivity](getting-started.md#connectivity-checks) check towards services
+- Perform [connectivity](getting-started#connectivity-checks) check towards services
 - Perform healthchecks
 - Execute provided commands
 - Run Jest

@@ -38,5 +38,5 @@ new RedisRunner(opts)
 
 ## Healthchecks
 
-1. Runs [connectivity](connectivity.md) check
-2. Runs [responsiveness](responsiveness.md) check by querying redis with `PING`
+1. Runs [connectivity](connectivity) check
+2. Runs [responsiveness](responsiveness) check by querying redis with `PING`

@@ -47,4 +47,4 @@ new KafkaRunner(opts)
 
 ## Healthchecks
 
-1. Runs [connectivity](connectivity.md) check
+1. Runs [connectivity](connectivity) check
