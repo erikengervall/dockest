@@ -92,7 +92,7 @@ jobs:
         run: |
           if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
           if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
-          cd packages/playground && yarn publish ${NPM_TAG}
+          cd packages/dockest && yarn publish ${NPM_TAG}
 
   ####### Deploy website
   website:
