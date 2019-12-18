@@ -17,5 +17,3 @@ jobs:
           yarn prep
           yarn lint
           yarn test --concurrency 5
-        env:
-          CI: true
