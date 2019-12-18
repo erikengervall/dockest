@@ -92,6 +92,7 @@ const siteConfig = {
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   repoUrl: 'https://github.com/erikengervall/dockest',
+  npmUrl: 'https://www.npmjs.com/package/dockest',
   engineeringBlogPostUrl: 'https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163',
 }
 
