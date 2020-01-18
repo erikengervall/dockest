@@ -16,7 +16,7 @@ export const checkResponsiveness = async (runner: Runner) => {
   await Promise.all(
     healthchecks.map(async healthcheck => {
       const recurse = async (responsivenessTimeout: number, runner: Runner) => {
-        logger.debug(`${logPrefix} Timeout in ${responsivenessTimeout}s`) // FIXME: Try getting replacePrevLine in here (may prove difficult if it runs in parallel)
+        logger.debug(`${logPrefix} Timeout in ${responsivenessTimeout}s`) // FIXME: Try getting replacePrevLine in here (may prove difficult when running in parallel)
 
         if (responsivenessTimeout <= 0) {
           throw new DockestError(`${logPrefix} Timed out`, { runner })
