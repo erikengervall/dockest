@@ -2,6 +2,7 @@ import { Logger } from './Logger'
 
 export interface Runner {
   containerId: string
+  dependees: Runner[]
   dockerComposeFileService: DockerComposeFileService
   dockestService: DockestService
   logger: Logger
@@ -46,9 +47,9 @@ export interface Healthcheck<T = DockerComposeFileService> {
 }
 
 export interface DockestService {
-  [key: string]: any
   serviceName: string
   commands?: string[]
+  dependsOn?: string[]
   healthchecks?: Healthcheck[]
 }
 
@@ -62,7 +63,9 @@ export interface DockestConfig {
      */
     jestRanWithResult: boolean
     perfStart: number
-    runners: Runner[]
+    runners: {
+      [key: string]: Runner
+    }
   }
   opts: {
     composeFile: string | string[]

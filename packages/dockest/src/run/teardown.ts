@@ -9,7 +9,7 @@ export const teardown = async (config: DockestConfig) => {
     $: { perfStart, isInsideDockerContainer, hostname, runners },
   } = config
 
-  for (const runner of runners) {
+  for (const runner of Object.values(runners)) {
     await teardownSingle(runner)
   }
 

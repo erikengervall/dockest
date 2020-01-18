@@ -25,7 +25,7 @@ export const configureLogger = (config: DockestConfig) => {
   } = config
 
   let LOG_SYMBOLS_CLONE = LOG_SYMBOLS.slice(0)
-  runners.forEach(({ dockestService: { serviceName }, logger }) => {
+  Object.values(runners).forEach(({ dockestService: { serviceName }, logger }) => {
     const nameHash = Math.abs(hashCode(serviceName))
 
     if (LOG_SYMBOLS_CLONE.length === 0) {

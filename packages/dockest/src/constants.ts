@@ -30,7 +30,7 @@ export const DEFAULT_$ = {
   isInsideDockerContainer: false,
   jestRanWithResult: false,
   perfStart: 0,
-  runners: [],
+  runners: {},
 }
 
 /**

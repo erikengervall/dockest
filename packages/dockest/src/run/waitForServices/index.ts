@@ -34,9 +34,9 @@ export const waitForServices = async (config: DockestConfig) => {
   } = config
   const setupPromises = []
 
-  await Promise.all(runners.map(resolveContainerId))
+  await Promise.all(Object.values(runners).map(resolveContainerId))
 
-  for (const runner of runners) {
+  for (const runner of Object.values(runners)) {
     if (!!runInBand) {
       await waitForRunner(runner)
     } else {

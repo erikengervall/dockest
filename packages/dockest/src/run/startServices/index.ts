@@ -10,7 +10,7 @@ export const startServices = async (config: DockestConfig) => {
     $: { isInsideDockerContainer, hostname, runners },
   } = config
 
-  await dockerComposeUp(runners)
+  await dockerComposeUp(Object.values(runners))
 
   if (isInsideDockerContainer) {
     if (!(await bridgeNetworkExists())) {

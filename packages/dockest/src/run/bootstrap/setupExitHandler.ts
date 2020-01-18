@@ -67,7 +67,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
       await customExitHandler(errorPayload)
     }
 
-    for (const runner of runners) {
+    for (const runner of Object.values(runners)) {
       await teardownSingle(runner)
     }
 
