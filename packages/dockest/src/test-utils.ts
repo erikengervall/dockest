@@ -1,5 +1,6 @@
 import { DEFAULT_OPTS, DEFAULT_$ } from './constants'
-import { DockestConfig, DockestService, DockerComposeFile } from './@types'
+import { DockestConfig, DockestService, DockerComposeFile, Runner } from './@types'
+import { Logger } from './Logger'
 
 export const createConfig = (
   $: Partial<DockestConfig['$']> = {},
@@ -14,6 +15,15 @@ export const createConfig = (
     jestLib: jest.fn() as any,
     ...opts,
   },
+})
+
+export const createRunner = (overrides?: Partial<Runner>): Runner => ({
+  containerId: '',
+  dependees: [],
+  dockerComposeFileService: { image: 'node:10-alpine', ports: [{ published: 3000, target: 3000 }] },
+  dockestService: { serviceName: 'node' },
+  logger: new Logger('node'),
+  ...(overrides || {}),
 })
 
 export const DOCKEST_SERVICE: DockestService = {
