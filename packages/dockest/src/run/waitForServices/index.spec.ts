@@ -1,7 +1,7 @@
 import { waitForServices } from './index'
 import { checkConnection } from './checkConnection'
 import { checkResponsiveness } from './healthcheck'
-import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
+// import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
 import { resolveContainerId } from './resolveContainerId'
 import { runRunnerCommands } from './runRunnerCommands'
 import { dockerComposeUp } from './dockerComposeUp'
@@ -13,7 +13,7 @@ import { createConfig, createRunner } from '../../test-utils'
 
 jest.mock('./checkConnection')
 jest.mock('./healthcheck')
-jest.mock('./fixRunnerHostAccessOnLinux')
+// jest.mock('./fixRunnerHostAccessOnLinux')
 jest.mock('./resolveContainerId')
 jest.mock('./runRunnerCommands')
 jest.mock('./dockerComposeUp')
