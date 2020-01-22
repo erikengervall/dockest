@@ -10,6 +10,10 @@ export interface Runner {
   isBridgeNetworkMode?: boolean
 }
 
+export interface RunnersObj {
+  [key: string]: Runner
+}
+
 export interface DockerComposeFileService {
   ports: {
     published: number
@@ -49,7 +53,7 @@ export interface Healthcheck<T = DockerComposeFileService> {
 export interface DockestService {
   serviceName: string
   commands?: string[]
-  dependsOn?: string[]
+  dependsOn?: string
   healthchecks?: Healthcheck[]
 }
 

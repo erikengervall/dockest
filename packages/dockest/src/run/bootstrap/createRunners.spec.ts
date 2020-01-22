@@ -6,35 +6,39 @@ const config = createConfig({ dockestServices: [DOCKEST_SERVICE] }, {})
 describe('createRunners', () => {
   describe('happy', () => {
     it('should work', () => {
-      createRunners(config, DOCKER_COMPOSE_FILE)
+      const runners = createRunners(config, DOCKER_COMPOSE_FILE)
 
-      expect(config.$.runners).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "containerId": "",
-            "dockerComposeFileService": Object {
-              "image": "redis:5.0.3-alpine",
-              "ports": Array [
-                Object {
-                  "published": 6379,
-                  "target": 6379,
-                },
-              ],
-            },
-            "dockestService": Object {
-              "serviceName": "redis",
-            },
-            "logger": Logger {
-              "debug": [Function],
-              "error": [Function],
-              "info": [Function],
-              "runnerSymbol": "🦇 ",
-              "serviceName": "redis",
-              "setRunnerSymbol": [Function],
-              "warn": [Function],
+      expect(runners).toMatchInlineSnapshot(`
+        Object {
+          "runners": Object {
+            "redis": Object {
+              "containerId": "",
+              "dependees": Array [],
+              "dockerComposeFileService": Object {
+                "image": "redis:5.0.3-alpine",
+                "ports": Array [
+                  Object {
+                    "published": 6379,
+                    "target": 6379,
+                  },
+                ],
+              },
+              "dockestService": Object {
+                "serviceName": "redis",
+              },
+              "logger": Logger {
+                "debug": [Function],
+                "error": [Function],
+                "info": [Function],
+                "runnerSymbol": "🦇 ",
+                "serviceName": "redis",
+                "setRunnerSymbol": [Function],
+                "warn": [Function],
+              },
             },
           },
-        ]
+          "runnersWithDependsOn": Object {},
+        }
       `)
     })
   })
@@ -44,7 +48,7 @@ describe('createRunners', () => {
       const config = createConfig({ dockestServices: [{ ...DOCKEST_SERVICE, serviceName: 'invalid' }] })
 
       expect(() => createRunners(config, DOCKER_COMPOSE_FILE)).toThrow(
-        `Unable to find compose service "${config.$.dockestServices[0].serviceName}", make sure that the serviceName corresponds with your compose file's service`,
+        `Unable to find compose service "${config.$.dockestServices[0].serviceName}", make sure that the serviceName corresponds with your Compose File's service`,
       )
     })
   })

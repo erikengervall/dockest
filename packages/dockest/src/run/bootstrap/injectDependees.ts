@@ -1,18 +1,16 @@
 import { ConfigurationError } from '../../Errors'
-import { Runner } from '../../@types'
+import { RunnersObj } from '../../@types'
 
-export const injectDependees = (runners: { [key: string]: Runner }, runnersWithDependsOn: Runner[]) =>
-  runnersWithDependsOn.forEach(runnerWithDependsOn => {
+export const injectDependees = (runners: RunnersObj, runnersWithDependsOn: RunnersObj) =>
+  Object.values(runnersWithDependsOn).forEach(runnerWithDependsOn => {
     const {
-      dockestService: { dependsOn = [] },
+      dockestService: { serviceName, dependsOn = '' },
     } = runnerWithDependsOn
 
-    dependsOn.forEach(dependencyServiceName => {
-      const dependencyRunner = runners[dependencyServiceName]
-      if (!dependencyRunner) {
-        throw new ConfigurationError(`Unable to create dependency for runner with serviceName ${dependencyServiceName}`)
-      }
+    const runnerWithDependees = runners[dependsOn]
+    if (!runnerWithDependees) {
+      throw new ConfigurationError(`Failed to find dependency "${dependsOn}" for dependee runner "${serviceName}"`)
+    }
 
-      dependencyRunner.dependees.push(runnerWithDependsOn)
-    })
+    runnerWithDependees.dependees.push(runnerWithDependsOn)
   })

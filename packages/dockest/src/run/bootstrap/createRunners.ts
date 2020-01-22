@@ -1,23 +1,21 @@
-import { injectDependees } from './injectDependees'
 import { ConfigurationError } from '../../Errors'
-import { DockestConfig, DockerComposeFile, Runner } from '../../@types'
+import { DockestConfig, DockerComposeFile, Runner, RunnersObj } from '../../@types'
 import { Logger } from '../../Logger'
 
-export const createRunners = (config: DockestConfig, dockerComposeFile: DockerComposeFile) => {
-  const { runners, runnersWithDependsOn } = config.$.dockestServices.reduce(
-    (
-      acc: {
-        runners: { [key: string]: Runner }
-        runnersWithDependsOn: Runner[]
-      },
-      dockestService,
-    ) => {
+interface Acc {
+  runners: RunnersObj
+  runnersWithDependsOn: RunnersObj
+}
+
+export const createRunners = (config: DockestConfig, dockerComposeFile: DockerComposeFile) =>
+  config.$.dockestServices.reduce(
+    (acc: Acc, dockestService) => {
       const { serviceName, dependsOn = [] } = dockestService
 
       const dockerComposeFileService = dockerComposeFile.services[serviceName]
       if (!dockerComposeFileService) {
         throw new ConfigurationError(
-          `Unable to find compose service "${serviceName}", make sure that the serviceName corresponds with your compose file's service`,
+          `Unable to find compose service "${serviceName}", make sure that the serviceName corresponds with your Compose File's service`,
         )
       }
 
@@ -35,7 +33,7 @@ export const createRunners = (config: DockestConfig, dockerComposeFile: DockerCo
       }
 
       if (dependsOn.length > 0) {
-        acc.runnersWithDependsOn.push(runner)
+        acc.runnersWithDependsOn[serviceName] = runner
       } else {
         acc.runners[serviceName] = runner
       }
@@ -44,11 +42,6 @@ export const createRunners = (config: DockestConfig, dockerComposeFile: DockerCo
     },
     {
       runners: {},
-      runnersWithDependsOn: [],
+      runnersWithDependsOn: {},
     },
   )
-
-  injectDependees(runners, runnersWithDependsOn)
-
-  config.$.runners = runners
-}

@@ -10,6 +10,10 @@ import { sleepForX } from '../../utils/sleepForX'
 const logPrefix = '[Setup]'
 
 const waitForRunner = async (runner: Runner) => {
+  for (const dependeeRunner of runner.dependees) {
+    await waitForRunner(dependeeRunner)
+  }
+
   runner.logger.debug(`${logPrefix} Initiating...`)
 
   if (runner.isBridgeNetworkMode) {
