@@ -39,7 +39,7 @@ describe('waitForServices', () => {
 
       // waitForRunner
       expect(dockerComposeUp).toHaveBeenCalledTimes(3)
-      runners.forEach(({ serviceName }) => expect(dockerComposeUp).toHaveBeenCalledWith(serviceName))
+      runners.forEach(({ serviceName }) => expect(dockerComposeUp).toHaveBeenCalledWith(config, serviceName))
 
       expect(resolveContainerId).toHaveBeenCalledTimes(3)
       runners.forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith(runner))
@@ -82,7 +82,7 @@ describe('waitForServices', () => {
 
       // waitForRunner
       expect(dockerComposeUp).toHaveBeenCalledTimes(3)
-      runners.forEach(({ serviceName }) => expect(dockerComposeUp).toHaveBeenCalledWith(serviceName))
+      runners.forEach(({ serviceName }) => expect(dockerComposeUp).toHaveBeenCalledWith(config, serviceName))
 
       expect(resolveContainerId).toHaveBeenCalledTimes(3)
       runners.forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith(runner))
