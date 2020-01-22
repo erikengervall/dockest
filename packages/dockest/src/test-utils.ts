@@ -19,10 +19,9 @@ export const createConfig = (
 
 export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   containerId: '',
-  dependees: [],
   dockerComposeFileService: { image: 'node:10-alpine', ports: [{ published: 3000, target: 3000 }] },
-  dockestService: { serviceName: 'node' },
   logger: new Logger('node'),
+  serviceName: 'node',
   ...(overrides || {}),
 })
 

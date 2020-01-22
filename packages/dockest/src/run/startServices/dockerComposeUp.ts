@@ -3,7 +3,7 @@ import { GENERATED_COMPOSE_FILE_PATH } from '../../constants'
 import { Runner } from '../../@types'
 
 export const dockerComposeUp = async (runners: Runner[]) => {
-  const servicesToStart = runners.map(runner => runner.dockestService.serviceName)
+  const servicesToStart = runners.map(({ serviceName }) => serviceName).join(' ')
 
   const command = `docker-compose \
                     -f ${`${GENERATED_COMPOSE_FILE_PATH}`} \
@@ -11,7 +11,7 @@ export const dockerComposeUp = async (runners: Runner[]) => {
                     --force-recreate \
                     --build \
                     --detach \
-                    ${servicesToStart.join(' ')}`
+                    ${servicesToStart}`
 
   await execaWrapper(command)
 }

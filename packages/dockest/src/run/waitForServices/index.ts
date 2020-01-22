@@ -10,17 +10,22 @@ import { sleepForX } from '../../utils/sleepForX'
 const logPrefix = '[Setup]'
 
 const waitForRunner = async (runner: Runner) => {
-  for (const dependeeRunner of runner.dependees) {
-    await waitForRunner(dependeeRunner)
+  const { serviceName, dependents = [], containerId, isBridgeNetworkMode } = runner
+
+  for (const dependant of dependents) {
+    // TODO: Fix these typings ASAP
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    await waitForRunner(dependant)
   }
 
   runner.logger.debug(`${logPrefix} Initiating...`)
 
-  if (runner.isBridgeNetworkMode) {
-    await joinBridgeNetwork(runner.containerId, runner.dockestService.serviceName)
+  if (isBridgeNetworkMode) {
+    await joinBridgeNetwork(containerId, serviceName)
   }
 
-  if (process.platform === 'linux' && !runner.isBridgeNetworkMode) {
+  if (process.platform === 'linux' && !isBridgeNetworkMode) {
     await fixRunnerHostAccessOnLinux(runner)
   }
 

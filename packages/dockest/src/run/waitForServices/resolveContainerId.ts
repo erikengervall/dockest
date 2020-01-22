@@ -7,9 +7,7 @@ import { sleep } from '../../utils/sleep'
 const logPrefix = '[Resolve Container Id]'
 
 const getContainerId = async (runner: Runner) => {
-  const {
-    dockestService: { serviceName },
-  } = runner
+  const { serviceName } = runner
 
   const command = `docker-compose \
                     -f ${GENERATED_COMPOSE_FILE_PATH} \

@@ -19,10 +19,7 @@ const removeContainerById = async (runner: Runner) => {
 }
 
 export const teardownSingle = async (runner: Runner) => {
-  const {
-    containerId,
-    dockestService: { serviceName },
-  } = runner
+  const { containerId, serviceName } = runner
 
   if (!containerId) {
     throw new DockestError(`Invalid containerId (${containerId}) for service (${serviceName})`, { runner })

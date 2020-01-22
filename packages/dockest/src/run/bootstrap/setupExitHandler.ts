@@ -48,7 +48,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
         },
       }
 
-      runner && (logPayload.data.serviceName = runner.dockestService.serviceName)
+      runner && (logPayload.data.serviceName = runner.serviceName)
       runner && runner.containerId && (logPayload.data.containerId = runner.containerId)
 
       error && (logPayload.data.error = error)
