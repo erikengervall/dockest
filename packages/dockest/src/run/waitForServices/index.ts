@@ -14,7 +14,7 @@ import { DOCKEST_HOST_ADDRESS } from '../../constants'
 const logPrefix = '[Setup]'
 
 const waitForRunner = async (runner: Runner) => {
-  const { serviceName, dependents, containerId, isBridgeNetworkMode } = runner
+  const { serviceName, dependents, isBridgeNetworkMode } = runner
 
   runner.logger.debug(`${logPrefix} Initiating...`)
 
@@ -22,7 +22,7 @@ const waitForRunner = async (runner: Runner) => {
   await resolveContainerId(runner)
 
   if (isBridgeNetworkMode) {
-    await joinBridgeNetwork(containerId, serviceName)
+    await joinBridgeNetwork(runner.containerId, serviceName)
   }
 
   if (process.platform === 'linux' && !isBridgeNetworkMode) {
