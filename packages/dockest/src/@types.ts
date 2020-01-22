@@ -75,6 +75,9 @@ export interface DockestConfig {
   }
   opts: {
     composeFile: string | string[]
+    logLevel: number
+    /** Spin up and healthcheck dockest services sequentially */
+    runInBand: boolean
     jestLib: {
       // FIXME: Proper typings for Jest without introducing circular referencing
       SearchSource: any
@@ -84,8 +87,24 @@ export interface DockestConfig {
       run: (maybeArgv?: string[] | undefined, project?: string | undefined) => Promise<any>
       runCLI: (argv: any, projects: string[]) => Promise<any>
     }
-
-    logLevel: number
+    composeOpts: {
+      /** Recreate dependent containers. Incompatible with --no-recreate. */
+      alwaysRecreateDeps: boolean
+      /** Build images before starting containers. */
+      build: boolean
+      /** Recreate containers even if their configuration and image haven't changed. */
+      forceRecreate: boolean
+      /** Don't build an image, even if it's missing. */
+      noBuild: boolean
+      /** Produce monochrome output. */
+      noColor: boolean
+      /** Don't start linked services. */
+      noDeps: boolean
+      /** If containers already exist, don't recreate them. Incompatible with --force-recreate and -V. */
+      noRecreate: boolean
+      /** Pull without printing progress information. */
+      quietPull: boolean
+    }
     afterSetupSleep?: number
     debug?: boolean
     dumpErrors?: boolean
@@ -146,6 +165,5 @@ export interface DockestConfig {
       watchAll?: boolean
       watchman?: boolean
     }
-    runInBand?: boolean
   }
 }

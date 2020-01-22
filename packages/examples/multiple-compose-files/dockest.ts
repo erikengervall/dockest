@@ -4,7 +4,6 @@ const dockest = new Dockest({
   composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
   dumpErrors: true,
   logLevel: logLevel.DEBUG,
-  runInBand: true,
 })
 
 dockest.run([

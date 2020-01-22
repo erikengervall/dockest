@@ -23,9 +23,14 @@ export class Dockest {
         ...DEFAULT_$,
       },
       opts: {
-        ...DEFAULT_OPTS,
         jestLib,
+        ...DEFAULT_OPTS,
         ...opts,
+
+        composeOpts: {
+          ...DEFAULT_OPTS.composeOpts,
+          ...opts.composeOpts,
+        },
       },
     }
 
