@@ -6,7 +6,7 @@ import { Runner } from '../../@types'
 const logPrefix = '[Check Responsiveness]'
 
 export const checkResponsiveness = async (runner: Runner) => {
-  const { containerId, healthchecks = [], logger } = runner
+  const { containerId, healthchecks, logger } = runner
   const responsivenessTimeout = 30
 
   await Promise.all(

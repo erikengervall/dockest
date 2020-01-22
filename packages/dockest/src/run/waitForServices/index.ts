@@ -10,12 +10,9 @@ import { sleepForX } from '../../utils/sleepForX'
 const logPrefix = '[Setup]'
 
 const waitForRunner = async (runner: Runner) => {
-  const { serviceName, dependents = [], containerId, isBridgeNetworkMode } = runner
+  const { serviceName, dependents, containerId, isBridgeNetworkMode } = runner
 
   for (const dependant of dependents) {
-    // TODO: Fix these typings ASAP
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
     await waitForRunner(dependant)
   }
 

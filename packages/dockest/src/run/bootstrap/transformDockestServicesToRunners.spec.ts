@@ -11,6 +11,7 @@ describe('transformDockestServicesToRunners', () => {
       expect(config.$.runners).toMatchInlineSnapshot(`
         Object {
           "redis": Object {
+            "commands": Array [],
             "containerId": "",
             "dependents": Array [],
             "dockerComposeFileService": Object {
@@ -22,6 +23,7 @@ describe('transformDockestServicesToRunners', () => {
                 },
               ],
             },
+            "healthchecks": Array [],
             "logger": Logger {
               "debug": [Function],
               "error": [Function],

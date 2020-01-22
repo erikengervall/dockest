@@ -1,9 +1,13 @@
 import { Logger } from './Logger'
 
-export interface Runner extends DockestService {
+export interface Runner {
+  commands: string[]
   containerId: string
+  dependents: Runner[]
   dockerComposeFileService: DockerComposeFileService
+  healthchecks: Healthcheck[]
   logger: Logger
+  serviceName: string
   host?: string
   isBridgeNetworkMode?: boolean
 }

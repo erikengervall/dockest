@@ -4,7 +4,7 @@ import { Logger } from '../../Logger'
 
 export const transformDockestServicesToRunners = (config: DockestConfig, dockerComposeFile: DockerComposeFile) => {
   const createRunner = (dockestService: DockestService) => {
-    const { serviceName, dependents = [] } = dockestService
+    const { commands = [], dependents = [], healthchecks = [], serviceName } = dockestService
 
     const dockerComposeFileService = dockerComposeFile.services[serviceName]
     if (!dockerComposeFileService) {
@@ -14,11 +14,13 @@ export const transformDockestServicesToRunners = (config: DockestConfig, dockerC
     }
 
     const runner: Runner = {
-      ...dockestService,
+      commands,
       containerId: '',
       dependents: dependents.map(createRunner),
       dockerComposeFileService,
+      healthchecks,
       logger: new Logger(serviceName),
+      serviceName,
     }
 
     if (config.$.isInsideDockerContainer) {
