@@ -9,7 +9,6 @@ const dockest = new Dockest({
   jestLib: jest,
   jestOpts: { updateSnapshot: true },
   logLevel: logLevel.DEBUG,
-  runInBand: true,
 })
 
 dockest.run([
@@ -23,15 +22,24 @@ dockest.run([
     ],
     healthchecks: [defaultHealthchecks.postgres],
   },
+
   {
     serviceName: 'multiple_resources_postgres2knex',
     commands: ['knex migrate:rollback', 'knex migrate:latest', 'knex seed:run'],
     healthchecks: [defaultHealthchecks.postgres],
   },
+
   {
     serviceName: 'multiple_resources_redis',
     healthchecks: [defaultHealthchecks.redis],
   },
-  { serviceName: 'multiple_resources_zookeeper' },
-  { serviceName: 'multiple_resources_kafka' },
+
+  {
+    serviceName: 'multiple_resources_zookeeper',
+    dependents: [
+      {
+        serviceName: 'multiple_resources_kafka',
+      },
+    ],
+  },
 ])
