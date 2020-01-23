@@ -5,6 +5,10 @@
     "previous": "Previous",
     "tagline": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
     "docs": {
+      "api_reference": {
+        "title": "API Reference",
+        "sidebar_label": "API Reference"
+      },
       "defaults": {
         "title": "Defaults",
         "sidebar_label": "Defaults"
@@ -12,10 +16,6 @@
       "getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"
-      },
-      "interfaces": {
-        "title": "Interfaces",
-        "sidebar_label": "Interfaces"
       },
       "introduction": {
         "title": "Introduction",

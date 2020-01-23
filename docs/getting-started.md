@@ -13,7 +13,7 @@ yarn add --dev dockest
 # npm install --save-dev dockest
 ```
 
-## Application examples
+## Application example
 
 Let's create a small example and see it in action!
 
@@ -27,7 +27,7 @@ export const setCache = (redisClient: Redis, arbitraryNumber: number) => {
 }
 ```
 
-## Create unit test
+### Create unit test
 
 Then, create a test file `cache.spec.ts` to test the caching functionality:
 
@@ -50,7 +50,7 @@ it('should cache an arbitrary number', async () => {
 })
 ```
 
-## Configure Dockest
+### Configure Dockest
 
 The next step is to transform this unit test into an integration test by creating a `docker-compose.yml` and `dockest.ts` file.
 
@@ -84,14 +84,14 @@ const dockestServices = [
 dockest.run(dockestServices)
 ```
 
-## Configure scripts
+### Configure scripts
 
 Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https://www.npmjs.com/package/ts-node) is a practical library for running your tests without adding a compilation step.
 
 ```json
 {
   "scripts": {
-    "test:integration": "ts-node ./dockest"
+    "test": "ts-node ./dockest"
   },
   "devDependencies": {
     "dockest": "..."
@@ -99,28 +99,10 @@ Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https:/
 }
 ```
 
-Finally, run the script:
+### Run
+
+Finally, run the tests:
 
 ```sh
-yarn test:integration
+yarn test
 ```
-
-<!-- ## Under the hood
-
-`ts-node ./dockest` will initiate a series of events:
-
-- Merging of Compose file (if multiple)
-- Spin up services (only those provided via `run`)
-- Perform [connectivity](getting-started#connectivity-checks) check towards services
-- Perform healthchecks
-- Execute provided commands
-- Run Jest
-- Evaluate result
-- Teardown of running services
-- Exit
-
-### Connectivity checks
-
-Recursively attempts to establish a connection with the Docker service using the Node.js native [net](https://nodejs.org/api/net.html#net_net_createconnection) module.
-
-The connectivity healthcheck will fail once the connectionTimeout is reached. -->
