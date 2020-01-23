@@ -6,23 +6,18 @@ sidebar_label: Getting Started
 
 ## Install
 
-Install Dockest using [`yarn`](https://yarnpkg.com/en/package/jest):
+Install Dockest using [`yarn`](https://yarnpkg.com/en/package/jest) or [`npm`](https://www.npmjs.com/) (we'll be using `yarn` for the rest of the documentation):
 
 ```bash
 yarn add --dev dockest
+# npm install --save-dev dockest
 ```
 
-or [`npm`](https://www.npmjs.com/):
-
-```bash
-npm install --save-dev dockest
-```
-
-## Create application
+## Application examples
 
 Let's create a small example and see it in action!
 
-First, let's create a function `cache.ts` that uses a Redis store to cache an arbitrary number:
+We begin by creating a function `cache.ts` that uses a Redis store to cache an arbitrary number:
 
 ```ts
 export const cacheKey = 'arbitraryNumberKey'
@@ -79,13 +74,14 @@ import { Dockest } from 'dockest'
 
 const dockest = new Dockest()
 
-const services = [
+// Specify the services from the Compose file that should be included in the integration test
+const dockestServices = [
   {
-    serviceName: 'myRedis', // Match with configuration in docker-compose.yml
+    serviceName: 'myRedis', // Must match a service in the Compose file
   },
 ]
 
-dockest.run(services)
+dockest.run(dockestServices)
 ```
 
 ## Configure scripts
@@ -95,14 +91,21 @@ Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https:/
 ```json
 {
   "scripts": {
-    "test": "ts-node ./dockest"
+    "test:integration": "ts-node ./dockest"
+  },
+  "devDependencies": {
+    "dockest": "..."
   }
 }
 ```
 
-Finally, run `yarn test` or `npm run test`.
+Finally, run the script:
 
-## Under the hood
+```sh
+yarn test:integration
+```
+
+<!-- ## Under the hood
 
 `ts-node ./dockest` will initiate a series of events:
 
@@ -120,4 +123,4 @@ Finally, run `yarn test` or `npm run test`.
 
 Recursively attempts to establish a connection with the Docker service using the Node.js native [net](https://nodejs.org/api/net.html#net_net_createconnection) module.
 
-The connectivity healthcheck will fail once the connectionTimeout is reached.
+The connectivity healthcheck will fail once the connectionTimeout is reached. -->
