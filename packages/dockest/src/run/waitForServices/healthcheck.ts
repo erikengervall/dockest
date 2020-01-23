@@ -19,7 +19,12 @@ export const checkResponsiveness = async (runner: Runner) => {
     try {
       logger.debug(`${logPrefix}`)
 
-      await healthcheck(dockerComposeFileService, containerId, createDefaultHealthchecks(runner))
+      await healthcheck({
+        containerId,
+        defaultHealthchecks: createDefaultHealthchecks(runner),
+        dockerComposeFileService,
+        logger,
+      })
 
       logger.info(`${logPrefix} Success`, { success: true })
     } catch (error) {

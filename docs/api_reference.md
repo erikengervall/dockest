@@ -139,6 +139,8 @@ _Note: Jest runs tests in parallel per default, which is why Dockest defaults `r
 
 ## `run` [function]
 
+<!-- TODO: Move this to a seperate page -->
+
 ```ts
 import { Dockest } from 'dockest'
 
@@ -172,11 +174,11 @@ Default: `-`
 
 Service name that matches the corresponding service in your Compose file
 
-### `dockestService.commands` [string[]
+### `dockestService.commands` [string[]]
 
 Default: `[]`
 
-Commands to be executed upon service readiness. E.g. migration scripts for databases
+Bash scripts that will run once the service is ready. E.g. database migrations.
 
 ### `dockestService.dependents` [DockestService[]]
 
@@ -221,8 +223,43 @@ services:
 
 > `depends_on` does not wait for `db` and `redis` to be “ready” before starting `web` - only until they have been started.
 
-### `dockestService.healthchecks` [function[]]
+### `dockestService.healthcheck` [function]
 
-Default: `[]`
+Default: `() => Promise.resolve()`
 
-Functions that generate commands to determine the service's health. E.g. responsiveness checking a database using `select 1`. The healthchecks receive the corresponding Compose service configuration from the Compose file as first argument and the containerId as the second.
+The Dockest Service's healthcheck function is there to determine the service's health (or responsiveness) by e.g.,
+E.g. responsiveness checking a database using `select 1`. The healthcheck function receive the corresponding Compose service configuration from the Compose file as first argument and the containerId as the second.
+
+The healthcheck takes a single argument in form of an object.
+
+```ts
+const dockestServices = [
+  {
+    serviceName: 'service1',
+    healthcheck: ({
+      containerId,
+      defaultHealthchecks: { postgres, redis, web },
+      dockerComposeFileService: { ports },
+      logger,
+    }) => {
+      // ...
+    },
+  },
+]
+```
+
+#### containerId
+
+The Docker [container's id](https://docs.docker.com/engine/reference/run/#container-identification).
+
+#### defaultHealthchecks
+
+Dockest exposes a few default healthchecks that developers can use. These are plug-and-play async functions that will attempt to establish responsiveness towards a service.
+
+#### dockerComposeFileService
+
+This is an object representation of your service's information from the Compose file.
+
+#### logger
+
+An instance, specific to this particular Dockest Service (internally known as Runner), of the internal Dockest logger. Using this logger will prettify and contextualize logs with e.g. the serviceName.

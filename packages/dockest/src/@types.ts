@@ -1,16 +1,27 @@
 import { Logger } from './Logger'
 
-type ServiceName = string
 type ContainerId = string
+type DefaultHealthcheck = () => Promise<void>
+type ServiceName = string
 
 export interface DefaultHealthchecks {
-  postgres: (composeService: DockerComposeFileServicePostgres) => Promise<void>
-  redis: (composeService: DockerComposeFileService) => Promise<void>
-  web: (composeService: DockerComposeFileService) => Promise<void>
+  postgres: DefaultHealthcheck
+  redis: DefaultHealthcheck
+  web: DefaultHealthcheck
 }
 
-export interface Healthcheck<T = DockerComposeFileService> {
-  (composeService: T, containerId: ContainerId, defaultHealthchecks: DefaultHealthchecks): Promise<void>
+export interface Healthcheck {
+  ({
+    containerId,
+    defaultHealthchecks,
+    dockerComposeFileService,
+    logger,
+  }: {
+    containerId: ContainerId
+    defaultHealthchecks: DefaultHealthchecks
+    dockerComposeFileService: DockerComposeFileService
+    logger: Runner['logger']
+  }): Promise<any>
 }
 
 export interface Runner {

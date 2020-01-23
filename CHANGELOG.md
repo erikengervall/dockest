@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Introduced `DockestServices`, servicing as the interface for users to specify which services to spin up during testing
-- Introduced custom healthchecks that can be passed along with the `DockestServices`
+- Introduced custom healthcheck that can be passed along with the `DockestServices`
 
 ### Removed
 

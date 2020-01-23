@@ -23,7 +23,7 @@ describe('transformDockestServicesToRunners', () => {
                 },
               ],
             },
-            "healthchecks": Array [],
+            "healthcheck": [Function],
             "logger": Logger {
               "debug": [Function],
               "error": [Function],
