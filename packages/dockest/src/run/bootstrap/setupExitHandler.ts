@@ -90,7 +90,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
     process.exit(errorPayload.code || 1)
   }
 
-  // so the program will not close instantly
+  // keeps the program from closing instantly
   process.stdin.resume() // FIXME: causes "Jest has detected the following 1 open handle potentially keeping Jest from exiting:"
 
   // do something when app is closing

@@ -64,20 +64,17 @@ export interface DockestConfig {
     dockestServices: DockestService[]
     hostname: string
     isInsideDockerContainer: boolean
-    /**
-     * Jest has finished executing and has returned a result
-     */
+    /** Jest has finished executing and has returned a result */
     jestRanWithResult: boolean
     perfStart: number
-    runners: {
-      [key: string]: Runner
-    }
+    runners: RunnersObj
   }
   opts: {
     composeFile: string | string[]
     logLevel: number
-    /** Spin up and healthcheck dockest services sequentially */
+    /** Run dockest sequentially */
     runInBand: boolean
+
     jestLib: {
       // FIXME: Proper typings for Jest without introducing circular referencing
       SearchSource: any
@@ -87,6 +84,7 @@ export interface DockestConfig {
       run: (maybeArgv?: string[] | undefined, project?: string | undefined) => Promise<any>
       runCLI: (argv: any, projects: string[]) => Promise<any>
     }
+
     composeOpts: {
       /** Recreate dependent containers. Incompatible with --no-recreate. */
       alwaysRecreateDeps: boolean
@@ -105,13 +103,13 @@ export interface DockestConfig {
       /** Pull without printing progress information. */
       quietPull: boolean
     }
+
     afterSetupSleep?: number
     debug?: boolean
     dumpErrors?: boolean
     exitHandler?: null | ((error: ErrorPayload) => any)
-    /**
-     * https://jestjs.io/docs/en/cli
-     */
+
+    /** https://jestjs.io/docs/en/cli */
     jestOpts?: {
       bail?: boolean
       cache?: boolean
