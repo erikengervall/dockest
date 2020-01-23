@@ -140,7 +140,7 @@ _Note: Jest runs tests in parallel per default, which is why Dockest defaults `r
 ## `run` [function]
 
 ```ts
-import { Dockest, defaultHealthchecks } from 'dockest'
+import { Dockest } from 'dockest'
 
 const { run } = new Dockest()
 
@@ -153,7 +153,7 @@ const dockestServices = [
         serviceName: 'service2',
       },
     ],
-    healthchecks: [defaultHealthchecks.postgres],
+    healthcheck: () => Promise.resolve(), // TODO: Update docs
   },
 ]
 

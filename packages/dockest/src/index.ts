@@ -10,7 +10,6 @@ import { runJest } from './run/runJest'
 import { teardown } from './run/teardown'
 import { waitForServices } from './run/waitForServices'
 
-export { defaultHealthchecks } from './utils/defaultHealthchecks'
 export { execaWrapper as execa } from './utils/execaWrapper'
 export { LOG_LEVEL as logLevel } from './constants'
 

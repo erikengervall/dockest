@@ -1,13 +1,26 @@
 import { Logger } from './Logger'
 
+type ServiceName = string
+type ContainerId = string
+
+export interface DefaultHealthchecks {
+  postgres: (composeService: DockerComposeFileServicePostgres) => Promise<void>
+  redis: (composeService: DockerComposeFileService) => Promise<void>
+  web: (composeService: DockerComposeFileService) => Promise<void>
+}
+
+export interface Healthcheck<T = DockerComposeFileService> {
+  (composeService: T, containerId: ContainerId, defaultHealthchecks: DefaultHealthchecks): Promise<void>
+}
+
 export interface Runner {
-  commands: string[]
-  containerId: string
+  commands: Commands
+  containerId: ContainerId
   dependents: Runner[]
   dockerComposeFileService: DockerComposeFileService
-  healthchecks: Healthcheck[]
+  healthcheck: Healthcheck
   logger: Logger
-  serviceName: string
+  serviceName: ServiceName
   host?: string
   isBridgeNetworkMode?: boolean
 }
@@ -22,15 +35,6 @@ export interface DockerComposeFileService {
     target: number
   }[]
   [key: string]: any
-}
-
-export interface ErrorPayload {
-  trap: string
-  code?: number
-  error?: Error
-  promise?: Promise<any>
-  reason?: Error | any
-  signal?: any
 }
 
 export interface DockerComposeFile {
@@ -48,15 +52,13 @@ export interface DockerComposeFileServicePostgres extends DockerComposeFileServi
   }
 }
 
-export interface Healthcheck<T = DockerComposeFileService> {
-  (composeService: T, containerId: string): string
-}
+export type Commands = string[]
 
 export interface DockestService {
-  serviceName: string
-  commands?: string[]
+  serviceName: ServiceName
+  commands?: Commands
   dependents?: DockestService[]
-  healthchecks?: Healthcheck[]
+  healthcheck?: Healthcheck
 }
 
 export interface DockestConfig {
@@ -164,4 +166,13 @@ export interface DockestConfig {
       watchman?: boolean
     }
   }
+}
+
+export interface ErrorPayload {
+  trap: string
+  code?: number
+  error?: Error
+  promise?: Promise<any>
+  reason?: Error | any
+  signal?: any
 }
