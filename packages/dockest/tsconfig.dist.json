@@ -1,20 +1,4 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "lib": ["es2019"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2019",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "removeComments": true
-  },
-  "include": ["./src"],
+  "extends": "./tsconfig.json",
   "exclude": ["./**/*.spec.ts"]
 }

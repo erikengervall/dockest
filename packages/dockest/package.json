@@ -26,6 +26,7 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
+    "prepublishOnly": "yarn build:publish",
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
     "clean": "node_modules/.bin/rimraf ./dist",
