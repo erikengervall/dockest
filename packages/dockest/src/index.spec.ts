@@ -6,11 +6,6 @@ describe('index', () => {
       expect(allTheStuff).toMatchInlineSnapshot(`
         Object {
           "Dockest": [Function],
-          "defaultHealthchecks": Object {
-            "postgres": [Function],
-            "redis": [Function],
-            "web": [Function],
-          },
           "execa": [Function],
           "logLevel": Object {
             "DEBUG": 4,

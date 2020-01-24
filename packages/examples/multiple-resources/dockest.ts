@@ -1,5 +1,5 @@
 import jest from 'jest'
-import { Dockest, logLevel, defaultHealthchecks } from 'dockest'
+import { Dockest, logLevel } from 'dockest'
 
 const dockest = new Dockest({
   composeFile: 'docker-compose.yml',
@@ -9,7 +9,6 @@ const dockest = new Dockest({
   jestLib: jest,
   jestOpts: { updateSnapshot: true },
   logLevel: logLevel.DEBUG,
-  runInBand: true,
 })
 
 dockest.run([
@@ -21,17 +20,26 @@ dockest.run([
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
     ],
-    healthchecks: [defaultHealthchecks.postgres],
+    healthcheck: ({ defaultHealthchecks: { postgres } }) => postgres(),
   },
+
   {
     serviceName: 'multiple_resources_postgres2knex',
     commands: ['knex migrate:rollback', 'knex migrate:latest', 'knex seed:run'],
-    healthchecks: [defaultHealthchecks.postgres],
+    healthcheck: ({ defaultHealthchecks: { postgres } }) => postgres(),
   },
+
   {
     serviceName: 'multiple_resources_redis',
-    healthchecks: [defaultHealthchecks.redis],
+    healthcheck: ({ defaultHealthchecks: { redis } }) => redis(),
   },
-  { serviceName: 'multiple_resources_zookeeper' },
-  { serviceName: 'multiple_resources_kafka' },
+
+  {
+    serviceName: 'multiple_resources_zookeeper',
+    dependents: [
+      {
+        serviceName: 'multiple_resources_kafka',
+      },
+    ],
+  },
 ])

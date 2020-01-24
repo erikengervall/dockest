@@ -7,11 +7,9 @@ import { DEFAULT_OPTS, DEFAULT_$, MINIMUM_JEST_VERSION } from './constants'
 import { DockestConfig, DockestService } from './@types'
 import { Logger } from './Logger'
 import { runJest } from './run/runJest'
-import { startServices } from './run/startServices'
 import { teardown } from './run/teardown'
 import { waitForServices } from './run/waitForServices'
 
-export { defaultHealthchecks } from './utils/defaultHealthchecks'
 export { execaWrapper as execa } from './utils/execaWrapper'
 export { LOG_LEVEL as logLevel } from './constants'
 
@@ -24,9 +22,14 @@ export class Dockest {
         ...DEFAULT_$,
       },
       opts: {
-        ...DEFAULT_OPTS,
         jestLib,
+        ...DEFAULT_OPTS,
         ...opts,
+
+        composeOpts: {
+          ...DEFAULT_OPTS.composeOpts,
+          ...opts.composeOpts,
+        },
       },
     }
 
@@ -46,7 +49,6 @@ export class Dockest {
     this.config.$.dockestServices = dockestServices
 
     await bootstrap(this.config)
-    await startServices(this.config)
     await waitForServices(this.config)
     await debugMode(this.config)
     const { success } = await runJest(this.config)

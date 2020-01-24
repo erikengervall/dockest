@@ -1,6 +1,6 @@
 {
   "name": "@examples/aws-codebuild--app",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-beta.0",
   "private": true,
   "dependencies": {
     "body-parser": "1.19.0",

@@ -17,11 +17,22 @@ export const DEFAULT_HOST_NAME = 'host.docker.internal'
 
 export const DEFAULT_OPTS = {
   composeFile: 'docker-compose.yml',
+  logLevel: LOG_LEVEL.INFO,
+  runInBand: true,
   jestOpts: {
     projects: ['.'],
     runInBand: true,
   },
-  logLevel: LOG_LEVEL.INFO,
+  composeOpts: {
+    alwaysRecreateDeps: false,
+    build: false,
+    forceRecreate: false,
+    noBuild: false,
+    noColor: false,
+    noDeps: false,
+    noRecreate: false,
+    quietPull: false,
+  },
 }
 
 export const DEFAULT_$ = {
@@ -30,7 +41,7 @@ export const DEFAULT_$ = {
   isInsideDockerContainer: false,
   jestRanWithResult: false,
   perfStart: 0,
-  runners: [],
+  runners: {},
 }
 
 /**

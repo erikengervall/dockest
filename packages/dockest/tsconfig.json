@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "declaration": true,
     "esModuleInterop": true,
     "lib": ["es2019"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2019",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "resolveJsonModule": true,
-    "declaration": true
+    "target": "es2019"
   },
-  "include": ["./src"],
-  "exclude": ["./**/*.spec.ts"]
+  "include": ["src/**/*"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@examples/aws-codebuild",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-beta.0",
   "private": true,
   "scripts": {
     "build": "(cd ./src && ./codebuild_prebuild.sh)",

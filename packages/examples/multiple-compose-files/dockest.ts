@@ -1,10 +1,9 @@
-import { Dockest, logLevel, defaultHealthchecks } from 'dockest'
+import { Dockest, logLevel } from 'dockest'
 
 const dockest = new Dockest({
   composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
   dumpErrors: true,
   logLevel: logLevel.DEBUG,
-  runInBand: true,
 })
 
 dockest.run([
@@ -16,8 +15,17 @@ dockest.run([
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
     ],
-    healthchecks: [defaultHealthchecks.postgres],
+    healthcheck: ({ defaultHealthchecks: { postgres } }) =>
+      Promise.all([
+        (new Promise(resolve => {
+          setTimeout(resolve, 50)
+          console.log('Arbitrary healthcheck step')
+        }),
+        postgres()),
+      ]),
   },
 
-  { serviceName: 'multiple_compose_files_redis' },
+  {
+    serviceName: 'multiple_compose_files_redis',
+  },
 ])

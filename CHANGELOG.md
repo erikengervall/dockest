@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-beta.0] - 2019-01-24
+
+### Added
+
+- Added the option to pass `dependent` Dockest Services to Dockest Services. Essentially creating a more robust `depends_on`
+- Added Dockest options for forwarding compose CLI options for `docker-compose <opts> up`. E.g. `--build` or `--force-recreate`
+
+### Changed
+
+- Changed Dockest Services `healthchecks` prop to a `healthcheck` prop. Instead of passing an array of functions, simply implement a single healthcheck function that'll be called recursively until successful or times out. The `healthcheck` function is also fed default healthcheck functions.
+- Made documentation more verbose and descriptive
+
 ## [2.0.0-alpha.3] - 2019-12-18
 
 ### Added
@@ -21,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Introduced `DockestServices`, servicing as the interface for users to specify which services to spin up during testing
-- Introduced custom healthchecks that can be passed along with the `DockestServices`
+- Introduced custom healthcheck that can be passed along with the `DockestServices`
 
 ### Removed
 

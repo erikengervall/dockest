@@ -48,7 +48,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
         },
       }
 
-      runner && (logPayload.data.serviceName = runner.dockestService.serviceName)
+      runner && (logPayload.data.serviceName = runner.serviceName)
       runner && runner.containerId && (logPayload.data.containerId = runner.containerId)
 
       error && (logPayload.data.error = error)
@@ -67,7 +67,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
       await customExitHandler(errorPayload)
     }
 
-    for (const runner of runners) {
+    for (const runner of Object.values(runners)) {
       await teardownSingle(runner)
     }
 
@@ -90,7 +90,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
     process.exit(errorPayload.code || 1)
   }
 
-  // so the program will not close instantly
+  // keeps the program from closing instantly
   process.stdin.resume() // FIXME: causes "Jest has detected the following 1 open handle potentially keeping Jest from exiting:"
 
   // do something when app is closing

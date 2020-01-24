@@ -1,12 +1,43 @@
 import { Logger } from './Logger'
 
+type ContainerId = string
+type DefaultHealthcheck = () => Promise<void>
+type ServiceName = string
+
+export interface DefaultHealthchecks {
+  postgres: DefaultHealthcheck
+  redis: DefaultHealthcheck
+  web: DefaultHealthcheck
+}
+
+export interface Healthcheck {
+  ({
+    containerId,
+    defaultHealthchecks,
+    dockerComposeFileService,
+    logger,
+  }: {
+    containerId: ContainerId
+    defaultHealthchecks: DefaultHealthchecks
+    dockerComposeFileService: DockerComposeFileService
+    logger: Runner['logger']
+  }): Promise<any>
+}
+
 export interface Runner {
-  containerId: string
+  commands: Commands
+  containerId: ContainerId
+  dependents: Runner[]
   dockerComposeFileService: DockerComposeFileService
-  dockestService: DockestService
+  healthcheck: Healthcheck
   logger: Logger
+  serviceName: ServiceName
   host?: string
   isBridgeNetworkMode?: boolean
+}
+
+export interface RunnersObj {
+  [key: string]: Runner
 }
 
 export interface DockerComposeFileService {
@@ -15,15 +46,6 @@ export interface DockerComposeFileService {
     target: number
   }[]
   [key: string]: any
-}
-
-export interface ErrorPayload {
-  trap: string
-  code?: number
-  error?: Error
-  promise?: Promise<any>
-  reason?: Error | any
-  signal?: any
 }
 
 export interface DockerComposeFile {
@@ -41,15 +63,13 @@ export interface DockerComposeFileServicePostgres extends DockerComposeFileServi
   }
 }
 
-export interface Healthcheck<T = DockerComposeFileService> {
-  (composeService: T, containerId: string): string
-}
+export type Commands = string[]
 
 export interface DockestService {
-  [key: string]: any
-  serviceName: string
-  commands?: string[]
-  healthchecks?: Healthcheck[]
+  serviceName: ServiceName
+  commands?: Commands
+  dependents?: DockestService[]
+  healthcheck?: Healthcheck
 }
 
 export interface DockestConfig {
@@ -57,15 +77,17 @@ export interface DockestConfig {
     dockestServices: DockestService[]
     hostname: string
     isInsideDockerContainer: boolean
-    /**
-     * Jest has finished executing and has returned a result
-     */
+    /** Jest has finished executing and has returned a result */
     jestRanWithResult: boolean
     perfStart: number
-    runners: Runner[]
+    runners: RunnersObj
   }
   opts: {
     composeFile: string | string[]
+    logLevel: number
+    /** Run dockest sequentially */
+    runInBand: boolean
+
     jestLib: {
       // FIXME: Proper typings for Jest without introducing circular referencing
       SearchSource: any
@@ -76,14 +98,31 @@ export interface DockestConfig {
       runCLI: (argv: any, projects: string[]) => Promise<any>
     }
 
-    logLevel: number
+    composeOpts: {
+      /** Recreate dependent containers. Incompatible with --no-recreate. */
+      alwaysRecreateDeps: boolean
+      /** Build images before starting containers. */
+      build: boolean
+      /** Recreate containers even if their configuration and image haven't changed. */
+      forceRecreate: boolean
+      /** Don't build an image, even if it's missing. */
+      noBuild: boolean
+      /** Produce monochrome output. */
+      noColor: boolean
+      /** Don't start linked services. */
+      noDeps: boolean
+      /** If containers already exist, don't recreate them. Incompatible with --force-recreate and -V. */
+      noRecreate: boolean
+      /** Pull without printing progress information. */
+      quietPull: boolean
+    }
+
     afterSetupSleep?: number
     debug?: boolean
     dumpErrors?: boolean
     exitHandler?: null | ((error: ErrorPayload) => any)
-    /**
-     * https://jestjs.io/docs/en/cli
-     */
+
+    /** https://jestjs.io/docs/en/cli */
     jestOpts?: {
       bail?: boolean
       cache?: boolean
@@ -137,6 +176,14 @@ export interface DockestConfig {
       watchAll?: boolean
       watchman?: boolean
     }
-    runInBand?: boolean
   }
+}
+
+export interface ErrorPayload {
+  trap: string
+  code?: number
+  error?: Error
+  promise?: Promise<any>
+  reason?: Error | any
+  signal?: any
 }

@@ -25,9 +25,9 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 ## Example
 
-`docker-compose.yml`
-
 ```yml
+# docker-compose.yml
+
 version: '3.7'
 
 services:
@@ -38,9 +38,9 @@ services:
         target: 6379
 ```
 
-`dockest.ts`
-
 ```ts
+// dockest.ts
+
 import { Dockest, logLevel } from 'dockest'
 
 const dockest = new Dockest()

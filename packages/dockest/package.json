@@ -1,6 +1,6 @@
 {
   "name": "dockest",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-beta.0",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "files": [
@@ -26,10 +26,12 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
+    "prepublishOnly": "yarn build:publish",
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
-    "clean": "node_modules/.bin/rimraf ./dist",
+    "clean": "node_modules/.bin/rimraf dist",
     "build": "node_modules/.bin/tsc",
+    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json",
     "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
   },
   "dependencies": {

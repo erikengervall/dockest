@@ -6,23 +6,18 @@ sidebar_label: Getting Started
 
 ## Install
 
-Install Dockest using [`yarn`](https://yarnpkg.com/en/package/jest):
+Install Dockest using [`yarn`](https://yarnpkg.com/en/package/jest) or [`npm`](https://www.npmjs.com/) (we'll be using `yarn` for the rest of the documentation):
 
 ```bash
 yarn add --dev dockest
+# npm install --save-dev dockest
 ```
 
-or [`npm`](https://www.npmjs.com/):
-
-```bash
-npm install --save-dev dockest
-```
-
-## Create application
+## Application example
 
 Let's create a small example and see it in action!
 
-First, let's create a function `cache.ts` that uses a Redis store to cache an arbitrary number:
+We begin by creating a function `cache.ts` that uses a Redis store to cache an arbitrary number:
 
 ```ts
 export const cacheKey = 'arbitraryNumberKey'
@@ -32,7 +27,7 @@ export const setCache = (redisClient: Redis, arbitraryNumber: number) => {
 }
 ```
 
-## Create unit test
+### Create unit test
 
 Then, create a test file `cache.spec.ts` to test the caching functionality:
 
@@ -55,7 +50,7 @@ it('should cache an arbitrary number', async () => {
 })
 ```
 
-## Configure Dockest
+### Configure Dockest
 
 The next step is to transform this unit test into an integration test by creating a `docker-compose.yml` and `dockest.ts` file.
 
@@ -79,16 +74,17 @@ import { Dockest } from 'dockest'
 
 const dockest = new Dockest()
 
-const services = [
+// Specify the services from the Compose file that should be included in the integration test
+const dockestServices = [
   {
-    serviceName: 'myRedis', // Match with configuration in docker-compose.yml
+    serviceName: 'myRedis', // Must match a service in the Compose file
   },
 ]
 
-dockest.run(services)
+dockest.run(dockestServices)
 ```
 
-## Configure scripts
+### Configure scripts
 
 Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https://www.npmjs.com/package/ts-node) is a practical library for running your tests without adding a compilation step.
 
@@ -96,28 +92,17 @@ Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https:/
 {
   "scripts": {
     "test": "ts-node ./dockest"
+  },
+  "devDependencies": {
+    "dockest": "..."
   }
 }
 ```
 
-Finally, run `yarn test` or `npm run test`.
+### Run
 
-## Under the hood
+Finally, run the tests:
 
-`ts-node ./dockest` will initiate a series of events:
-
-- Merging of Compose file (if multiple)
-- Spin up services (only those provided via `run`)
-- Perform [connectivity](getting-started#connectivity-checks) check towards services
-- Perform healthchecks
-- Execute provided commands
-- Run Jest
-- Evaluate result
-- Teardown of running services
-- Exit
-
-### Connectivity checks
-
-Recursively attempts to establish a connection with the Docker service using the Node.js native [net](https://nodejs.org/api/net.html#net_net_createconnection) module.
-
-The connectivity healthcheck will fail once the connectionTimeout is reached.
+```sh
+yarn test
+```

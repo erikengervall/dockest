@@ -9,8 +9,7 @@ export const runJest = async (config: DockestConfig) => {
 
   Logger.info('DockestServices running, running Jest', { endingNewLines: 1 })
 
-  // FIXME: The type for runCLI's first argument is broken, in part due to being wrapped with `yargs.Arguments`
-  const { results } = await jestLib.runCLI(jestOpts as any, jestOpts?.projects || DEFAULT_OPTS.jestOpts.projects)
+  const { results } = await jestLib.runCLI(jestOpts, jestOpts?.projects || DEFAULT_OPTS.jestOpts.projects)
   const { success, numFailedTests, numTotalTests } = results
 
   success

@@ -1,17 +1,19 @@
-import { createRunners } from './createRunners'
+import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { createConfig, DOCKER_COMPOSE_FILE, DOCKEST_SERVICE } from '../../test-utils'
 
 const config = createConfig({ dockestServices: [DOCKEST_SERVICE] }, {})
 
-describe('createRunners', () => {
+describe('transformDockestServicesToRunners', () => {
   describe('happy', () => {
     it('should work', () => {
-      createRunners(config, DOCKER_COMPOSE_FILE)
+      transformDockestServicesToRunners(config, DOCKER_COMPOSE_FILE)
 
       expect(config.$.runners).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        Object {
+          "redis": Object {
+            "commands": Array [],
             "containerId": "",
+            "dependents": Array [],
             "dockerComposeFileService": Object {
               "image": "redis:5.0.3-alpine",
               "ports": Array [
@@ -21,9 +23,7 @@ describe('createRunners', () => {
                 },
               ],
             },
-            "dockestService": Object {
-              "serviceName": "redis",
-            },
+            "healthcheck": [Function],
             "logger": Logger {
               "debug": [Function],
               "error": [Function],
@@ -33,8 +33,9 @@ describe('createRunners', () => {
               "setRunnerSymbol": [Function],
               "warn": [Function],
             },
+            "serviceName": "redis",
           },
-        ]
+        }
       `)
     })
   })
@@ -43,8 +44,8 @@ describe('createRunners', () => {
     it('should throw if ', () => {
       const config = createConfig({ dockestServices: [{ ...DOCKEST_SERVICE, serviceName: 'invalid' }] })
 
-      expect(() => createRunners(config, DOCKER_COMPOSE_FILE)).toThrow(
-        `Unable to find compose service "${config.$.dockestServices[0].serviceName}", make sure that the serviceName corresponds with your compose file's service`,
+      expect(() => transformDockestServicesToRunners(config, DOCKER_COMPOSE_FILE)).toThrow(
+        `Unable to find compose service "${config.$.dockestServices[0].serviceName}", make sure that the serviceName corresponds with your Compose File's service`,
       )
     })
   })

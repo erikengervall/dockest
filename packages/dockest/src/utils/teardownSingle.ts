@@ -5,8 +5,8 @@ import { DockestError } from '../Errors'
 const stopContainerById = async (runner: Runner) => {
   const { containerId } = runner
   const logPrefix = '[Stop Container]'
-  const command = `docker stop ${containerId}`
 
+  const command = `docker stop ${containerId}`
   await execaWrapper(command, { runner, logPrefix, logStdout: true })
 }
 
@@ -19,13 +19,14 @@ const removeContainerById = async (runner: Runner) => {
 }
 
 export const teardownSingle = async (runner: Runner) => {
-  const {
-    containerId,
-    dockestService: { serviceName },
-  } = runner
+  const { containerId, serviceName, dependents } = runner
 
   if (!containerId) {
     throw new DockestError(`Invalid containerId (${containerId}) for service (${serviceName})`, { runner })
+  }
+
+  for (const dependant of dependents) {
+    await teardownSingle(dependant)
   }
 
   await stopContainerById(runner)
