@@ -23,7 +23,14 @@ describe('getOpts', () => {
         "exitHandler": [Function],
         "hostname": "host.docker.internal",
         "isInsideDockerContainer": false,
-        "jestLib": undefined,
+        "jestLib": Object {
+          "SearchSource": [Function],
+          "TestScheduler": [Function],
+          "TestWatcher": [Function],
+          "getVersion": [Function],
+          "run": [Function],
+          "runCLI": [Function],
+        },
         "jestOpts": Object {
           "projects": Array [
             ".",
