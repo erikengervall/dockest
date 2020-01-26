@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { BaseError } from '../../Errors'
-import { DockestConfig } from '../../@types'
+import { DockestConfig, Glob } from '../../@types'
 import { Logger } from '../../Logger'
 import { teardownSingle } from '../../utils/teardownSingle'
 
@@ -15,11 +15,18 @@ export interface ErrorPayload {
 
 const logPrefix = '[Exit Handler]'
 
-export const setupExitHandler = async (config: DockestConfig) => {
-  const {
-    $: { perfStart, runners },
-    opts: { exitHandler: customExitHandler },
-  } = config
+export const setupExitHandler = async ({
+  dumpErrors,
+  exitHandler: customExitHandler,
+  glob,
+  glob: { runners },
+  perfStart,
+}: {
+  dumpErrors: DockestConfig['dumpErrors']
+  exitHandler: DockestConfig['exitHandler']
+  glob: Glob
+  perfStart: DockestConfig['perfStart']
+}) => {
   let exitInProgress = false
 
   const exitHandler = async (errorPayload: ErrorPayload) => {
@@ -30,7 +37,7 @@ export const setupExitHandler = async (config: DockestConfig) => {
     // Ensure the exit handler is only invoced once
     exitInProgress = true
 
-    if (config.$.jestRanWithResult) {
+    if (glob.jestRanWithResult) {
       return
     }
     if (errorPayload.reason instanceof BaseError) {
@@ -71,12 +78,11 @@ export const setupExitHandler = async (config: DockestConfig) => {
       await teardownSingle(runner)
     }
 
-    if (config.opts.dumpErrors === true) {
+    if (dumpErrors === true) {
       const dumpPath = `${process.cwd()}/dockest-error.json`
       const dumpPayload = {
         errorPayload,
         timestamp: new Date(),
-        __configuration: config,
       }
 
       try {

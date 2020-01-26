@@ -2,13 +2,19 @@ import { DockestConfig } from '../../@types'
 import { execaWrapper } from '../../utils/execaWrapper'
 import { GENERATED_COMPOSE_FILE_PATH } from '../../constants'
 
-export const dockerComposeUp = async (config: DockestConfig, servicesToStart: string) => {
-  const {
-    opts: {
-      composeOpts: { alwaysRecreateDeps, build, forceRecreate, noBuild, noColor, noDeps, noRecreate, quietPull },
-    },
-  } = config
-
+export const dockerComposeUp = async (
+  {
+    alwaysRecreateDeps,
+    build,
+    forceRecreate,
+    noBuild,
+    noColor,
+    noDeps,
+    noRecreate,
+    quietPull,
+  }: DockestConfig['composeOpts'],
+  serviceName: string,
+) => {
   const command = `docker-compose \
                     -f ${`${GENERATED_COMPOSE_FILE_PATH}`} \
                     up \
@@ -21,7 +27,7 @@ export const dockerComposeUp = async (config: DockestConfig, servicesToStart: st
                     ${noRecreate ? '--no-recreate' : ''} \
                     ${quietPull ? '--quiet-pull' : ''} \
                     --detach \
-                    ${servicesToStart}`
+                    ${serviceName}`
 
   await execaWrapper(command)
 }

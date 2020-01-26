@@ -1,21 +1,5 @@
-import { DEFAULT_OPTS, DEFAULT_$ } from './constants'
-import { DockestConfig, DockestService, DockerComposeFile, Runner } from './@types'
+import { DockestService, DockerComposeFile, Runner } from './@types'
 import { Logger } from './Logger'
-
-export const createConfig = (
-  $: Partial<DockestConfig['$']> = {},
-  opts: Partial<DockestConfig['opts']> = {},
-): DockestConfig => ({
-  $: {
-    ...DEFAULT_$,
-    ...$,
-  },
-  opts: {
-    ...DEFAULT_OPTS,
-    jestLib: jest.fn() as any,
-    ...opts,
-  },
-})
 
 export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   commands: [],

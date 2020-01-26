@@ -14,6 +14,8 @@ describe('index', () => {
             "NOTHING": 0,
             "WARN": 2,
           },
+          "sleep": [Function],
+          "sleepWithLog": [Function],
         }
       `)
     })

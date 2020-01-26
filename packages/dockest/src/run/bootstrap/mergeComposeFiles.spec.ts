@@ -1,14 +1,14 @@
 import { mergeComposeFiles } from './mergeComposeFiles'
-import { createConfig } from '../../test-utils'
 
 const nodeProcess: any = { cwd: () => __dirname }
 
 describe('mergeComposeFiles', () => {
   describe('happy', () => {
     it('should work for single compose file', async () => {
-      const config = createConfig({}, { composeFile: ['mergeComposeFiles.spec.yml'] })
-
-      const { mergedComposeFiles } = await mergeComposeFiles(config, nodeProcess)
+      const { mergedComposeFiles } = await mergeComposeFiles({
+        composeFile: 'mergeComposeFiles.spec.yml',
+        nodeProcess,
+      })
 
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
         "services:
@@ -23,9 +23,10 @@ describe('mergeComposeFiles', () => {
     })
 
     it('should work for multiple compose files', async () => {
-      const config = createConfig({}, { composeFile: ['mergeComposeFiles.spec.yml', 'mergeComposeFiles2.spec.yml'] })
-
-      const { mergedComposeFiles } = await mergeComposeFiles(config, nodeProcess)
+      const { mergedComposeFiles } = await mergeComposeFiles({
+        composeFile: ['mergeComposeFiles.spec.yml', 'mergeComposeFiles2.spec.yml'],
+        nodeProcess,
+      })
 
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
         "services:
@@ -51,9 +52,10 @@ describe('mergeComposeFiles', () => {
 
   describe('sad', () => {
     it('should throw if invalid name of compose file', async () => {
-      const config = createConfig({}, { composeFile: ['this-file-does-not-exist.yml'] })
-
-      const promise = mergeComposeFiles(config, nodeProcess)
+      const promise = mergeComposeFiles({
+        composeFile: 'this-file-does-not-exist.yml',
+        nodeProcess,
+      })
 
       await expect(promise).rejects.toThrow('Invalid Compose file(s)')
     })

@@ -3,11 +3,13 @@ import { DockestConfig } from '../../@types'
 import { DockestError } from '../../Errors'
 import { execaWrapper } from '../../utils/execaWrapper'
 
-export const mergeComposeFiles = async (config: DockestConfig, nodeProcess = process) => {
-  const {
-    opts: { composeFile = [] },
-  } = config
-
+export const mergeComposeFiles = async ({
+  composeFile,
+  nodeProcess = process,
+}: {
+  composeFile: DockestConfig['composeFile']
+  nodeProcess?: NodeJS.Process
+}) => {
   const composeFiles = []
   if (Array.isArray(composeFile)) {
     composeFiles.push(...composeFile)

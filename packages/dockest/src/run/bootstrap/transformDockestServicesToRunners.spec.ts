@@ -1,25 +1,38 @@
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
-import { createConfig, DOCKER_COMPOSE_FILE, DOCKEST_SERVICE } from '../../test-utils'
+import { DockestService, DockerComposeFile } from '../../@types'
+import { getOpts } from '../../utils/getOpts'
 
-const config = createConfig({ dockestServices: [DOCKEST_SERVICE] }, {})
+const { isInsideDockerContainer } = getOpts()
+
+const serviceName = 'service1'
+const dockerComposeFile: DockerComposeFile = {
+  version: '3.7',
+  services: {
+    [serviceName]: { ports: [{ published: 3000, target: 3000 }] },
+  },
+}
+const dockestServices: DockestService[] = [{ serviceName: serviceName }]
 
 describe('transformDockestServicesToRunners', () => {
   describe('happy', () => {
     it('should work', () => {
-      transformDockestServicesToRunners(config, DOCKER_COMPOSE_FILE)
+      const runners = transformDockestServicesToRunners({
+        dockerComposeFile,
+        dockestServices,
+        isInsideDockerContainer,
+      })
 
-      expect(config.$.runners).toMatchInlineSnapshot(`
+      expect(runners).toMatchInlineSnapshot(`
         Object {
-          "redis": Object {
+          "service1": Object {
             "commands": Array [],
             "containerId": "",
             "dependents": Array [],
             "dockerComposeFileService": Object {
-              "image": "redis:5.0.3-alpine",
               "ports": Array [
                 Object {
-                  "published": 6379,
-                  "target": 6379,
+                  "published": 3000,
+                  "target": 3000,
                 },
               ],
             },
@@ -29,11 +42,11 @@ describe('transformDockestServicesToRunners', () => {
               "error": [Function],
               "info": [Function],
               "runnerSymbol": "🦇 ",
-              "serviceName": "redis",
+              "serviceName": "service1",
               "setRunnerSymbol": [Function],
               "warn": [Function],
             },
-            "serviceName": "redis",
+            "serviceName": "service1",
           },
         }
       `)
@@ -41,11 +54,18 @@ describe('transformDockestServicesToRunners', () => {
   })
 
   describe('sad', () => {
-    it('should throw if ', () => {
-      const config = createConfig({ dockestServices: [{ ...DOCKEST_SERVICE, serviceName: 'invalid' }] })
+    it(`should throw if serviceName can't be found in Compose file`, () => {
+      const invalidServiceName = 'does-not-match--should-throw'
+      const dockestServices: DockestService[] = [{ serviceName: invalidServiceName }]
 
-      expect(() => transformDockestServicesToRunners(config, DOCKER_COMPOSE_FILE)).toThrow(
-        `Unable to find compose service "${config.$.dockestServices[0].serviceName}", make sure that the serviceName corresponds with your Compose File's service`,
+      expect(() =>
+        transformDockestServicesToRunners({
+          dockerComposeFile,
+          dockestServices,
+          isInsideDockerContainer,
+        }),
+      ).toThrow(
+        `Unable to find compose service "${invalidServiceName}", make sure that the serviceName corresponds with your Compose File's service`,
       )
     })
   })

@@ -6,18 +6,25 @@ import { resolveContainerId } from './resolveContainerId'
 import { runRunnerCommands } from './runRunnerCommands'
 import { createBridgeNetwork } from '../../utils/network/createBridgeNetwork'
 import { DOCKEST_HOST_ADDRESS } from '../../constants'
-import { DockestConfig, Runner } from '../../@types'
+import { DockestConfig, Runner, RunnersObj } from '../../@types'
 import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork'
 import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists'
-import { sleepForX } from '../../utils/sleepForX'
 
 const logPrefix = '[Setup]'
 
-export const waitForServices = async (config: DockestConfig) => {
-  const {
-    $: { runners, isInsideDockerContainer, hostname },
-    opts: { afterSetupSleep, runInBand },
-  } = config
+export const waitForServices = async ({
+  composeOpts,
+  hostname,
+  isInsideDockerContainer,
+  runInBand,
+  runners,
+}: {
+  composeOpts: DockestConfig['composeOpts']
+  hostname: DockestConfig['hostname']
+  isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  runInBand: DockestConfig['runInBand']
+  runners: RunnersObj
+}) => {
   const setupPromises = []
 
   const waitForRunner = async (runner: Runner) => {
@@ -25,7 +32,7 @@ export const waitForServices = async (config: DockestConfig) => {
 
     runner.logger.debug(`${logPrefix} Initiating...`)
 
-    await dockerComposeUp(config, serviceName)
+    await dockerComposeUp(composeOpts, serviceName)
     await resolveContainerId(runner)
 
     if (isBridgeNetworkMode) {
@@ -64,8 +71,4 @@ export const waitForServices = async (config: DockestConfig) => {
   }
 
   await Promise.all(setupPromises)
-
-  if (afterSetupSleep && afterSetupSleep > 0) {
-    await sleepForX('After setup sleep', afterSetupSleep)
-  }
 }
