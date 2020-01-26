@@ -3,6 +3,7 @@ import { Dockest, logLevel } from 'dockest'
 const dockest = new Dockest({
   composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
   dumpErrors: true,
+  jestLib: require('jest'),
   logLevel: logLevel.DEBUG,
 })
 

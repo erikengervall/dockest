@@ -1,9 +1,10 @@
 import { Dockest, logLevel, sleepWithLog } from 'dockest'
 
 const { run } = new Dockest({
-  dumpErrors: true,
-  logLevel: logLevel.DEBUG,
   composeFile: 'docker-compose.yml',
+  dumpErrors: true,
+  jestLib: require('jest'),
+  logLevel: logLevel.DEBUG,
 })
 
 run([

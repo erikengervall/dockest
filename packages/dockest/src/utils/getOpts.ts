@@ -1,5 +1,4 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
-import jest from 'jest'
 import { DockestOpts } from '../@types'
 import { LOG_LEVEL, DEFAULT_HOST_NAME } from '../constants'
 
@@ -19,7 +18,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}) => {
     debug = false || process.argv.includes('dev') || process.argv.includes('debug'),
     dumpErrors = false,
     exitHandler = async () => Promise.resolve(),
-    jestLib = jest,
+    jestLib = require('jest'),
     jestOpts,
     jestOpts: { projects = ['.'], runInBand: runInBandJest = true } = {},
     logLevel = LOG_LEVEL.INFO,
