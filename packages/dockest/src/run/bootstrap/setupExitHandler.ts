@@ -1,6 +1,7 @@
 import fs from 'fs'
+
 import { BaseError } from '../../Errors'
-import { DockestConfig, Glob } from '../../@types'
+import { DockestConfig, GlobConfig } from '../../@types'
 import { Logger } from '../../Logger'
 import { teardownSingle } from '../../utils/teardownSingle'
 
@@ -24,7 +25,7 @@ export const setupExitHandler = async ({
 }: {
   dumpErrors: DockestConfig['dumpErrors']
   exitHandler: DockestConfig['exitHandler']
-  glob: Glob
+  glob: GlobConfig
   perfStart: DockestConfig['perfStart']
 }) => {
   let exitInProgress = false

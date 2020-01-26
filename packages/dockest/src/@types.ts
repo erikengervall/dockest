@@ -72,17 +72,12 @@ export interface DockestService {
   healthcheck?: Healthcheck
 }
 
-export interface Glob {
+export interface GlobConfig {
   jestRanWithResult: DockestConfig['jestRanWithResult']
   runners: RunnersObj
 }
 
-export interface DockestConfig {
-  hostname: string
-  isInsideDockerContainer: boolean
-  /** Jest has finished executing and has returned a result */
-  jestRanWithResult: boolean
-  perfStart: number
+export interface DockestOpts {
   composeFile: string | string[]
   logLevel: number
   /** Run dockest sequentially */
@@ -123,8 +118,6 @@ export interface DockestConfig {
 
   /** https://jestjs.io/docs/en/cli */
   jestOpts: {
-    projects: string[]
-    runInBand: boolean
     bail?: boolean
     cache?: boolean
     changedFilesWithAncestor?: boolean
@@ -155,7 +148,9 @@ export interface DockestConfig {
     onlyChanged?: boolean
     outputFile?: string
     passWithNoTests?: boolean
+    projects?: string[]
     reporters?: boolean
+    runInBand?: boolean
     runTestsByPath?: boolean
     setupTestFrameworkScriptFile?: string
     showConfig?: boolean
@@ -174,6 +169,21 @@ export interface DockestConfig {
     watch?: boolean
     watchAll?: boolean
     watchman?: boolean
+  }
+}
+
+interface InternalConfig {
+  hostname: string
+  isInsideDockerContainer: boolean
+  /** Jest has finished executing and has returned a result */
+  jestRanWithResult: boolean
+  perfStart: number
+}
+
+export interface DockestConfig extends InternalConfig, DockestOpts {
+  jestOpts: {
+    projects: string[]
+    runInBand: boolean
   }
 }
 

@@ -1,4 +1,4 @@
-import { DockestConfig, Glob } from '../@types'
+import { DockestConfig, GlobConfig } from '../@types'
 import { Logger } from '../Logger'
 
 export const runJest = async ({
@@ -7,7 +7,7 @@ export const runJest = async ({
   jestOpts,
   jestOpts: { projects },
 }: {
-  glob: Glob
+  glob: GlobConfig
   jestLib: DockestConfig['jestLib']
   jestOpts: DockestConfig['jestOpts']
 }) => {

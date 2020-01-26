@@ -1,7 +1,7 @@
 import { BaseError, ConfigurationError } from './Errors'
 import { bootstrap } from './run/bootstrap'
 import { debugMode } from './run/debugMode'
-import { DockestConfig, DockestService, Glob } from './@types'
+import { DockestConfig, DockestOpts, DockestService, GlobConfig } from './@types'
 import { getOpts } from './utils/getOpts'
 import { Logger } from './Logger'
 import { MINIMUM_JEST_VERSION } from './constants'
@@ -17,7 +17,7 @@ export { LOG_LEVEL as logLevel } from './constants'
 export class Dockest {
   private config: DockestConfig
 
-  public constructor(opts: Partial<DockestConfig>) {
+  public constructor(opts: Partial<DockestOpts>) {
     this.config = getOpts(opts)
 
     Logger.logLevel = this.config.logLevel
@@ -48,7 +48,7 @@ export class Dockest {
       runInBand,
     } = this.config
 
-    const glob: Glob = {
+    const glob: GlobConfig = {
       jestRanWithResult,
       runners: {},
     }

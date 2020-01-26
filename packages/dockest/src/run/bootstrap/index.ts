@@ -4,7 +4,7 @@ import { parseComposeFile } from './parseComposeFile'
 import { setupExitHandler } from './setupExitHandler'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { writeComposeFile } from './writeComposeFile'
-import { DockestConfig, DockestService, Glob } from '../../@types'
+import { DockestConfig, DockestService, GlobConfig } from '../../@types'
 
 export const bootstrap = async ({
   composeFile,
@@ -19,7 +19,7 @@ export const bootstrap = async ({
   dockestServices: DockestService[]
   dumpErrors: DockestConfig['dumpErrors']
   exitHandler: DockestConfig['exitHandler']
-  glob: Glob
+  glob: GlobConfig
   isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
   perfStart: DockestConfig['perfStart']
 }) => {

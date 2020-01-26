@@ -1,9 +1,9 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
 import jest from 'jest'
-import { DockestConfig } from '../@types'
+import { DockestOpts } from '../@types'
 import { LOG_LEVEL, DEFAULT_HOST_NAME } from '../constants'
 
-export const getOpts = (opts: Partial<DockestConfig> = {}) => {
+export const getOpts = (opts: Partial<DockestOpts> = {}) => {
   const {
     composeFile = 'docker-compose.yml',
     composeOpts: {
@@ -20,7 +20,8 @@ export const getOpts = (opts: Partial<DockestConfig> = {}) => {
     dumpErrors = false,
     exitHandler = async () => Promise.resolve(),
     jestLib = jest,
-    jestOpts: { projects = ['.'], runInBand: jestRunInBand = true } = {},
+    jestOpts,
+    jestOpts: { projects = ['.'], runInBand: runInBandJest = true } = {},
     logLevel = LOG_LEVEL.INFO,
     runInBand = true,
   } = opts
@@ -45,7 +46,8 @@ export const getOpts = (opts: Partial<DockestConfig> = {}) => {
     jestLib,
     jestOpts: {
       projects,
-      runInBand: jestRunInBand,
+      runInBand: runInBandJest,
+      ...jestOpts,
     },
     jestRanWithResult: false,
     logLevel,
