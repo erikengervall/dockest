@@ -1,7 +1,7 @@
 import { BaseError, ConfigurationError } from './Errors'
 import { bootstrap } from './run/bootstrap'
 import { debugMode } from './run/debugMode'
-import { DockestConfig, DockestOpts, DockestService, GlobConfig } from './@types'
+import { DockestConfig, DockestOpts, DockestService } from './@types'
 import { getOpts } from './utils/getOpts'
 import { Logger } from './Logger'
 import { MINIMUM_JEST_VERSION } from './constants'
@@ -10,9 +10,9 @@ import { teardown } from './run/teardown'
 import { waitForServices } from './run/waitForServices'
 
 export { execaWrapper as execa } from './utils/execaWrapper'
+export { LOG_LEVEL as logLevel } from './constants'
 export { sleep } from './utils/sleep'
 export { sleepWithLog } from './utils/sleepWithLog'
-export { LOG_LEVEL as logLevel } from './constants'
 
 export class Dockest {
   private config: DockestConfig
@@ -43,48 +43,25 @@ export class Dockest {
       isInsideDockerContainer,
       jestLib,
       jestOpts,
-      jestRanWithResult,
+      mutables,
       perfStart,
       runInBand,
     } = this.config
 
-    const glob: GlobConfig = {
-      jestRanWithResult,
-      runners: {},
-    }
-
-    const runners = await bootstrap({
+    await bootstrap({
       composeFile,
       dockestServices,
       dumpErrors,
       exitHandler,
-      glob,
       isInsideDockerContainer,
+      mutables,
       perfStart,
     })
 
-    await waitForServices({
-      composeOpts,
-      hostname,
-      isInsideDockerContainer,
-      runInBand,
-      runners,
-    })
-
-    await debugMode(debug, runners)
-
-    const { success } = await runJest({
-      glob,
-      jestLib,
-      jestOpts,
-    })
-
-    await teardown({
-      hostname,
-      isInsideDockerContainer,
-      perfStart,
-      runners,
-    })
+    await waitForServices({ composeOpts, mutables, hostname, isInsideDockerContainer, runInBand })
+    await debugMode({ debug, mutables })
+    const { success } = await runJest({ jestLib, jestOpts, mutables })
+    await teardown({ hostname, isInsideDockerContainer, mutables, perfStart })
 
     success ? process.exit(0) : process.exit(1)
   }

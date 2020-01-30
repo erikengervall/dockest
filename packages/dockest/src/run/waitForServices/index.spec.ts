@@ -1,6 +1,6 @@
 import { waitForServices } from './index'
 import { checkConnection } from './checkConnection'
-import { checkResponsiveness } from './healthcheck'
+import { runHealthcheck } from './runHealthcheck'
 // import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
 import { resolveContainerId } from './resolveContainerId'
 import { runRunnerCommands } from './runRunnerCommands'
@@ -38,10 +38,10 @@ describe('waitForServices', () => {
 
       await waitForServices({
         composeOpts,
+        mutables: { runners, jestRanWithResult: false },
         hostname,
         isInsideDockerContainer,
         runInBand,
-        runners,
       })
 
       // waitForRunner
@@ -59,8 +59,8 @@ describe('waitForServices', () => {
       expect(checkConnection).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith(runner))
 
-      expect(checkResponsiveness).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(checkResponsiveness).toHaveBeenCalledWith(runner))
+      expect(runHealthcheck).toHaveBeenCalledTimes(3)
+      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith(runner))
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith(runner))
@@ -89,8 +89,8 @@ describe('waitForServices', () => {
         composeOpts,
         hostname,
         isInsideDockerContainer,
+        mutables: { runners, jestRanWithResult: false },
         runInBand,
-        runners,
       })
 
       // waitForRunner
@@ -108,8 +108,8 @@ describe('waitForServices', () => {
       expect(checkConnection).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith(runner))
 
-      expect(checkResponsiveness).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(checkResponsiveness).toHaveBeenCalledWith(runner))
+      expect(runHealthcheck).toHaveBeenCalledTimes(3)
+      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith(runner))
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith(runner))

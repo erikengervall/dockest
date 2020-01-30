@@ -1,8 +1,8 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
-import { DockestOpts } from '../@types'
+import { DockestOpts, DockestConfig } from '../@types'
 import { LOG_LEVEL, DEFAULT_HOST_NAME } from '../constants'
 
-export const getOpts = (opts: Partial<DockestOpts> = {}) => {
+export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
   const {
     composeFile = 'docker-compose.yml',
     composeOpts: {
@@ -40,6 +40,10 @@ export const getOpts = (opts: Partial<DockestOpts> = {}) => {
     debug,
     dumpErrors,
     exitHandler,
+    mutables: {
+      jestRanWithResult: false,
+      runners: {},
+    },
     hostname: process.env.HOSTNAME || DEFAULT_HOST_NAME,
     isInsideDockerContainer: isDocker(),
     jestLib,
@@ -48,7 +52,6 @@ export const getOpts = (opts: Partial<DockestOpts> = {}) => {
       runInBand: runInBandJest,
       ...jestOpts,
     },
-    jestRanWithResult: false,
     logLevel,
     perfStart: Date.now(),
     runInBand,

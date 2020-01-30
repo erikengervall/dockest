@@ -5,11 +5,13 @@ import { sleep } from '../../utils/sleep'
 
 const logPrefix = '[Check Responsiveness]'
 
-export const checkResponsiveness = async (runner: Runner) => {
-  const { containerId, dockerComposeFileService, healthcheck, logger } = runner
-  const responsivenessTimeout = 30
-
-  const recurse = async (responsivenessTimeout: number, runner: Runner) => {
+export const runHealthcheck = async ({
+  runner,
+  runner: { containerId, dockerComposeFileService, healthcheck, logger },
+}: {
+  runner: Runner
+}) => {
+  const recurse = async (responsivenessTimeout: number) => {
     logger.debug(`${logPrefix} Timeout in ${responsivenessTimeout}s`) // FIXME: Try getting replacePrevLine in here (may prove difficult with `runInBand: false`)
 
     if (responsivenessTimeout <= 0) {
@@ -21,7 +23,7 @@ export const checkResponsiveness = async (runner: Runner) => {
 
       await healthcheck({
         containerId,
-        defaultHealthchecks: createDefaultHealthchecks(runner),
+        defaultHealthchecks: createDefaultHealthchecks({ runner }),
         dockerComposeFileService,
         logger,
       })
@@ -31,9 +33,9 @@ export const checkResponsiveness = async (runner: Runner) => {
       responsivenessTimeout--
 
       await sleep(1000)
-      await recurse(responsivenessTimeout, runner)
+      await recurse(responsivenessTimeout)
     }
   }
 
-  await recurse(responsivenessTimeout, runner)
+  await recurse(30)
 }

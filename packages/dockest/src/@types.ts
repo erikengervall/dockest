@@ -72,8 +72,9 @@ export interface DockestService {
   healthcheck?: Healthcheck
 }
 
-export interface GlobConfig {
-  jestRanWithResult: DockestConfig['jestRanWithResult']
+export interface MutablesConfig {
+  /** Jest has finished executing and has returned a result */
+  jestRanWithResult: boolean
   runners: RunnersObj
 }
 
@@ -175,8 +176,6 @@ export interface DockestOpts {
 interface InternalConfig {
   hostname: string
   isInsideDockerContainer: boolean
-  /** Jest has finished executing and has returned a result */
-  jestRanWithResult: boolean
   perfStart: number
 }
 
@@ -185,6 +184,7 @@ export interface DockestConfig extends InternalConfig, DockestOpts {
     projects: string[]
     runInBand: boolean
   }
+  mutables: MutablesConfig
 }
 
 export interface ErrorPayload {

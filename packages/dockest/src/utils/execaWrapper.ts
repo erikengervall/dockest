@@ -10,9 +10,11 @@ interface Opts {
   execaOpts?: SyncOptions<string>
 }
 
-export const execaWrapper = async (command: string, opts: Opts = {}) => {
+export const execaWrapper = async (
+  command: string,
+  { runner, logPrefix = '[Shell]', logStdout = false, execaOpts = {} }: Opts = {},
+) => {
   const trimmedCommand = trim(command)
-  const { runner, logPrefix = '[Shell]', logStdout = false, execaOpts = {} } = opts
   const logger = runner ? runner.logger : Logger
 
   logger.debug(`${logPrefix} <${trimmedCommand}>`)

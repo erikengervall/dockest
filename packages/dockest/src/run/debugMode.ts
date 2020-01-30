@@ -1,8 +1,14 @@
-import { DockestConfig, RunnersObj } from '../@types'
+import { DockestConfig } from '../@types'
 import { Logger } from '../Logger'
 import { sleep } from '../utils/sleep'
 
-export const debugMode = async (debug: DockestConfig['debug'], runners: RunnersObj) => {
+export const debugMode = async ({
+  debug,
+  mutables: { runners },
+}: {
+  debug: DockestConfig['debug']
+  mutables: DockestConfig['mutables']
+}) => {
   if (debug) {
     Logger.info(`Debug mode enabled, containers are kept running and Jest will not run.`)
 

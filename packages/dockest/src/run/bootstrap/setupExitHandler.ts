@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 import { BaseError } from '../../Errors'
-import { DockestConfig, GlobConfig } from '../../@types'
+import { DockestConfig } from '../../@types'
 import { Logger } from '../../Logger'
 import { teardownSingle } from '../../utils/teardownSingle'
 
@@ -19,13 +19,13 @@ const logPrefix = '[Exit Handler]'
 export const setupExitHandler = async ({
   dumpErrors,
   exitHandler: customExitHandler,
-  glob,
-  glob: { runners },
+  mutables,
+  mutables: { runners },
   perfStart,
 }: {
   dumpErrors: DockestConfig['dumpErrors']
   exitHandler: DockestConfig['exitHandler']
-  glob: GlobConfig
+  mutables: DockestConfig['mutables']
   perfStart: DockestConfig['perfStart']
 }) => {
   let exitInProgress = false
@@ -38,7 +38,7 @@ export const setupExitHandler = async ({
     // Ensure the exit handler is only invoced once
     exitInProgress = true
 
-    if (glob.jestRanWithResult) {
+    if (mutables.jestRanWithResult) {
       return
     }
     if (errorPayload.reason instanceof BaseError) {
@@ -76,7 +76,7 @@ export const setupExitHandler = async ({
     }
 
     for (const runner of Object.values(runners)) {
-      await teardownSingle(runner)
+      await teardownSingle({ runner })
     }
 
     if (dumpErrors === true) {

@@ -5,7 +5,7 @@ import { sleep } from '../../utils/sleep'
 
 const logPrefix = '[Check Connection]'
 
-const acquireConnection = (host: string, port: number) =>
+const acquireConnection = ({ host, port }: { host: string; port: number }) =>
   new Promise((resolve, reject) => {
     let connected = false
     let timeoutId: NodeJS.Timeout | null = null
@@ -27,14 +27,17 @@ const acquireConnection = (host: string, port: number) =>
     timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000)
   })
 
-export const checkConnection = async (runner: Runner) => {
-  const {
+export const checkConnection = async ({
+  runner,
+  runner: {
     dockerComposeFileService: { ports },
-    logger,
     host: runnerHost,
     isBridgeNetworkMode,
-  } = runner
-
+    logger,
+  },
+}: {
+  runner: Runner
+}) => {
   const connectionTimeout = 10
   const host = runnerHost || 'localhost'
   const portKey = isBridgeNetworkMode ? 'target' : 'published'
@@ -48,7 +51,7 @@ export const checkConnection = async (runner: Runner) => {
       }
 
       try {
-        await acquireConnection(host, port)
+        await acquireConnection({ host, port })
 
         logger.info(`${logPrefix} Success`, { success: true })
       } catch (error) {

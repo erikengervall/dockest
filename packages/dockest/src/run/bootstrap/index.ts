@@ -1,48 +1,35 @@
 import { configureLogger } from './configureLogger'
+import { getParsedComposeFile } from './getParsedComposeFile'
 import { mergeComposeFiles } from './mergeComposeFiles'
-import { parseComposeFile } from './parseComposeFile'
 import { setupExitHandler } from './setupExitHandler'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { writeComposeFile } from './writeComposeFile'
-import { DockestConfig, DockestService, GlobConfig } from '../../@types'
+import { DockestConfig, DockestService } from '../../@types'
 
 export const bootstrap = async ({
   composeFile,
   dockestServices,
   dumpErrors,
   exitHandler,
-  glob,
   isInsideDockerContainer,
+  mutables,
   perfStart,
 }: {
   composeFile: DockestConfig['composeFile']
   dockestServices: DockestService[]
   dumpErrors: DockestConfig['dumpErrors']
   exitHandler: DockestConfig['exitHandler']
-  glob: GlobConfig
   isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  mutables: DockestConfig['mutables']
   perfStart: DockestConfig['perfStart']
 }) => {
-  setupExitHandler({
-    dumpErrors,
-    exitHandler,
-    glob,
-    perfStart,
-  })
+  setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart })
 
   const { mergedComposeFiles } = await mergeComposeFiles({ composeFile })
-  const { composeFileAsObject } = parseComposeFile(mergedComposeFiles)
-  writeComposeFile(mergedComposeFiles, composeFileAsObject)
+  const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles)
+  writeComposeFile(mergedComposeFiles, dockerComposeFile)
 
-  const runners = transformDockestServicesToRunners({
-    dockerComposeFile: composeFileAsObject,
-    dockestServices,
-    isInsideDockerContainer,
-  })
+  mutables.runners = transformDockestServicesToRunners({ dockerComposeFile, dockestServices, isInsideDockerContainer })
 
-  glob.runners = runners
-
-  configureLogger(runners)
-
-  return runners
+  configureLogger(mutables.runners)
 }
