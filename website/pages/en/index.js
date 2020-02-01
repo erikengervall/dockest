@@ -101,10 +101,10 @@ class Index extends React.Component {
             {
               title: 'Completely modular and extendable',
               content:
-                'Dockest is built with modularity in mind, making the introduction of new types of services is a breeze',
+                'Dockest is built with modularity in mind, making introduction of new types of services a breeze',
             },
             {
-              title: 'Extends your development environment',
+              title: 'Naturally extends your development environment',
               content: 'Dockest utilizes Docker Compose, the very same tool most developers use during development',
             },
           ]}
