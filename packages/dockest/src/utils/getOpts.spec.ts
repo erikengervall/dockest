@@ -37,8 +37,11 @@ describe('getOpts', () => {
           ],
           "runInBand": true,
         },
-        "jestRanWithResult": false,
         "logLevel": 3,
+        "mutables": Object {
+          "jestRanWithResult": false,
+          "runners": Object {},
+        },
         "perfStart": 1577885820000,
         "runInBand": true,
       }

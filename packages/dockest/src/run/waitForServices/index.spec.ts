@@ -13,7 +13,7 @@ import { createRunner } from '../../test-utils'
 import { getOpts } from '../../utils/getOpts'
 
 jest.mock('./checkConnection')
-jest.mock('./healthcheck')
+jest.mock('./runHealthcheck')
 // jest.mock('./fixRunnerHostAccessOnLinux')
 jest.mock('./resolveContainerId')
 jest.mock('./runRunnerCommands')
@@ -38,32 +38,31 @@ describe('waitForServices', () => {
 
       await waitForServices({
         composeOpts,
-        mutables: { runners, jestRanWithResult: false },
         hostname,
         isInsideDockerContainer,
+        mutables: { runners, jestRanWithResult: false },
         runInBand,
       })
 
-      // waitForRunner
       expect(dockerComposeUp).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(({ serviceName }) =>
-        expect(dockerComposeUp).toHaveBeenCalledWith(composeOpts, serviceName),
+        expect(dockerComposeUp).toHaveBeenCalledWith({ composeOpts, serviceName }),
       )
 
       expect(resolveContainerId).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith({ runner }))
 
       expect(joinBridgeNetwork).not.toHaveBeenCalled()
       // expect(fixRunnerHostAccessOnLinux).not.toHaveBeenCalled() // This'll bork in GitHub Actions due to different running environment
 
       expect(checkConnection).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }))
 
       expect(runHealthcheck).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith({ runner }))
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }))
 
       // waitForServices
       expect(bridgeNetworkExists).not.toHaveBeenCalled()
@@ -96,23 +95,23 @@ describe('waitForServices', () => {
       // waitForRunner
       expect(dockerComposeUp).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(({ serviceName }) =>
-        expect(dockerComposeUp).toHaveBeenCalledWith(composeOpts, serviceName),
+        expect(dockerComposeUp).toHaveBeenCalledWith({ composeOpts, serviceName }),
       )
 
       expect(resolveContainerId).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith({ runner }))
 
       expect(joinBridgeNetwork).not.toHaveBeenCalled()
       // expect(fixRunnerHostAccessOnLinux).not.toHaveBeenCalled() // This'll bork in GitHub Actions due to different running environment
 
       expect(checkConnection).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }))
 
       expect(runHealthcheck).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith({ runner }))
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith(runner))
+      Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }))
 
       // waitForServices
       expect(bridgeNetworkExists).not.toHaveBeenCalled()
