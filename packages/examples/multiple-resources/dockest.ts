@@ -1,4 +1,3 @@
-import jest from 'jest'
 import { Dockest, logLevel } from 'dockest'
 
 const dockest = new Dockest({
@@ -6,7 +5,7 @@ const dockest = new Dockest({
   dumpErrors: true,
   exitHandler: errorPayload =>
     console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
-  jestLib: jest,
+  jestLib: require('jest'),
   jestOpts: { updateSnapshot: true },
   logLevel: logLevel.DEBUG,
 })

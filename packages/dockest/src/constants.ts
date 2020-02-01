@@ -15,35 +15,6 @@ export const BRIDGE_NETWORK_NAME = `dockest_bridge_network`
 export const DOCKEST_HOST_ADDRESS = 'host.dockest-runner.internal'
 export const DEFAULT_HOST_NAME = 'host.docker.internal'
 
-export const DEFAULT_OPTS = {
-  composeFile: 'docker-compose.yml',
-  logLevel: LOG_LEVEL.INFO,
-  runInBand: true,
-  jestOpts: {
-    projects: ['.'],
-    runInBand: true,
-  },
-  composeOpts: {
-    alwaysRecreateDeps: false,
-    build: false,
-    forceRecreate: false,
-    noBuild: false,
-    noColor: false,
-    noDeps: false,
-    noRecreate: false,
-    quietPull: false,
-  },
-}
-
-export const DEFAULT_$ = {
-  dockestServices: [],
-  hostname: process.env.HOSTNAME || DEFAULT_HOST_NAME,
-  isInsideDockerContainer: false,
-  jestRanWithResult: false,
-  perfStart: 0,
-  runners: {},
-}
-
 /**
  * Released 2017-05-06: https://github.com/facebook/jest/releases/tag/v20.0.0
  */

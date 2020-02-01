@@ -2,7 +2,15 @@ import { ConfigurationError } from '../../Errors'
 import { DockestConfig, DockerComposeFile, Runner, RunnersObj, DockestService } from '../../@types'
 import { Logger } from '../../Logger'
 
-export const transformDockestServicesToRunners = (config: DockestConfig, dockerComposeFile: DockerComposeFile) => {
+export const transformDockestServicesToRunners = ({
+  dockerComposeFile,
+  dockestServices,
+  isInsideDockerContainer,
+}: {
+  dockerComposeFile: DockerComposeFile
+  dockestServices: DockestService[]
+  isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+}) => {
   const createRunner = (dockestService: DockestService) => {
     const { commands = [], dependents = [], healthcheck = () => Promise.resolve(), serviceName } = dockestService
 
@@ -23,15 +31,15 @@ export const transformDockestServicesToRunners = (config: DockestConfig, dockerC
       serviceName,
     }
 
-    if (config.$.isInsideDockerContainer) {
-      runner.isBridgeNetworkMode = config.$.isInsideDockerContainer
+    if (isInsideDockerContainer) {
       runner.host = serviceName
+      runner.isBridgeNetworkMode = isInsideDockerContainer
     }
 
     return runner
   }
 
-  config.$.runners = config.$.dockestServices.reduce((acc: RunnersObj, dockestService) => {
+  return dockestServices.reduce((acc: RunnersObj, dockestService) => {
     acc[dockestService.serviceName] = createRunner(dockestService)
 
     return acc

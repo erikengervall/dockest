@@ -1,5 +1,5 @@
 import { checkConnection } from './checkConnection'
-import { checkResponsiveness } from './healthcheck'
+import { runHealthcheck } from './runHealthcheck'
 import { dockerComposeUp } from './dockerComposeUp'
 import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
 import { resolveContainerId } from './resolveContainerId'
@@ -9,41 +9,51 @@ import { DOCKEST_HOST_ADDRESS } from '../../constants'
 import { DockestConfig, Runner } from '../../@types'
 import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork'
 import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists'
-import { sleepForX } from '../../utils/sleepForX'
 
-const logPrefix = '[Setup]'
+const LOG_PREFIX = '[Setup]'
 
-export const waitForServices = async (config: DockestConfig) => {
-  const {
-    $: { runners, isInsideDockerContainer, hostname },
-    opts: { afterSetupSleep, runInBand },
-  } = config
+export const waitForServices = async ({
+  composeOpts,
+  hostname,
+  isInsideDockerContainer,
+  mutables: { runners },
+  runInBand,
+}: {
+  composeOpts: DockestConfig['composeOpts']
+  hostname: DockestConfig['hostname']
+  isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  mutables: DockestConfig['mutables']
+  runInBand: DockestConfig['runInBand']
+}) => {
   const setupPromises = []
 
-  const waitForRunner = async (runner: Runner) => {
-    const { isBridgeNetworkMode, dependents, serviceName } = runner
+  const waitForRunner = async ({
+    runner,
+    runner: { isBridgeNetworkMode, dependents, serviceName },
+  }: {
+    runner: Runner
+  }) => {
+    runner.logger.debug(`${LOG_PREFIX} Initiating...`)
 
-    runner.logger.debug(`${logPrefix} Initiating...`)
-
-    await dockerComposeUp(config, serviceName)
-    await resolveContainerId(runner)
+    await dockerComposeUp({ composeOpts, serviceName })
+    await resolveContainerId({ runner })
 
     if (isBridgeNetworkMode) {
-      await joinBridgeNetwork(runner.containerId, serviceName)
+      await joinBridgeNetwork({ containerId: runner.containerId, alias: serviceName })
     }
 
     if (process.platform === 'linux' && !isBridgeNetworkMode) {
       await fixRunnerHostAccessOnLinux(runner)
     }
 
-    await checkConnection(runner)
-    await checkResponsiveness(runner)
-    await runRunnerCommands(runner)
+    await checkConnection({ runner })
+    await runHealthcheck({ runner })
+    await runRunnerCommands({ runner })
 
-    runner.logger.info(`${logPrefix} Success`, { success: true, endingNewLines: 1 })
+    runner.logger.info(`${LOG_PREFIX} Success`, { success: true, endingNewLines: 1 })
 
     for (const dependant of dependents) {
-      await waitForRunner(dependant)
+      await waitForRunner({ runner: dependant })
     }
   }
 
@@ -52,20 +62,16 @@ export const waitForServices = async (config: DockestConfig) => {
       await createBridgeNetwork()
     }
 
-    await joinBridgeNetwork(hostname, DOCKEST_HOST_ADDRESS)
+    await joinBridgeNetwork({ containerId: hostname, alias: DOCKEST_HOST_ADDRESS })
   }
 
   for (const runner of Object.values(runners)) {
     if (runInBand) {
-      await waitForRunner(runner)
+      await waitForRunner({ runner })
     } else {
-      setupPromises.push(waitForRunner(runner))
+      setupPromises.push(waitForRunner({ runner }))
     }
   }
 
   await Promise.all(setupPromises)
-
-  if (afterSetupSleep && afterSetupSleep > 0) {
-    await sleepForX('After setup sleep', afterSetupSleep)
-  }
 }

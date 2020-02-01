@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "esModuleInterop": true,
+    "outDir": "dist",
     "lib": ["es2019"],
+    "target": "es2019",
     "module": "commonjs",
     "moduleResolution": "node",
+    "declaration": true,
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "dist",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "es2019"
+    "strict": true
   },
   "include": ["src/**/*"]
 }

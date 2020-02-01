@@ -65,11 +65,11 @@ export class Logger {
     }
   }
 
-  public static replacePrevLine = (m: string, isLast = false) => {
+  public static replacePrevLine = ({ message, isLast = false }: { message: string; isLast?: boolean }) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     readline.cursorTo(process.stdout, 0, null)
-    process.stdout.write(m)
+    process.stdout.write(message)
 
     if (isLast) {
       process.stdout.write('\n\n')

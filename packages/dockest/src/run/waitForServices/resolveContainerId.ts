@@ -6,9 +6,7 @@ import { sleep } from '../../utils/sleep'
 
 const logPrefix = '[Resolve Container Id]'
 
-const getContainerId = async (runner: Runner) => {
-  const { serviceName } = runner
-
+const getContainerId = async ({ runner, runner: { serviceName } }: { runner: Runner }) => {
   const command = `docker-compose \
                     -f ${GENERATED_COMPOSE_FILE_PATH} \
                     ps \
@@ -20,9 +18,7 @@ const getContainerId = async (runner: Runner) => {
   return stdout
 }
 
-export const resolveContainerId = async (runner: Runner) => {
-  const { logger } = runner
-  const resolveContainerIdTimeout = 10
+export const resolveContainerId = async ({ runner, runner: { logger } }: { runner: Runner }) => {
   let containerId = ''
 
   const recurse = async (resolveContainerIdTimeout: number) => {
@@ -33,7 +29,7 @@ export const resolveContainerId = async (runner: Runner) => {
     logger.debug(`${logPrefix} Timeout in ${resolveContainerIdTimeout}s`)
 
     try {
-      containerId = await getContainerId(runner)
+      containerId = await getContainerId({ runner })
 
       if (typeof containerId !== 'string' || (typeof containerId === 'string' && containerId.length === 0)) {
         throw new DockestError(`Invalid containerId (${containerId})`, { runner })
@@ -52,5 +48,5 @@ export const resolveContainerId = async (runner: Runner) => {
     return containerId
   }
 
-  return await recurse(resolveContainerIdTimeout)
+  return await recurse(30)
 }

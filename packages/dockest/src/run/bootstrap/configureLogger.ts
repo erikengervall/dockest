@@ -1,5 +1,5 @@
-import { DockestConfig } from '../../@types'
 import { hashCode } from '../../utils/hashCode'
+import { DockestConfig } from '../../@types'
 
 const LOG_SYMBOLS: readonly string[] = [
   '🐉 ',
@@ -19,12 +19,9 @@ const LOG_SYMBOLS: readonly string[] = [
   '🦚 ',
 ]
 
-export const configureLogger = (config: DockestConfig) => {
-  const {
-    $: { runners },
-  } = config
-
+export const configureLogger = (runners: DockestConfig['mutables']['runners']) => {
   let LOG_SYMBOLS_CLONE = LOG_SYMBOLS.slice(0)
+
   Object.values(runners).forEach(({ serviceName, logger }) => {
     const nameHash = Math.abs(hashCode(serviceName))
 
