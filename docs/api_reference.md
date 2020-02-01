@@ -7,18 +7,12 @@ sidebar_label: API Reference
 ```ts
 import { Dockest } from 'dockest'
 
-const { run } = new Dockest({ opts })
+const { run } = new Dockest(opts)
 ```
 
-## opts [object]
+## DockestOpts [object]
 
-`opts` is optional, i.e. the dockest constructor can be called without arguments.
-
-### `afterSetupSleep` [number]
-
-Default: `0`
-
-Additional sleep after initial setup. Useful when services require additional time to boot and there's no applicable healthcheck
+`DockestOpts` is optional, i.e. the dockest constructor can be called without arguments.
 
 ### `composeFile` [string]
 
@@ -115,19 +109,19 @@ Callback that will run before exit. Received one argument of type { type: string
 
 Default: `require`('jest')
 
-    The Jest library itself, typically passed as { lib: require('jest') }. If omitted, Dockest will attempt to require Jest from your application's dependencies. If absent, Dockest will use it's own version.
+The Jest library itself, typically passed as { lib: require('jest') }. If omitted, Dockest will attempt to require Jest from your application's dependencies. If absent, Dockest will use it's own version.
 
 ### `jestOpts` [object]
 
 Default: `{}`
 
-    Jest's CLI options, an exhaustive list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation
+Jest's CLI options, an exhaustive list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation
 
 ### `logLevel` [object]
 
 Default: `logLevel`.NORMAL
 
-    Decides how much logging will occur. Each level represents a number ranging from 0-4
+Decides how much logging will occur. Each level represents a number ranging from 0-4
 
 ### `runInBand` [boolean]
 
@@ -162,7 +156,7 @@ const dockestServices = [
 run(dockestServices)
 ```
 
-## dockestService
+### dockestService
 
 Dockest services are meant to map to services declared in the Compose file(s)
 
@@ -263,3 +257,53 @@ This is an object representation of your service's information from the Compose 
 #### logger
 
 An instance, specific to this particular Dockest Service (internally known as Runner), of the internal Dockest logger. Using this logger will prettify and contextualize logs with e.g. the serviceName.
+
+## `logLevel` [object]
+
+Helper constant for DockestOpts
+
+```ts
+const LOG_LEVEL = {
+  NOTHING: 0,
+  ERROR: 1,
+  WARN: 2,
+  INFO: 3,
+  DEBUG: 4,
+}
+```
+
+## `sleep` [function]
+
+Sleeps for X milliseconds.
+
+```ts
+const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms))
+```
+
+## `sleepWithLog` [function]
+
+Sleeps for X seconds, printing a message each second with the progress.
+
+```ts
+const sleepWithLog = async (seconds = 30, reason = 'Sleeping...') => ...
+```
+
+## `execa` [function]
+
+Exposes the internal execa wrapper.
+
+```ts
+import { SyncOptions } from 'execa'
+
+interface Opts {
+  runner?: Runner
+  logPrefix?: string
+  logStdout?: boolean
+  execaOpts?: SyncOptions<string>
+}
+
+const execa = async (
+  command: string,
+  { runner, logPrefix = '[Shell]', logStdout = false, execaOpts = {} }: Opts = {},
+) => ...
+```
