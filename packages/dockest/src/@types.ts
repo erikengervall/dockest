@@ -63,7 +63,7 @@ export interface DockerComposeFileServicePostgres extends DockerComposeFileServi
   }
 }
 
-export type Commands = string[]
+export type Commands = (string | ((containerId: string) => string))[]
 
 export interface DockestService {
   serviceName: ServiceName
