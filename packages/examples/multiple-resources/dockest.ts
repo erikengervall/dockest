@@ -18,6 +18,7 @@ dockest.run([
       'sequelize db:migrate',
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
+      containerId => `echo "The container id is ${containerId}"`,
     ],
     healthcheck: ({ defaultHealthchecks: { postgres } }) => postgres(),
   },
