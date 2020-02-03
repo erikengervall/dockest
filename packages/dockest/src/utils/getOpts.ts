@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events'
 import isDocker from 'is-docker' // eslint-disable-line import/default
 import { DockestOpts, DockestConfig } from '../@types'
 import { LOG_LEVEL, DEFAULT_HOST_NAME } from '../constants'
@@ -43,6 +44,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     mutables: {
       jestRanWithResult: false,
       runners: {},
+      dockerEventEmitter: new EventEmitter() as any,
     },
     hostname: process.env.HOSTNAME || DEFAULT_HOST_NAME,
     isInsideDockerContainer: isDocker(),

@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events'
 import { waitForServices } from './index'
 import { checkConnection } from './checkConnection'
 import { runHealthcheck } from './runHealthcheck'
@@ -40,7 +41,7 @@ describe('waitForServices', () => {
         composeOpts,
         hostname,
         isInsideDockerContainer,
-        mutables: { runners, jestRanWithResult: false },
+        mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
       })
 
@@ -88,7 +89,7 @@ describe('waitForServices', () => {
         composeOpts,
         hostname,
         isInsideDockerContainer,
-        mutables: { runners, jestRanWithResult: false },
+        mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
       })
 

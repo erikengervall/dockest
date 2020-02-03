@@ -1,4 +1,6 @@
 import { Logger } from './Logger'
+import { DockerServiceEventStream } from './run/createDockerServiceEventStream'
+import { DockerEventEmitter } from './run/createDockerEventEmitter'
 
 type ContainerId = string
 type DefaultHealthcheck = () => Promise<void>
@@ -34,6 +36,7 @@ export interface Runner {
   serviceName: ServiceName
   host?: string
   isBridgeNetworkMode?: boolean
+  dockerEventStream$: DockerServiceEventStream
 }
 
 export interface RunnersObj {
@@ -76,6 +79,7 @@ export interface MutablesConfig {
   /** Jest has finished executing and has returned a result */
   jestRanWithResult: boolean
   runners: RunnersObj
+  dockerEventEmitter: DockerEventEmitter
 }
 
 export interface DockestOpts {

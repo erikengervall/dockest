@@ -7,7 +7,7 @@ import { teardownSingle } from '../utils/teardownSingle'
 export const teardown = async ({
   hostname,
   isInsideDockerContainer,
-  mutables: { runners },
+  mutables: { runners, dockerEventEmitter },
   perfStart,
 }: {
   hostname: DockestConfig['hostname']
@@ -23,6 +23,8 @@ export const teardown = async ({
     await leaveBridgeNetwork({ containerId: hostname })
     await removeBridgeNetwork()
   }
+
+  dockerEventEmitter.destroy()
 
   Logger.measurePerformance(perfStart)
 }
