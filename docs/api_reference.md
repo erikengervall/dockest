@@ -168,11 +168,13 @@ Default: `-`
 
 Service name that matches the corresponding service in your Compose file
 
-### `dockestService.commands` [string[]]
+### `dockestService.commands` [(string | function)[] => string[]]
 
 Default: `[]`
 
 Bash scripts that will run once the service is ready. E.g. database migrations.
+
+Can either be a string, or a function that generates a string. The function is fed the container id of the service.
 
 ### `dockestService.dependents` [DockestService[]]
 
