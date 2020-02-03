@@ -39,6 +39,11 @@ describe('getOpts', () => {
         },
         "logLevel": 3,
         "mutables": Object {
+          "dockerEventEmitter": EventEmitter {
+            "_events": Object {},
+            "_eventsCount": 0,
+            "_maxListeners": undefined,
+          },
           "jestRanWithResult": false,
           "runners": Object {},
         },

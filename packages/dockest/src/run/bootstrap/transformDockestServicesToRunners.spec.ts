@@ -38,6 +38,14 @@ describe('transformDockestServicesToRunners', () => {
                 },
               ],
             },
+            "dockerEventStream$": Observable {
+              "_isScalar": false,
+              "operator": [Function],
+              "source": Observable {
+                "_isScalar": false,
+                "_subscribe": [Function],
+              },
+            },
             "healthcheck": [Function],
             "logger": Logger {
               "debug": [Function],
