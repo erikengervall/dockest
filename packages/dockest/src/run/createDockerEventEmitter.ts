@@ -66,8 +66,7 @@ export const createDockerEventEmitter = (composeFilePath: string): DockerEventEm
   const emitter = new EventEmitter()
 
   // without this line only the first data event is fired (in some undefinable cases)
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  childProcess.then(() => {})
+  childProcess.then(() => undefined)
 
   childProcess.stdout.addListener('data', chunk => {
     const lines: string[] = chunk
