@@ -9,7 +9,6 @@ import { DOCKEST_HOST_ADDRESS } from '../../constants'
 import { DockestConfig, Runner } from '../../@types'
 import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork'
 import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists'
-import { createContainerStartCheck } from '../createContainerStartCheck'
 
 const LOG_PREFIX = '[Setup]'
 
@@ -37,10 +36,6 @@ export const waitForServices = async ({
     runner.logger.debug(`${LOG_PREFIX} Initiating...`)
 
     await dockerComposeUp({ composeOpts, serviceName })
-
-    // wait until container has started before trying to resolve the container id.
-    const containerStartCheck = createContainerStartCheck({ runner })
-    await containerStartCheck.done
 
     await resolveContainerId({ runner })
 
