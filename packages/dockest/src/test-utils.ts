@@ -10,8 +10,8 @@ export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   healthcheck: () => Promise.resolve(),
   logger: new Logger('node'),
   serviceName: 'node',
-  ...(overrides || {}),
   dockerEventStream$: new ReplaySubject(),
+  ...(overrides || {}),
 })
 
 export const DOCKEST_SERVICE: DockestService = {
