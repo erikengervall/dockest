@@ -18,11 +18,13 @@ export interface Healthcheck {
     defaultHealthchecks,
     dockerComposeFileService,
     logger,
+    dockerEventStream$,
   }: {
     containerId: ContainerId
     defaultHealthchecks: DefaultHealthchecks
     dockerComposeFileService: DockerComposeFileService
     logger: Runner['logger']
+    dockerEventStream$: DockerServiceEventStream
   }): Promise<any>
 }
 
