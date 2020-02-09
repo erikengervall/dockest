@@ -1,8 +1,10 @@
 import { Runner, DockestConfig } from './@types'
+import { DockerEventType } from './run/createDockerEventEmitter'
 
 export interface Payload {
   runner?: Runner
   error?: Error | string
+  event?: DockerEventType
 }
 
 export class BaseError extends Error {

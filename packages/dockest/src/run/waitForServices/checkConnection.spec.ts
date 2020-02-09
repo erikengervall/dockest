@@ -64,9 +64,10 @@ it('succeeds with zero port checks', async () => {
     dockerComposeFileService: { image: 'node:10-alpine', ports: [] },
   })
 
-  await checkConnection({
+  const result = await checkConnection({
     runner,
   })
+  expect(result).toEqual(undefined)
 })
 
 it('succeeds when the port check is successfull', async () => {

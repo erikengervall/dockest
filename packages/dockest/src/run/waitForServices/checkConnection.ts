@@ -43,7 +43,7 @@ const checkPortConnection = ({
   runner: Runner
   acquireConnection: AcquireConnectionFunctionType
 }) => {
-  return of({ host, port: port }).pipe(
+  return of({ host, port }).pipe(
     // run check
     mergeMap(({ host, port }) => from(acquireConnection({ host, port }))),
     // retry if check errors
@@ -85,8 +85,8 @@ export const createCheckConnection = ({
   return race(
     dockerEventStream$.pipe(
       skipWhile(ev => ev.action !== 'die' && ev.action !== 'kill'),
-      map(() => {
-        throw new DockestError('Container unexpectedly died.')
+      map(event => {
+        throw new DockestError('Container unexpectedly died.', { event })
       }),
     ),
     of(...ports).pipe(

@@ -17,8 +17,8 @@ export const runHealthcheck = async ({
   return race(
     dockerEventStream$.pipe(
       skipWhile(ev => ev.action !== 'die' && ev.action !== 'kill'),
-      map(() => {
-        throw new DockestError('Container unexpectedly died.')
+      map(event => {
+        throw new DockestError('Container unexpectedly died.', { event })
       }),
     ),
     of(healthcheck).pipe(
