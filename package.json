@@ -12,7 +12,7 @@
     "url": "https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
-    "clean": "lerna run clean --stream && lerna clean --yes && rimraf ./node_modules && yarn && yarn prep",
+    "clean": "lerna run clean --stream && lerna clean --yes && rimraf ./node_modules && yarn cache clean && yarn && yarn prep",
     "dev:link": "lerna run dev:dockest:link --stream && lerna run dev:examples:link --stream",
     "dev:link:list": "ls -la ~/.config/yarn/link/@examples",
     "dev:unlink": "lerna run dev:examples:unlink --stream && lerna run dev:dockest:unlink --stream",
