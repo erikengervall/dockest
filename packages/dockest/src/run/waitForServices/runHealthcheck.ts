@@ -4,8 +4,7 @@ import { createDefaultHealthchecks } from '../../utils/createDefaultHealthchecks
 import { DockestError } from '../../Errors'
 import { Runner } from '../../@types'
 
-const logPrefix = '[Check Responsiveness]'
-
+const LOG_PREFIX = '[Run Healthcheck]'
 const RETRY_COUNT = 30
 
 export const runHealthcheck = async ({
@@ -22,7 +21,7 @@ export const runHealthcheck = async ({
       }),
     ),
     of(healthcheck).pipe(
-      tap(() => logger.debug(`${logPrefix}`)),
+      tap(() => logger.debug(`${LOG_PREFIX}`)),
       mergeMap(healthcheck =>
         from(
           healthcheck({
@@ -36,20 +35,22 @@ export const runHealthcheck = async ({
       ),
       retryWhen(errors => {
         let retries = 0
+
         return errors.pipe(
           tap(() => {
             retries = retries + 1
-            logger.debug(`${logPrefix} Timeout in ${RETRY_COUNT - retries}s`)
+            logger.debug(`${LOG_PREFIX} Timeout in ${RETRY_COUNT - retries}s`)
           }),
           takeWhile(() => {
             if (retries < RETRY_COUNT) return true
-            throw new DockestError(`${logPrefix} Timed out`, { runner })
+
+            throw new DockestError(`${LOG_PREFIX} Timed out`, { runner })
           }),
           delay(1000),
         )
       }),
       tap(() => {
-        logger.info(`${logPrefix} Success`, { success: true })
+        logger.info(`${LOG_PREFIX} Success`, { success: true })
       }),
     ),
   ).toPromise()

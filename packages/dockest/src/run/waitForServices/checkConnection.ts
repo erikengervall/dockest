@@ -4,9 +4,10 @@ import { concatMap, delay, ignoreElements, map, mergeMap, retryWhen, skipWhile, 
 import { DockestError } from '../../Errors'
 import { Runner } from '../../@types'
 
-const logPrefix = '[Check Connection]'
-
 export type AcquireConnectionFunctionType = ({ host, port }: { host: string; port: number }) => Promise<void>
+
+const LOG_PREFIX = '[Check Connection]'
+const RETRY_COUNT = 10
 
 export const acquireConnection: AcquireConnectionFunctionType = ({ host, port }) =>
   new Promise((resolve, reject) => {
@@ -29,8 +30,6 @@ export const acquireConnection: AcquireConnectionFunctionType = ({ host, port })
 
     timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000)
   })
-
-const RETRY_COUNT = 10
 
 const checkPortConnection = ({
   host,
