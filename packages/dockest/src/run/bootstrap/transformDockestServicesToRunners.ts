@@ -1,15 +1,19 @@
 import { ConfigurationError } from '../../Errors'
 import { DockestConfig, DockerComposeFile, Runner, RunnersObj, DockestService } from '../../@types'
 import { Logger } from '../../Logger'
+import { DockerEventEmitter } from '../createDockerEventEmitter'
+import { createDockerServiceEventStream } from '../createDockerServiceEventStream'
 
 export const transformDockestServicesToRunners = ({
   dockerComposeFile,
   dockestServices,
   isInsideDockerContainer,
+  dockerEventEmitter,
 }: {
   dockerComposeFile: DockerComposeFile
   dockestServices: DockestService[]
   isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  dockerEventEmitter: DockerEventEmitter
 }) => {
   const createRunner = (dockestService: DockestService) => {
     const { commands = [], dependents = [], healthcheck = () => Promise.resolve(), serviceName } = dockestService
@@ -29,6 +33,7 @@ export const transformDockestServicesToRunners = ({
       healthcheck,
       logger: new Logger(serviceName),
       serviceName,
+      dockerEventStream$: createDockerServiceEventStream(serviceName, dockerEventEmitter),
     }
 
     if (isInsideDockerContainer) {

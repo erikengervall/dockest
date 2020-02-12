@@ -1,52 +1,31 @@
-import { DockestError } from '../../Errors'
-import { execaWrapper } from '../../utils/execaWrapper'
-import { GENERATED_COMPOSE_FILE_PATH } from '../../constants'
+import { interval, race } from 'rxjs'
+import { take, tap, first, map, skipWhile } from 'rxjs/operators'
 import { Runner } from '../../@types'
-import { sleep } from '../../utils/sleep'
+import { DockestError } from '../../Errors'
 
 const logPrefix = '[Resolve Container Id]'
 
-const getContainerId = async ({ runner, runner: { serviceName } }: { runner: Runner }) => {
-  const command = `docker-compose \
-                    -f ${GENERATED_COMPOSE_FILE_PATH} \
-                    ps \
-                    -q \
-                    "${serviceName}"`
+const DEFAULT_TIMEOUT = 30
 
-  const { stdout } = await execaWrapper(command, { runner, logPrefix })
-
-  return stdout
-}
-
-export const resolveContainerId = async ({ runner, runner: { logger } }: { runner: Runner }) => {
-  let containerId = ''
-
-  const recurse = async (resolveContainerIdTimeout: number) => {
-    if (resolveContainerIdTimeout <= 0) {
-      throw new DockestError('Timed out', { runner })
-    }
-
-    logger.debug(`${logPrefix} Timeout in ${resolveContainerIdTimeout}s`)
-
-    try {
-      containerId = await getContainerId({ runner })
-
-      if (typeof containerId !== 'string' || (typeof containerId === 'string' && containerId.length === 0)) {
-        throw new DockestError(`Invalid containerId (${containerId})`, { runner })
-      }
-
-      logger.info(`${logPrefix} Success (${containerId})`, { success: true })
-    } catch (error) {
-      resolveContainerIdTimeout--
-
-      await sleep(1000)
-      await recurse(resolveContainerIdTimeout)
-    }
-
-    runner.containerId = containerId
-
-    return containerId
-  }
-
-  return await recurse(30)
+export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) => {
+  return race(
+    dockerEventStream$.pipe(
+      first(event => event.action === 'start'),
+      tap(({ id: containerId }) => {
+        logger.info(`${logPrefix} Success (${containerId})`, { success: true })
+        runner.containerId = containerId
+      }),
+    ),
+    interval(1000).pipe(
+      tap(i => {
+        runner.logger.info(`Still waiting for start event... Timeout in ${DEFAULT_TIMEOUT - i}s`)
+      }),
+      skipWhile(i => i < DEFAULT_TIMEOUT),
+      map(() => {
+        throw new DockestError('Timed out', { runner })
+      }),
+    ),
+  )
+    .pipe(take(1))
+    .toPromise()
 }

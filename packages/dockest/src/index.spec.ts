@@ -6,6 +6,7 @@ describe('index', () => {
       expect(allTheStuff).toMatchInlineSnapshot(`
         Object {
           "Dockest": [Function],
+          "createContainerIsHealthyHealthcheck": [Function],
           "execa": [Function],
           "logLevel": Object {
             "DEBUG": 4,

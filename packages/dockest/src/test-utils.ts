@@ -1,3 +1,4 @@
+import { ReplaySubject } from 'rxjs'
 import { DockestService, DockerComposeFile, Runner } from './@types'
 import { Logger } from './Logger'
 
@@ -9,6 +10,7 @@ export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   healthcheck: () => Promise.resolve(),
   logger: new Logger('node'),
   serviceName: 'node',
+  dockerEventStream$: new ReplaySubject(),
   ...(overrides || {}),
 })
 

@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { DockestService, DockerComposeFile } from '../../@types'
 import { getOpts } from '../../utils/getOpts'
@@ -20,6 +21,7 @@ describe('transformDockestServicesToRunners', () => {
         dockerComposeFile,
         dockestServices,
         isInsideDockerContainer,
+        dockerEventEmitter: new EventEmitter() as any,
       })
 
       expect(runners).toMatchInlineSnapshot(`
@@ -35,6 +37,14 @@ describe('transformDockestServicesToRunners', () => {
                   "target": 3000,
                 },
               ],
+            },
+            "dockerEventStream$": Observable {
+              "_isScalar": false,
+              "operator": [Function],
+              "source": Observable {
+                "_isScalar": false,
+                "_subscribe": [Function],
+              },
             },
             "healthcheck": [Function],
             "logger": Logger {
@@ -63,6 +73,7 @@ describe('transformDockestServicesToRunners', () => {
           dockerComposeFile,
           dockestServices,
           isInsideDockerContainer,
+          dockerEventEmitter: new EventEmitter() as any,
         }),
       ).toThrow(
         `Unable to find compose service "${invalidServiceName}", make sure that the serviceName corresponds with your Compose File's service`,

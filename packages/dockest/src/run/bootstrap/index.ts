@@ -5,6 +5,7 @@ import { setupExitHandler } from './setupExitHandler'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { writeComposeFile } from './writeComposeFile'
 import { DockestConfig, DockestService } from '../../@types'
+import { createDockerEventEmitter } from '../createDockerEventEmitter'
 
 export const bootstrap = async ({
   composeFile,
@@ -27,9 +28,18 @@ export const bootstrap = async ({
 
   const { mergedComposeFiles } = await mergeComposeFiles({ composeFile })
   const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles)
-  writeComposeFile(mergedComposeFiles, dockerComposeFile)
+  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFile)
 
-  mutables.runners = transformDockestServicesToRunners({ dockerComposeFile, dockestServices, isInsideDockerContainer })
+  const dockerEventEmitter = createDockerEventEmitter(composeFilePath)
+
+  mutables.runners = transformDockestServicesToRunners({
+    dockerComposeFile,
+    dockestServices,
+    isInsideDockerContainer,
+    dockerEventEmitter,
+  })
+
+  mutables.dockerEventEmitter = dockerEventEmitter
 
   configureLogger(mutables.runners)
 }
