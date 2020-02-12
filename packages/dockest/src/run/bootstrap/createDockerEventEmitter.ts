@@ -51,7 +51,7 @@ export interface DockerEventEmitter {
 
 export const createDockerEventEmitter = (composeFilePath: string): DockerEventEmitter => {
   const command = `docker-compose \
-                    --filter ${composeFilePath} \
+                    --file ${composeFilePath} \
                     events \
                     --json`
 
