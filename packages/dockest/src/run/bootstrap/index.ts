@@ -4,8 +4,8 @@ import { mergeComposeFiles } from './mergeComposeFiles'
 import { setupExitHandler } from './setupExitHandler'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { writeComposeFile } from './writeComposeFile'
+import { createDockerEventEmitter } from './createDockerEventEmitter'
 import { DockestConfig, DockestService } from '../../@types'
-import { createDockerEventEmitter } from '../createDockerEventEmitter'
 
 export const bootstrap = async ({
   composeFile,
@@ -29,7 +29,6 @@ export const bootstrap = async ({
   const { mergedComposeFiles } = await mergeComposeFiles({ composeFile })
   const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles)
   const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFile)
-
   const dockerEventEmitter = createDockerEventEmitter(composeFilePath)
 
   mutables.runners = transformDockestServicesToRunners({

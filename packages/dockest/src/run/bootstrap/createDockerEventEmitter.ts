@@ -50,12 +50,11 @@ export interface DockerEventEmitter {
 }
 
 export const createDockerEventEmitter = (composeFilePath: string): DockerEventEmitter => {
-  const command = ` \
-                docker-compose \
-                  -f ${composeFilePath} \
-                  events \
-                  --json
-              `
+  const command = `docker-compose \
+                    --filter ${composeFilePath} \
+                    events \
+                    --json`
+
   const childProcess = execa(command, { shell: true, reject: false })
 
   if (!childProcess.stdout) {
