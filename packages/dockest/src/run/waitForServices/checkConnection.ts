@@ -42,27 +42,31 @@ const checkPortConnection = ({
   port: number
   runner: Runner
   acquireConnection: AcquireConnectionFunctionType
-}) => {
-  return of({ host, port }).pipe(
+}) =>
+  of({ host, port }).pipe(
     // run check
     mergeMap(({ host, port }) => from(acquireConnection({ host, port }))),
+
     // retry if check errors
     retryWhen(errors => {
       let retries = 0
+
       return errors.pipe(
         tap(() => {
           retries = retries + 1
-          runner.logger.debug(`${logPrefix} Timeout in ${RETRY_COUNT - retries}s (${host}:${port})`)
+          runner.logger.debug(`${LOG_PREFIX} Timeout in ${RETRY_COUNT - retries}s (${host}:${port})`)
         }),
         takeWhile(() => {
-          if (retries < RETRY_COUNT) return true
-          throw new DockestError(`${logPrefix} Timed out`, { runner })
+          if (retries < RETRY_COUNT) {
+            return true
+          }
+
+          throw new DockestError(`${LOG_PREFIX} Timed out`, { runner })
         }),
         delay(1000),
       )
     }),
   )
-}
 
 export const createCheckConnection = ({
   acquireConnection,

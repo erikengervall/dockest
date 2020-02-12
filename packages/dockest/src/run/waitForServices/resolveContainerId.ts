@@ -7,8 +7,8 @@ const logPrefix = '[Resolve Container Id]'
 
 const DEFAULT_TIMEOUT = 30
 
-export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) => {
-  return race(
+export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) =>
+  race(
     dockerEventStream$.pipe(
       first(event => event.action === 'start'),
       tap(({ id: containerId }) => {
@@ -28,4 +28,3 @@ export const resolveContainerId = async ({ runner, runner: { logger, dockerEvent
   )
     .pipe(take(1))
     .toPromise()
-}

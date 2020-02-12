@@ -13,8 +13,8 @@ export const runHealthcheck = async ({
   runner: { containerId, dockerComposeFileService, healthcheck, logger, dockerEventStream$ },
 }: {
   runner: Runner
-}) => {
-  return race(
+}) =>
+  race(
     dockerEventStream$.pipe(
       skipWhile(ev => ev.action !== 'die' && ev.action !== 'kill'),
       map(event => {
@@ -53,4 +53,3 @@ export const runHealthcheck = async ({
       }),
     ),
   ).toPromise()
-}
