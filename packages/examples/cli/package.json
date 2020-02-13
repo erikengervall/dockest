@@ -1,0 +1,17 @@
+{
+  "name": "@examples/cli",
+  "version": "2.0.0-beta.3",
+  "private": true,
+  "scripts": {
+    "dev:examples:link": "yarn link dockest",
+    "dev:examples:unlink": "yarn unlink dockest",
+    "test:examples": "node_modules/.bin/dockest"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.9.1",
+    "dockest": "file:../../dockest",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.0.0",
+    "typescript": "^3.7.5"
+  }
+}

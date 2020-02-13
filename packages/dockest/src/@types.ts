@@ -102,21 +102,21 @@ export interface DockestOpts {
 
   composeOpts: {
     /** Recreate dependent containers. Incompatible with --no-recreate. */
-    alwaysRecreateDeps: boolean
+    alwaysRecreateDeps?: boolean
     /** Build images before starting containers. */
-    build: boolean
+    build?: boolean
     /** Recreate containers even if their configuration and image haven't changed. */
-    forceRecreate: boolean
+    forceRecreate?: boolean
     /** Don't build an image, even if it's missing. */
-    noBuild: boolean
+    noBuild?: boolean
     /** Produce monochrome output. */
-    noColor: boolean
+    noColor?: boolean
     /** Don't start linked services. */
-    noDeps: boolean
+    noDeps?: boolean
     /** If containers already exist, don't recreate them. Incompatible with --force-recreate and -V. */
-    noRecreate: boolean
+    noRecreate?: boolean
     /** Pull without printing progress information. */
-    quietPull: boolean
+    quietPull?: boolean
   }
 
   debug?: boolean

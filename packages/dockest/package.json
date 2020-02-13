@@ -3,6 +3,7 @@
   "version": "2.0.0-beta.2",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "bin": "dist/bin/index.js",
   "files": [
     "dist/**/*"
   ],
@@ -30,8 +31,8 @@
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
     "clean": "node_modules/.bin/rimraf dist",
-    "build": "node_modules/.bin/tsc",
-    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json",
+    "build": "node_modules/.bin/tsc && chmod +x dist/bin/index.js",
+    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json && chmod +x dist/bin/index.js",
     "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
   },
   "dependencies": {
@@ -39,12 +40,14 @@
     "execa": "^4.0.0",
     "is-docker": "^2.0.0",
     "js-yaml": "^3.13.1",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
     "@types/js-yaml": "^3.12.2",
     "@types/node": "^13.5.0",
+    "@types/yargs": "^15.0.3",
     "jest": "^25.1.0",
     "mockdate": "^2.0.5",
     "ts-jest": "^25.0.0",
