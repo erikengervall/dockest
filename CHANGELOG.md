@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-beta.2] - 2019-02-12
+
+### Changed
+
+- Adopted RxJS to listen in on docker events, greatly improving the responsiveness and sturdiness of all checks [#136](https://github.com/erikengervall/dockest/pull/136)
+- Support function as a command with containerId as argument [#133](https://github.com/erikengervall/dockest/pull/133)
+
 ## [2.0.0-beta.1] - 2019-02-01
 
 ### Added

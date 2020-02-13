@@ -1,6 +1,6 @@
 import { Logger } from './Logger'
-import { DockerServiceEventStream } from './run/createDockerServiceEventStream'
-import { DockerEventEmitter } from './run/createDockerEventEmitter'
+import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
+import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
 
 type ContainerId = string
 type DefaultHealthcheck = () => Promise<void>
@@ -17,14 +17,14 @@ export interface Healthcheck {
     containerId,
     defaultHealthchecks,
     dockerComposeFileService,
-    logger,
     dockerEventStream$,
+    logger,
   }: {
     containerId: ContainerId
     defaultHealthchecks: DefaultHealthchecks
     dockerComposeFileService: DockerComposeFileService
-    logger: Runner['logger']
     dockerEventStream$: DockerServiceEventStream
+    logger: Runner['logger']
   }): Promise<any>
 }
 
@@ -33,12 +33,12 @@ export interface Runner {
   containerId: ContainerId
   dependents: Runner[]
   dockerComposeFileService: DockerComposeFileService
+  dockerEventStream$: DockerServiceEventStream
   healthcheck: Healthcheck
   logger: Logger
   serviceName: ServiceName
   host?: string
   isBridgeNetworkMode?: boolean
-  dockerEventStream$: DockerServiceEventStream
 }
 
 export interface RunnersObj {

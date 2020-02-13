@@ -54,7 +54,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn prep
-      - run: yarn test:unit --concurrency 10
+      - run: yarn test:unit
 
   ####### Integration tests
   integration_tests:
@@ -72,7 +72,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn prep
-      - run: yarn test:examples --concurrency 10
+      - run: yarn test:examples --concurrency 2
 
   ####### Publish to npm
   npm_publish:

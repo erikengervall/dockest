@@ -1,11 +1,13 @@
-import MockDate from 'mockdate'
 import { getOpts } from './getOpts'
-
-MockDate.set(new Date('2020-01-01T13:37:00.000Z'))
 
 describe('getOpts', () => {
   it('should snapshot default opts', () => {
-    expect(getOpts()).toMatchInlineSnapshot(`
+    expect(getOpts()).toMatchInlineSnapshot(
+      {
+        mutables: expect.any(Object),
+        perfStart: expect.any(Number),
+      },
+      `
       Object {
         "composeFile": "docker-compose.yml",
         "composeOpts": Object {
@@ -38,18 +40,11 @@ describe('getOpts', () => {
           "runInBand": true,
         },
         "logLevel": 3,
-        "mutables": Object {
-          "dockerEventEmitter": EventEmitter {
-            "_events": Object {},
-            "_eventsCount": 0,
-            "_maxListeners": undefined,
-          },
-          "jestRanWithResult": false,
-          "runners": Object {},
-        },
-        "perfStart": 1577885820000,
+        "mutables": Any<Object>,
+        "perfStart": Any<Number>,
         "runInBand": true,
       }
-    `)
+    `,
+    )
   })
 })

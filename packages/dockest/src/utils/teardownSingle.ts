@@ -3,17 +3,15 @@ import { Runner } from '../@types'
 import { DockestError } from '../Errors'
 
 const stopContainerById = async ({ runner, runner: { containerId } }: { runner: Runner }) => {
-  const logPrefix = '[Stop Container]'
-
   const command = `docker stop ${containerId}`
-  await execaWrapper(command, { runner, logPrefix, logStdout: true })
+
+  await execaWrapper(command, { runner, logPrefix: '[Stop Container]', logStdout: true })
 }
 
 const removeContainerById = async ({ runner, runner: { containerId } }: { runner: Runner }) => {
-  const logPrefix = '[Remove Container]'
-
   const command = `docker rm ${containerId} --volumes`
-  await execaWrapper(command, { runner, logPrefix, logStdout: true })
+
+  await execaWrapper(command, { runner, logPrefix: '[Remove Container]', logStdout: true })
 }
 
 export const teardownSingle = async ({

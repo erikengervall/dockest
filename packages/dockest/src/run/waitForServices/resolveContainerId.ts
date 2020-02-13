@@ -3,16 +3,15 @@ import { take, tap, first, map, skipWhile } from 'rxjs/operators'
 import { Runner } from '../../@types'
 import { DockestError } from '../../Errors'
 
-const logPrefix = '[Resolve Container Id]'
-
+const LOG_PREFIX = '[Resolve Container Id]'
 const DEFAULT_TIMEOUT = 30
 
-export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) => {
-  return race(
+export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) =>
+  race(
     dockerEventStream$.pipe(
       first(event => event.action === 'start'),
       tap(({ id: containerId }) => {
-        logger.info(`${logPrefix} Success (${containerId})`, { success: true })
+        logger.info(`${LOG_PREFIX} Success (${containerId})`, { success: true })
         runner.containerId = containerId
       }),
     ),
@@ -28,4 +27,3 @@ export const resolveContainerId = async ({ runner, runner: { logger, dockerEvent
   )
     .pipe(take(1))
     .toPromise()
-}

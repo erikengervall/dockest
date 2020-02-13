@@ -14,7 +14,7 @@ export interface ErrorPayload {
   signal?: any
 }
 
-const logPrefix = '[Exit Handler]'
+const LOG_PREFIX = '[Exit Handler]'
 
 export const setupExitHandler = async ({
   dumpErrors,
@@ -41,6 +41,7 @@ export const setupExitHandler = async ({
     if (mutables.jestRanWithResult) {
       return
     }
+
     if (errorPayload.reason instanceof BaseError) {
       const {
         payload: { error, runner, ...restPayload },
@@ -66,9 +67,9 @@ export const setupExitHandler = async ({
         Object.keys(restPayload).length > 0 &&
         (logPayload.data.restPayload = restPayload)
 
-      Logger.error(`${logPrefix} ${message}`, logPayload)
+      Logger.error(`${LOG_PREFIX} ${message}`, logPayload)
     } else {
-      Logger.error(`${logPrefix} ${JSON.stringify(errorPayload, null, 2)}`)
+      Logger.error(`${LOG_PREFIX} ${JSON.stringify(errorPayload, null, 2)}`)
     }
 
     if (customExitHandler && typeof customExitHandler === 'function') {
@@ -93,7 +94,7 @@ export const setupExitHandler = async ({
       }
     }
 
-    Logger.measurePerformance(perfStart, { logPrefix })
+    Logger.measurePerformance(perfStart, { logPrefix: LOG_PREFIX })
     process.exit(errorPayload.code || 1)
   }
 

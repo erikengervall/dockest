@@ -4,9 +4,10 @@ import { concatMap, delay, ignoreElements, map, mergeMap, retryWhen, skipWhile, 
 import { DockestError } from '../../Errors'
 import { Runner } from '../../@types'
 
-const logPrefix = '[Check Connection]'
-
 export type AcquireConnectionFunctionType = ({ host, port }: { host: string; port: number }) => Promise<void>
+
+const LOG_PREFIX = '[Check Connection]'
+const RETRY_COUNT = 10
 
 export const acquireConnection: AcquireConnectionFunctionType = ({ host, port }) =>
   new Promise((resolve, reject) => {
@@ -30,8 +31,6 @@ export const acquireConnection: AcquireConnectionFunctionType = ({ host, port })
     timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000)
   })
 
-const RETRY_COUNT = 10
-
 const checkPortConnection = ({
   host,
   port,
@@ -42,27 +41,31 @@ const checkPortConnection = ({
   port: number
   runner: Runner
   acquireConnection: AcquireConnectionFunctionType
-}) => {
-  return of({ host, port }).pipe(
+}) =>
+  of({ host, port }).pipe(
     // run check
     mergeMap(({ host, port }) => from(acquireConnection({ host, port }))),
+
     // retry if check errors
     retryWhen(errors => {
       let retries = 0
+
       return errors.pipe(
         tap(() => {
           retries = retries + 1
-          runner.logger.debug(`${logPrefix} Timeout in ${RETRY_COUNT - retries}s (${host}:${port})`)
+          runner.logger.debug(`${LOG_PREFIX} Timeout in ${RETRY_COUNT - retries}s (${host}:${port})`)
         }),
         takeWhile(() => {
-          if (retries < RETRY_COUNT) return true
-          throw new DockestError(`${logPrefix} Timed out`, { runner })
+          if (retries < RETRY_COUNT) {
+            return true
+          }
+
+          throw new DockestError(`${LOG_PREFIX} Timed out`, { runner })
         }),
         delay(1000),
       )
     }),
   )
-}
 
 export const createCheckConnection = ({
   acquireConnection,

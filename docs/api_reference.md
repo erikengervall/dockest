@@ -223,8 +223,7 @@ services:
 
 Default: `() => Promise.resolve()`
 
-The Dockest Service's healthcheck function is there to determine the service's health (or responsiveness) by e.g.,
-E.g. responsiveness checking a database using `select 1`. The healthcheck function receive the corresponding Compose service configuration from the Compose file as first argument and the containerId as the second.
+The Dockest Service's healthcheck function helps determining a service's health (or "responsiveness") by, for example, querying a database using `select 1`. The healthcheck function receive the corresponding Compose service configuration from the Compose file as first argument and the containerId as the second.
 
 The healthcheck takes a single argument in form of an object.
 
