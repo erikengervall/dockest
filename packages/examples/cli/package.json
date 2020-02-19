@@ -5,7 +5,7 @@
   "scripts": {
     "dev:examples:link": "yarn link dockest",
     "dev:examples:unlink": "yarn unlink dockest",
-    "test:examples": "node_modules/.bin/dockest"
+    "test:examples": "dockest"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",

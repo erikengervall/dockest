@@ -30,10 +30,11 @@
     "prepublishOnly": "yarn build:publish",
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
-    "clean": "node_modules/.bin/rimraf dist",
-    "build": "node_modules/.bin/tsc && chmod +x dist/bin/index.js",
-    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json && chmod +x dist/bin/index.js",
-    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
+    "clean": "rimraf dist",
+    "build": "tsc && yarn build:cli:executable",
+    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json && yarn build:cli:executable",
+    "build:cli:executable": "chmod +x dist/bin/index.js",
+    "test:unit": "jest . --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "chalk": "^3.0.0",

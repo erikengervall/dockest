@@ -1173,13 +1173,14 @@ diff@^4.0.1:
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 "dockest@file:../../dockest":
-  version "2.0.0-beta.2"
+  version "2.0.0-beta.3"
   dependencies:
     chalk "^3.0.0"
     execa "^4.0.0"
     is-docker "^2.0.0"
     js-yaml "^3.13.1"
     rxjs "^6.5.4"
+    yargs "^15.1.0"
 
 domexception@^1.0.1:
   version "1.0.1"
@@ -4241,7 +4242,7 @@ yargs@^13.1.0:
     y18n "^4.0.0"
     yargs-parser "^13.1.1"
 
-yargs@^15.0.0:
+yargs@^15.0.0, yargs@^15.1.0:
   version "15.1.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.1.0.tgz#e111381f5830e863a89550bd4b136bb6a5f37219"
   integrity sha512-T39FNN1b6hCW4SOIk1XyTOWxtXdcen0t+XYrysQmChzSipvhBO8Bj0nK1ozAasdk24dNWuMZvr4k24nz+8HHLg==

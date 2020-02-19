@@ -5,7 +5,7 @@
   "scripts": {
     "dev:examples:link": "yarn link dockest",
     "dev:examples:unlink": "yarn unlink dockest",
-    "test:examples": "node_modules/.bin/ts-node ./dockest"
+    "test:examples": "ts-node ./dockest"
   },
   "dependencies": {
     "ioredis": "^4.14.0",
