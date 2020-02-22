@@ -1,6 +1,6 @@
 import http from 'http'
 import fetch from 'node-fetch'
-import { getHostAddress, getServiceAddress } from 'dockest/dist/test-helper'
+import { getHostAddress, getServiceAddress } from 'dockest/test-helper'
 
 const TARGET_HOST = getServiceAddress('aws_codebuild_website', 9000)
 
