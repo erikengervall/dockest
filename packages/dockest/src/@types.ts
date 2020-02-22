@@ -1,6 +1,6 @@
 import { Logger } from './Logger'
-import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
 import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
+import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
 
 type ContainerId = string
 type DefaultHealthcheck = () => Promise<void>
@@ -84,21 +84,16 @@ export interface MutablesConfig {
   dockerEventEmitter: DockerEventEmitter
 }
 
+type Jest = typeof import('jest')
+type JestOpts = Partial<Parameters<Jest['runCLI']>[0]>
+
 export interface DockestOpts {
   composeFile: string | string[]
   logLevel: number
   /** Run dockest sequentially */
   runInBand: boolean
 
-  // FIXME: Proper typings for Jest without introducing circular referencing
-  jestLib: {
-    SearchSource: any
-    TestScheduler: any
-    TestWatcher: any
-    getVersion: () => string
-    run: (maybeArgv?: string[] | undefined, project?: string | undefined) => Promise<any>
-    runCLI: (argv: any, projects: string[]) => Promise<any>
-  }
+  jestLib: Jest
 
   composeOpts: {
     /** Recreate dependent containers. Incompatible with --no-recreate. */
@@ -124,59 +119,7 @@ export interface DockestOpts {
   exitHandler?: null | ((error: ErrorPayload) => any)
 
   /** https://jestjs.io/docs/en/cli */
-  jestOpts: {
-    bail?: boolean
-    cache?: boolean
-    changedFilesWithAncestor?: boolean
-    changedSince?: string
-    ci?: boolean
-    clearCache?: boolean
-    collectCoverageFrom?: string
-    colors?: boolean
-    config?: string
-    coverage?: boolean
-    debug?: boolean
-    detectOpenHandles?: boolean
-    env?: string
-    errorOnDeprecated?: boolean
-    expand?: boolean
-    findRelatedTests?: string
-    forceExit?: boolean
-    help?: boolean
-    init?: boolean
-    json?: boolean
-    lastCommit?: boolean
-    listTests?: boolean
-    logHeapUsage?: boolean
-    maxConcurrency?: number
-    maxWorkers?: number | string
-    noStackTrace?: boolean
-    notify?: boolean
-    onlyChanged?: boolean
-    outputFile?: string
-    passWithNoTests?: boolean
-    projects?: string[]
-    reporters?: boolean
-    runInBand?: boolean
-    runTestsByPath?: boolean
-    setupTestFrameworkScriptFile?: string
-    showConfig?: boolean
-    silent?: boolean
-    testLocationInResults?: boolean
-    testNamePattern?: string
-    testPathIgnorePatterns?: string[]
-    testPathPattern?: string
-    testRunner?: string
-    testSequencer?: string
-    testTimeout?: number
-    updateSnapshot?: boolean
-    useStderr?: boolean
-    verbose?: boolean
-    version?: boolean
-    watch?: boolean
-    watchAll?: boolean
-    watchman?: boolean
-  }
+  jestOpts: JestOpts
 }
 
 interface InternalConfig {
@@ -186,10 +129,7 @@ interface InternalConfig {
 }
 
 export interface DockestConfig extends InternalConfig, DockestOpts {
-  jestOpts: {
-    projects: string[]
-    runInBand: boolean
-  }
+  jestOpts: JestOpts
   mutables: MutablesConfig
 }
 
