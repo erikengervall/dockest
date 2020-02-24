@@ -1,0 +1,6 @@
+{
+  "name": "dockest/test-helper",
+  "private": true,
+  "main": "../dist/test-helper",
+  "typings": "../dist/test-helper/index.d.ts"
+}
