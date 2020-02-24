@@ -16,7 +16,7 @@ export const transformDockestServicesToRunners = ({
   dockerEventEmitter: DockerEventEmitter
 }) => {
   const createRunner = (dockestService: DockestService) => {
-    const { commands = [], dependents = [], healthcheck = () => Promise.resolve(), serviceName } = dockestService
+    const { commands = [], dependents = [], readinessCheck = () => Promise.resolve(), serviceName } = dockestService
 
     const dockerComposeFileService = dockerComposeFile.services[serviceName]
     if (!dockerComposeFileService) {
@@ -30,10 +30,10 @@ export const transformDockestServicesToRunners = ({
       containerId: '',
       dependents: dependents.map(createRunner),
       dockerComposeFileService,
-      healthcheck,
-      logger: new Logger(serviceName),
-      serviceName,
       dockerEventStream$: createDockerServiceEventStream(serviceName, dockerEventEmitter),
+      logger: new Logger(serviceName),
+      readinessCheck,
+      serviceName,
     }
 
     if (isInsideDockerContainer) {

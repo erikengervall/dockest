@@ -3,25 +3,25 @@ import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEve
 import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
 
 type ContainerId = string
-type DefaultHealthcheck = () => Promise<void>
+type DefaultReadinessCheck<T = void> = (arg0: T) => Promise<void>
 type ServiceName = string
 
-export interface DefaultHealthchecks {
-  postgres: DefaultHealthcheck
-  redis: DefaultHealthcheck
-  web: DefaultHealthcheck
+export interface DefaultReadinessChecks {
+  postgres: DefaultReadinessCheck<{ database: string; username: string }>
+  redis: DefaultReadinessCheck
+  web: DefaultReadinessCheck
 }
 
-export interface Healthcheck {
+export interface ReadinessCheck {
   ({
     containerId,
-    defaultHealthchecks,
+    defaultReadinessChecks,
     dockerComposeFileService,
     dockerEventStream$,
     logger,
   }: {
     containerId: ContainerId
-    defaultHealthchecks: DefaultHealthchecks
+    defaultReadinessChecks: DefaultReadinessChecks
     dockerComposeFileService: DockerComposeFileService
     dockerEventStream$: DockerServiceEventStream
     logger: Runner['logger']
@@ -34,8 +34,8 @@ export interface Runner {
   dependents: Runner[]
   dockerComposeFileService: DockerComposeFileService
   dockerEventStream$: DockerServiceEventStream
-  healthcheck: Healthcheck
   logger: Logger
+  readinessCheck: ReadinessCheck
   serviceName: ServiceName
   host?: string
   isBridgeNetworkMode?: boolean
@@ -60,21 +60,13 @@ export interface DockerComposeFile {
   }
 }
 
-export interface DockerComposeFileServicePostgres extends DockerComposeFileService {
-  environment?: {
-    POSTGRES_DB?: string
-    POSTGRES_PASSWORD?: string
-    POSTGRES_USER?: string
-  }
-}
-
 export type Commands = (string | ((containerId: string) => string))[]
 
 export interface DockestService {
   serviceName: ServiceName
   commands?: Commands
   dependents?: DockestService[]
-  healthcheck?: Healthcheck
+  readinessCheck?: ReadinessCheck
 }
 
 export interface MutablesConfig {

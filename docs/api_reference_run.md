@@ -18,7 +18,7 @@ const dockestServices = [
         serviceName: 'service2',
       },
     ],
-    healthcheck: () => Promise.resolve(),
+    readinessCheck: () => Promise.resolve(),
   },
 ]
 
@@ -31,12 +31,12 @@ Dockest services are meant to map to services declared in the Compose file(s)
 
 `DockestService` structure:
 
-| property                                  | type                                               | default                   |
-| ----------------------------------------- | -------------------------------------------------- | ------------------------- |
-| **[name](#dockestservicename)**           | `string`                                           | property is required      |
-| [commands](#dockestservicecommands)       | <code>(string &#124; function)[] => string[]<code> | `[]`                      |
-| [dependents](#dockestservicedependents)   | `DockestService[]`                                 | `[]`                      |
-| [healthcheck](#dockestservicehealthcheck) | `function`                                         | `() => Promise.resolve()` |
+| property                                        | type                                               | default                   |
+| ----------------------------------------------- | -------------------------------------------------- | ------------------------- |
+| **[name](#dockestservicename)**                 | `string`                                           | property is required      |
+| [commands](#dockestservicecommands)             | <code>(string &#124; function)[] => string[]<code> | `[]`                      |
+| [dependents](#dockestservicedependents)         | `DockestService[]`                                 | `[]`                      |
+| [readinessCheck](#dockestservicereadinesscheck) | `function`                                         | `() => Promise.resolve()` |
 
 ### `DockestService.name`
 
@@ -89,35 +89,35 @@ services:
 
 > `depends_on` does not wait for `db` and `redis` to be “ready” before starting `web` - only until they have been started.
 
-### `DockestService.healthcheck`
+### `DockestService.readinessCheck`
 
-The Dockest Service's healthcheck function helps determining a service's health (or "responsiveness") by,
-for example, querying a database using `select 1`. The healthcheck function receive the corresponding Compose service
+The Dockest Service's readinessCheck function helps determining a service's readiness (or "responsiveness") by,
+for example, querying a database using `select 1`. The readinessCheck function receive the corresponding Compose service
 configuration from the Compose file as first argument and the containerId as the second.
 
-The healthcheck takes a single argument in form of an object.
+The readinessCheck takes a single argument in form of an object.
 
 ```ts
 const dockestServices = [
   {
     serviceName: 'service1',
-    healthcheck: async ({
+    readinessCheck: async ({
       containerId,
-      defaultHealthchecks: { postgres, redis, web },
+      defaultReadinessChecks: { postgres, redis, web },
       dockerComposeFileService: { ports },
       logger,
     }) => {
-      // implement your healthcheck...
+      // implement your readinessCheck...
     },
   },
 ]
 ```
 
-`healthcheck` structure:
+`readinessCheck` structure:
 
 | property                 | description                                                                                                                                                                                              |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | containerId              | The Docker [container's id](https://docs.docker.com/engine/reference/run/#container-identification).                                                                                                     |
-| defaultHealthchecks      | Dockest exposes a few default healthchecks that developers can use. These are plug-and-play async functions that will attempt to establish responsiveness towards a service.                             |
+| defaultReadinessChecks   | Dockest exposes a few default readinessChecks that developers can use. These are plug-and-play async functions that will attempt to establish responsiveness towards a service.                          |
 | dockerComposeFileService | This is an object representation of your service's information from the Compose file.                                                                                                                    |
 | logger                   | An instance, specific to this particular Dockest Service (internally known as Runner), of the internal Dockest logger. Using this logger will prettify and contextualize logs with e.g. the serviceName. |

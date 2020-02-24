@@ -4,6 +4,7 @@ const dockest = new Dockest({
   composeFile: 'docker-compose.yml',
   dumpErrors: true,
   exitHandler: errorPayload =>
+    // eslint-disable-next-line no-console
     console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
   jestLib: require('jest'),
   jestOpts: { updateSnapshot: true },
@@ -20,18 +21,36 @@ dockest.run([
       'sequelize db:seed --seed 20190101001337-demo-user',
       containerId => `echo "The container id is ${containerId}"`,
     ],
-    healthcheck: ({ defaultHealthchecks: { postgres } }) => postgres(),
+    readinessCheck: async ({
+      defaultReadinessChecks: { postgres },
+      dockerComposeFileService: {
+        environment: { POSTGRES_DB, POSTGRES_USER },
+      },
+    }) =>
+      postgres({
+        database: POSTGRES_DB,
+        username: POSTGRES_USER,
+      }),
   },
 
   {
     serviceName: 'multiple_resources_postgres2knex',
     commands: ['knex migrate:rollback', 'knex migrate:latest', 'knex seed:run'],
-    healthcheck: ({ defaultHealthchecks: { postgres } }) => postgres(),
+    readinessCheck: async ({
+      defaultReadinessChecks: { postgres },
+      dockerComposeFileService: {
+        environment: { POSTGRES_DB, POSTGRES_USER },
+      },
+    }) =>
+      postgres({
+        database: POSTGRES_DB,
+        username: POSTGRES_USER,
+      }),
   },
 
   {
     serviceName: 'multiple_resources_redis',
-    healthcheck: ({ defaultHealthchecks: { redis } }) => redis(),
+    readinessCheck: ({ defaultReadinessChecks: { redis } }) => redis(),
   },
 
   {
