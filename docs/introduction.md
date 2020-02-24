@@ -45,3 +45,5 @@ Dockest can also build and run application services as part of your integration 
 This is a monorepo using [lerna](https://github.com/lerna/lerna), meaning all scripts can be run from root.
 
 `yarn prep` will executes the necessary scripts to install dependencies for all packages (including root) as well as build whatever needs building.
+
+`yarn dev:link` will link the library source to each example, making developing a smoother experience.
