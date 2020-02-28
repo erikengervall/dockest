@@ -28,10 +28,7 @@ dockest.run([
           // eslint-disable-next-line no-console
           console.log('Arbitrary ReadinessCheck step')
         }),
-        postgres({
-          database: POSTGRES_DB,
-          username: POSTGRES_USER,
-        })),
+        postgres({ POSTGRES_DB, POSTGRES_USER })),
       ]),
   },
 

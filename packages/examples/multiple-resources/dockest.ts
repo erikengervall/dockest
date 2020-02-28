@@ -1,6 +1,6 @@
 import { Dockest, logLevel } from 'dockest'
 
-const dockest = new Dockest({
+const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
   dumpErrors: true,
   exitHandler: errorPayload =>
@@ -11,7 +11,7 @@ const dockest = new Dockest({
   logLevel: logLevel.DEBUG,
 })
 
-dockest.run([
+run([
   {
     serviceName: 'multiple_resources_postgres1sequelize',
     commands: [
@@ -26,11 +26,7 @@ dockest.run([
       dockerComposeFileService: {
         environment: { POSTGRES_DB, POSTGRES_USER },
       },
-    }) =>
-      postgres({
-        database: POSTGRES_DB,
-        username: POSTGRES_USER,
-      }),
+    }) => postgres({ POSTGRES_DB, POSTGRES_USER }),
   },
 
   {
@@ -41,11 +37,7 @@ dockest.run([
       dockerComposeFileService: {
         environment: { POSTGRES_DB, POSTGRES_USER },
       },
-    }) =>
-      postgres({
-        database: POSTGRES_DB,
-        username: POSTGRES_USER,
-      }),
+    }) => postgres({ POSTGRES_DB, POSTGRES_USER }),
   },
 
   {

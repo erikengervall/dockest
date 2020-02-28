@@ -10,13 +10,13 @@ export const createDefaultReadinessChecks = ({
 }: {
   runner: Runner
 }): DefaultReadinessChecks => ({
-  postgres: async ({ database, username }: { database: string; username: string }) => {
+  postgres: async ({ POSTGRES_DB, POSTGRES_USER }: { POSTGRES_DB: string; POSTGRES_USER: string }) => {
     // Ref: http://postgresguide.com/utilities/psql.html
     const command = `docker exec ${containerId} bash -c " \
                         psql \
                         -h localhost \
-                        -d ${database} \
-                        -U ${username} \
+                        -d ${POSTGRES_DB} \
+                        -U ${POSTGRES_USER} \
                         -c 'select 1'"`
 
     await execaWrapper(command, { runner })

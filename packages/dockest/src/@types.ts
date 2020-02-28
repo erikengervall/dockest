@@ -7,7 +7,7 @@ type DefaultReadinessCheck<T = void> = (arg0: T) => Promise<void>
 type ServiceName = string
 
 export interface DefaultReadinessChecks {
-  postgres: DefaultReadinessCheck<{ database: string; username: string }>
+  postgres: DefaultReadinessCheck<{ POSTGRES_DB: string; POSTGRES_USER: string }>
   redis: DefaultReadinessCheck
   web: DefaultReadinessCheck
 }
