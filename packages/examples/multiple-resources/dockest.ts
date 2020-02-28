@@ -1,4 +1,4 @@
-import { Dockest, logLevel } from 'dockest'
+import { Dockest, logLevel, sleepWithLog } from 'dockest'
 
 const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
@@ -7,7 +7,9 @@ const { run } = new Dockest({
     // eslint-disable-next-line no-console
     console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
   jestLib: require('jest'),
-  jestOpts: { updateSnapshot: true },
+  jestOpts: {
+    updateSnapshot: true,
+  },
   logLevel: logLevel.DEBUG,
 })
 
@@ -49,7 +51,9 @@ run([
     serviceName: 'multiple_resources_zookeeper',
     dependents: [
       {
+        // https://github.com/wurstmeister/kafka-docker/issues/167
         serviceName: 'multiple_resources_kafka',
+        readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
       },
     ],
   },
