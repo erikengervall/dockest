@@ -25,7 +25,7 @@ const dockestServices = [
 run(dockestServices)
 ```
 
-## DockestService
+# DockestService
 
 Dockest services are meant to map to services declared in the Compose file(s)
 
@@ -38,17 +38,17 @@ Dockest services are meant to map to services declared in the Compose file(s)
 | [dependents](#dockestservicedependents)         | `DockestService[]`                                 | `[]`                      |
 | [readinessCheck](#dockestservicereadinesscheck) | `function`                                         | `() => Promise.resolve()` |
 
-### `DockestService.name`
+## `DockestService.name`
 
 Service name that matches the corresponding service in your Compose file
 
-### `DockestService.commands`
+## `DockestService.commands`
 
 Bash scripts that will run once the service is ready. E.g. database migrations.
 
 Can either be a string, or a function that generates a string. The function is fed the container id of the service.
 
-### `DockestService.dependents`
+## `DockestService.dependents`
 
 `dependents` are Dockest services that are are dependent on the parent service.
 
@@ -89,7 +89,7 @@ services:
 
 > `depends_on` does not wait for `db` and `redis` to be “ready” before starting `web` - only until they have been started.
 
-### `DockestService.readinessCheck`
+## `DockestService.readinessCheck`
 
 The Dockest Service's readinessCheck function helps determining a service's readiness (or "responsiveness") by,
 for example, querying a database using `select 1`. The readinessCheck function receive the corresponding Compose service
@@ -121,3 +121,94 @@ const dockestServices = [
 | defaultReadinessChecks   | Dockest exposes a few default readinessChecks that developers can use. These are plug-and-play async functions that will attempt to establish responsiveness towards a service.                          |
 | dockerComposeFileService | This is an object representation of your service's information from the Compose file.                                                                                                                    |
 | logger                   | An instance, specific to this particular Dockest Service (internally known as Runner), of the internal Dockest logger. Using this logger will prettify and contextualize logs with e.g. the serviceName. |
+
+### `defaultReadinessChecks`
+
+### `defaultReadinessChecks.postgres`
+
+The default readiness check for PostgreSQL is based on this [image](https://hub.docker.com/_/postgres) which expects certain environment variables.
+
+```yaml
+# docker-compose.yml
+version: '3.7'
+
+services:
+  postgres: # (1)
+    image: postgres:9.6-alpine
+    ports:
+      - published: 5432
+        target: 5432
+    environment: # (2)
+      POSTGRES_DB: baby
+      POSTGRES_USER: dont
+      POSTGRES_PASSWORD: hurtme
+```
+
+```ts
+// dockest.ts
+import { Dockest } from 'dockest'
+
+const { run } = new Dockest()
+
+run([
+  {
+    serviceName: 'postgres', // must match (1)
+    readinessCheck: async ({
+      defaultReadinessChecks: { postgres },
+      dockerComposeFileService: {
+        environment: { POSTGRES_DB, POSTGRES_USER }, // must match (2)
+      },
+    }) => postgres({ POSTGRES_DB, POSTGRES_USER }),
+  },
+])
+```
+
+### `defaultReadinessChecks.redis`
+
+The default readiness check for Redis is based on this [image](https://hub.docker.com/_/postgres) which is plug-and-play.
+
+```yaml
+# docker-compose.yml
+version: '3.7'
+
+services:
+  redis: # (1)
+    image: redis:5.0.3-alpine
+    ports:
+      - published: 6379
+        target: 6379
+```
+
+```ts
+// dockest.ts
+import { Dockest } from 'dockest'
+
+const { run } = new Dockest()
+
+run([
+  {
+    serviceName: 'redis', // must match (1)
+    readinessCheck: ({ defaultReadinessChecks: { redis } }) => redis(),
+  },
+])
+```
+
+### `defaultReadinessChecks.web` [WIP]
+
+Requires [wget](https://www.gnu.org/software/wget/). The image would most likely be a self-built web service.
+
+The exact use case should be fleshed out.
+
+```ts
+// dockest.ts
+import { Dockest } from 'dockest'
+
+const { run } = new Dockest()
+
+run([
+  {
+    serviceName: 'web', // must match (1)
+    readinessCheck: async ({ defaultReadinessChecks: { web } }) => web(),
+  },
+])
+```
