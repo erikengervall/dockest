@@ -31,9 +31,9 @@ export const createDefaultReadinessChecks = ({
     await execaWrapper(command, { runner })
   },
 
-  web: async () => {
+  web: async (port = 3000) => {
     const command = `docker exec ${containerId} \
-                        sh -c "wget --quiet --tries=1 --spider http://localhost:3000/.well-known/healthcheck"`
+                        sh -c "wget --quiet --tries=1 --spider http://localhost:${port}/.well-known/healthcheck"`
 
     await execaWrapper(command, { runner })
   },

@@ -9,7 +9,7 @@ type ServiceName = string
 export interface DefaultReadinessChecks {
   postgres: DefaultReadinessCheck<{ POSTGRES_DB: string; POSTGRES_USER: string }>
   redis: DefaultReadinessCheck
-  web: DefaultReadinessCheck
+  web: DefaultReadinessCheck<number | void>
 }
 
 export interface ReadinessCheck {
@@ -46,8 +46,11 @@ export interface RunnersObj {
 }
 
 export interface DockerComposeFileService {
+  /** Expose ports */
   ports: {
+    /** The publicly exposed port */
     published: number
+    /** The port inside the container */
     target: number
   }[]
   [key: string]: any
