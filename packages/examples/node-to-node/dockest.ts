@@ -15,7 +15,7 @@ run([
       {
         serviceName: 'node_to_node_users',
         commands: ['echo "Hello from users (dependent - should run right after orders) 👋🏽"'],
-        healthcheck: () => sleepWithLog(2, 'Sleepidy sleep'),
+        readinessCheck: () => sleepWithLog(2, 'Sleepidy sleep'),
       },
     ],
   },

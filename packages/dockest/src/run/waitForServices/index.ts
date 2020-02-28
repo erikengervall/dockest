@@ -1,5 +1,5 @@
 import { checkConnection } from './checkConnection'
-import { runHealthcheck } from './runHealthcheck'
+import { runReadinessCheck } from './runReadinessCheck'
 import { dockerComposeUp } from './dockerComposeUp'
 import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
 import { resolveContainerId } from './resolveContainerId'
@@ -47,7 +47,7 @@ export const waitForServices = async ({
     }
 
     await checkConnection({ runner })
-    await runHealthcheck({ runner })
+    await runReadinessCheck({ runner })
     await runRunnerCommands({ runner })
 
     runner.logger.info(`${LOG_PREFIX} Success`, { success: true, endingNewLines: 1 })
