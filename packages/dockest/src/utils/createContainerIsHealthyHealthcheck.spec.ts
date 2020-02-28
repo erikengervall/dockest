@@ -8,7 +8,7 @@ it('fails when the die event is emitted', async done => {
 
   dockerEventsStream$.next({ action: 'kill' })
 
-  await createContainerIsHealthyHealthcheck({ ...runner, defaultHealthchecks: {} as any })
+  await createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
     .then(() => {
       done.fail('Should throw.')
     })
@@ -22,7 +22,7 @@ it('fails when the kill event is emitted', async done => {
   const dockerEventsStream$ = new ReplaySubject()
   dockerEventsStream$.next({ action: 'die' })
   const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any })
-  await createContainerIsHealthyHealthcheck({ ...runner, defaultHealthchecks: {} as any })
+  await createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
     .then(() => {
       done.fail('Should throw.')
     })
@@ -36,7 +36,7 @@ it('succeeds when the health_status event is emitted', async () => {
   const dockerEventStream$ = new ReplaySubject()
   dockerEventStream$.next({ action: 'health_status', attributes: { healthStatus: 'healthy' } })
   const runner = createRunner({ dockerEventStream$: dockerEventStream$ as any })
-  const result = await createContainerIsHealthyHealthcheck({ ...runner, defaultHealthchecks: {} as any })
+  const result = await createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
   expect(result).toEqual(undefined)
 })
 
@@ -46,7 +46,7 @@ it('does not resolve in case a unhealthy event is emitted', async done => {
 
   let healthCheckDidResolve = false
 
-  createContainerIsHealthyHealthcheck({ ...runner, defaultHealthchecks: {} as any })
+  createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
     .then(result => {
       expect(result).toEqual(undefined)
       healthCheckDidResolve = true

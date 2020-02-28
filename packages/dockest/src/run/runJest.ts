@@ -13,7 +13,9 @@ export const runJest = async ({
 }) => {
   Logger.info('DockestServices running, running Jest', { endingNewLines: 1 })
 
-  const { results } = await jestLib.runCLI(jestOpts, projects)
+  // typecasting required due to runCLI's first argument's messy typings: `yargs.Arguments<Partial<{...}>>`
+  const { results } = await jestLib.runCLI(jestOpts as any, projects ?? [])
+
   const { success, numFailedTests, numTotalTests } = results
 
   success

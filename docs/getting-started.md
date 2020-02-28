@@ -13,7 +13,7 @@ yarn add --dev dockest
 # npm install --save-dev dockest
 ```
 
-## Application example
+## Example application
 
 Let's create a small example and see it in action!
 

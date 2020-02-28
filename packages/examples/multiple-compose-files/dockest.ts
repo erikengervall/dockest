@@ -16,13 +16,19 @@ dockest.run([
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
     ],
-    healthcheck: ({ defaultHealthchecks: { postgres } }) =>
+    readinessCheck: async ({
+      defaultReadinessChecks: { postgres },
+      dockerComposeFileService: {
+        environment: { POSTGRES_DB, POSTGRES_USER },
+      },
+    }) =>
       Promise.all([
         (new Promise(resolve => {
           setTimeout(resolve, 50)
-          console.log('Arbitrary healthcheck step')
+          // eslint-disable-next-line no-console
+          console.log('Arbitrary ReadinessCheck step')
         }),
-        postgres()),
+        postgres({ POSTGRES_DB, POSTGRES_USER })),
       ]),
   },
 

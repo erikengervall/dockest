@@ -1,7 +1,7 @@
 import { tap, takeWhile, take, mapTo } from 'rxjs/operators'
-import { Healthcheck } from '../@types'
+import { ReadinessCheck } from '../@types'
 
-export const createContainerIsHealthyHealthcheck: Healthcheck = ({ dockerEventStream$ }) =>
+export const createContainerIsHealthyHealthcheck: ReadinessCheck = ({ dockerEventStream$ }) =>
   dockerEventStream$
     .pipe(
       tap(ev => {
@@ -11,7 +11,7 @@ export const createContainerIsHealthyHealthcheck: Healthcheck = ({ dockerEventSt
       }),
       takeWhile(ev => ev.action === 'health_status' && ev.attributes.healthStatus === 'healthy'),
       mapTo(undefined),
-      // complete stream (promise) after first successfull health_status event was emitted.
+      // complete stream (promise) after first successful health_status event was emitted.
       take(1),
     )
     .toPromise()

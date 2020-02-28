@@ -1,15 +1,15 @@
 import { race, of, from } from 'rxjs'
 import { skipWhile, map, mergeMap, tap, retryWhen, delay, takeWhile } from 'rxjs/operators'
-import { createDefaultHealthchecks } from '../../utils/createDefaultHealthchecks'
+import { createDefaultReadinessChecks } from '../../utils/createDefaultReadinessChecks'
 import { DockestError } from '../../Errors'
 import { Runner } from '../../@types'
 
-const LOG_PREFIX = '[Run Healthcheck]'
+const LOG_PREFIX = '[Run ReadinessCheck]'
 const RETRY_COUNT = 30
 
-export const runHealthcheck = async ({
+export const runReadinessCheck = async ({
   runner,
-  runner: { containerId, dockerComposeFileService, healthcheck, logger, dockerEventStream$ },
+  runner: { containerId, dockerComposeFileService, readinessCheck, logger, dockerEventStream$ },
 }: {
   runner: Runner
 }) =>
@@ -20,13 +20,13 @@ export const runHealthcheck = async ({
         throw new DockestError('Container unexpectedly died.', { event })
       }),
     ),
-    of(healthcheck).pipe(
+    of(readinessCheck).pipe(
       tap(() => logger.debug(`${LOG_PREFIX}`)),
-      mergeMap(healthcheck =>
+      mergeMap(readinessCheck =>
         from(
-          healthcheck({
+          readinessCheck({
             containerId,
-            defaultHealthchecks: createDefaultHealthchecks({ runner }),
+            defaultReadinessChecks: createDefaultReadinessChecks({ runner }),
             dockerComposeFileService,
             logger,
             dockerEventStream$,
