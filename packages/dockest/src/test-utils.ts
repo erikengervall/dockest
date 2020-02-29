@@ -7,10 +7,10 @@ export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   containerId: '',
   dependents: [],
   dockerComposeFileService: { image: 'node:10-alpine', ports: [{ published: 3000, target: 3000 }] },
-  healthcheck: () => Promise.resolve(),
-  logger: new Logger('node'),
-  serviceName: 'node',
   dockerEventStream$: new ReplaySubject(),
+  logger: new Logger('node'),
+  readinessCheck: () => Promise.resolve(),
+  serviceName: 'node',
   ...(overrides || {}),
 })
 

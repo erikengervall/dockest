@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import { waitForServices } from './index'
 import { checkConnection } from './checkConnection'
-import { runHealthcheck } from './runHealthcheck'
+import { runReadinessCheck } from './runReadinessCheck'
 // import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
 import { resolveContainerId } from './resolveContainerId'
 import { runRunnerCommands } from './runRunnerCommands'
@@ -14,7 +14,7 @@ import { createRunner } from '../../test-utils'
 import { getOpts } from '../../utils/getOpts'
 
 jest.mock('./checkConnection')
-jest.mock('./runHealthcheck')
+jest.mock('./runReadinessCheck')
 // jest.mock('./fixRunnerHostAccessOnLinux')
 jest.mock('./resolveContainerId')
 jest.mock('./runRunnerCommands')
@@ -59,8 +59,8 @@ describe('waitForServices', () => {
       expect(checkConnection).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }))
 
-      expect(runHealthcheck).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith({ runner }))
+      expect(runReadinessCheck).toHaveBeenCalledTimes(3)
+      Object.values(runners).forEach(runner => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }))
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }))
@@ -108,8 +108,8 @@ describe('waitForServices', () => {
       expect(checkConnection).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }))
 
-      expect(runHealthcheck).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runHealthcheck).toHaveBeenCalledWith({ runner }))
+      expect(runReadinessCheck).toHaveBeenCalledTimes(3)
+      Object.values(runners).forEach(runner => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }))
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }))

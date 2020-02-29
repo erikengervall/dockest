@@ -1,5 +1,5 @@
 import { ReplaySubject } from 'rxjs'
-import { runHealthcheck } from './runHealthcheck'
+import { runReadinessCheck } from './runReadinessCheck'
 import { createRunner } from '../../test-utils'
 
 // mock delays to tick immediately
@@ -14,7 +14,7 @@ it('fails when the die event is emitted', async done => {
   dockerEventStream$.next({ action: 'die' })
   const runner = createRunner({ dockerEventStream$ } as any)
 
-  return runHealthcheck({ runner })
+  return runReadinessCheck({ runner })
     .then(() => done.fail('Should have thrown an error.'))
     .catch(err => {
       expect(err.message).toMatchInlineSnapshot(`"Container unexpectedly died."`)
@@ -27,7 +27,7 @@ it('fails when the kill event is emitted', async done => {
   dockerEventStream$.next({ action: 'kill' })
   const runner = createRunner({ dockerEventStream$ } as any)
 
-  return runHealthcheck({ runner })
+  return runReadinessCheck({ runner })
     .then(() => done.fail('Should have thrown an error.'))
     .catch(err => {
       expect(err.message).toMatchInlineSnapshot(`"Container unexpectedly died."`)
@@ -35,21 +35,21 @@ it('fails when the kill event is emitted', async done => {
     })
 })
 
-it('fails in case the healthcheck rejects', async done => {
-  const runner = createRunner({ healthcheck: () => Promise.reject('Healthcheck failed.') })
+it('fails in case the readiness rejects', async done => {
+  const runner = createRunner({ readinessCheck: () => Promise.reject('ReadinessCheck failed.') })
 
-  return runHealthcheck({ runner })
+  return runReadinessCheck({ runner })
     .then(() => done.fail('Should have thrown an error.'))
     .catch(err => {
-      expect(err.message).toMatchInlineSnapshot(`"[Run Healthcheck] Timed out"`)
+      expect(err.message).toMatchInlineSnapshot(`"[Run ReadinessCheck] Timed out"`)
       done()
     })
 })
 
-it('succeeds in case the healthcheck succeeds', async () => {
-  const runner = createRunner({ healthcheck: () => Promise.resolve() })
+it('succeeds in case the readinessCheck succeeds', async () => {
+  const runner = createRunner({ readinessCheck: () => Promise.resolve() })
 
-  const result = await runHealthcheck({ runner })
+  const result = await runReadinessCheck({ runner })
 
   expect(result).toEqual(undefined)
 })

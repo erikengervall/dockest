@@ -46,7 +46,6 @@ describe('transformDockestServicesToRunners', () => {
                 "_subscribe": [Function],
               },
             },
-            "healthcheck": [Function],
             "logger": Logger {
               "debug": [Function],
               "error": [Function],
@@ -56,6 +55,7 @@ describe('transformDockestServicesToRunners', () => {
               "setRunnerSymbol": [Function],
               "warn": [Function],
             },
+            "readinessCheck": [Function],
             "serviceName": "service1",
           },
         }
