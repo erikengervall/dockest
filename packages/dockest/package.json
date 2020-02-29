@@ -3,6 +3,7 @@
   "version": "2.0.0-beta.3",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "bin": "dist/bin/index.js",
   "files": [
     "dist/**/*",
     "test-helper/**/*"
@@ -30,22 +31,25 @@
     "prepublishOnly": "yarn build:publish",
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
-    "clean": "node_modules/.bin/rimraf dist",
-    "build": "node_modules/.bin/tsc",
-    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json",
-    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
+    "clean": "rimraf dist",
+    "build": "tsc && yarn build:cli:executable",
+    "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json && yarn build:cli:executable",
+    "build:cli:executable": "chmod +x dist/bin/index.js",
+    "test:unit": "jest . --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "chalk": "^3.0.0",
     "execa": "^4.0.0",
     "is-docker": "^2.0.0",
     "js-yaml": "^3.13.1",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
     "@types/js-yaml": "^3.12.2",
     "@types/node": "^13.5.0",
+    "@types/yargs": "^15.0.3",
     "jest": "^25.1.0",
     "mockdate": "^2.0.5",
     "ts-jest": "^25.0.0",
