@@ -1,5 +1,5 @@
 ---
-id: version-2.0.0-alpha.x-introduction
+id: version-2.0.0-prereleases-introduction
 title: Introduction
 sidebar_label: Introduction
 original_id: introduction

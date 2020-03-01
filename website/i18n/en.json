@@ -69,19 +69,19 @@
         "title": "ZooKeeper",
         "sidebar_label": "ZooKeeper"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-defaults": {
+      "version-2.0.0-prereleases/version-2.0.0-prereleases-defaults": {
         "title": "Defaults",
         "sidebar_label": "Defaults"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-getting-started": {
+      "version-2.0.0-prereleases/version-2.0.0-prereleases-getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-interfaces": {
+      "version-2.0.0-prereleases/version-2.0.0-prereleases-interfaces": {
         "title": "Interfaces",
         "sidebar_label": "Interfaces"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-introduction": {
+      "version-2.0.0-prereleases/version-2.0.0-prereleases-introduction": {
         "title": "Introduction",
         "sidebar_label": "Introduction"
       }
