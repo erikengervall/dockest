@@ -5,21 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [TBD] - yyyy-mm-dd
+## [2.0.0] - 2020-03-01
+
+Other than the changes below, there's everything that has been introduced from the previous pre-releases.
+
+The reasoning for this major release can be read in the [PR](https://github.com/erikengervall/dockest/pull/139#issue-376790491), but also right here:
+
+> I feel that this library has matured into its second major release. The parts I felt uncomfortable with have been removed (e.g. the initial concept of Runners) and the library has evolved into something a lot more user-friendly.
+>
+> It should be major because the interface has completely changed towards the user.
+>
+> It should be bumped at this point in time because the interface has reached a stable state and there has been extensive local testing.
 
 ### Changed
 
 - Renamed healthchecks to readinessChecks to avoid confusion with [Docker's healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck)
 - Improved documentation
 
-## [2.0.0-beta.2] - 2019-02-12
+## [2.0.0-beta.2] - 2020-02-12
 
 ### Changed
 
 - Adopted RxJS to listen in on docker events, greatly improving the responsiveness and sturdiness of all checks [#136](https://github.com/erikengervall/dockest/pull/136)
 - Support function as a command with containerId as argument [#133](https://github.com/erikengervall/dockest/pull/133)
 
-## [2.0.0-beta.1] - 2019-02-01
+## [2.0.0-beta.1] - 2020-02-01
 
 ### Added
 
@@ -31,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump dependencies throughout the repo
 - Internals: Introduce a Mutables field that contains mutable fields, e.g. runners
 
-## [2.0.0-beta.0] - 2019-01-24
+## [2.0.0-beta.0] - 2020-01-24
 
 ### Added
 

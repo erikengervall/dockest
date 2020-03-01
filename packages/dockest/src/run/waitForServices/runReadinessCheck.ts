@@ -21,7 +21,7 @@ export const runReadinessCheck = async ({
       }),
     ),
     of(readinessCheck).pipe(
-      tap(() => logger.debug(`${LOG_PREFIX}`)),
+      tap(() => logger.debug(`${LOG_PREFIX} Starting`)),
       mergeMap(readinessCheck =>
         from(
           readinessCheck({
