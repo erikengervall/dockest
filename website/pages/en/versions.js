@@ -18,8 +18,8 @@ const versions = require(`${CWD}/versions.json`)
 function Versions({ config: siteConfig }) {
   const repoUrl = `https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}`
 
-  const stableReleases = versions.filter(v => !v.includes('alpha') && !v.includes('beta'))
-  const preReleases = versions.filter(v => v.includes('alpha') || v.includes('beta'))
+  const stableReleases = versions.filter(v => /[0-9]\.[0-9]\.[0-9]$/g.test(v))
+  const preReleases = versions.filter(v => !/[0-9]\.[0-9]\.[0-9]$/g.test(v))
 
   return (
     <div className="docMainWrapper wrapper">
@@ -49,16 +49,18 @@ function Versions({ config: siteConfig }) {
           <p>Here you can find the current as well as previous versions of the documentation</p>
           <table className="versions">
             <tbody>
-              {stableReleases.map((stableRelease, i) => (
-                <tr key={stableRelease}>
-                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{stableRelease}</th>
-                  <td>
-                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${stableRelease}/introduction`}>
-                      Documentation
-                    </a>
-                  </td>
-                </tr>
-              ))}
+              {stableReleases
+                .sort((a, b) => a < b)
+                .map((stableRelease, i) => (
+                  <tr key={stableRelease}>
+                    <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{stableRelease}</th>
+                    <td>
+                      <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${stableRelease}/introduction`}>
+                        Documentation
+                      </a>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           <p>
