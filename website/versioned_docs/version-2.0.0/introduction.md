@@ -1,5 +1,5 @@
 ---
-id: version-2.0.0-alpha.x-introduction
+id: version-2.0.0-introduction
 title: Introduction
 sidebar_label: Introduction
 original_id: introduction
@@ -13,7 +13,11 @@ The original motivation for Dockest, along with real world examples, can be read
 
 Dockest provides an abstraction for your Docker services’ lifecycles during integration testing, freeing developers from convoluted and flaky shell scripts. Adopting Dockest is super easy regardless if you’ve got existing tests or not and doesn’t necessarily require additional CI pipeline steps.
 
-## Use cases
+## Why Dockest
+
+The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and responsiveness status of each individual service (either synchronously or asynchronously) and once all services are ready the tests run.
+
+## Example use cases
 
 Dockest can be used in a variety of use cases and situations, some of which can be found under [`packages/examples`](https://github.com/erikengervall/dockest/tree/master/packages/examples).
 
@@ -29,7 +33,7 @@ Cool, can I run it locally?
 
 ### Node.js to Node.js
 
-Dockest can of course also build and run application services as part of your integration tests.
+Dockest can also build and run application services as part of your integration tests.
 
 ## System requirements
 
@@ -46,3 +50,5 @@ In order to run Dockest, there's a few system requirements:
 This is a monorepo using [lerna](https://github.com/lerna/lerna), meaning all scripts can be run from root.
 
 `yarn prep` will executes the necessary scripts to install dependencies for all packages (including root) as well as build whatever needs building.
+
+`yarn dev:link` will link the library source to each example, making developing a smoother experience.

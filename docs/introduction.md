@@ -12,13 +12,9 @@ The original motivation for Dockest, along with real world examples, can be read
 
 Dockest provides an abstraction for your Docker services’ lifecycles during integration testing, freeing developers from convoluted and flaky shell scripts. Adopting Dockest is super easy regardless if you’ve got existing tests or not and doesn’t necessarily require additional CI pipeline steps.
 
-## System requirements
+## Why Dockest
 
-In order to run Dockest, there's a few system requirements:
-
-- Dockest uses Jest's programmatic CLI and requires Jest **v20.0.0** or newer to work
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs."_)
+The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and responsiveness status of each individual service (either synchronously or asynchronously) and once all services are ready the tests run.
 
 ## Example use cases
 
@@ -37,6 +33,14 @@ Cool, can I run it locally?
 ### Node.js to Node.js
 
 Dockest can also build and run application services as part of your integration tests.
+
+## System requirements
+
+In order to run Dockest, there's a few system requirements:
+
+- Dockest uses Jest's programmatic CLI and requires Jest **v20.0.0** or newer to work
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs."_)
 
 ## Contributing
 
