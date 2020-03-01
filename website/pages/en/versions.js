@@ -6,13 +6,10 @@
  */
 
 const React = require('react')
-
 const CompLibrary = require('../../core/CompLibrary')
 
-const Container = CompLibrary.Container
-
 const CWD = process.cwd()
-
+const Container = CompLibrary.Container
 const versions = require(`${CWD}/versions.json`)
 
 function Versions({ config: siteConfig }) {
@@ -68,20 +65,27 @@ function Versions({ config: siteConfig }) {
             <a href={siteConfig.npmUrl}>npm</a>
           </p>
 
-          <h3 id="pre-releases">Pre-releases</h3>
-          <p>Here you can find previous versions of the documentation</p>
-          <table className="versions">
-            <tbody>
-              {preReleases.map((preRelease, i) => (
-                <tr key={preRelease}>
-                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{preRelease}</th>
-                  <td>
-                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${preRelease}/introduction`}>Documentation</a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {preReleases.length > 0 && (
+            <>
+              <h3 id="pre-releases">Pre-releases</h3>
+              <p>Here you can find previous versions of the documentation</p>
+              <table className="versions">
+                <tbody>
+                  {preReleases.map((preRelease, i) => (
+                    <tr key={preRelease}>
+                      <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{preRelease}</th>
+                      <td>
+                        <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${preRelease}/introduction`}>
+                          Documentation
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+
           <p>
             You can find past versions of this project on <a href={repoUrl}>GitHub</a> or{' '}
             <a href={siteConfig.npmUrl}>npm</a>

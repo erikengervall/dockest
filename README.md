@@ -23,11 +23,15 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
   </a>
 <p>
 
-## Why Dockest 
+## Why Dockest
 
 The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and responsiveness status of each individual service (either synchronously or asynchronously) and once all services are ready the tests run.
 
 ## Example
+
+```sh
+yarn add dockest --dev
+```
 
 ```yml
 # docker-compose.yml
