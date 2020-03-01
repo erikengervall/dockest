@@ -69,19 +69,23 @@
         "title": "ZooKeeper",
         "sidebar_label": "ZooKeeper"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-defaults": {
-        "title": "Defaults",
-        "sidebar_label": "Defaults"
+      "version-2.0.0/version-2.0.0-api_reference_dockest_opts": {
+        "title": "DockestOpts",
+        "sidebar_label": "DockestOpts"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-getting-started": {
+      "version-2.0.0/version-2.0.0-api_reference_run": {
+        "title": "Run",
+        "sidebar_label": "Run"
+      },
+      "version-2.0.0/version-2.0.0-api_reference_utils": {
+        "title": "Utils",
+        "sidebar_label": "Utils"
+      },
+      "version-2.0.0/version-2.0.0-getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"
       },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-interfaces": {
-        "title": "Interfaces",
-        "sidebar_label": "Interfaces"
-      },
-      "version-2.0.0-alpha.x/version-2.0.0-alpha.x-introduction": {
+      "version-2.0.0/version-2.0.0-introduction": {
         "title": "Introduction",
         "sidebar_label": "Introduction"
       }

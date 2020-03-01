@@ -54,6 +54,10 @@ it('should cache an arbitrary number', async () => {
 
 The next step is to transform this unit test into an integration test by creating a `docker-compose.yml` and `dockest.ts` file.
 
+> **Important note for the Compose file**
+>
+> Dockest expects services' ports to be defined using [long format](https://docs.docker.com/compose/compose-file/#long-syntax-1) and works best with high versions of docker-compose (i.e. 3.7 or higher)
+
 ```yml
 # docker-compose.yml
 
