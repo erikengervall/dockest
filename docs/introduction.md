@@ -20,7 +20,7 @@ In order to run Dockest, there's a few system requirements:
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs."_)
 
-## Use cases
+## Example use cases
 
 Dockest can be used in a variety of use cases and situations, some of which can be found under [`packages/examples`](https://github.com/erikengervall/dockest/tree/master/packages/examples).
 
