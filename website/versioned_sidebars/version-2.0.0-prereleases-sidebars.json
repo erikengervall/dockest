@@ -1,9 +1,0 @@
-{
-  "version-2.0.0-prereleases-docs": {
-    "Documentation": [
-      "version-2.0.0-prereleases-introduction",
-      "version-2.0.0-prereleases-getting-started",
-      "version-2.0.0-prereleases-interfaces"
-    ]
-  }
-}

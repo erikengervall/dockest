@@ -1,5 +1,5 @@
 ---
-id: version-2.0.0-prereleases-interfaces
+id: version-2.0.0-prereleases.x-interfaces
 title: Interfaces
 sidebar_label: Interfaces
 original_id: interfaces

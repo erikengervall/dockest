@@ -1,5 +1,5 @@
 ---
-id: version-2.0.0-prereleases-defaults
+id: version-2.0.0-prereleases.x-defaults
 title: Defaults
 sidebar_label: Defaults
 original_id: defaults
