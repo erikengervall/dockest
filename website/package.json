@@ -9,7 +9,7 @@
     "rename-version": "docusaurus-rename-version"
   },
   "devDependencies": {
-    "docusaurus": "^2.0.0-alpha.40",
+    "docusaurus": "1.14.4",
     "eslint": "^6.5.1",
     "eslint-plugin-react": "^7.16.0"
   }

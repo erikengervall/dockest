@@ -6,17 +6,20 @@
  */
 
 const React = require('react')
+
 const CompLibrary = require('../../core/CompLibrary')
 
-const CWD = process.cwd()
 const Container = CompLibrary.Container
+
+const CWD = process.cwd()
+
 const versions = require(`${CWD}/versions.json`)
 
 function Versions({ config: siteConfig }) {
   const repoUrl = `https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}`
 
-  const stableReleases = versions.filter(v => /[0-9]\.[0-9]\.[0-9]$/g.test(v))
-  const preReleases = versions.filter(v => !/[0-9]\.[0-9]\.[0-9]$/g.test(v))
+  const stableReleases = versions.filter(v => !v.includes('alpha') && !v.includes('beta'))
+  const preReleases = versions.filter(v => v.includes('alpha') || v.includes('beta'))
 
   return (
     <div className="docMainWrapper wrapper">
@@ -46,18 +49,16 @@ function Versions({ config: siteConfig }) {
           <p>Here you can find the current as well as previous versions of the documentation</p>
           <table className="versions">
             <tbody>
-              {stableReleases
-                .sort((a, b) => a < b)
-                .map((stableRelease, i) => (
-                  <tr key={stableRelease}>
-                    <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{stableRelease}</th>
-                    <td>
-                      <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${stableRelease}/introduction`}>
-                        Documentation
-                      </a>
-                    </td>
-                  </tr>
-                ))}
+              {stableReleases.map((stableRelease, i) => (
+                <tr key={stableRelease}>
+                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{stableRelease}</th>
+                  <td>
+                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${stableRelease}/introduction`}>
+                      Documentation
+                    </a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <p>
@@ -65,27 +66,20 @@ function Versions({ config: siteConfig }) {
             <a href={siteConfig.npmUrl}>npm</a>
           </p>
 
-          {preReleases.length > 0 && (
-            <>
-              <h3 id="pre-releases">Pre-releases</h3>
-              <p>Here you can find previous versions of the documentation</p>
-              <table className="versions">
-                <tbody>
-                  {preReleases.map((preRelease, i) => (
-                    <tr key={preRelease}>
-                      <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{preRelease}</th>
-                      <td>
-                        <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${preRelease}/introduction`}>
-                          Documentation
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </>
-          )}
-
+          <h3 id="pre-releases">Pre-releases</h3>
+          <p>Here you can find previous versions of the documentation</p>
+          <table className="versions">
+            <tbody>
+              {preReleases.map((preRelease, i) => (
+                <tr key={preRelease}>
+                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{preRelease}</th>
+                  <td>
+                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${preRelease}/introduction`}>Documentation</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <p>
             You can find past versions of this project on <a href={repoUrl}>GitHub</a> or{' '}
             <a href={siteConfig.npmUrl}>npm</a>
