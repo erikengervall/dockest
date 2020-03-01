@@ -2199,7 +2199,7 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-docusaurus@1.14.4:
+docusaurus@^1.14.4:
   version "1.14.4"
   resolved "https://artifactory.spotify.net/artifactory/api/npm/virtual-npm/docusaurus/-/docusaurus-1.14.4.tgz#1ef3ebe8c2aaaf1dec6c2e0e177e83be78aeaca3"
   integrity sha1-HvPr6MKqrx3sbC4OF36DvniurKM=
