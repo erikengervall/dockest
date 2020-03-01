@@ -1,7 +1,8 @@
 ---
-id: api_reference_utils
+id: version-2.0.0-api_reference_utils
 title: Utils
 sidebar_label: Utils
+original_id: api_reference_utils
 ---
 
 ## `logLevel` object
