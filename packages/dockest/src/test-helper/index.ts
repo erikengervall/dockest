@@ -2,6 +2,7 @@ import isDocker from 'is-docker' // eslint-disable-line import/default
 import { DockerComposeFile } from '../@types'
 import { DOCKEST_ATTACH_TO_PROCESS, DOCKEST_HOST_ADDRESS, DEFAULT_HOST_NAME } from '../constants'
 import { DockestError } from '../Errors'
+import { selectPortMapping } from '../utils/selectPortMapping'
 
 const isInsideDockerContainer = isDocker()
 const dockestConfig = process.env[DOCKEST_ATTACH_TO_PROCESS]
@@ -26,7 +27,7 @@ export const getServiceAddress = (serviceName: string, targetPort: number | stri
     throw new DockestError(`Service "${serviceName}" does not exist`)
   }
 
-  const portBinding = service.ports.find(portBinding => portBinding.target === targetPort)
+  const portBinding = service.ports.map(selectPortMapping).find(portBinding => portBinding.target === targetPort)
   if (!portBinding) {
     throw new DockestError(`Service "${serviceName}" has no target port ${portBinding}`)
   }

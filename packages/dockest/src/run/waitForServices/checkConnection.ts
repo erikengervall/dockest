@@ -3,6 +3,7 @@ import { race, of, from } from 'rxjs'
 import { concatMap, delay, ignoreElements, map, mergeMap, retryWhen, skipWhile, tap, takeWhile } from 'rxjs/operators'
 import { DockestError } from '../../Errors'
 import { Runner } from '../../@types'
+import { selectPortMapping } from '../../utils/selectPortMapping'
 
 export type AcquireConnectionFunctionType = ({ host, port }: { host: string; port: number }) => Promise<void>
 
@@ -96,7 +97,7 @@ export const createCheckConnection = ({
         throw new DockestError('Container unexpectedly died.', { event })
       }),
     ),
-    of(...ports).pipe(
+    of(...ports.map(selectPortMapping)).pipe(
       // concatMap -> run checks for each port in sequence
       concatMap(({ [portKey]: port }) => checkPortConnection({ runner, host, port, acquireConnection })),
       // we do not care about the single elements, we only want this stream to complete without errors.

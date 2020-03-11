@@ -1,4 +1,5 @@
 import { execaWrapper } from './execaWrapper'
+import { selectPortMapping } from './selectPortMapping'
 import { DefaultReadinessChecks, Runner } from '../@types'
 
 export const createDefaultReadinessChecks = ({
@@ -25,7 +26,7 @@ export const createDefaultReadinessChecks = ({
   redis: async () => {
     const command = `docker exec ${containerId} redis-cli \
                         -h localhost \
-                        -p ${ports[0].target} \
+                        -p ${selectPortMapping(ports[0]).target} \
                         PING`
 
     await execaWrapper(command, { runner })
