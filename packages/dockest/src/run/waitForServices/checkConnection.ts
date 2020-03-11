@@ -84,6 +84,10 @@ export const createCheckConnection = ({
 }) => {
   const host = runnerHost || 'localhost'
   const portKey = isBridgeNetworkMode ? 'target' : 'published'
+  if (!ports || ports.length === 0) {
+    runner.logger.debug(`${LOG_PREFIX} Skip connection check as there are no ports exposed.`)
+    return
+  }
 
   return race(
     dockerEventStream$.pipe(
