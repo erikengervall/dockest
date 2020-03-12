@@ -45,14 +45,19 @@ export interface RunnersObj {
   [key: string]: Runner
 }
 
+export type DockerComposePortStringFormat = string
+export type DockerComposePortObjectFormat = {
+  /** The publicly exposed port */
+  published: number
+  /** The port inside the container */
+  target: number
+}
+
+export type DockerComposePortFormat = DockerComposePortStringFormat | DockerComposePortObjectFormat
+
 export interface DockerComposeFileService {
   /** Expose ports */
-  ports: {
-    /** The publicly exposed port */
-    published: number
-    /** The port inside the container */
-    target: number
-  }[]
+  ports: DockerComposePortFormat[]
   [key: string]: any
 }
 
