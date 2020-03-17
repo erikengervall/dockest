@@ -18,12 +18,14 @@ export const waitForServices = async ({
   isInsideDockerContainer,
   mutables: { runners },
   runInBand,
+  skipCheckConnection,
 }: {
   composeOpts: DockestConfig['composeOpts']
   hostname: DockestConfig['hostname']
   isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
   mutables: DockestConfig['mutables']
   runInBand: DockestConfig['runInBand']
+  skipCheckConnection: DockestConfig['skipCheckConnection']
 }) => {
   const setupPromises = []
 
@@ -46,7 +48,11 @@ export const waitForServices = async ({
       await fixRunnerHostAccessOnLinux(runner)
     }
 
-    await checkConnection({ runner })
+    if (skipCheckConnection) {
+      runner.logger.debug(`${LOG_PREFIX} Skip connection check.`)
+    } else {
+      await checkConnection({ runner })
+    }
     await runReadinessCheck({ runner })
     await runRunnerCommands({ runner })
 
