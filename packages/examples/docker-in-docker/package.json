@@ -1,0 +1,9 @@
+{
+  "name": "@examples/docker-in-docker",
+  "version": "2.0.1",
+  "private": true,
+  "scripts": {
+    "build": "./prepare.sh",
+    "test:examples": "./run.sh"
+  }
+}
