@@ -15,14 +15,14 @@ const LOG_PREFIX = '[Setup]'
 export const waitForServices = async ({
   composeOpts,
   hostname,
-  isInsideDockerContainer,
+  runMode,
   mutables: { runners },
   runInBand,
   skipCheckConnection,
 }: {
   composeOpts: DockestConfig['composeOpts']
   hostname: DockestConfig['hostname']
-  isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  runMode: DockestConfig['runMode']
   mutables: DockestConfig['mutables']
   runInBand: DockestConfig['runInBand']
   skipCheckConnection: DockestConfig['skipCheckConnection']
@@ -63,7 +63,7 @@ export const waitForServices = async ({
     }
   }
 
-  if (isInsideDockerContainer) {
+  if (runMode === 'docker-injected-host-socket') {
     if (!(await bridgeNetworkExists())) {
       await createBridgeNetwork()
     }

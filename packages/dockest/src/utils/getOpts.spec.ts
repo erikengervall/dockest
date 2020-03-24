@@ -24,7 +24,6 @@ describe('getOpts', () => {
         "dumpErrors": false,
         "exitHandler": [Function],
         "hostname": "host.docker.internal",
-        "isInsideDockerContainer": false,
         "jestLib": Object {
           "SearchSource": [Function],
           "TestScheduler": [Function],
@@ -43,6 +42,7 @@ describe('getOpts', () => {
         "mutables": Any<Object>,
         "perfStart": Any<Number>,
         "runInBand": true,
+        "runMode": "host",
         "skipCheckConnection": false,
       }
     `,

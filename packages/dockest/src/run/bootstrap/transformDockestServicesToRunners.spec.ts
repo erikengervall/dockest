@@ -1,9 +1,6 @@
 import { EventEmitter } from 'events'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { DockestService, DockerComposeFile } from '../../@types'
-import { getOpts } from '../../utils/getOpts'
-
-const { isInsideDockerContainer } = getOpts()
 
 const serviceName = 'service1'
 const dockerComposeFile: DockerComposeFile = {
@@ -20,7 +17,7 @@ describe('transformDockestServicesToRunners', () => {
       const runners = transformDockestServicesToRunners({
         dockerComposeFile,
         dockestServices,
-        isInsideDockerContainer,
+        runMode: 'host',
         dockerEventEmitter: new EventEmitter() as any,
       })
 
@@ -72,7 +69,7 @@ describe('transformDockestServicesToRunners', () => {
         transformDockestServicesToRunners({
           dockerComposeFile,
           dockestServices,
-          isInsideDockerContainer,
+          runMode: 'host',
           dockerEventEmitter: new EventEmitter() as any,
         }),
       ).toThrow(

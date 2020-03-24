@@ -8,9 +8,7 @@ export const bridgeNetworkExists = async () => {
                     --filter name=${BRIDGE_NETWORK_NAME} \
                     --quiet`
 
-  const networkExists = await execaWrapper(command)
-    .then(({ stdout }) => stdout.trim())
-    .then(trimmedStdout => !!trimmedStdout)
+  const networkExists = !!execaWrapper(command).stdout.trim()
 
   if (networkExists) {
     Logger.info(`Using existing network "${BRIDGE_NETWORK_NAME}"`)
