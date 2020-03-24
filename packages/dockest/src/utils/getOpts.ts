@@ -57,5 +57,6 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     logLevel,
     perfStart: Date.now(),
     runInBand,
+    skipCheckConnection: false,
   }
 }

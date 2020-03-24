@@ -47,6 +47,7 @@ export class Dockest {
       mutables,
       perfStart,
       runInBand,
+      skipCheckConnection,
     } = this.config
 
     await bootstrap({
@@ -59,7 +60,7 @@ export class Dockest {
       perfStart,
     })
 
-    await waitForServices({ composeOpts, mutables, hostname, isInsideDockerContainer, runInBand })
+    await waitForServices({ composeOpts, mutables, hostname, isInsideDockerContainer, runInBand, skipCheckConnection })
     await debugMode({ debug, mutables })
     const { success } = await runJest({ jestLib, jestOpts, mutables })
     await teardown({ hostname, isInsideDockerContainer, mutables, perfStart })
