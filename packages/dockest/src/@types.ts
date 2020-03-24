@@ -92,6 +92,8 @@ export interface DockestOpts {
   logLevel: number
   /** Run dockest sequentially */
   runInBand: boolean
+  /** Skip port connectivity checks */
+  skipCheckConnection: boolean
 
   jestLib: Jest
 

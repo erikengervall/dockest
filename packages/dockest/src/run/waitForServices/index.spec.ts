@@ -43,6 +43,7 @@ describe('waitForServices', () => {
         isInsideDockerContainer,
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
+        skipCheckConnection: false,
       })
 
       expect(dockerComposeUp).toHaveBeenCalledTimes(3)
@@ -91,6 +92,7 @@ describe('waitForServices', () => {
         isInsideDockerContainer,
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
+        skipCheckConnection: false,
       })
 
       // waitForRunner

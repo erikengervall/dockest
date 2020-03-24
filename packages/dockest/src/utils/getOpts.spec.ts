@@ -43,6 +43,7 @@ describe('getOpts', () => {
         "mutables": Any<Object>,
         "perfStart": Any<Number>,
         "runInBand": true,
+        "skipCheckConnection": false,
       }
     `,
     )
