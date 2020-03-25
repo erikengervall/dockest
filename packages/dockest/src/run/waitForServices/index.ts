@@ -9,6 +9,7 @@ import { DOCKEST_HOST_ADDRESS } from '../../constants'
 import { DockestConfig, Runner } from '../../@types'
 import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork'
 import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists'
+import { LogWriter } from '../log-writer'
 
 const LOG_PREFIX = '[Setup]'
 
@@ -19,6 +20,7 @@ export const waitForServices = async ({
   mutables: { runners },
   runInBand,
   skipCheckConnection,
+  logWriter,
 }: {
   composeOpts: DockestConfig['composeOpts']
   hostname: DockestConfig['hostname']
@@ -26,6 +28,7 @@ export const waitForServices = async ({
   mutables: DockestConfig['mutables']
   runInBand: DockestConfig['runInBand']
   skipCheckConnection: DockestConfig['skipCheckConnection']
+  logWriter: LogWriter
 }) => {
   const setupPromises = []
 
@@ -39,6 +42,8 @@ export const waitForServices = async ({
 
     await dockerComposeUp({ composeOpts, serviceName })
     await resolveContainerId({ runner })
+
+    logWriter.register(runner.serviceName, runner.containerId)
 
     if (isBridgeNetworkMode) {
       await joinBridgeNetwork({ containerId: runner.containerId, alias: serviceName })
