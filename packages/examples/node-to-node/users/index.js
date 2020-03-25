@@ -46,6 +46,16 @@ app.get('/orders/:userId', async (req, res) => {
   return res.status(200).json(response.data)
 })
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`${SERVICE_NAME} listening on port ${PORT}`) // eslint-disable-line no-console
+})
+
+process.on('SIGTERM', () => {
+  server.close(err => {
+    console.log('Shutting down.') // eslint-disable-line no-console
+    if (err) {
+      console.error(err) // eslint-disable-line no-console
+      process.exitCode = 1
+    }
+  })
 })
