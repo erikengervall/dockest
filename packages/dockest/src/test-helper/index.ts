@@ -21,7 +21,7 @@ export const getHostAddress = () => {
   return DOCKEST_HOST_ADDRESS
 }
 
-export const getServiceAddress = (serviceName: string, targetPort: number | string) => {
+export const resolveServiceAddress = (serviceName: string, targetPort: number | string) => {
   const service = config.services[serviceName]
   if (!service) {
     throw new DockestError(`Service "${serviceName}" does not exist`)
@@ -33,8 +33,13 @@ export const getServiceAddress = (serviceName: string, targetPort: number | stri
   }
 
   if (isInsideDockerContainer) {
-    return `${serviceName}:${portBinding.target}`
+    return { host: serviceName, port: portBinding.target }
   }
 
-  return `localhost:${portBinding.published}`
+  return { host: 'localhost', port: portBinding.published }
+}
+
+export const getServiceAddress = (serviceName: string, targetPort: number | string) => {
+  const record = resolveServiceAddress(serviceName, targetPort)
+  return `${record.host}:${record.port}`
 }
