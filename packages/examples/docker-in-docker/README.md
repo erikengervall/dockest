@@ -2,7 +2,7 @@
 
 ## Motivation
 
-This example will run a docker daemon inside a docker container and run jest against it.
+This example will run a docker daemon inside a docker container and run some Dockest tests on containers started with that daemon.
 
 Should you do this? Probably not. You can read more here: https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/
 
