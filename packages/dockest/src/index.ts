@@ -41,7 +41,7 @@ export class Dockest {
       dumpErrors,
       exitHandler,
       hostname,
-      isInsideDockerContainer,
+      runMode,
       jestLib,
       jestOpts,
       mutables,
@@ -55,15 +55,15 @@ export class Dockest {
       dockestServices,
       dumpErrors,
       exitHandler,
-      isInsideDockerContainer,
+      runMode,
       mutables,
       perfStart,
     })
 
-    await waitForServices({ composeOpts, mutables, hostname, isInsideDockerContainer, runInBand, skipCheckConnection })
+    await waitForServices({ composeOpts, mutables, hostname, runMode, runInBand, skipCheckConnection })
     await debugMode({ debug, mutables })
     const { success } = await runJest({ jestLib, jestOpts, mutables })
-    await teardown({ hostname, isInsideDockerContainer, mutables, perfStart })
+    await teardown({ hostname, runMode, mutables, perfStart })
 
     success ? process.exit(0) : process.exit(1)
   }

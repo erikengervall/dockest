@@ -24,7 +24,7 @@ jest.mock('../../utils/sleepWithLog')
 jest.mock('../../utils/network/bridgeNetworkExists')
 jest.mock('../../utils/network/createBridgeNetwork')
 
-const { composeOpts, hostname, isInsideDockerContainer, runInBand } = getOpts()
+const { composeOpts, hostname, runInBand } = getOpts()
 
 describe('waitForServices', () => {
   beforeEach(jest.resetAllMocks)
@@ -40,7 +40,7 @@ describe('waitForServices', () => {
       await waitForServices({
         composeOpts,
         hostname,
-        isInsideDockerContainer,
+        runMode: 'host',
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
         skipCheckConnection: false,
@@ -89,7 +89,7 @@ describe('waitForServices', () => {
       await waitForServices({
         composeOpts,
         hostname,
-        isInsideDockerContainer,
+        runMode: 'host',
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
         skipCheckConnection: false,

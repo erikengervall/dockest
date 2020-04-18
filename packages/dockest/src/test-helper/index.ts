@@ -1,10 +1,18 @@
-import isDocker from 'is-docker' // eslint-disable-line import/default
-import { DockerComposeFile } from '../@types'
+import { DockerComposeFile, TestRunModeType } from '../@types'
 import { DOCKEST_ATTACH_TO_PROCESS, DOCKEST_HOST_ADDRESS, DEFAULT_HOST_NAME } from '../constants'
 import { DockestError } from '../Errors'
 import { selectPortMapping } from '../utils/selectPortMapping'
+import { getRunMode as _getRunMode } from '../utils/getRunMode'
 
-const isInsideDockerContainer = isDocker()
+let runMode: TestRunModeType | null = null
+
+const getRunMode = (): TestRunModeType => {
+  if (!runMode) {
+    runMode = _getRunMode()
+  }
+  return runMode
+}
+
 const dockestConfig = process.env[DOCKEST_ATTACH_TO_PROCESS]
 
 if (!dockestConfig) {
@@ -14,10 +22,9 @@ if (!dockestConfig) {
 const config: DockerComposeFile = JSON.parse(dockestConfig)
 
 export const getHostAddress = () => {
-  if (!isInsideDockerContainer) {
+  if (getRunMode() !== 'docker-injected-host-socket') {
     return DEFAULT_HOST_NAME
   }
-
   return DOCKEST_HOST_ADDRESS
 }
 
@@ -32,7 +39,7 @@ export const resolveServiceAddress = (serviceName: string, targetPort: number | 
     throw new DockestError(`Service "${serviceName}" has no target port ${portBinding}`)
   }
 
-  if (isInsideDockerContainer) {
+  if (getRunMode() === 'docker-injected-host-socket') {
     return { host: serviceName, port: portBinding.target }
   }
 

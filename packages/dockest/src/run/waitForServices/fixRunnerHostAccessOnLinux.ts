@@ -8,9 +8,11 @@ export const fixRunnerHostAccessOnLinux = async ({ containerId, logger }: Runner
                     | awk '{print \\$3\\" ${DEFAULT_HOST_NAME}\\"}' \
                     >> /etc/hosts"`
 
-  await execaWrapper(command).catch(() => {
+  try {
+    execaWrapper(command)
+  } catch (err) {
     logger.debug(
       'Fixing the host container access failed. This could be related to the container having already been stopped',
     )
-  })
+  }
 }

@@ -124,9 +124,11 @@ export interface DockestOpts {
   jestOpts: JestOpts
 }
 
+export type TestRunModeType = 'docker-local-socket' | 'docker-injected-host-socket' | 'host'
+
 interface InternalConfig {
   hostname: string
-  isInsideDockerContainer: boolean
+  runMode: TestRunModeType
   perfStart: number
 }
 

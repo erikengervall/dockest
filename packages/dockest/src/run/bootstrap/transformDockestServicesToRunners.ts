@@ -7,12 +7,12 @@ import { Logger } from '../../Logger'
 export const transformDockestServicesToRunners = ({
   dockerComposeFile,
   dockestServices,
-  isInsideDockerContainer,
+  runMode,
   dockerEventEmitter,
 }: {
   dockerComposeFile: DockerComposeFile
   dockestServices: DockestService[]
-  isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  runMode: DockestConfig['runMode']
   dockerEventEmitter: DockerEventEmitter
 }) => {
   const createRunner = (dockestService: DockestService) => {
@@ -36,9 +36,9 @@ export const transformDockestServicesToRunners = ({
       serviceName,
     }
 
-    if (isInsideDockerContainer) {
+    if (runMode === 'docker-injected-host-socket') {
       runner.host = serviceName
-      runner.isBridgeNetworkMode = isInsideDockerContainer
+      runner.isBridgeNetworkMode = true
     }
 
     return runner

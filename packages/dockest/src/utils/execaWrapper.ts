@@ -10,7 +10,7 @@ interface Opts {
   execaOpts?: SyncOptions<string>
 }
 
-export const execaWrapper = async (
+export const execaWrapper = (
   command: string,
   { runner, logPrefix = '[Shell]', logStdout = false, execaOpts = {} }: Opts = {},
 ) => {

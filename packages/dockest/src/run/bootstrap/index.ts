@@ -12,7 +12,7 @@ export const bootstrap = async ({
   dockestServices,
   dumpErrors,
   exitHandler,
-  isInsideDockerContainer,
+  runMode,
   mutables,
   perfStart,
 }: {
@@ -20,7 +20,7 @@ export const bootstrap = async ({
   dockestServices: DockestService[]
   dumpErrors: DockestConfig['dumpErrors']
   exitHandler: DockestConfig['exitHandler']
-  isInsideDockerContainer: DockestConfig['isInsideDockerContainer']
+  runMode: DockestConfig['runMode']
   mutables: DockestConfig['mutables']
   perfStart: DockestConfig['perfStart']
 }) => {
@@ -34,7 +34,7 @@ export const bootstrap = async ({
   mutables.runners = transformDockestServicesToRunners({
     dockerComposeFile,
     dockestServices,
-    isInsideDockerContainer,
+    runMode,
     dockerEventEmitter,
   })
 

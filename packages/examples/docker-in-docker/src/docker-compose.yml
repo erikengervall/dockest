@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  docker_in_docker_website:
+    build: ./app
+    ports:
+      - published: 9000
+        target: 9000
