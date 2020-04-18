@@ -40,7 +40,7 @@ jobs:
 
   ####### Unit tests
   unit_tests:
-    name: 'Dockest: Unit tests'
+    name: 'Unit tests'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -58,7 +58,7 @@ jobs:
 
   ####### Integration tests
   integration_tests:
-    name: 'Examples: Integration tests'
+    name: 'Integration tests'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
