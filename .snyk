@@ -1,0 +1,48 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - concurrently > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - eslint > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - '@typescript-eslint/parser > @typescript-eslint/typescript-estree > lodash':
+        patched: '2020-05-01T01:33:47.835Z'
+    - eslint > inquirer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - eslint > table > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - prettier-eslint > eslint > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - prettier-eslint > vue-eslint-parser > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - '@typescript-eslint/parser > @typescript-eslint/experimental-utils > @typescript-eslint/typescript-estree > lodash':
+        patched: '2020-05-01T01:33:47.835Z'
+    - prettier-eslint > eslint > table > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - prettier-eslint > eslint > inquirer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/prompt > inquirer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/version > @lerna/conventional-commits > conventional-changelog-core > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/version > @lerna/prompt > inquirer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/version > @lerna/conventional-commits > conventional-changelog-core > conventional-changelog-writer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/version > @lerna/conventional-commits > conventional-changelog-core > conventional-commits-parser > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/version > @lerna/conventional-commits > conventional-recommended-bump > conventional-commits-parser > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/version > @lerna/conventional-commits > conventional-changelog-core > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/npm-publish > @lerna/otplease > @lerna/prompt > inquirer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/version > @lerna/conventional-commits > conventional-changelog-core > conventional-changelog-writer > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/version > @lerna/conventional-commits > conventional-changelog-core > conventional-commits-parser > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
+    - lerna > @lerna/publish > @lerna/version > @lerna/conventional-commits > conventional-recommended-bump > conventional-commits-parser > lodash:
+        patched: '2020-05-01T01:33:47.835Z'
