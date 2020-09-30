@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   node_to_node_orders:

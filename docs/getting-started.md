@@ -61,7 +61,7 @@ The next step is to transform this unit test into an integration test by creatin
 ```yml
 # docker-compose.yml
 
-version: '3.7'
+version: '3.8'
 
 services:
   myRedis:

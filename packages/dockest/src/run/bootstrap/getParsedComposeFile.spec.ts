@@ -19,7 +19,7 @@ describe('getParsedComposeFile', () => {
               ],
             },
           },
-          "version": "3.7",
+          "version": "3.8",
         }
       `)
     })

@@ -16,7 +16,7 @@ describe('mergeComposeFiles', () => {
             image: redis:5.0.3-alpine
             ports:
             - 6379:6379/tcp
-        version: '3.7'
+        version: '3.8'
         "
       `)
     })
@@ -41,7 +41,7 @@ describe('mergeComposeFiles', () => {
     image: redis:5.0.3-alpine
     ports:
     - 6379:6379/tcp
-version: '3.7'
+version: '3.8'
 "
 `)
     })

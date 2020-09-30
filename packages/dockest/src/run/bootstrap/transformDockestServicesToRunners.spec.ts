@@ -4,7 +4,7 @@ import { DockestService, DockerComposeFile } from '../../@types'
 
 const serviceName = 'service1'
 const dockerComposeFile: DockerComposeFile = {
-  version: '3.7',
+  version: '3.8',
   services: {
     [serviceName]: { ports: [{ published: 3000, target: 3000 }] },
   },
