@@ -15,8 +15,7 @@ describe('mergeComposeFiles', () => {
           redis:
             image: redis:5.0.3-alpine
             ports:
-            - published: 6379
-              target: 6379
+            - 6379:6379/tcp
         version: '3.7'
         "
       `)
@@ -29,24 +28,22 @@ describe('mergeComposeFiles', () => {
       })
 
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
-        "services:
-          postgres:
-            environment:
-              POSTGRES_DB: nobueno
-              POSTGRES_PASSWORD: is
-              POSTGRES_USER: ramda
-            image: postgres:9.6-alpine
-            ports:
-            - published: 5433
-              target: 5432
-          redis:
-            image: redis:5.0.3-alpine
-            ports:
-            - published: 6379
-              target: 6379
-        version: '3.7'
-        "
-      `)
+"services:
+  postgres:
+    environment:
+      POSTGRES_DB: nobueno
+      POSTGRES_PASSWORD: is
+      POSTGRES_USER: ramda
+    image: postgres:9.6-alpine
+    ports:
+    - 5433:5432/tcp
+  redis:
+    image: redis:5.0.3-alpine
+    ports:
+    - 6379:6379/tcp
+version: '3.7'
+"
+`)
     })
   })
 
