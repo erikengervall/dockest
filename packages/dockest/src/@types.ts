@@ -2,6 +2,7 @@ import { Observable } from 'rxjs'
 import { Logger } from './Logger'
 import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
 import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
+import { LogWriterModeType } from './run/log-writer'
 
 type ContainerId = string
 type ServiceName = string
@@ -78,6 +79,17 @@ export interface DockestOpts {
   skipCheckConnection: boolean
 
   jestLib: Jest
+
+  containerLogs: {
+    /** Method for gathering logs
+     * "per-service": One log file per service
+     * "aggregate": One log file for all services
+     * "pipe-stdout": Pipe logs to stdout
+     */
+    modes: LogWriterModeType[]
+    /** Only collect logs for the specified services. */
+    serviceNameFilter: string[]
+  }
 
   composeOpts: {
     /** Recreate dependent containers. Incompatible with --no-recreate. */

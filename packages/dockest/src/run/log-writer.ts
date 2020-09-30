@@ -16,11 +16,11 @@ export type LogWriter = {
 export const createLogWriter = ({
   mode,
   logPath,
-  serviceNameFilter: filter,
+  serviceNameFilter = [],
 }: {
   mode: LogWriterModeType[]
   logPath: string
-  serviceNameFilter?: string
+  serviceNameFilter?: string[]
 }) => {
   const writeStreamMap = new Map<string | symbol, WriteStream>()
 
@@ -47,14 +47,11 @@ export const createLogWriter = ({
   }
 
   const getWriteStream = (serviceName: string) => {
-    if (mode.includes('aggregate')) {
-      return getDefaultWriteStream()
-    }
     return createOrGetFileStream(serviceName)
   }
 
   const register = (serviceName: string, containerId: string) => {
-    if (filter && filter.includes(serviceName) === false) {
+    if (serviceNameFilter.includes(serviceName) === false) {
       Logger.debug(`Skip log collection for service ${serviceName} with containerId: ${containerId}.`)
       return
     }
@@ -69,14 +66,21 @@ export const createLogWriter = ({
       '--no-color',
       serviceName,
     ])
+
     if (!logCollectionProcess.stdout) {
       throw new DockestError('Process has no stdout.')
     }
-    const writeStream = getWriteStream(serviceName)
     if (mode.includes('pipe-stdout')) {
       logCollectionProcess.stdout.pipe(process.stdout)
     }
-    logCollectionProcess.stdout.pipe(writeStream)
+    if (mode.includes('per-service')) {
+      const writeStream = getWriteStream(serviceName)
+      logCollectionProcess.stdout.pipe(writeStream)
+    }
+    if (mode.includes('aggregate')) {
+      const writeStream = getDefaultWriteStream()
+      logCollectionProcess.stdout.pipe(writeStream)
+    }
 
     // execa returns a lazy promise.
     logCollectionProcess.then(() => undefined)
