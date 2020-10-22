@@ -28,80 +28,13 @@
       "introduction": {
         "title": "Introduction",
         "sidebar_label": "Introduction"
-      },
-      "version-1.0.4/version-1.0.4-connectivity": {
-        "title": "Connectivity",
-        "sidebar_label": "Connectivity"
-      },
-      "version-1.0.4/version-1.0.4-dockest_constructor": {
-        "title": "Dockest constructor",
-        "sidebar_label": "Dockest constructor"
-      },
-      "version-1.0.4/version-1.0.4-example": {
-        "title": "Example",
-        "sidebar_label": "Example"
-      },
-      "version-1.0.4/version-1.0.4-introduction": {
-        "title": "Introduction",
-        "sidebar_label": "Introduction"
-      },
-      "version-1.0.4/version-1.0.4-jest": {
-        "title": "Jest",
-        "sidebar_label": "Jest"
-      },
-      "version-1.0.4/version-1.0.4-req": {
-        "title": "Req",
-        "sidebar_label": "Req"
-      },
-      "version-1.0.4/version-1.0.4-responsiveness": {
-        "title": "Responsiveness",
-        "sidebar_label": "Responsiveness"
-      },
-      "version-1.0.4/version-1.0.4-runner_kafka": {
-        "title": "Kafka",
-        "sidebar_label": "Kafka"
-      },
-      "version-1.0.4/version-1.0.4-runner_postgres": {
-        "title": "Postgres",
-        "sidebar_label": "Postgres"
-      },
-      "version-1.0.4/version-1.0.4-runner_redis": {
-        "title": "Redis",
-        "sidebar_label": "Redis"
-      },
-      "version-1.0.4/version-1.0.4-runner_zookeeper": {
-        "title": "ZooKeeper",
-        "sidebar_label": "ZooKeeper"
-      },
-      "version-2.0.0/version-2.0.0-api_reference_dockest_opts": {
-        "title": "DockestOpts",
-        "sidebar_label": "DockestOpts"
-      },
-      "version-2.0.0/version-2.0.0-api_reference_run": {
-        "title": "Run",
-        "sidebar_label": "Run"
-      },
-      "version-2.0.0/version-2.0.0-api_reference_utils": {
-        "title": "Utils",
-        "sidebar_label": "Utils"
-      },
-      "version-2.0.0/version-2.0.0-getting-started": {
-        "title": "Getting Started",
-        "sidebar_label": "Getting Started"
-      },
-      "version-2.0.0/version-2.0.0-introduction": {
-        "title": "Introduction",
-        "sidebar_label": "Introduction"
       }
     },
     "links": {
       "Docs": "Docs"
     },
     "categories": {
-      "Documentation": "Documentation",
-      "Getting started": "Getting started",
-      "Interfaces": "Interfaces",
-      "Healthchecks": "Healthchecks"
+      "Documentation": "Documentation"
     }
   },
   "pages-strings": {
