@@ -87,12 +87,13 @@ services:
     image: postgres
 ```
 
-> `depends_on` does not wait for `db` and `redis` to be “ready” before starting `web` - only until they have been started.
+> `depends_on` does not wait for `db` and `redis` to be “ready” before starting `web` - only until they have been
+> started.
 
 ## `DockestService.readinessCheck`
 
-The Dockest Service's readinessCheck function helps determining a service's readiness (or "responsiveness") by,
-for example, querying a database using `select 1`. The readinessCheck function receive the corresponding Compose service
+The Dockest Service's readinessCheck function helps determining a service's readiness (or "responsiveness") by, for
+example, querying a database using `select 1`. The readinessCheck function receive the corresponding Compose service
 configuration from the Compose file as first argument and the containerId as the second.
 
 The readinessCheck takes a single argument in form of an object.
@@ -126,7 +127,8 @@ const dockestServices = [
 
 ### `defaultReadinessChecks.postgres`
 
-The default readiness check for PostgreSQL is based on this [image](https://hub.docker.com/_/postgres) which expects certain environment variables.
+The default readiness check for PostgreSQL is based on this [image](https://hub.docker.com/_/postgres) which expects
+certain environment variables.
 
 ```yaml
 # docker-compose.yml
@@ -165,7 +167,8 @@ run([
 
 ### `defaultReadinessChecks.redis`
 
-The default readiness check for Redis is based on this [image](https://hub.docker.com/_/postgres) which is plug-and-play.
+The default readiness check for Redis is based on this [image](https://hub.docker.com/_/postgres) which is
+plug-and-play.
 
 ```yaml
 # docker-compose.yml
