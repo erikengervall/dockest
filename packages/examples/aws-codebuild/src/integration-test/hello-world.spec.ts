@@ -1,10 +1,9 @@
 import http from 'http'
 import fetch from 'node-fetch'
+import getGlobalThis from 'globalthis'
 import { getHostAddress, getServiceAddress } from 'dockest/test-helper'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-global.globalThis = global // https://github.com/jsdom/jsdom/issues/2795#issuecomment-711453386
+const globalThis = getGlobalThis()
 
 const TARGET_HOST = getServiceAddress('aws_codebuild_website', 9000)
 
@@ -16,7 +15,7 @@ let server: http.Server
 
 afterEach(async () => {
   if (server) {
-    await new Promise((resolve, reject) => {
+    await new globalThis.Promise((resolve, reject) => {
       server.close(err => {
         if (err) {
           reject(err)
@@ -29,7 +28,7 @@ afterEach(async () => {
 })
 
 test('can send a request to the container and it can send a request to us', async done => {
-  await new Promise(resolve => {
+  await new globalThis.Promise(resolve => {
     server = http
       .createServer((_req, res) => {
         res.write('Hello World!')

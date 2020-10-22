@@ -3,6 +3,7 @@
 const bodyParser = require('body-parser')
 const app = require('express')()
 const fetch = require('node-fetch')
+const globalThis = require('globalthis')()
 
 app.use(bodyParser.text())
 
@@ -11,7 +12,7 @@ app.post('/', (req, res) => {
 
   res.status(200).send('OK.')
 
-  setTimeout(() => {
+  globalThis.setTimeout(() => {
     fetch(url)
   }, 2000)
 })
