@@ -44,6 +44,9 @@
     "js-yaml": "^3.13.1",
     "rxjs": "^6.5.4"
   },
+  "peerDependencies": {
+    "jest": ">= 20.0.0"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "@types/js-yaml": "^3.12.5",
