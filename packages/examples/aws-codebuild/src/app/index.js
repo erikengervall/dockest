@@ -11,7 +11,7 @@ app.post('/', (req, res) => {
 
   res.status(200).send('OK.')
 
-  setTimeout(() => {
+  global.setTimeout(() => {
     fetch(url)
   }, 2000)
 })
