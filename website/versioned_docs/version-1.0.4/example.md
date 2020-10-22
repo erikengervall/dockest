@@ -28,8 +28,8 @@ module.exports = {
     "test": "ts-node ./dockest.ts"
   },
   "devDependencies": {
-    "ts-jest": "^23.10.5",
-    "ts-node": "^8.0.2"
+    "ts-jest": "^26.4.1",
+    "ts-node": "^9.0.0"
   }
 }
 ```
