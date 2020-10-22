@@ -4,7 +4,13 @@ name: Node.js CI
 # tags   refs/tags/v0.0.1
 # master refs/heads/master
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   ####### Print: Prints some context relating to the job to make future debugging easier
@@ -97,7 +103,7 @@ jobs:
           if [ ${IS_ALPHA} = true ]; then export NPM_TAG="--tag alpha"; fi
           if [ ${IS_BETA} = true ]; then export NPM_TAG="--tag beta"; fi
           cd packages/dockest
-          yarn
+          yarn install
           yarn publish ${NPM_TAG}
 
   ####### Deploy website
@@ -123,5 +129,5 @@ jobs:
           git config --global user.email "${GH_EMAIL}"
           echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
           cd website
-          yarn
+          yarn install
           yarn publish-gh-pages

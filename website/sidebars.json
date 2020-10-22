@@ -7,7 +7,8 @@
         "type": "subcategory",
         "label": "API Reference",
         "ids": ["api_reference_dockest_opts", "api_reference_run", "api_reference_utils"]
-      }
+      },
+      "development"
     ]
   }
 }
