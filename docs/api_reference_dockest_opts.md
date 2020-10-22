@@ -59,15 +59,18 @@ Serializes errors and dumps them in `dockest-error.json`. Useful for debugging.
 
 ### `DockestOpts.exitHandler`
 
-Callback that will run before exit. Received one argument of type { type: string, code?: number, signal?: any, error?: Error, reason?: any, p?: any }
+Callback that will run before exit. Received one argument of type { type: string, code?: number, signal?: any, error?:
+Error, reason?: any, p?: any }
 
 ### `DockestOpts.jestLib`
 
-The Jest library itself, typically passed as `{ lib: require('jest') }`. If omitted, Dockest will attempt to require Jest from your application's dependencies. If absent, Dockest will use it's own version.
+The Jest library itself, typically passed as `{ lib: require('jest') }`. If omitted, Dockest will attempt to require
+Jest from your application's dependencies. If absent, Dockest will use it's own version.
 
 ### `DockestOpts.jestOpts`
 
-Jest's CLI options, an exhaustive list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html) documentation
+Jest's CLI options, an exhaustive list of CLI-options can be found in [Jest's](https://jestjs.io/docs/en/cli.html)
+documentation
 
 ### `DockestOpts.logLevel`
 
@@ -77,4 +80,5 @@ Decides how much logging will occur. Each level represents a number ranging from
 
 Initializes and runs the Runners in sequence. Disabling this could increase performance
 
-_Note: Jest runs tests in parallel per default, which is why Dockest defaults `runInBand` to `true`. This will cause jest to run sequentially in order to avoid race conditions for I/O operations. This may lead to longer runtimes._
+_Note: Jest runs tests in parallel per default, which is why Dockest defaults `runInBand` to `true`. This will cause
+jest to run sequentially in order to avoid race conditions for I/O operations. This may lead to longer runtimes._
