@@ -11,6 +11,7 @@ const CompLibrary = require('../../core/CompLibrary')
 
 const Container = CompLibrary.Container
 
+// eslint-disable-next-line no-undef
 const CWD = process.cwd()
 
 const versions = require(`${CWD}/versions.json`)
