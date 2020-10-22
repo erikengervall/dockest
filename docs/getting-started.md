@@ -6,7 +6,8 @@ sidebar_label: Getting Started
 
 ## Install
 
-Install Dockest using [`yarn`](https://yarnpkg.com/en/package/jest) or [`npm`](https://www.npmjs.com/) (we'll be using `yarn` for the rest of the documentation):
+Install Dockest using [`yarn`](https://yarnpkg.com/en/package/jest) or [`npm`](https://www.npmjs.com/) (we'll be using
+`yarn` for the rest of the documentation):
 
 ```bash
 yarn add --dev dockest
@@ -52,11 +53,14 @@ it('should cache an arbitrary number', async () => {
 
 ### Configure Dockest
 
-The next step is to transform this unit test into an integration test by creating a `docker-compose.yml` and `dockest.ts` file.
+The next step is to transform this unit test into an integration test by creating a `docker-compose.yml` and
+`dockest.ts` file.
 
 > **Important note for the Compose file**
 >
-> Dockest expects services' ports to be defined using [long format](https://docs.docker.com/compose/compose-file/#long-syntax-1) and works best with high versions of docker-compose (i.e. 3.7 or higher)
+> Dockest expects services' ports to be defined using
+> [long format](https://docs.docker.com/compose/compose-file/#long-syntax-1) and works best with high versions of
+> docker-compose (i.e. 3.7 or higher)
 
 ```yml
 # docker-compose.yml
@@ -90,7 +94,8 @@ dockest.run(dockestServices)
 
 ### Configure scripts
 
-Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https://www.npmjs.com/package/ts-node) is a practical library for running your tests without adding a compilation step.
+Configure your `package.json`'s test script. For TypeScript, [`ts-node`](https://www.npmjs.com/package/ts-node) is a
+practical library for running your tests without adding a compilation step.
 
 ```json
 {

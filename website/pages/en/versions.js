@@ -11,6 +11,7 @@ const CompLibrary = require('../../core/CompLibrary')
 
 const Container = CompLibrary.Container
 
+// eslint-disable-next-line no-undef
 const CWD = process.cwd()
 
 const versions = require(`${CWD}/versions.json`)
@@ -51,9 +52,13 @@ function Versions({ config: siteConfig }) {
             <tbody>
               {stableReleases.map((stableRelease, i) => (
                 <tr key={stableRelease}>
-                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{stableRelease}</th>
+                  <th style={{ fontWeight: 'bold' }}>{stableRelease}</th>
                   <td>
-                    <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${stableRelease}/introduction`}>
+                    <a
+                      href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
+                        i === 0 ? '' : `${stableRelease}/`
+                      }introduction`}
+                    >
                       Documentation
                     </a>
                   </td>
@@ -70,9 +75,9 @@ function Versions({ config: siteConfig }) {
           <p>Here you can find previous versions of the documentation</p>
           <table className="versions">
             <tbody>
-              {preReleases.map((preRelease, i) => (
+              {preReleases.map(preRelease => (
                 <tr key={preRelease}>
-                  <th style={{ fontWeight: i === 0 ? 'bold' : 'normal' }}>{preRelease}</th>
+                  <th style={{ fontWeight: 'bold' }}>{preRelease}</th>
                   <td>
                     <a href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${preRelease}/introduction`}>Documentation</a>
                   </td>
