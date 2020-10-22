@@ -6,19 +6,25 @@ sidebar_label: Introduction
 
 ## Motivation
 
-The original motivation for Dockest, along with real world examples, can be read in this [blog article](https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163).
+The original motivation for Dockest, along with real world examples, can be read in this
+[blog article](https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163).
 
 > Dockest was born out of frustration and with a vision to make developers’ lives slightly less miserable.
 
-Dockest provides an abstraction for your Docker services’ lifecycles during integration testing, freeing developers from convoluted and flaky shell scripts. Adopting Dockest is super easy regardless if you’ve got existing tests or not and doesn’t necessarily require additional CI pipeline steps.
+Dockest provides an abstraction for your Docker services’ lifecycles during integration testing, freeing developers from
+convoluted and flaky shell scripts. Adopting Dockest is super easy regardless if you’ve got existing tests or not and
+doesn’t necessarily require additional CI pipeline steps.
 
 ## Why Dockest
 
-The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and responsiveness status of each individual service (either synchronously or asynchronously) and once all services are ready the tests run.
+The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and
+responsiveness status of each individual service (either synchronously or asynchronously) and once all services are
+ready the tests run.
 
 ## Example use cases
 
-Dockest can be used in a variety of use cases and situations, some of which can be found under [`packages/examples`](https://github.com/erikengervall/dockest/tree/master/packages/examples).
+Dockest can be used in a variety of use cases and situations, some of which can be found under
+[`packages/examples`](https://github.com/erikengervall/dockest/tree/master/packages/examples).
 
 ### AWS CodeBuild
 
@@ -40,7 +46,8 @@ In order to run Dockest, there's a few system requirements:
 
 - Dockest uses Jest's programmatic CLI and requires Jest **v20.0.0** or newer to work
 - [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs."_)
+- [Docker Compose](https://docs.docker.com/compose/install/) (_"On desktop systems like Docker Desktop for Mac and
+  Windows, Docker Compose is included as part of those desktop installs."_)
 
 ## Contributing
 
@@ -48,6 +55,7 @@ In order to run Dockest, there's a few system requirements:
 
 This is a monorepo using [lerna](https://github.com/lerna/lerna), meaning all scripts can be run from root.
 
-`yarn prep` will executes the necessary scripts to install dependencies for all packages (including root) as well as build whatever needs building.
+`yarn prep` will executes the necessary scripts to install dependencies for all packages (including root) as well as
+build whatever needs building.
 
 `yarn dev:link` will link the library source to each example, making developing a smoother experience.

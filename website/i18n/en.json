@@ -17,6 +17,10 @@
         "title": "Utils",
         "sidebar_label": "Utils"
       },
+      "development": {
+        "title": "Development",
+        "sidebar_label": "Development"
+      },
       "getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"

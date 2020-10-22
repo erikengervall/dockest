@@ -2,8 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.1.0] - 2020-10-22
+
+### Added
+
+- Added dependencies `io-ts` and `fp-ts`
+
+### Fixed
+
+- docker-compose file decoding [#184](https://github.com/erikengervall/dockest/pull/184)
 
 ## [2.0.2] - 2020-04-18
 
@@ -17,34 +27,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Automatically transform legacy port mappings to the new format [#154](https://github.com/erikengervall/dockest/pull/154)
+- Automatically transform legacy port mappings to the new format
+  [#154](https://github.com/erikengervall/dockest/pull/154)
 
 ### Changed
 
-- If no ports are provided for a service, the checkConnection step is skipped (a log message will however appear) [#154](https://github.com/erikengervall/dockest/pull/154)
+- If no ports are provided for a service, the checkConnection step is skipped (a log message will however appear)
+  [#154](https://github.com/erikengervall/dockest/pull/154)
 
 ## [2.0.0] - 2020-03-01
 
 Other than the changes below, there's everything that has been introduced from the previous pre-releases.
 
-The reasoning for this major release can be read in the [PR](https://github.com/erikengervall/dockest/pull/139#issue-376790491), but also right here:
+The reasoning for this major release can be read in the
+[PR](https://github.com/erikengervall/dockest/pull/139#issue-376790491), but also right here:
 
-> I feel that this library has matured into its second major release. The parts I felt uncomfortable with have been removed (e.g. the initial concept of Runners) and the library has evolved into something a lot more user-friendly.
+> I feel that this library has matured into its second major release. The parts I felt uncomfortable with have been
+> removed (e.g. the initial concept of Runners) and the library has evolved into something a lot more user-friendly.
 >
 > It should be major because the interface has completely changed towards the user.
 >
-> It should be bumped at this point in time because the interface has reached a stable state and there has been extensive local testing.
+> It should be bumped at this point in time because the interface has reached a stable state and there has been
+> extensive local testing.
 
 ### Changed
 
-- Renamed healthchecks to readinessChecks to avoid confusion with [Docker's healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck)
+- Renamed healthchecks to readinessChecks to avoid confusion with
+  [Docker's healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck)
 - Improved documentation
 
 ## [2.0.0-beta.2] - 2020-02-12
 
 ### Changed
 
-- Adopted RxJS to listen in on docker events, greatly improving the responsiveness and sturdiness of all checks [#136](https://github.com/erikengervall/dockest/pull/136)
+- Adopted RxJS to listen in on docker events, greatly improving the responsiveness and sturdiness of all checks
+  [#136](https://github.com/erikengervall/dockest/pull/136)
 - Support function as a command with containerId as argument [#133](https://github.com/erikengervall/dockest/pull/133)
 
 ## [2.0.0-beta.1] - 2020-02-01
@@ -63,12 +80,16 @@ The reasoning for this major release can be read in the [PR](https://github.com/
 
 ### Added
 
-- Added the option to pass `dependent` Dockest Services to Dockest Services. Essentially creating a more robust `depends_on`
-- Added Dockest options for forwarding compose CLI options for `docker-compose <opts> up`. E.g. `--build` or `--force-recreate`
+- Added the option to pass `dependent` Dockest Services to Dockest Services. Essentially creating a more robust
+  `depends_on`
+- Added Dockest options for forwarding compose CLI options for `docker-compose <opts> up`. E.g. `--build` or
+  `--force-recreate`
 
 ### Changed
 
-- Changed Dockest Services `healthchecks` prop to a `healthcheck` prop. Instead of passing an array of functions, simply implement a single healthcheck function that'll be called recursively until successful or times out. The `healthcheck` function is also fed default healthcheck functions.
+- Changed Dockest Services `healthchecks` prop to a `healthcheck` prop. Instead of passing an array of functions, simply
+  implement a single healthcheck function that'll be called recursively until successful or times out. The `healthcheck`
+  function is also fed default healthcheck functions.
 - Made documentation more verbose and descriptive
 
 ## [2.0.0-alpha.3] - 2019-12-18
@@ -149,4 +170,5 @@ The reasoning for this major release can be read in the [PR](https://github.com/
 - Improved logging structure
 - Improved test coverage
 - Added `typedoc` for automatic documentation generation
-- Migrated from `docker-compose run` to `docker-compose up` due to limitation in network accessibility between services (I'm looking at you Kafka & ZooKeeper)
+- Migrated from `docker-compose run` to `docker-compose up` due to limitation in network accessibility between services
+  (I'm looking at you Kafka & ZooKeeper)
