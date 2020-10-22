@@ -2,6 +2,10 @@ import http from 'http'
 import fetch from 'node-fetch'
 import { getHostAddress, getServiceAddress } from 'dockest/test-helper'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+global.globalThis = global // https://github.com/jsdom/jsdom/issues/2795#issuecomment-711453386
+
 const TARGET_HOST = getServiceAddress('aws_codebuild_website', 9000)
 
 // hostname is either our docker container hostname or if not run inside a docker container the docker host

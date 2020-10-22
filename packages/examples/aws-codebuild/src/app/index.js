@@ -4,8 +4,6 @@ const bodyParser = require('body-parser')
 const app = require('express')()
 const fetch = require('node-fetch')
 
-global.globalThis = global
-
 app.use(bodyParser.text())
 
 app.post('/', (req, res) => {
