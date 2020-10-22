@@ -74,7 +74,7 @@ will ensure that `service1` starts up and is fully responsive before even attemp
 [Docker's docs](https://docs.docker.com/compose/compose-file/#depends_on) explains this very neatly:
 
 ```yaml
-version: '3.7'
+version: '3.8'
 services:
   web:
     build: .
@@ -130,7 +130,7 @@ The default readiness check for PostgreSQL is based on this [image](https://hub.
 
 ```yaml
 # docker-compose.yml
-version: '3.7'
+version: '3.8'
 
 services:
   postgres: # (1)
@@ -169,7 +169,7 @@ The default readiness check for Redis is based on this [image](https://hub.docke
 
 ```yaml
 # docker-compose.yml
-version: '3.7'
+version: '3.8'
 
 services:
   redis: # (1)

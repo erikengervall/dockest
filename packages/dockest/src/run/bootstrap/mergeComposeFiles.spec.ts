@@ -15,9 +15,10 @@ describe('mergeComposeFiles', () => {
           redis:
             image: redis:5.0.3-alpine
             ports:
-            - published: 6379
+            - protocol: tcp
+              published: 6379
               target: 6379
-        version: '3.7'
+        version: '3.8'
         "
       `)
     })
@@ -37,14 +38,16 @@ describe('mergeComposeFiles', () => {
               POSTGRES_USER: ramda
             image: postgres:9.6-alpine
             ports:
-            - published: 5433
+            - protocol: tcp
+              published: 5433
               target: 5432
           redis:
             image: redis:5.0.3-alpine
             ports:
-            - published: 6379
+            - protocol: tcp
+              published: 6379
               target: 6379
-        version: '3.7'
+        version: '3.8'
         "
       `)
     })

@@ -19,7 +19,7 @@ export const DOCKEST_SERVICE: DockestService = {
 }
 
 export const DOCKER_COMPOSE_FILE: DockerComposeFile = {
-  version: '3.7',
+  version: '3.8',
   services: {
     [DOCKEST_SERVICE.serviceName]: {
       image: 'redis:5.0.3-alpine',
@@ -40,5 +40,5 @@ services:
     ports:
     - published: 6379
       target: 6379
-version: '3.7'
+version: '3.8'
 `
