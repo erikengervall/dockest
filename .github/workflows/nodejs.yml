@@ -80,6 +80,30 @@ jobs:
       - run: yarn prep
       - run: yarn test:examples --concurrency 2
 
+  ####### Publish next to npm
+  npm_publish_next:
+    name: Publish next to npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [lint, unit_tests, integration_tests]
+    if: startsWith(github.ref, 'refs/heads/master')
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: https://registry.npmjs.org/
+      - name: yarn publish next
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          yarn install
+          node pipeline/updateNextVersion.js
+          cd packages/dockest
+          yarn install
+          yarn publish --tag next
+
   ####### Publish to npm
   npm_publish:
     name: Publish to npm
