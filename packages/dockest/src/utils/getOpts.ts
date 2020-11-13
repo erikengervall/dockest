@@ -23,6 +23,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     jestOpts,
     jestOpts: { projects = ['.'], runInBand: runInBandJest = true } = {},
     logLevel = LOG_LEVEL.INFO,
+    readinessRetryCount = 30,
     runInBand = true,
   } = opts
 
@@ -55,6 +56,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
       ...jestOpts,
     },
     logLevel,
+    readinessRetryCount,
     perfStart: Date.now(),
     runInBand,
     skipCheckConnection: false,

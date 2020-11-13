@@ -90,6 +90,7 @@ type JestOpts = Partial<Parameters<Jest['runCLI']>[0]>
 export interface DockestOpts {
   composeFile: string | string[]
   logLevel: number
+  readinessRetryCount: number
   /** Run dockest sequentially */
   runInBand: boolean
   /** Skip port connectivity checks */

@@ -42,6 +42,7 @@ describe('waitForServices', () => {
         hostname,
         runMode: 'host',
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
+        readinessRetryCount: 30,
         runInBand,
         skipCheckConnection: false,
       })
@@ -61,7 +62,9 @@ describe('waitForServices', () => {
       Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }))
 
       expect(runReadinessCheck).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }))
+      Object.values(runners).forEach(runner =>
+        expect(runReadinessCheck).toHaveBeenCalledWith({ runner, readinessRetryCount: 30 }),
+      )
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }))
@@ -91,6 +94,7 @@ describe('waitForServices', () => {
         hostname,
         runMode: 'host',
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
+        readinessRetryCount: 30,
         runInBand,
         skipCheckConnection: false,
       })
@@ -111,7 +115,9 @@ describe('waitForServices', () => {
       Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }))
 
       expect(runReadinessCheck).toHaveBeenCalledTimes(3)
-      Object.values(runners).forEach(runner => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }))
+      Object.values(runners).forEach(runner =>
+        expect(runReadinessCheck).toHaveBeenCalledWith({ runner, readinessRetryCount: 30 }),
+      )
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3)
       Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }))
