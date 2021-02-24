@@ -25,7 +25,7 @@ describe('getOpts', () => {
           "modes": Array [
             "aggregate",
           ],
-          "serviceNameFilter": Array [],
+          "serviceNameFilter": undefined,
         },
         "debug": false,
         "dumpErrors": false,

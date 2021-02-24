@@ -88,7 +88,7 @@ export interface DockestOpts {
      */
     modes: LogWriterModeType[]
     /** Only collect logs for the specified services. */
-    serviceNameFilter: string[]
+    serviceNameFilter?: string[]
     /** Where should the logs be written to? Defaults to "./" */
     logPath: string
   }
