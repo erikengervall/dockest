@@ -51,7 +51,7 @@ const PortBindingFromComposeFile = new io.Type(
   identity,
 )
 
-const DockerComposeService = io.type({
+const DockerComposeService = io.partial({
   ports: io.array(PortBindingFromComposeFile),
 })
 
