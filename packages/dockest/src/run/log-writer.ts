@@ -20,7 +20,7 @@ export const createLogWriter = ({
 }: {
   mode: LogWriterModeType[]
   logPath: string
-  serviceNameFilter: string[]
+  serviceNameFilter?: string[]
 }) => {
   const writeStreamMap = new Map<string | symbol, WriteStream>()
 
@@ -51,7 +51,7 @@ export const createLogWriter = ({
   }
 
   const register = (serviceName: string, containerId: string) => {
-    if (serviceNameFilter.includes(serviceName) === false) {
+    if (serviceNameFilter && serviceNameFilter.includes(serviceName) === false) {
       Logger.debug(`Skip log collection for service ${serviceName} with containerId: ${containerId}.`)
       return
     }
