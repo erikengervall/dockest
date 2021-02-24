@@ -16,11 +16,11 @@ export type LogWriter = {
 export const createLogWriter = ({
   mode,
   logPath,
-  serviceNameFilter = [],
+  serviceNameFilter,
 }: {
   mode: LogWriterModeType[]
   logPath: string
-  serviceNameFilter?: string[]
+  serviceNameFilter: string[]
 }) => {
   const writeStreamMap = new Map<string | symbol, WriteStream>()
 

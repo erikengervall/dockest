@@ -36,9 +36,9 @@ export class Dockest {
     this.config.perfStart = Date.now()
 
     const logWriter = createLogWriter({
-      mode: ['aggregate', 'per-service'],
+      mode: this.config.containerLogs.modes,
       serviceNameFilter: this.config.containerLogs.serviceNameFilter,
-      logPath: './',
+      logPath: this.config.containerLogs.logPath,
     })
 
     const {
