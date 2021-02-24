@@ -17,7 +17,6 @@ describe('postgres-1-sequelize', () => {
 
   it('should be able to execute custom shell scripts', async () => {
     await execa('sequelize db:seed:undo:all')
-
     const { firstEntry } = await app()
 
     expect(firstEntry).toEqual(null)
