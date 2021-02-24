@@ -51,15 +51,15 @@ services:
 
 import { Dockest, logLevel } from 'dockest'
 
-const dockest = new Dockest()
-
-const dockestServices = [
+const runners = [
   {
     serviceName: 'myRedis', // Match with configuration in docker-compose.yml
   },
 ]
 
-dockest.run(dockestServices)
+const dockest = new Dockest({ runners })
+
+dockest.run()
 ```
 
 ## Documentation
