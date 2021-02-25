@@ -92,6 +92,30 @@
       "version-2.0.0/version-2.0.0-introduction": {
         "title": "Introduction",
         "sidebar_label": "Introduction"
+      },
+      "version-3.0.0/version-3.0.0-api_reference_dockest_opts": {
+        "title": "DockestOpts",
+        "sidebar_label": "DockestOpts"
+      },
+      "version-3.0.0/version-3.0.0-api_reference_readiness_check": {
+        "title": "ReadinessCheck",
+        "sidebar_label": "ReadinessCheck"
+      },
+      "version-3.0.0/version-3.0.0-api_reference_run": {
+        "title": "Run",
+        "sidebar_label": "Run"
+      },
+      "version-3.0.0/version-3.0.0-api_reference_utils": {
+        "title": "Utils",
+        "sidebar_label": "Utils"
+      },
+      "version-3.0.0/version-3.0.0-getting-started": {
+        "title": "Getting Started",
+        "sidebar_label": "Getting Started"
+      },
+      "version-3.0.0/version-3.0.0-introduction": {
+        "title": "Introduction",
+        "sidebar_label": "Introduction"
       }
     },
     "links": {
