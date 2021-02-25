@@ -1,10 +1,15 @@
 import { race, of, from } from 'rxjs'
-import { skipWhile, map, mergeMap, tap, retryWhen, delay, takeWhile } from 'rxjs/operators'
+import { map, mergeMap, tap, retryWhen, delay, takeWhile, filter } from 'rxjs/operators'
 import { createDefaultReadinessChecks } from '../../utils/createDefaultReadinessChecks'
 import { DockestError } from '../../Errors'
 import { Runner, DockestConfig } from '../../@types'
+import { DockerEventType } from '../bootstrap/createDockerEventEmitter'
 
 const LOG_PREFIX = '[Run ReadinessCheck]'
+
+const isNonZeroExitCodeDieEvent = (event: DockerEventType) =>
+  event.action === 'die' && event.attributes.exitCode !== '0'
+const isKillEvent = (event: DockerEventType) => event.action === 'kill'
 
 export const runReadinessCheck = async ({
   runner,
@@ -16,7 +21,7 @@ export const runReadinessCheck = async ({
 }) =>
   race(
     dockerEventStream$.pipe(
-      skipWhile(ev => ev.action !== 'die' && ev.action !== 'kill'),
+      filter(ev => ev.service === runner.serviceName && (isNonZeroExitCodeDieEvent(ev) || isKillEvent(ev))),
       map(event => {
         throw new DockestError('Container unexpectedly died.', { event })
       }),

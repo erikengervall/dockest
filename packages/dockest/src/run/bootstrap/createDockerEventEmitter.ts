@@ -29,7 +29,12 @@ export type HealthStatusDockerComposeEvent = DockerComposeEventInterface<
   { healthStatus: 'healthy' | 'unhealthy' }
 >
 export type KillDockerComposeEvent = DockerComposeEventInterface<'kill'>
-export type DieDockerComposeEvent = DockerComposeEventInterface<'die'>
+export type DieDockerComposeEvent = DockerComposeEventInterface<
+  'die',
+  {
+    exitCode: string
+  }
+>
 
 export type DockerEventType =
   | CreateDockerComposeEvent
