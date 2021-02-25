@@ -17,7 +17,7 @@ dockest.run([
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
     ],
-    readinessCheck: createPostgresReadinessCheck(runner => runner.dockerComposeFileService.environment),
+    readinessCheck: createPostgresReadinessCheck(),
   },
 
   {

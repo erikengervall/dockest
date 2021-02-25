@@ -19,12 +19,9 @@ const redisReadinessCheck = (portConfig: PortConfig): ReadinessCheck => async ar
   await execaWrapper(command, { runner: args.runner })
 }
 
-export const createRedisReadinessCheck = (
-  portConfig: PortConfig = defaultPortConfig,
-  retryCount = 30,
-): ReadinessCheck =>
+export const createRedisReadinessCheck = (args?: { port?: PortConfig; retryCount?: number }): ReadinessCheck =>
   withNoStop(
-    withRetry(redisReadinessCheck(portConfig), {
-      retryCount,
+    withRetry(redisReadinessCheck(args?.port ?? defaultPortConfig), {
+      retryCount: args?.retryCount ?? 30,
     }),
   )

@@ -24,13 +24,13 @@ run([
       'sequelize db:seed --seed 20190101001337-demo-user',
       containerId => `echo "The container id is ${containerId}"`,
     ],
-    readinessCheck: createPostgresReadinessCheck(runner => runner.dockerComposeFileService.environment),
+    readinessCheck: createPostgresReadinessCheck(),
   },
 
   {
     serviceName: 'multiple_resources_postgres2knex',
     commands: ['knex migrate:rollback', 'knex migrate:latest', 'knex seed:run'],
-    readinessCheck: createPostgresReadinessCheck(runner => runner.dockerComposeFileService.environment),
+    readinessCheck: createPostgresReadinessCheck(),
   },
 
   {
