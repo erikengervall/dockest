@@ -9,10 +9,10 @@ jest.mock('rxjs/operators', () => {
   return operators
 })
 
-it('fails when the die event is emitted', async done => {
+it('fails when the die event is emitted with a non zero exit code', async done => {
   const dockerEventStream$ = new ReplaySubject()
-  dockerEventStream$.next({ action: 'die' })
   const runner = createRunner({ dockerEventStream$ } as any)
+  dockerEventStream$.next({ service: runner.serviceName, action: 'die', attributes: { exitCode: '1' } })
 
   return runReadinessCheck({ runner, readinessRetryCount: 30 })
     .then(() => done.fail('Should have thrown an error.'))
@@ -22,10 +22,28 @@ it('fails when the die event is emitted', async done => {
     })
 })
 
+it('does not fail if the die event is emitted with a zero exit code', async done => {
+  const dockerEventStream$ = new ReplaySubject()
+  const runner = createRunner({
+    dockerEventStream$,
+    readinessCheck: () => Promise.resolve(),
+  } as any)
+  dockerEventStream$.next({ service: runner.serviceName, action: 'die', attributes: { exitCode: '0' } })
+
+  return runReadinessCheck({
+    runner,
+    readinessRetryCount: 30,
+  })
+    .then(() => done())
+    .catch(err => {
+      done.fail(err)
+    })
+})
+
 it('fails when the kill event is emitted', async done => {
   const dockerEventStream$ = new ReplaySubject()
-  dockerEventStream$.next({ action: 'kill' })
   const runner = createRunner({ dockerEventStream$ } as any)
+  dockerEventStream$.next({ service: runner.serviceName, action: 'kill' })
 
   return runReadinessCheck({ runner, readinessRetryCount: 30 })
     .then(() => done.fail('Should have thrown an error.'))
