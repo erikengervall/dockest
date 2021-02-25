@@ -46,7 +46,6 @@ export class Dockest {
       jestOpts,
       mutables,
       perfStart,
-      readinessRetryCount,
       runInBand,
       skipCheckConnection,
     } = this.config
@@ -66,7 +65,6 @@ export class Dockest {
       mutables,
       hostname,
       runMode,
-      readinessRetryCount,
       runInBand,
       skipCheckConnection,
     })

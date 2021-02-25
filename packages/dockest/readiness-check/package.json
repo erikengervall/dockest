@@ -1,0 +1,6 @@
+{
+  "name": "dockest/readiness-check",
+  "private": true,
+  "main": "../dist/readiness-check",
+  "typings": "../dist/readiness-check/index.d.ts"
+}

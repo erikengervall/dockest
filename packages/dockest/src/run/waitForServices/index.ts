@@ -17,7 +17,6 @@ export const waitForServices = async ({
   hostname,
   runMode,
   mutables: { runners },
-  readinessRetryCount,
   runInBand,
   skipCheckConnection,
 }: {
@@ -25,7 +24,6 @@ export const waitForServices = async ({
   hostname: DockestConfig['hostname']
   runMode: DockestConfig['runMode']
   mutables: DockestConfig['mutables']
-  readinessRetryCount: DockestConfig['readinessRetryCount']
   runInBand: DockestConfig['runInBand']
   skipCheckConnection: DockestConfig['skipCheckConnection']
 }) => {
@@ -55,7 +53,7 @@ export const waitForServices = async ({
     } else {
       await checkConnection({ runner })
     }
-    await runReadinessCheck({ runner, readinessRetryCount })
+    await runReadinessCheck({ runner })
     await runRunnerCommands({ runner })
 
     runner.logger.info(`${LOG_PREFIX} Success`, { success: true, endingNewLines: 1 })

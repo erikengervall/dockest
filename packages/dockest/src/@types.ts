@@ -1,31 +1,13 @@
+import { Observable } from 'rxjs'
 import { Logger } from './Logger'
 import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
 import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
 
 type ContainerId = string
-type DefaultReadinessCheck<T = void> = (arg0: T) => Promise<void>
 type ServiceName = string
 
-export interface DefaultReadinessChecks {
-  postgres: DefaultReadinessCheck<{ POSTGRES_DB: string; POSTGRES_USER: string }>
-  redis: DefaultReadinessCheck
-  web: DefaultReadinessCheck<number | void>
-}
-
 export interface ReadinessCheck {
-  ({
-    containerId,
-    defaultReadinessChecks,
-    dockerComposeFileService,
-    dockerEventStream$,
-    logger,
-  }: {
-    containerId: ContainerId
-    defaultReadinessChecks: DefaultReadinessChecks
-    dockerComposeFileService: DockerComposeFileService
-    dockerEventStream$: DockerServiceEventStream
-    logger: Runner['logger']
-  }): Promise<any>
+  (args: { runner: Runner }): Promise<any> | Observable<any>
 }
 
 export interface Runner {
@@ -90,7 +72,6 @@ type JestOpts = Partial<Parameters<Jest['runCLI']>[0]>
 export interface DockestOpts {
   composeFile: string | string[]
   logLevel: number
-  readinessRetryCount: number
   /** Run dockest sequentially */
   runInBand: boolean
   /** Skip port connectivity checks */
