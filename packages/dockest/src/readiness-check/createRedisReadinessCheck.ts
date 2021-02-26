@@ -7,7 +7,10 @@ import { selectPortMapping } from '../utils/selectPortMapping'
 type PortConfig = number | ((runner: Runner) => MaybePromise<number>)
 type MaybePromise<T> = T | Promise<T>
 
-const defaultPortConfig: PortConfig = runner => selectPortMapping(runner.dockerComposeFileService.ports[0]).target
+const defaultPortConfig: PortConfig = runner =>
+  runner.dockerComposeFileService?.ports?.[0]
+    ? selectPortMapping(runner.dockerComposeFileService.ports[0]).target
+    : 6379
 
 const redisReadinessCheck = (portConfig: PortConfig): ReadinessCheck => async args => {
   const port = await (typeof portConfig === 'function' ? portConfig(args.runner) : portConfig)
