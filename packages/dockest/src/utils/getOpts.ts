@@ -47,6 +47,8 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
       jestRanWithResult: false,
       runners: {},
       dockerEventEmitter: new EventEmitter() as any,
+      teardownOrder: null,
+      runnerLookupMap: new Map(),
     },
     hostname: process.env.HOSTNAME || DEFAULT_HOST_NAME,
     runMode: getRunMode(),

@@ -14,7 +14,7 @@ const dockestServices = [
   {
     serviceName: 'service1',
     commands: ['echo "Hello name1 🌊"'],
-    dependents: [
+    dependsOn: [
       {
         serviceName: 'service2',
       },
@@ -36,7 +36,7 @@ Dockest services are meant to map to services declared in the Compose file(s)
 | ----------------------------------------------- | -------------------------------------------------- | ------------------------- |
 | **[name](#dockestservicename)**                 | `string`                                           | property is required      |
 | [commands](#dockestservicecommands)             | <code>(string &#124; function)[] => string[]<code> | `[]`                      |
-| [dependents](#dockestservicedependents)         | `DockestService[]`                                 | `[]`                      |
+| [dependsOn](#dockestservicedependson)           | `DockestService[]`                                 | `[]`                      |
 | [readinessCheck](#dockestservicereadinesscheck) | `function`                                         | `() => Promise.resolve()` |
 
 ## `DockestService.name`
@@ -49,9 +49,9 @@ Bash scripts that will run once the service is ready. E.g. database migrations.
 
 Can either be a string, or a function that generates a string. The function is fed the container id of the service.
 
-## `DockestService.dependents`
+## `DockestService.dependsOn`
 
-`dependents` are Dockest services that are are dependent on the parent service.
+With the `dependsOn` options you specify other services this service relies on.
 
 For example, the following code
 
@@ -59,7 +59,7 @@ For example, the following code
 const dockestServices = [
   {
     serviceName: 'service1',
-    dependents: [
+    dependsOn: [
       {
         serviceName: 'service2',
       },
@@ -68,7 +68,7 @@ const dockestServices = [
 ]
 ```
 
-will ensure that `service1` starts up and is fully responsive before even attempting to start `service2`.
+will ensure that `service2` starts up and is fully responsive before even attempting to start `service1`.
 
 > Why not rely on the Docker File service configuration options `depends_on`?
 
