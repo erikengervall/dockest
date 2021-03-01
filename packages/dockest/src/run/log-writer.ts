@@ -1,5 +1,4 @@
 import { createWriteStream, WriteStream } from 'fs'
-import { once } from 'events'
 import { join } from 'path'
 import execa from 'execa' /* eslint-disable-line import/default */
 import { DockestError } from '../Errors'
@@ -94,7 +93,6 @@ export const createLogWriter = ({
   const destroy = async () => {
     for (const stream of writeStreamMap.values()) {
       stream.end()
-      await once(stream, 'finish')
     }
   }
 
