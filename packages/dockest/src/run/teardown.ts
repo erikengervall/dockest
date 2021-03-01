@@ -1,3 +1,4 @@
+import { LogWriter } from './log-writer'
 import { DockestConfig } from '../@types'
 import { leaveBridgeNetwork } from '../utils/network/leaveBridgeNetwork'
 import { Logger } from '../Logger'
@@ -9,11 +10,13 @@ export const teardown = async ({
   runMode,
   mutables: { runners, dockerEventEmitter },
   perfStart,
+  logWriter,
 }: {
   hostname: DockestConfig['hostname']
   runMode: DockestConfig['runMode']
   mutables: DockestConfig['mutables']
   perfStart: DockestConfig['perfStart']
+  logWriter: LogWriter
 }) => {
   for (const runner of Object.values(runners)) {
     await teardownSingle({ runner })
@@ -25,6 +28,7 @@ export const teardown = async ({
   }
 
   dockerEventEmitter.destroy()
+  await logWriter.destroy()
 
   Logger.measurePerformance(perfStart)
 }

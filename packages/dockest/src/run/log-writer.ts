@@ -1,4 +1,5 @@
 import { createWriteStream, WriteStream } from 'fs'
+import { once } from 'events'
 import { join } from 'path'
 import execa from 'execa' /* eslint-disable-line import/default */
 import { DockestError } from '../Errors'
@@ -11,6 +12,7 @@ const DEFAULT_LOG_SYMBOL = Symbol('DEFAULT_LOG')
 
 export type LogWriter = {
   register: (serviceName: string, containerId: string) => void
+  destroy: () => Promise<void>
 }
 
 export const createLogWriter = ({
@@ -42,6 +44,9 @@ export const createLogWriter = ({
     if (!stream) {
       stream = createWriteStream(join(logPath, `${serviceName}.dockest.log`))
       writeStreamMap.set(serviceName, stream)
+      stream.on('error', error => {
+        throw new DockestError('Unexpected error thrown for stream\n\n.' + String(error), { error })
+      })
     }
     return stream
   }
@@ -71,22 +76,30 @@ export const createLogWriter = ({
       throw new DockestError('Process has no stdout.')
     }
     if (mode.includes('pipe-stdout')) {
-      logCollectionProcess.stdout.pipe(process.stdout)
+      logCollectionProcess.stdout.pipe(process.stdout, { end: false })
     }
     if (mode.includes('per-service')) {
       const writeStream = getWriteStream(serviceName)
-      logCollectionProcess.stdout.pipe(writeStream)
+      logCollectionProcess.stdout.pipe(writeStream, { end: false })
     }
     if (mode.includes('aggregate')) {
       const writeStream = getDefaultWriteStream()
-      logCollectionProcess.stdout.pipe(writeStream)
+      logCollectionProcess.stdout.pipe(writeStream, { end: false })
     }
 
     // execa returns a lazy promise.
     logCollectionProcess.then(() => undefined)
   }
 
+  const destroy = async () => {
+    for (const stream of writeStreamMap.values()) {
+      stream.end()
+      await once(stream, 'finish')
+    }
+  }
+
   return {
     register,
+    destroy,
   }
 }

@@ -29,6 +29,7 @@ const { composeOpts, hostname, runInBand } = getOpts()
 
 const mockLogWriter = {
   register: () => undefined,
+  destroy: () => Promise.resolve(),
 } as LogWriter
 
 describe('waitForServices', () => {

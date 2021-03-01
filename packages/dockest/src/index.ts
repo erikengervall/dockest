@@ -78,7 +78,7 @@ export class Dockest {
     })
     await debugMode({ debug, mutables })
     const { success } = await runJest({ jestLib, jestOpts, mutables })
-    await teardown({ hostname, runMode, mutables, perfStart })
+    await teardown({ hostname, runMode, mutables, perfStart, logWriter })
 
     success ? process.exit(0) : process.exit(1)
   }
