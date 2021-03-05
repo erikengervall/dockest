@@ -1,4 +1,5 @@
 import { Dockest, logLevel } from 'dockest'
+import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check'
 
 const dockest = new Dockest({
   composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
@@ -16,23 +17,11 @@ dockest.run([
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
     ],
-    readinessCheck: async ({
-      defaultReadinessChecks: { postgres },
-      dockerComposeFileService: {
-        environment: { POSTGRES_DB, POSTGRES_USER },
-      },
-    }) =>
-      Promise.all([
-        (new Promise(resolve => {
-          setTimeout(resolve, 50)
-          // eslint-disable-next-line no-console
-          console.log('Arbitrary ReadinessCheck step')
-        }),
-        postgres({ POSTGRES_DB, POSTGRES_USER })),
-      ]),
+    readinessCheck: createPostgresReadinessCheck(),
   },
 
   {
     serviceName: 'multiple_compose_files_redis',
+    readinessCheck: createRedisReadinessCheck(),
   },
 ])

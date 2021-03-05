@@ -7,7 +7,7 @@ ENV DOCKER_BUILD_X_VERSION="0.4.2"
 
 RUN apt-get update \
     && apt-get install -y python3 curl bash apt-transport-https ca-certificates software-properties-common gnupg2 jq \
-    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && curl https://bootstrap.pypa.io/3.5/get-pip.py -o get-pip.py \
     && python3 get-pip.py \
     && rm get-pip.py \
     && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \

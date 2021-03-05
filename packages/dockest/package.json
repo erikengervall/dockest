@@ -5,7 +5,8 @@
   "module": "dist/index.js",
   "files": [
     "dist/**/*",
-    "test-helper/**/*"
+    "test-helper/**/*",
+    "readiness-check/**/*"
   ],
   "description": "Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.",
   "keywords": [

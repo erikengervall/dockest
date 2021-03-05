@@ -13,7 +13,7 @@ export { execaWrapper as execa } from './utils/execaWrapper'
 export { LOG_LEVEL as logLevel } from './constants'
 export { sleep } from './utils/sleep'
 export { sleepWithLog } from './utils/sleepWithLog'
-// export { createContainerIsHealthyHealthcheck } from './utils/createContainerIsHealthyHealthcheck'
+export { DockestService } from './@types'
 
 export class Dockest {
   private config: DockestConfig
@@ -46,7 +46,6 @@ export class Dockest {
       jestOpts,
       mutables,
       perfStart,
-      readinessRetryCount,
       runInBand,
       skipCheckConnection,
     } = this.config
@@ -66,7 +65,6 @@ export class Dockest {
       mutables,
       hostname,
       runMode,
-      readinessRetryCount,
       runInBand,
       skipCheckConnection,
     })

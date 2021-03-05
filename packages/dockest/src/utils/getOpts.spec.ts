@@ -41,7 +41,6 @@ describe('getOpts', () => {
         "logLevel": 3,
         "mutables": Any<Object>,
         "perfStart": Any<Number>,
-        "readinessRetryCount": 30,
         "runInBand": true,
         "runMode": "host",
         "skipCheckConnection": false,
