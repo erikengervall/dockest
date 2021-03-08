@@ -11,7 +11,7 @@ run([
   {
     serviceName: 'node_to_node_orders',
     commands: ['echo "Hello from orders (dependency - should run first) 👋🏽"'],
-    dependents: [
+    dependsOn: [
       {
         serviceName: 'node_to_node_users',
         commands: ['echo "Hello from users (dependent - should run right after orders) 👋🏽"'],

@@ -14,7 +14,7 @@ export interface ReadinessCheck {
 export interface Runner {
   commands: Commands
   containerId: ContainerId
-  dependents: Runner[]
+  dependsOn: Runner[]
   dockerComposeFileService: DockerComposeFileService
   dockerEventStream$: DockerServiceEventStream
   logger: Logger
@@ -56,7 +56,7 @@ export type Commands = (string | ((containerId: string) => string))[]
 export interface DockestService {
   serviceName: ServiceName
   commands?: Commands
-  dependents?: DockestService[]
+  dependsOn?: DockestService[]
   readinessCheck?: ReadinessCheck
 }
 
@@ -65,6 +65,8 @@ export interface MutablesConfig {
   jestRanWithResult: boolean
   runners: RunnersObj
   dockerEventEmitter: DockerEventEmitter
+  runnerLookupMap: Map<string, Runner>
+  teardownOrder: null | Array<string>
 }
 
 type Jest = typeof import('jest')

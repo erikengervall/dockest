@@ -36,7 +36,7 @@ describe('waitForServices', () => {
   beforeEach(jest.resetAllMocks)
 
   describe('happy', () => {
-    it('should call expected functions for runners without dependents', async () => {
+    it('should call expected functions for runners without dependsOn', async () => {
       const runners = {
         runner1: createRunner({ serviceName: 'runner1' }),
         runner2: createRunner({ serviceName: 'runner2' }),
@@ -47,7 +47,13 @@ describe('waitForServices', () => {
         composeOpts,
         hostname,
         runMode: 'host',
-        mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
+        mutables: {
+          runners,
+          jestRanWithResult: false,
+          dockerEventEmitter: new EventEmitter() as any,
+          runnerLookupMap: new Map(),
+          teardownOrder: null,
+        },
         runInBand,
         skipCheckConnection: false,
         logWriter: mockLogWriter,
@@ -80,24 +86,26 @@ describe('waitForServices', () => {
       expect(sleepWithLog).not.toHaveBeenCalled()
     })
 
-    it('should call expected functions for runners with dependents', async () => {
+    it('should call expected functions for runners with dependsOn', async () => {
+      const runner3 = createRunner({ serviceName: 'runner3' })
+      const runner2 = createRunner({ serviceName: 'runner2' })
+      const runner1 = createRunner({ serviceName: 'runner1', dependsOn: [runner2] })
       const runners = {
-        runner1: createRunner({
-          serviceName: 'runner1',
-          dependents: [
-            createRunner({
-              serviceName: 'runner2',
-            }),
-          ],
-        }),
-        runner3: createRunner({ serviceName: 'runner3' }),
+        runner1: runner1,
+        runner3: runner3,
       }
 
       await waitForServices({
         composeOpts,
         hostname,
         runMode: 'host',
-        mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
+        mutables: {
+          runners,
+          jestRanWithResult: false,
+          dockerEventEmitter: new EventEmitter() as any,
+          runnerLookupMap: new Map(),
+          teardownOrder: null,
+        },
         runInBand,
         skipCheckConnection: false,
         logWriter: mockLogWriter,

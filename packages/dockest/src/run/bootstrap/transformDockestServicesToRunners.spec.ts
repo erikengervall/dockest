@@ -26,7 +26,7 @@ describe('transformDockestServicesToRunners', () => {
           "service1": Object {
             "commands": Array [],
             "containerId": "",
-            "dependents": Array [],
+            "dependsOn": Array [],
             "dockerComposeFileService": Object {
               "ports": Array [
                 Object {

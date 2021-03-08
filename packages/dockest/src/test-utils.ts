@@ -5,7 +5,7 @@ import { Logger } from './Logger'
 export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   commands: [],
   containerId: '',
-  dependents: [],
+  dependsOn: [],
   dockerComposeFileService: { image: 'node:10-alpine', ports: [{ published: 3000, target: 3000 }] },
   dockerEventStream$: new ReplaySubject(),
   logger: new Logger('node'),
