@@ -12,6 +12,7 @@ import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists'
 import { createBridgeNetwork } from '../../utils/network/createBridgeNetwork'
 import { createRunner } from '../../test-utils'
 import { getOpts } from '../../utils/getOpts'
+import { LogWriter } from '../log-writer'
 
 jest.mock('./checkConnection')
 jest.mock('./runReadinessCheck')
@@ -25,6 +26,11 @@ jest.mock('../../utils/network/bridgeNetworkExists')
 jest.mock('../../utils/network/createBridgeNetwork')
 
 const { composeOpts, hostname, runInBand } = getOpts()
+
+const mockLogWriter = {
+  register: () => undefined,
+  destroy: () => Promise.resolve(),
+} as LogWriter
 
 describe('waitForServices', () => {
   beforeEach(jest.resetAllMocks)
@@ -44,6 +50,7 @@ describe('waitForServices', () => {
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
         skipCheckConnection: false,
+        logWriter: mockLogWriter,
       })
 
       expect(dockerComposeUp).toHaveBeenCalledTimes(3)
@@ -93,6 +100,7 @@ describe('waitForServices', () => {
         mutables: { runners, jestRanWithResult: false, dockerEventEmitter: new EventEmitter() as any },
         runInBand,
         skipCheckConnection: false,
+        logWriter: mockLogWriter,
       })
 
       // waitForRunner

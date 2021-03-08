@@ -20,6 +20,13 @@ describe('getOpts', () => {
           "noRecreate": false,
           "quietPull": false,
         },
+        "containerLogs": Object {
+          "logPath": "./",
+          "modes": Array [
+            "aggregate",
+          ],
+          "serviceNameFilter": undefined,
+        },
         "debug": false,
         "dumpErrors": false,
         "exitHandler": [Function],

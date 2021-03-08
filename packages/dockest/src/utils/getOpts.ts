@@ -2,6 +2,7 @@ import { EventEmitter } from 'events'
 import { getRunMode } from './getRunMode'
 import { DockestOpts, DockestConfig } from '../@types'
 import { LOG_LEVEL, DEFAULT_HOST_NAME } from '../constants'
+import { LogWriterModeType } from '../run/log-writer'
 
 export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
   const {
@@ -24,6 +25,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     jestOpts: { projects = ['.'], runInBand: runInBandJest = true } = {},
     logLevel = LOG_LEVEL.INFO,
     runInBand = true,
+    containerLogs: { serviceNameFilter = undefined, modes = ['aggregate'] as LogWriterModeType[], logPath = './' } = {},
   } = opts
 
   return {
@@ -58,5 +60,10 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     perfStart: Date.now(),
     runInBand,
     skipCheckConnection: false,
+    containerLogs: {
+      modes,
+      serviceNameFilter,
+      logPath,
+    },
   }
 }
