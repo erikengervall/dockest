@@ -40,7 +40,7 @@ export type DockerComposePortFormat = DockerComposePortStringFormat | DockerComp
 
 export interface DockerComposeFileService {
   /** Expose ports */
-  ports: DockerComposePortFormat[]
+  ports?: DockerComposePortFormat[]
   [key: string]: any
 }
 
