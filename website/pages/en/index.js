@@ -20,12 +20,17 @@ const Button = props => (
   </div>
 )
 
-const createLinkGenerator = ({ siteConfig, language = '' }) => {
+/**
+ * baseUrl: '/dockest/'
+ * docsUrl: 'docs'
+ */
+const createLinkGenerator = ({ siteConfig, language = '', next = false }) => {
   const { baseUrl, docsUrl } = siteConfig
   const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`
   const langPart = `${language ? `${language}/` : ''}`
+  const withNext = next ? 'next/' : ''
 
-  return doc => `${baseUrl}${docsPart}${langPart}${doc}`
+  return doc => `${baseUrl}${docsPart}${withNext}${langPart}${doc}`
 }
 
 class HomeSplash extends React.Component {
@@ -33,6 +38,11 @@ class HomeSplash extends React.Component {
     const { siteConfig } = this.props
     const { baseUrl } = siteConfig
     const docUrl = createLinkGenerator(this.props)
+    const nextDocUrl = createLinkGenerator({
+      siteConfig: this.props.siteConfig,
+      language: this.props.language,
+      next: true,
+    })
 
     const SplashContainer = props => (
       <div className="homeContainer">
@@ -68,10 +78,17 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl('introduction')}>Documentation</Button>
-            <Button target="_blank" href={siteConfig.repoUrl}>
-              Github
-            </Button>
+            <div style={{ width: '100%', marginBottom: 10 }}>
+              <Button href={docUrl('introduction')}>Docs - Latest major release</Button>
+            </div>
+            <div style={{ width: '100%', marginBottom: 10 }}>
+              <Button href={nextDocUrl('introduction')}>Docs - Master</Button>
+            </div>
+            <div style={{ width: '100%' }}>
+              <Button target="_blank" href={siteConfig.repoUrl}>
+                Github
+              </Button>
+            </div>
           </PromoSection>
         </div>
       </SplashContainer>
