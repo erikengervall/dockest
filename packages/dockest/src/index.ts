@@ -19,7 +19,7 @@ export { DockestService } from './@types'
 export class Dockest {
   private config: DockestConfig
 
-  public constructor(opts: Partial<DockestOpts>) {
+  public constructor(opts?: Partial<DockestOpts>) {
     this.config = getOpts(opts)
 
     Logger.logLevel = this.config.logLevel

@@ -19,5 +19,9 @@ describe('index', () => {
         }
       `)
     })
+
+    it('should be able to instantiate Dockest without options', () => {
+      new allTheStuff.Dockest()
+    })
   })
 })
