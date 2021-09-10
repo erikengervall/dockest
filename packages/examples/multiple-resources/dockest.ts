@@ -1,4 +1,5 @@
 import { Dockest, logLevel, sleepWithLog } from 'dockest'
+import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check'
 
 const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
@@ -23,38 +24,28 @@ run([
       'sequelize db:seed --seed 20190101001337-demo-user',
       containerId => `echo "The container id is ${containerId}"`,
     ],
-    readinessCheck: async ({
-      defaultReadinessChecks: { postgres },
-      dockerComposeFileService: {
-        environment: { POSTGRES_DB, POSTGRES_USER },
-      },
-    }) => postgres({ POSTGRES_DB, POSTGRES_USER }),
+    readinessCheck: createPostgresReadinessCheck(),
   },
 
   {
     serviceName: 'multiple_resources_postgres2knex',
     commands: ['knex migrate:rollback', 'knex migrate:latest', 'knex seed:run'],
-    readinessCheck: async ({
-      defaultReadinessChecks: { postgres },
-      dockerComposeFileService: {
-        environment: { POSTGRES_DB, POSTGRES_USER },
-      },
-    }) => postgres({ POSTGRES_DB, POSTGRES_USER }),
+    readinessCheck: createPostgresReadinessCheck(),
   },
 
   {
     serviceName: 'multiple_resources_redis',
-    readinessCheck: ({ defaultReadinessChecks: { redis } }) => redis(),
+    readinessCheck: createRedisReadinessCheck(),
   },
 
   {
-    serviceName: 'multiple_resources_zookeeper',
-    dependents: [
+    // https://github.com/wurstmeister/kafka-docker/issues/167
+    serviceName: 'multiple_resources_kafka',
+    dependsOn: [
       {
-        // https://github.com/wurstmeister/kafka-docker/issues/167
-        serviceName: 'multiple_resources_kafka',
-        readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
+        serviceName: 'multiple_resources_zookeeper',
       },
     ],
+    readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
   },
 ])

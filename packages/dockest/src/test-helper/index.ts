@@ -30,7 +30,7 @@ export const getHostAddress = () => {
 
 export const resolveServiceAddress = (serviceName: string, targetPort: number | string) => {
   const service = config.services[serviceName]
-  if (!service) {
+  if (!service || !service.ports) {
     throw new DockestError(`Service "${serviceName}" does not exist`)
   }
 

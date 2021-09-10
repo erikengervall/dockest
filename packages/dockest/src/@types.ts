@@ -1,37 +1,20 @@
+import { Observable } from 'rxjs'
 import { Logger } from './Logger'
 import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
 import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
+import { LogWriterModeType } from './run/log-writer'
 
 type ContainerId = string
-type DefaultReadinessCheck<T = void> = (arg0: T) => Promise<void>
 type ServiceName = string
 
-export interface DefaultReadinessChecks {
-  postgres: DefaultReadinessCheck<{ POSTGRES_DB: string; POSTGRES_USER: string }>
-  redis: DefaultReadinessCheck
-  web: DefaultReadinessCheck<number | void>
-}
-
 export interface ReadinessCheck {
-  ({
-    containerId,
-    defaultReadinessChecks,
-    dockerComposeFileService,
-    dockerEventStream$,
-    logger,
-  }: {
-    containerId: ContainerId
-    defaultReadinessChecks: DefaultReadinessChecks
-    dockerComposeFileService: DockerComposeFileService
-    dockerEventStream$: DockerServiceEventStream
-    logger: Runner['logger']
-  }): Promise<any>
+  (args: { runner: Runner }): Promise<any> | Observable<any>
 }
 
 export interface Runner {
   commands: Commands
   containerId: ContainerId
-  dependents: Runner[]
+  dependsOn: Runner[]
   dockerComposeFileService: DockerComposeFileService
   dockerEventStream$: DockerServiceEventStream
   logger: Logger
@@ -57,7 +40,7 @@ export type DockerComposePortFormat = DockerComposePortStringFormat | DockerComp
 
 export interface DockerComposeFileService {
   /** Expose ports */
-  ports: DockerComposePortFormat[]
+  ports?: DockerComposePortFormat[]
   [key: string]: any
 }
 
@@ -73,7 +56,7 @@ export type Commands = (string | ((containerId: string) => string))[]
 export interface DockestService {
   serviceName: ServiceName
   commands?: Commands
-  dependents?: DockestService[]
+  dependsOn?: DockestService[]
   readinessCheck?: ReadinessCheck
 }
 
@@ -82,6 +65,8 @@ export interface MutablesConfig {
   jestRanWithResult: boolean
   runners: RunnersObj
   dockerEventEmitter: DockerEventEmitter
+  runnerLookupMap: Map<string, Runner>
+  teardownOrder: null | Array<string>
 }
 
 type Jest = typeof import('jest')
@@ -96,6 +81,19 @@ export interface DockestOpts {
   skipCheckConnection: boolean
 
   jestLib: Jest
+
+  containerLogs: {
+    /** Method for gathering logs
+     * "per-service": One log file per service
+     * "aggregate": One log file for all services
+     * "pipe-stdout": Pipe logs to stdout
+     */
+    modes: LogWriterModeType[]
+    /** Only collect logs for the specified services. */
+    serviceNameFilter?: string[]
+    /** Where should the logs be written to? Defaults to "./" */
+    logPath: string
+  }
 
   composeOpts: {
     /** Recreate dependent containers. Incompatible with --no-recreate. */

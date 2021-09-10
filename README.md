@@ -1,6 +1,7 @@
 # Dockest
 
-Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.
+Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running
+multi-container Docker applications.
 
 <p align="center">
   <a href='https://erikengervall.github.io/dockest/'><img alt="dockest logo" width="300px" src="https://raw.githubusercontent.com/erikengervall/dockest/master/resources/img/logo.png"></a>
@@ -25,7 +26,9 @@ Dockest is an integration testing tool aimed at alleviating the process of evalu
 
 ## Why Dockest
 
-The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and responsiveness status of each individual service (either synchronously or asynchronously) and once all services are ready the tests run.
+The value that Dockest provides over e.g. plain docker-compose is that it figures out the connectivity and
+responsiveness status of each individual service (either synchronously or asynchronously) and once all services are
+ready the tests run.
 
 ## Example
 
@@ -68,12 +71,14 @@ Learn more about Dockest on the [official website](https://erikengervall.github.
 
 ## Contributing
 
-If you'd like to contribute, start by searching through the issues and pull requests to see whether someone else has raised a similar idea or question.
+If you'd like to contribute, start by searching through the issues and pull requests to see whether someone else has
+raised a similar idea or question.
 
 If you don't see your idea listed, and you think it fits into the goals of this guide, do one of the following:
 
 - If your contribution is **minor**, such as a typo fix, open a pull request.
-- If your contribution is **major**, such as a new feature, start by opening an issue first. That way, other people can weigh in on the discussion before you do any work.
+- If your contribution is **major**, such as a new feature, start by opening an issue first. That way, other people can
+  weigh in on the discussion before you do any work.
 
 ## Acknowledgements
 

@@ -1,3 +1,4 @@
+import toposort from 'toposort'
 import { checkConnection } from './checkConnection'
 import { runReadinessCheck } from './runReadinessCheck'
 import { dockerComposeUp } from './dockerComposeUp'
@@ -9,6 +10,8 @@ import { DOCKEST_HOST_ADDRESS } from '../../constants'
 import { DockestConfig, Runner } from '../../@types'
 import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork'
 import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists'
+import { LogWriter } from '../log-writer'
+import { DockestError } from '../../Errors'
 
 const LOG_PREFIX = '[Setup]'
 
@@ -16,9 +19,10 @@ export const waitForServices = async ({
   composeOpts,
   hostname,
   runMode,
-  mutables: { runners },
+  mutables,
   runInBand,
   skipCheckConnection,
+  logWriter,
 }: {
   composeOpts: DockestConfig['composeOpts']
   hostname: DockestConfig['hostname']
@@ -26,19 +30,15 @@ export const waitForServices = async ({
   mutables: DockestConfig['mutables']
   runInBand: DockestConfig['runInBand']
   skipCheckConnection: DockestConfig['skipCheckConnection']
+  logWriter: LogWriter
 }) => {
-  const setupPromises = []
-
-  const waitForRunner = async ({
-    runner,
-    runner: { isBridgeNetworkMode, dependents, serviceName },
-  }: {
-    runner: Runner
-  }) => {
+  const waitForRunner = async ({ runner, runner: { isBridgeNetworkMode, serviceName } }: { runner: Runner }) => {
     runner.logger.debug(`${LOG_PREFIX} Initiating...`)
 
     await dockerComposeUp({ composeOpts, serviceName })
     await resolveContainerId({ runner })
+
+    logWriter.register(runner.serviceName, runner.containerId)
 
     if (isBridgeNetworkMode) {
       await joinBridgeNetwork({ containerId: runner.containerId, alias: serviceName })
@@ -57,10 +57,6 @@ export const waitForServices = async ({
     await runRunnerCommands({ runner })
 
     runner.logger.info(`${LOG_PREFIX} Success`, { success: true, endingNewLines: 1 })
-
-    for (const dependant of dependents) {
-      await waitForRunner({ runner: dependant })
-    }
   }
 
   if (runMode === 'docker-injected-host-socket') {
@@ -71,13 +67,42 @@ export const waitForServices = async ({
     await joinBridgeNetwork({ containerId: hostname, alias: DOCKEST_HOST_ADDRESS })
   }
 
-  for (const runner of Object.values(runners)) {
-    if (runInBand) {
-      await waitForRunner({ runner })
+  const dependencyGraph: Array<[string, string | undefined]> = []
+
+  const walkRunner = (runner: Runner) => {
+    if (mutables.runnerLookupMap.has(runner.serviceName)) {
+      return
+    }
+    mutables.runnerLookupMap.set(runner.serviceName, runner)
+
+    if (runner.dependsOn.length === 0) {
+      dependencyGraph.push([runner.serviceName, undefined])
     } else {
-      setupPromises.push(waitForRunner({ runner }))
+      for (const dependencyRunner of runner.dependsOn) {
+        dependencyGraph.push([dependencyRunner.serviceName, runner.serviceName])
+        walkRunner(dependencyRunner)
+      }
     }
   }
 
-  await Promise.all(setupPromises)
+  for (const runner of Object.values(mutables.runners)) {
+    walkRunner(runner)
+  }
+
+  if (runInBand) {
+    const ordered: Array<string> = toposort(dependencyGraph).filter(value => value !== undefined)
+
+    const teardownOrder = ordered.slice(0).reverse()
+    mutables.teardownOrder = teardownOrder
+
+    for (const serviceName of ordered) {
+      const runner = mutables.runnerLookupMap.get(serviceName)
+      if (!runner) {
+        throw new DockestError('Unexpected error. Runner could not be found.')
+      }
+      await waitForRunner({ runner })
+    }
+  } else {
+    await Promise.all(Array.from(mutables.runnerLookupMap.values()).map(runner => waitForRunner({ runner })))
+  }
 }

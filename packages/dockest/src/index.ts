@@ -8,12 +8,13 @@ import { MINIMUM_JEST_VERSION } from './constants'
 import { runJest } from './run/runJest'
 import { teardown } from './run/teardown'
 import { waitForServices } from './run/waitForServices'
+import { createLogWriter } from './run/log-writer'
 
 export { execaWrapper as execa } from './utils/execaWrapper'
 export { LOG_LEVEL as logLevel } from './constants'
 export { sleep } from './utils/sleep'
 export { sleepWithLog } from './utils/sleepWithLog'
-// export { createContainerIsHealthyHealthcheck } from './utils/createContainerIsHealthyHealthcheck'
+export { DockestService } from './@types'
 
 export class Dockest {
   private config: DockestConfig
@@ -33,6 +34,12 @@ export class Dockest {
 
   public run = async (dockestServices: DockestService[]) => {
     this.config.perfStart = Date.now()
+
+    const logWriter = createLogWriter({
+      mode: this.config.containerLogs.modes,
+      serviceNameFilter: this.config.containerLogs.serviceNameFilter,
+      logPath: this.config.containerLogs.logPath,
+    })
 
     const {
       composeFile,
@@ -60,10 +67,18 @@ export class Dockest {
       perfStart,
     })
 
-    await waitForServices({ composeOpts, mutables, hostname, runMode, runInBand, skipCheckConnection })
+    await waitForServices({
+      composeOpts,
+      mutables,
+      hostname,
+      runMode,
+      runInBand,
+      skipCheckConnection,
+      logWriter,
+    })
     await debugMode({ debug, mutables })
     const { success } = await runJest({ jestLib, jestOpts, mutables })
-    await teardown({ hostname, runMode, mutables, perfStart })
+    await teardown({ hostname, runMode, mutables, perfStart, logWriter })
 
     success ? process.exit(0) : process.exit(1)
   }

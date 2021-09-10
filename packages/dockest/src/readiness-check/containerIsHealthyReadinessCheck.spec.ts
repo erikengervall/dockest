@@ -1,14 +1,16 @@
-import { ReplaySubject } from 'rxjs'
-import { createContainerIsHealthyHealthcheck } from './createContainerIsHealthyHealthcheck'
+import { ReplaySubject, from, Observable } from 'rxjs'
+import { containerIsHealthyReadinessCheck } from './containerIsHealthyReadinessCheck'
 import { createRunner } from '../test-utils'
+
+const toPromise = <T = any>(input: Promise<T> | Observable<T>): Promise<T> => from(input).toPromise()
 
 it('fails when the die event is emitted', async done => {
   const dockerEventsStream$ = new ReplaySubject()
   const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any })
 
-  dockerEventsStream$.next({ action: 'kill' })
+  dockerEventsStream$.next({ service: runner.serviceName, action: 'kill' })
 
-  await createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
+  await toPromise(containerIsHealthyReadinessCheck({ runner }))
     .then(() => {
       done.fail('Should throw.')
     })
@@ -20,9 +22,10 @@ it('fails when the die event is emitted', async done => {
 
 it('fails when the kill event is emitted', async done => {
   const dockerEventsStream$ = new ReplaySubject()
-  dockerEventsStream$.next({ action: 'die' })
   const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any })
-  await createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
+  dockerEventsStream$.next({ service: runner.serviceName, action: 'die' })
+
+  await toPromise(containerIsHealthyReadinessCheck({ runner }))
     .then(() => {
       done.fail('Should throw.')
     })
@@ -34,9 +37,13 @@ it('fails when the kill event is emitted', async done => {
 
 it('succeeds when the health_status event is emitted', async () => {
   const dockerEventStream$ = new ReplaySubject()
-  dockerEventStream$.next({ action: 'health_status', attributes: { healthStatus: 'healthy' } })
   const runner = createRunner({ dockerEventStream$: dockerEventStream$ as any })
-  const result = await createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
+  dockerEventStream$.next({
+    service: runner.serviceName,
+    action: 'health_status',
+    attributes: { healthStatus: 'healthy' },
+  })
+  const result = await toPromise(containerIsHealthyReadinessCheck({ runner }))
   expect(result).toEqual(undefined)
 })
 
@@ -46,7 +53,7 @@ it('does not resolve in case a unhealthy event is emitted', async done => {
 
   let healthCheckDidResolve = false
 
-  createContainerIsHealthyHealthcheck({ ...runner, defaultReadinessChecks: {} as any })
+  toPromise(containerIsHealthyReadinessCheck({ runner }))
     .then(result => {
       expect(result).toEqual(undefined)
       healthCheckDidResolve = true
@@ -55,13 +62,21 @@ it('does not resolve in case a unhealthy event is emitted', async done => {
       done.fail(err)
     })
 
-  dockerEventStream$.next({ action: 'health_status', attributes: { healthStatus: 'unhealthy' } })
+  dockerEventStream$.next({
+    service: runner.serviceName,
+    action: 'health_status',
+    attributes: { healthStatus: 'unhealthy' },
+  })
 
   runner.dockerEventStream$.subscribe(event => {
     if (event.action === 'health_status') {
       if (event.attributes.healthStatus === 'unhealthy') {
         expect(healthCheckDidResolve).toEqual(false)
-        dockerEventStream$.next({ action: 'health_status', attributes: { healthStatus: 'healthy' } })
+        dockerEventStream$.next({
+          service: runner.serviceName,
+          action: 'health_status',
+          attributes: { healthStatus: 'healthy' },
+        })
       } else if (event.attributes.healthStatus === 'healthy') {
         // defer so this check is run after the healthcheck promise did resolve
         Promise.resolve().then(() => {

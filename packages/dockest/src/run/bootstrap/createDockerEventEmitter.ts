@@ -29,7 +29,12 @@ export type HealthStatusDockerComposeEvent = DockerComposeEventInterface<
   { healthStatus: 'healthy' | 'unhealthy' }
 >
 export type KillDockerComposeEvent = DockerComposeEventInterface<'kill'>
-export type DieDockerComposeEvent = DockerComposeEventInterface<'die'>
+export type DieDockerComposeEvent = DockerComposeEventInterface<
+  'die',
+  {
+    exitCode: string
+  }
+>
 
 export type DockerEventType =
   | CreateDockerComposeEvent
@@ -48,6 +53,9 @@ export interface DockerEventEmitter {
   removeListener(serviceName: string, eventListener: DockerEventEmitterListener): void
   destroy(): void
 }
+
+export const isDieEvent = (event: DockerEventType): event is DieDockerComposeEvent => event.action === 'die'
+export const isKillEvent = (event: DockerEventType): event is KillDockerComposeEvent => event.action === 'kill'
 
 export const createDockerEventEmitter = (composeFilePath: string): DockerEventEmitter => {
   const command = `docker-compose \
