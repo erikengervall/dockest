@@ -39,13 +39,13 @@ run([
   },
 
   {
-    serviceName: 'multiple_resources_zookeeper',
-    dependents: [
+    // https://github.com/wurstmeister/kafka-docker/issues/167
+    serviceName: 'multiple_resources_kafka',
+    dependsOn: [
       {
-        // https://github.com/wurstmeister/kafka-docker/issues/167
-        serviceName: 'multiple_resources_kafka',
-        readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
+        serviceName: 'multiple_resources_zookeeper',
       },
     ],
+    readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
   },
 ])

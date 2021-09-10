@@ -4,11 +4,12 @@ import { leaveBridgeNetwork } from '../utils/network/leaveBridgeNetwork'
 import { Logger } from '../Logger'
 import { removeBridgeNetwork } from '../utils/network/removeBridgeNetwork'
 import { teardownSingle } from '../utils/teardownSingle'
+import { DockestError } from '../Errors'
 
 export const teardown = async ({
   hostname,
   runMode,
-  mutables: { runners, dockerEventEmitter },
+  mutables: { runnerLookupMap, dockerEventEmitter, teardownOrder },
   perfStart,
   logWriter,
 }: {
@@ -18,8 +19,18 @@ export const teardown = async ({
   perfStart: DockestConfig['perfStart']
   logWriter: LogWriter
 }) => {
-  for (const runner of Object.values(runners)) {
-    await teardownSingle({ runner })
+  if (teardownOrder) {
+    for (const serviceName of teardownOrder) {
+      const runner = runnerLookupMap.get(serviceName)
+      if (!runner) {
+        throw new DockestError('Could not find service in lookup map.')
+      }
+      await teardownSingle({ runner })
+    }
+  } else {
+    for (const runner of runnerLookupMap.values()) {
+      await teardownSingle({ runner })
+    }
   }
 
   if (runMode === 'docker-injected-host-socket') {

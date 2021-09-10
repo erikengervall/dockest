@@ -14,18 +14,9 @@ const removeContainerById = async ({ runner, runner: { containerId } }: { runner
   await execaWrapper(command, { runner, logPrefix: '[Remove Container]', logStdout: true })
 }
 
-export const teardownSingle = async ({
-  runner,
-  runner: { containerId, dependents, serviceName },
-}: {
-  runner: Runner
-}) => {
+export const teardownSingle = async ({ runner, runner: { containerId, serviceName } }: { runner: Runner }) => {
   if (!containerId) {
     throw new DockestError(`Invalid containerId (${containerId}) for service (${serviceName})`, { runner })
-  }
-
-  for (const dependant of dependents) {
-    await teardownSingle({ runner: dependant })
   }
 
   await stopContainerById({ runner })
