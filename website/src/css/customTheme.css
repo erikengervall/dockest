@@ -1,0 +1,48 @@
+:root {
+  --ifm-color-primary-lightest: #6f9576;
+  --ifm-color-primary-lighter: #628468;
+  --ifm-color-primary-light: #5e7f63;
+  --ifm-color-primary: #55735a;
+  --ifm-color-primary-dark: #4d6851;
+  --ifm-color-primary-darker: #48624d;
+  --ifm-color-primary-darkest: #3c513f;
+}
+
+.projectTitle {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 70px;
+}
+
+.projectTitle > small {
+  max-width: 600px;
+  text-align: center;
+}
+
+.features {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.feature {
+  padding: 20px;
+  max-width: 350px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button {
+  margin-bottom: 5px;
+  background: #38dc58;
+}

@@ -1,19 +1,8 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-const React = require('react')
-
-const CompLibrary = require('../../core/CompLibrary')
-
-const Container = CompLibrary.Container
+/* eslint-disable react/prop-types */
+import React from 'react'
 
 // eslint-disable-next-line no-undef
 const CWD = process.cwd()
-
 const versions = require(`${CWD}/versions.json`)
 
 function Versions({ config: siteConfig }) {
@@ -24,7 +13,7 @@ function Versions({ config: siteConfig }) {
 
   return (
     <div className="docMainWrapper wrapper">
-      <Container className="mainContainer versionsContainer">
+      <div className="mainContainer versionsContainer">
         <div className="post">
           <header className="postHeader">
             <h1>{siteConfig.title} Versions</h1>
@@ -90,9 +79,9 @@ function Versions({ config: siteConfig }) {
             <a href={siteConfig.npmUrl}>npm</a>
           </p>
         </div>
-      </Container>
+      </div>
     </div>
   )
 }
 
-module.exports = Versions
+export default Versions

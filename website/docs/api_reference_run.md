@@ -31,12 +31,12 @@ Dockest services are meant to map to services declared in the Compose file(s)
 
 `DockestService` structure:
 
-| property                                        | type                                               | default                   |
-| ----------------------------------------------- | -------------------------------------------------- | ------------------------- |
-| **[name](#dockestservicename)**                 | `string`                                           | property is required      |
-| [commands](#dockestservicecommands)             | <code>(string &#124; function)[] => string[]<code> | `[]`                      |
-| [dependents](#dockestservicedependents)         | `DockestService[]`                                 | `[]`                      |
-| [readinessCheck](#dockestservicereadinesscheck) | `function`                                         | `() => Promise.resolve()` |
+| property                                        | type                                                | default                   |
+| ----------------------------------------------- | --------------------------------------------------- | ------------------------- |
+| **[name](#dockestservicename)**                 | `string`                                            | property is required      |
+| [commands](#dockestservicecommands)             | <code>(string &#124; function)[] => string[]</code> | `[]`                      |
+| [dependents](#dockestservicedependents)         | `DockestService[]`                                  | `[]`                      |
+| [readinessCheck](#dockestservicereadinesscheck) | `function`                                          | `() => Promise.resolve()` |
 
 ## `DockestService.name`
 

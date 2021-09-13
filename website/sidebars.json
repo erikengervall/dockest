@@ -4,9 +4,9 @@
       "introduction",
       "getting-started",
       {
-        "type": "subcategory",
+        "type": "category",
         "label": "API Reference",
-        "ids": ["api_reference_dockest_opts", "api_reference_run", "api_reference_utils"]
+        "items": ["api_reference_dockest_opts", "api_reference_run", "api_reference_utils"]
       },
       "development"
     ]

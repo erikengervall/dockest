@@ -1,5 +1,5 @@
 ---
-id: version-3.0.0-api_reference_dockest_opts
+id: api_reference_dockest_opts
 title: DockestOpts
 sidebar_label: DockestOpts
 original_id: api_reference_dockest_opts

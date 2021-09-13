@@ -1,17 +1,36 @@
 {
-  "version-2.0.0-docs": {
-    "Documentation": [
-      "version-2.0.0-introduction",
-      "version-2.0.0-getting-started",
-      {
-        "type": "subcategory",
-        "label": "API Reference",
-        "ids": [
-          "version-2.0.0-api_reference_dockest_opts",
-          "version-2.0.0-api_reference_run",
-          "version-2.0.0-api_reference_utils"
-        ]
-      }
-    ]
-  }
+  "version-2.0.0/docs": [
+    {
+      "type": "category",
+      "label": "Documentation",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-2.0.0/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0/getting-started"
+        },
+        {
+          "type": "category",
+          "label": "API Reference",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-2.0.0/api_reference_dockest_opts"
+            },
+            {
+              "type": "doc",
+              "id": "version-2.0.0/api_reference_run"
+            },
+            {
+              "type": "doc",
+              "id": "version-2.0.0/api_reference_utils"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
