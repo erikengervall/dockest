@@ -25,6 +25,7 @@ docker-compose.dockest-generated.yml
 docker-compose.dockest-generated-runner.yml
 dockest-error.json
 dockest.log
+website/.docusaurus
 
 # Webstorm
 .idea/*

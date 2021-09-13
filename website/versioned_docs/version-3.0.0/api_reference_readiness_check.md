@@ -1,5 +1,5 @@
 ---
-id: version-3.0.0-api_reference_readiness_check
+id: api_reference_readiness_check
 title: ReadinessCheck
 sidebar_label: ReadinessCheck
 original_id: api_reference_readiness_check

@@ -1,5 +1,5 @@
 ---
-id: version-3.0.0-introduction
+id: introduction
 title: Introduction
 sidebar_label: Introduction
 original_id: introduction

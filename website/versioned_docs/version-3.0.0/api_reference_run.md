@@ -1,5 +1,5 @@
 ---
-id: version-3.0.0-api_reference_run
+id: api_reference_run
 title: Run
 sidebar_label: Run
 original_id: api_reference_run
@@ -32,12 +32,12 @@ Dockest services are meant to map to services declared in the Compose file(s)
 
 `DockestService` structure:
 
-| property                                        | type                                               | default                   |
-| ----------------------------------------------- | -------------------------------------------------- | ------------------------- |
-| **[name](#dockestservicename)**                 | `string`                                           | property is required      |
-| [commands](#dockestservicecommands)             | <code>(string &#124; function)[] => string[]<code> | `[]`                      |
-| [dependsOn](#dockestservicedependson)           | `DockestService[]`                                 | `[]`                      |
-| [readinessCheck](#dockestservicereadinesscheck) | `function`                                         | `() => Promise.resolve()` |
+| property                                        | type                                                | default                   |
+| ----------------------------------------------- | --------------------------------------------------- | ------------------------- |
+| **[name](#dockestservicename)**                 | `string`                                            | property is required      |
+| [commands](#dockestservicecommands)             | <code>(string &#124; function)[] => string[]</code> | `[]`                      |
+| [dependsOn](#dockestservicedependson)           | `DockestService[]`                                  | `[]`                      |
+| [readinessCheck](#dockestservicereadinesscheck) | `function`                                          | `() => Promise.resolve()` |
 
 ## `DockestService.name`
 
@@ -95,7 +95,7 @@ services:
 
 The Dockest Service's readinessCheck function helps determining a service's readiness (or "responsiveness") by, for
 example, querying a database using `select 1`. Learn more about the predefined readiness checks in the
-[Readiness Check API reference](version-3.0.0-api_reference_readiness_check)
+[Readiness Check API reference](api_reference_readiness_check)
 
 Here are some examples of basic readinessChecks:
 

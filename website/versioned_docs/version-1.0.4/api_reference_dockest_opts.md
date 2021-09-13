@@ -2,7 +2,6 @@
 id: api_reference_dockest_opts
 title: DockestOpts
 sidebar_label: DockestOpts
-original_id: api_reference_dockest_opts
 ---
 
 ```ts

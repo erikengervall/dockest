@@ -1,26 +1,68 @@
 {
-  "version-1.0.4-docs": {
-    "Getting started": [
-      "version-1.0.4-introduction",
-      "version-1.0.4-example"
-    ],
-    "Interfaces": [
-      "version-1.0.4-dockest_constructor",
-      "version-1.0.4-jest",
-      {
-        "type": "subcategory",
-        "label": "Runners",
-        "ids": [
-          "version-1.0.4-runner_redis",
-          "version-1.0.4-runner_postgres",
-          "version-1.0.4-runner_zookeeper",
-          "version-1.0.4-runner_kafka"
-        ]
-      }
-    ],
-    "Healthchecks": [
-      "version-1.0.4-connectivity",
-      "version-1.0.4-responsiveness"
-    ]
-  }
+  "version-1.0.4/docs": [
+    {
+      "type": "category",
+      "label": "Getting started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.4/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.4/example"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Interfaces",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.4/dockest_constructor"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.4/jest"
+        },
+        {
+          "type": "category",
+          "label": "Runners",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-1.0.4/runner_redis"
+            },
+            {
+              "type": "doc",
+              "id": "version-1.0.4/runner_postgres"
+            },
+            {
+              "type": "doc",
+              "id": "version-1.0.4/runner_zookeeper"
+            },
+            {
+              "type": "doc",
+              "id": "version-1.0.4/runner_kafka"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Healthchecks",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.4/connectivity"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.4/responsiveness"
+        }
+      ]
+    }
+  ]
 }
