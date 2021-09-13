@@ -156,4 +156,4 @@ jobs:
           echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
           cd website
           yarn install
-          yarn publish-gh-pages
+          yarn deploy
