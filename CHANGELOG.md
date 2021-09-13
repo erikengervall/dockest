@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-beta.0] - 2021-09-13
+
+### Added
+
+- Add configurable readiness retry count [#200](https://github.com/erikengervall/dockest/pull/200)
+- Overhaul readiness checks & introduce `dockest/readiness-check`
+  [#212](https://github.com/erikengervall/dockest/pull/212)
+- Add container log collection [#167](https://github.com/erikengervall/dockest/pull/167)
+- feat: replace dependents with dependsOn option [#213](https://github.com/erikengervall/dockest/pull/213)
+- Migrated website from docusaurus 1 to docusaurus 2 (beta.6) [#264](https://github.com/erikengervall/dockest/pull/264)
+
+### Fixed
+
+- Correctly handle services that have no ports defined [#210](https://github.com/erikengervall/dockest/pull/210)
+
+### Changed
+
+- Make Dockest opts optional [#263](https://github.com/erikengervall/dockest/pull/263)
+
 ## [2.1.0] - 2020-10-22
 
 ### Added
