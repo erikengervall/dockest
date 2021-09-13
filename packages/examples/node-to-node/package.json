@@ -1,6 +1,6 @@
 {
   "name": "@examples/node-to-node",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "private": true,
   "scripts": {
     "dev:examples:link": "yarn link dockest",
