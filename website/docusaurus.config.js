@@ -8,10 +8,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
   tagline:
     'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
   url: 'https://erikengervall.github.io',
-  baseUrl: '/dockest/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   organizationName: 'erikengervall',
   projectName: 'dockest',
 
