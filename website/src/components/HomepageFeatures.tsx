@@ -18,17 +18,17 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Good old JavaScript',
-    image: '/static/img/undraw_web_development_w2vv.svg',
+    image: '/img/undraw_web_development_w2vv.svg',
     description: <>Dockest abstracts away the need for extensive Docker knowledge and eliminates funky bash scripts</>,
   },
   {
     title: 'Completely modular and extendable',
-    image: '/static/img/undraw_Create_re_57a3.svg',
+    image: '/img/undraw_Create_re_57a3.svg',
     description: <>Dockest is built with modularity in mind, making introduction of new types of services a breeze</>,
   },
   {
     title: 'Naturally extends your development environment',
-    image: '/static/img/undraw_Developer_activity_re_39tg.svg',
+    image: '/img/undraw_Developer_activity_re_39tg.svg',
     description: <>Dockest utilizes Docker Compose, the very same tool most developers use during development</>,
   },
 ]
