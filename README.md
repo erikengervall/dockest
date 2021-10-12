@@ -67,7 +67,7 @@ dockest.run(dockestServices)
 
 ## Documentation
 
-Learn more about Dockest on the [official website](https://erikengervall.github.io/dockest/).
+Learn more about Dockest on the [official website](https://dockest.netlify.app/).
 
 ## Contributing
 

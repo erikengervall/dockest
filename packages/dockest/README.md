@@ -67,7 +67,7 @@ dockest.run(dockestServices)
 
 ## Documentation
 
-Learn more about Dockest on the [official website](https://erikengervall.github.io/dockest/).
+Learn more about Dockest on the [official website](https://dockest.netlify.app/).
 
 ## Contributing
 
@@ -89,5 +89,3 @@ Thanks to [Laurin Quast](https://github.com/n1ru4l) for great ideas and contribu
 ## License
 
 MIT
-
-<!-- ~ -->
