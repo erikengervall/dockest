@@ -16,9 +16,16 @@ multi-container Docker applications.
   <a href="https://www.npmjs.com/package/dockest">
     <img alt="npm downloads" src="https://img.shields.io/npm/dm/dockest">
   </a>
+
   <a href="https://github.com/erikengervall/dockest/blob/master/LICENSE">
     <img alt="licence" src="https://img.shields.io/npm/l/dockest">
   </a>
+
+
+  <a href="https://app.netlify.com/sites/dockest/deploys">
+    <img alt="licence" src="https://api.netlify.com/api/v1/badges/36a8e5f8-42bf-402a-93a3-ba05ff7462b6/deploy-status">
+  </a>
+
   <a href="https://snyk.io/test/github/erikengervall/dockest">
     <img alt="snyk" src="https://snyk.io/test/github/erikengervall/dockest/badge.svg">
   </a>
