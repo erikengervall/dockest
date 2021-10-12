@@ -15,7 +15,6 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
   organizationName: 'erikengervall',
   projectName: 'dockest',
   trailingSlash: false,
-
   presets: [
     [
       '@docusaurus/preset-classic',
