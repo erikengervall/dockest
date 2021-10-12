@@ -1,84 +1,71 @@
-module.exports = {
+const lightCodeTheme = require('prism-react-renderer/themes/github')
+const darkCodeTheme = require('prism-react-renderer/themes/dracula')
+
+// With JSDoc @type annotations, IDEs can provide config autocompletion
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
+;(module.exports = {
   title: 'Dockest',
   tagline:
     'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
   url: 'https://erikengervall.github.io',
-  baseUrl: '/dockest/',
-  // baseUrl: '/',
+  baseUrl: '/',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
+  favicon: 'img/favicon.png',
   organizationName: 'erikengervall',
   projectName: 'dockest',
-  scripts: ['https://buttons.github.io/buttons.js'],
-  favicon: 'img/favicon.png',
-  customFields: {
-    repoUrl: 'https://github.com/erikengervall/dockest',
-    npmUrl: 'https://www.npmjs.com/package/dockest',
-    engineeringBlogPostUrl: 'https://engineering.klarna.com/node-js-integration-testing-with-ease-fab5f8d29163',
-  },
-  onBrokenLinks: 'log',
-  onBrokenMarkdownLinks: 'log',
+
   presets: [
     [
       '@docusaurus/preset-classic',
-      {
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
         docs: {
-          path: './docs',
-          sidebarPath: './sidebars.json',
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
+          sidebarPath: require.resolve('./sidebars.js'),
+          editUrl: 'https://github.com/erikengervall/dockest/tree/master/website',
         },
-        blog: {},
         theme: {
-          customCss: '../src/css/customTheme.css',
+          customCss: require.resolve('./src/css/custom.css'),
         },
-      },
+      }),
     ],
   ],
-  plugins: [],
-  themeConfig: {
-    navbar: {
-      title: 'Dockest',
-      items: [
-        {
-          to: 'docs/introduction/',
-          label: 'Docs',
-          position: 'left',
+
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      navbar: {
+        title: 'Dockest',
+        logo: {
+          alt: 'Dockest logo',
+          src: 'img/logo.svg',
         },
-        {
-          label: 'Version',
-          to: 'docs/introduction',
-          position: 'right',
-          items: [
-            {
-              label: '3.0.0',
-              to: 'docs/introduction',
-              activeBaseRegex: 'docs/(?!1.0.4|2.0.0|3.0.0|next)',
-            },
-            {
-              label: '2.0.0',
-              to: 'docs/2.0.0/introduction',
-            },
-            {
-              label: '1.0.4',
-              to: 'docs/1.0.4/introduction',
-            },
-            {
-              label: 'Main/Unreleased',
-              to: 'docs/next/introduction',
-              activeBaseRegex: 'docs/next/(?!support|team|resources)',
-            },
-          ],
-        },
-      ],
-    },
-    footer: {
-      links: [],
-      copyright: 'Copyright © 2021 Erik Engervall',
-      logo: {},
-    },
-    algolia: {
-      apiKey: '9bf9f3d6b00b633293ccea7bbd73a7d1',
-      indexName: 'dockest',
-      algoliaOptions: {},
-    },
-  },
-}
+        items: [
+          {
+            type: 'doc',
+            docId: 'introduction',
+            position: 'left',
+            label: 'Docs',
+          },
+          {
+            to: '/versions',
+            position: 'left',
+            label: 'Versions',
+          },
+          {
+            href: 'https://github.com/erikengervall/dockest',
+            label: 'GitHub',
+            position: 'right',
+          },
+        ],
+      },
+      footer: {
+        style: 'dark',
+        copyright: `Copyright © ${new Date().getFullYear()} Erik Engervall`,
+      },
+      prism: {
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+      },
+    }),
+})
