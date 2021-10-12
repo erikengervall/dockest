@@ -8,12 +8,12 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
   tagline:
     'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
   url: 'https://erikengervall.github.io',
-  baseUrl: '/',
+  baseUrl: '/dockest/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'erikengervall', // Usually your GitHub org/user name.
-  projectName: 'dockest', // Usually your repo name.
+  organizationName: 'erikengervall',
+  projectName: 'dockest',
 
   presets: [
     [
@@ -61,43 +61,6 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
       },
       footer: {
         style: 'dark',
-        // links: [
-        //   {
-        //     title: 'Docs',
-        //     items: [
-        //       {
-        //         label: 'Introduction',
-        //         to: '/docs/introduction',
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     title: 'Community',
-        //     items: [
-        //       {
-        //         label: 'Stack Overflow',
-        //         href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-        //       },
-        //       {
-        //         label: 'Discord',
-        //         href: 'https://discordapp.com/invite/docusaurus',
-        //       },
-        //       {
-        //         label: 'Twitter',
-        //         href: 'https://twitter.com/docusaurus',
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     title: 'More',
-        //     items: [
-        //       {
-        //         label: 'GitHub',
-        //         href: 'https://github.com/facebook/docusaurus',
-        //       },
-        //     ],
-        //   },
-        // ],
         copyright: `Copyright © ${new Date().getFullYear()} Erik Engervall`,
       },
       prism: {
