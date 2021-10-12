@@ -31,8 +31,7 @@
     "test": "yarn test:unit && yarn test:examples",
     "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
     "test:examples": "lerna run test:examples --stream",
-    "test:unit": "lerna run test:unit --stream",
-    "bump": "yarn lerna version --no-push --no-git-tag-version"
+    "test:unit": "lerna run test:unit --stream"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.19.2",

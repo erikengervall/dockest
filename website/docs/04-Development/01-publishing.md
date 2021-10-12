@@ -6,12 +6,10 @@ sidebar_label: Publishing
 
 ## Publishing a new version
 
-- Run `yarn bump` from root
+- Run `yarn lerna version --no-push --no-git-tag-version` from root
   - Select the appropriate version upgrade from the CLI prompt
-- Once a new version has been selected, the following happens:
-  - All packages' versions are updated
-  - A new tag, `v<VERSION>`, is created locally
 - Update `CHANGELOG.md` with the changes since last update
-- Commit the code changes with a message like `Update version to v<VERSION>`
-- Commit the newly created tag `git push --tags`
+- Commit & push the code changes with a message like `Update version to v<VERSION>`
+- Create new tag `git tag v<VERSION>` (examples: `v3.0.1`, `v3.0.0-beta.2`)
+- Push the newly created tag `git push --tags`
   - This will trigger a npm publication and a website deployment
