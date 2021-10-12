@@ -1,5 +1,5 @@
 ---
-id: api_reference_dockest_opts
+id: api-reference-opts
 title: DockestOpts
 sidebar_label: DockestOpts
 ---

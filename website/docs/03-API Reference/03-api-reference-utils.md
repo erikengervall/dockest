@@ -1,5 +1,5 @@
 ---
-id: api_reference_utils
+id: api-reference-utils
 title: Utils
 sidebar_label: Utils
 ---

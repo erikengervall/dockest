@@ -1,5 +1,5 @@
 ---
-id: api_reference_run
+id: api-reference-run
 title: Run
 sidebar_label: Run
 ---

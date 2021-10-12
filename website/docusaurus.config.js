@@ -4,8 +4,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 ;(module.exports = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Dockest',
+  tagline:
+    'Dockest is an integration testing tool aimed at alleviating the process of evaluating unit tests whilst running multi-container Docker applications.',
   url: 'https://erikengervall.github.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -36,7 +37,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
       navbar: {
         title: 'Dockest',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Dockest logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -47,8 +48,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
             label: 'Docs',
           },
           {
-            type: 'doc',
-            docId: 'versions',
+            to: '/versions',
             position: 'left',
             label: 'Versions',
           },
