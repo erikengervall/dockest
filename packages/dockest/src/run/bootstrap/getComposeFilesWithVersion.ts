@@ -1,30 +1,36 @@
 import { readFileSync } from 'fs'
 import path from 'path'
-import { DockestConfig } from '../../@types'
+import { DockerComposeFile, DockestConfig } from '../../@types'
 import { DockestError } from '../../Errors'
 import { Logger } from '../../Logger'
 
 const DOCKEST_COMPOSE_FILE_VERSION = 3.8
+const VERSION_REG_EXP = /version: .?(\d\.\d|\d).?/
 
 /**
  * `docker-compose config` trims the `version` property, so we need to inject it before outputting the generated compose file
  */
 export function getComposeFilesWithVersion(
   composeFile: DockestConfig['composeFile'],
-  mergedComposeFiles: string,
+  dockerComposeFile: Omit<DockerComposeFile, 'version'> & { version?: string },
   /** @testable */
   nodeProcess = process,
-) {
-  const firstComposeFile = Array.isArray(composeFile) ? composeFile[0] : composeFile
+): { dockerComposeFileWithVersion: DockerComposeFile } {
+  let versionNumber: string | number | undefined = dockerComposeFile.version
 
-  const firstComposeFileContent = readFileSync(path.join(nodeProcess.cwd(), firstComposeFile), { encoding: 'utf8' })
-  const versionMatch = firstComposeFileContent.match(/version: '(\d\.\d|\d)'/)
+  if (!versionNumber) {
+    const firstComposeFile = Array.isArray(composeFile) ? composeFile[0] : composeFile
+    const firstComposeFileContent = readFileSync(path.join(nodeProcess.cwd(), firstComposeFile), { encoding: 'utf8' })
+    const versionMatch = firstComposeFileContent.match(VERSION_REG_EXP)
 
-  if (!versionMatch) {
-    throw new DockestError(`Unable to find required field 'version' field in ${firstComposeFile}`)
+    if (!versionMatch) {
+      throw new DockestError(`Unable to find required field 'version' field in ${firstComposeFile}`)
+    }
+
+    versionNumber = versionMatch[1]
   }
 
-  let versionNumber = parseFloat(versionMatch[1])
+  versionNumber = parseFloat(versionNumber)
   if (Math.trunc(versionNumber) < 3) {
     throw new DockestError(`Incompatible docker-compose file version (${versionNumber}). Please use >=3`)
   } else if (versionNumber < DOCKEST_COMPOSE_FILE_VERSION) {
@@ -35,9 +41,10 @@ export function getComposeFilesWithVersion(
     versionNumber = DOCKEST_COMPOSE_FILE_VERSION
   }
 
-  const mergedComposeFilesWithVersion = `version: '${versionNumber}'\n${mergedComposeFiles}`
-
   return {
-    mergedComposeFilesWithVersion,
+    dockerComposeFileWithVersion: {
+      ...dockerComposeFile,
+      version: versionNumber.toString(),
+    },
   }
 }

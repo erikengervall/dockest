@@ -1,45 +1,56 @@
 import { getComposeFilesWithVersion } from './getComposeFilesWithVersion'
+import { DOCKER_COMPOSE_FILE } from '../../test-utils'
 
 const nodeProcess: any = { cwd: () => __dirname }
 
-const mergedComposeFiles = `services:
-redis:
-  image: redis:5.0.3-alpine
-    networks:
-      default: null
-    ports:
-    - mode: ingress
-      target: 6379
-      published: 6379
-      protocol: tcp
-networks:
-  default:
-    name: bootstrap_default`
-
 describe('getComposeFilesWithVersion', () => {
-  it('should inject version into the mergedComposeFiles', () => {
-    const { mergedComposeFilesWithVersion } = getComposeFilesWithVersion(
+  it('should inject version into the mergedComposeFiles if "docker compose config" trimmed version', () => {
+    const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(
       'mergeComposeFiles.spec.yml',
-      mergedComposeFiles,
+      { ...DOCKER_COMPOSE_FILE, version: undefined },
       nodeProcess,
     )
 
-    expect(mergedComposeFilesWithVersion).toContain('version')
-    expect(mergedComposeFilesWithVersion).toMatchInlineSnapshot(`
-      "version: '3.8'
-      services:
-      redis:
-        image: redis:5.0.3-alpine
-          networks:
-            default: null
-          ports:
-          - mode: ingress
-            target: 6379
-            published: 6379
-            protocol: tcp
-      networks:
-        default:
-          name: bootstrap_default"
+    expect(dockerComposeFileWithVersion).toMatchInlineSnapshot(`
+      Object {
+        "services": Object {
+          "redis": Object {
+            "image": "redis:5.0.3-alpine",
+            "ports": Array [
+              Object {
+                "published": 6379,
+                "target": 6379,
+              },
+            ],
+          },
+        },
+        "version": "3.8",
+      }
     `)
+  })
+
+  it('should not inject version into the mergedComposeFiles it wasnt trimmed', () => {
+    const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(
+      'mergeComposeFiles.spec.yml',
+      { ...DOCKER_COMPOSE_FILE, version: '3.9' },
+      nodeProcess,
+    )
+
+    expect(dockerComposeFileWithVersion).toMatchInlineSnapshot(`
+Object {
+  "services": Object {
+    "redis": Object {
+      "image": "redis:5.0.3-alpine",
+      "ports": Array [
+        Object {
+          "published": 6379,
+          "target": 6379,
+        },
+      ],
+    },
+  },
+  "version": "3.9",
+}
+`)
   })
 })

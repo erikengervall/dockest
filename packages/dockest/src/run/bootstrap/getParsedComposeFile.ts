@@ -54,7 +54,6 @@ const DockerComposeService = io.partial({
 })
 
 const ComposeFile = io.type({
-  version: io.string,
   services: io.record(io.string, DockerComposeService),
 })
 

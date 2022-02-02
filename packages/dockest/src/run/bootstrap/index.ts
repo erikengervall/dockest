@@ -28,13 +28,17 @@ export const bootstrap = async ({
   setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart })
 
   const { mergedComposeFiles } = await mergeComposeFiles(composeFile)
-  const { mergedComposeFilesWithVersion } = getComposeFilesWithVersion(composeFile, mergedComposeFiles)
-  const { dockerComposeFile } = getParsedComposeFile(mergedComposeFilesWithVersion)
-  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFile)
+
+  const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles)
+
+  const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(composeFile, dockerComposeFile)
+
+  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFileWithVersion)
+
   const dockerEventEmitter = createDockerEventEmitter(composeFilePath)
 
   mutables.runners = transformDockestServicesToRunners({
-    dockerComposeFile,
+    dockerComposeFile: dockerComposeFileWithVersion,
     dockestServices,
     runMode,
     dockerEventEmitter,

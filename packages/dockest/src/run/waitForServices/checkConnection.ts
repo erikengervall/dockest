@@ -13,7 +13,7 @@ const RETRY_COUNT = 10
 export const acquireConnection: AcquireConnectionFunctionType = ({ host, port }) =>
   new Promise((resolve, reject) => {
     let connected = false
-    let timeoutId: NodeJS.Timeout | null = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
 
     const netSocket = net
       .createConnection({ host, port })
