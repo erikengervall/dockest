@@ -21,7 +21,7 @@
     "is-docker": "^2.0.0",
     "jest": "^24.9.0",
     "js-yaml": "^3.13.1",
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.7",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
