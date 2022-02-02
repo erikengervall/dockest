@@ -35,7 +35,7 @@ export function getComposeFilesWithVersion(
     versionNumber = DOCKEST_COMPOSE_FILE_VERSION
   }
 
-  const mergedComposeFilesWithVersion = `version: "${versionNumber}"\n${mergedComposeFiles}`
+  const mergedComposeFilesWithVersion = `version: '${versionNumber}'\n${mergedComposeFiles}`
 
   return {
     mergedComposeFilesWithVersion,

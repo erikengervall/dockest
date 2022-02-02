@@ -24,8 +24,9 @@ describe('getComposeFilesWithVersion', () => {
       nodeProcess,
     )
 
+    expect(mergedComposeFilesWithVersion).toContain('version')
     expect(mergedComposeFilesWithVersion).toMatchInlineSnapshot(`
-      "version: \\"3.8\\"
+      "version: '3.8'
       services:
       redis:
         image: redis:5.0.3-alpine
