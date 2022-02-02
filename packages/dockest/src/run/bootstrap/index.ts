@@ -5,6 +5,7 @@ import { setupExitHandler } from './setupExitHandler'
 import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
 import { writeComposeFile } from './writeComposeFile'
 import { createDockerEventEmitter } from './createDockerEventEmitter'
+import { getComposeFilesWithVersion } from './getComposeFilesWithVersion'
 import { DockestConfig, DockestService } from '../../@types'
 
 export const bootstrap = async ({
@@ -26,13 +27,18 @@ export const bootstrap = async ({
 }) => {
   setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart })
 
-  const { mergedComposeFiles } = await mergeComposeFiles({ composeFile })
+  const { mergedComposeFiles } = await mergeComposeFiles(composeFile)
+
   const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles)
-  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFile)
+
+  const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(composeFile, dockerComposeFile)
+
+  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFileWithVersion)
+
   const dockerEventEmitter = createDockerEventEmitter(composeFilePath)
 
   mutables.runners = transformDockestServicesToRunners({
-    dockerComposeFile,
+    dockerComposeFile: dockerComposeFileWithVersion,
     dockestServices,
     runMode,
     dockerEventEmitter,

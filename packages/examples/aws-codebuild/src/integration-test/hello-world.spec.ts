@@ -18,7 +18,7 @@ afterEach(async () => {
           reject(err)
           return
         }
-        resolve()
+        resolve(void 0)
       })
     })
   }
@@ -34,7 +34,7 @@ test('can send a request to the container and it can send a request to us', asyn
       })
       .listen(PORT, () => {
         console.log(`Serving on http://${HOSTNAME}:${PORT}`) // eslint-disable-line no-console
-        resolve()
+        resolve(void 0)
       })
   })
 

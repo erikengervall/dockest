@@ -3,9 +3,7 @@ import * as io from 'io-ts'
 import { PathReporter } from 'io-ts/lib/PathReporter'
 import * as Either from 'fp-ts/lib/Either'
 import { pipe, identity, flow } from 'fp-ts/lib/function'
-import { DockerComposeFile } from '../../@types'
 import { DockestError } from '../../Errors'
-import { Logger } from '../../Logger'
 
 const PortBinding = io.type({
   published: io.number,
@@ -56,7 +54,6 @@ const DockerComposeService = io.partial({
 })
 
 const ComposeFile = io.type({
-  version: io.string,
   services: io.record(io.string, DockerComposeService),
 })
 
@@ -66,20 +63,9 @@ const handleDecodeError = (err: io.Errors) => {
 }
 
 const decodeComposeFile = flow(ComposeFile.decode, Either.fold(handleDecodeError, identity))
-const DOCKEST_COMPOSE_FILE_VERSION = '3.8'
 
-export const getParsedComposeFile = (mergedComposeFiles: string): { dockerComposeFile: DockerComposeFile } => {
+export function getParsedComposeFile(mergedComposeFiles: string) {
   const dockerComposeFile = pipe(mergedComposeFiles, safeLoad, decodeComposeFile)
-
-  const versionNumber = parseFloat(dockerComposeFile.version)
-  if (Math.trunc(versionNumber) < 3) {
-    throw new DockestError(`Incompatible docker-compose file version. Please use version '3.x'`)
-  } else if (dockerComposeFile.version !== DOCKEST_COMPOSE_FILE_VERSION) {
-    Logger.warn(
-      `You should upgrade to docker-compose file version '${DOCKEST_COMPOSE_FILE_VERSION}'. Dockest automatically uses that version.`,
-    )
-    dockerComposeFile.version = DOCKEST_COMPOSE_FILE_VERSION
-  }
 
   return {
     dockerComposeFile,

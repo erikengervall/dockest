@@ -17,8 +17,8 @@ describe('index.spec.js', () => {
           await getUserNameById('4')
           throw new Error(`Guarantees failure`)
         } catch (error) {
-          expect(error.response.status).toEqual(404)
-          expect(error.response.data).toEqual('Could not find user')
+          expect((error as any).response.status).toEqual(404)
+          expect((error as any).response.data).toEqual('Could not find user')
         }
       })
     })
@@ -41,7 +41,7 @@ describe('index.spec.js', () => {
         await notFound()
         throw new Error(`Guarantees failure`)
       } catch (error) {
-        expect(error.response.status).toEqual(404)
+        expect((error as any).response.status).toEqual(404)
       }
     })
   })

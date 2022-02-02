@@ -3,13 +3,7 @@ import { DockestConfig } from '../../@types'
 import { DockestError } from '../../Errors'
 import { execaWrapper } from '../../utils/execaWrapper'
 
-export const mergeComposeFiles = async ({
-  composeFile,
-  nodeProcess = process,
-}: {
-  composeFile: DockestConfig['composeFile']
-  nodeProcess?: NodeJS.Process
-}) => {
+export async function mergeComposeFiles(composeFile: DockestConfig['composeFile'], nodeProcess = process) {
   const composeFiles = []
   if (Array.isArray(composeFile)) {
     composeFiles.push(...composeFile)
@@ -17,12 +11,12 @@ export const mergeComposeFiles = async ({
     composeFiles.push(composeFile)
   }
 
-  const command = `${composeFiles.reduce(
-    (acc, curr) => (acc += ` -f ${path.join(nodeProcess.cwd(), curr)}`),
+  const dockerComposeConfigCommand = `${composeFiles.reduce(
+    (commandAcc, composePath) => (commandAcc += ` -f ${path.join(nodeProcess.cwd(), composePath)}`),
     'docker-compose',
   )} config`
 
-  const { stderr, exitCode, stdout } = await execaWrapper(command, {
+  const { stderr, exitCode, stdout: mergedComposeFiles } = execaWrapper(dockerComposeConfigCommand, {
     execaOpts: { reject: false },
     logStdout: true,
   })
@@ -34,6 +28,6 @@ export const mergeComposeFiles = async ({
   }
 
   return {
-    mergedComposeFiles: stdout,
+    mergedComposeFiles,
   }
 }
