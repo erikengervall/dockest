@@ -34,7 +34,9 @@
     "clean": "node_modules/.bin/rimraf dist",
     "build": "node_modules/.bin/tsc",
     "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json",
-    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
+    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "dependencies": {
     "chalk": "^3.0.0",
@@ -44,7 +46,8 @@
     "is-docker": "^2.0.0",
     "js-yaml": "^3.13.1",
     "rxjs": "^6.5.4",
-    "toposort": "^2.0.2"
+    "toposort": "^2.0.2",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
@@ -55,5 +58,6 @@
     "mockdate": "^2.0.5",
     "ts-jest": "^25.3.0",
     "typescript": "^3.7.5"
-  }
+  },
+  "snyk": true
 }
