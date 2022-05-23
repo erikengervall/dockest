@@ -42,3 +42,13 @@ services:
       target: 6379
 version: '3.8'
 `
+
+export const MERGED_COMPOSE_FILES_VERSION_2_3_3_PLUS = `
+name: application
+services:
+  redis:
+    image: redis:5.0.3-alpine
+    ports:
+    - published: '6379'
+      target: 6379
+`

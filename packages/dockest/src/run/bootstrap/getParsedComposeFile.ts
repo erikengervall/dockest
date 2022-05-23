@@ -6,7 +6,7 @@ import { pipe, identity, flow } from 'fp-ts/lib/function'
 import { DockestError } from '../../Errors'
 
 const PortBinding = io.type({
-  published: io.number,
+  published: io.union([io.number, io.string]),
   target: io.number,
 })
 
