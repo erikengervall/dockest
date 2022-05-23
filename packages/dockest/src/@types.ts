@@ -30,8 +30,8 @@ export interface RunnersObj {
 
 export type DockerComposePortStringFormat = string
 export type DockerComposePortObjectFormat = {
-  /** The publicly exposed port */
-  published: number
+  /** The publicly exposed port. Became a string after docker compose version 2.3.3 */
+  published: number | string
   /** The port inside the container */
   target: number
 }

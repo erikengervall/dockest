@@ -1,8 +1,8 @@
 import { getParsedComposeFile } from './getParsedComposeFile'
-import { MERGED_COMPOSE_FILES } from '../../test-utils'
+import { MERGED_COMPOSE_FILES, MERGED_COMPOSE_FILES_VERSION_2_3_3_PLUS } from '../../test-utils'
 
 describe('getParsedComposeFile', () => {
-  describe('happy', () => {
+  describe('with published ports as number', () => {
     it('should work', () => {
       const { dockerComposeFile } = getParsedComposeFile(MERGED_COMPOSE_FILES)
 
@@ -20,6 +20,29 @@ describe('getParsedComposeFile', () => {
             },
           },
           "version": "3.8",
+        }
+      `)
+    })
+  })
+
+  describe('with published ports as string', () => {
+    it('should work', () => {
+      const { dockerComposeFile } = getParsedComposeFile(MERGED_COMPOSE_FILES_VERSION_2_3_3_PLUS)
+
+      expect(dockerComposeFile).toMatchInlineSnapshot(`
+        Object {
+          "name": "application",
+          "services": Object {
+            "redis": Object {
+              "image": "redis:5.0.3-alpine",
+              "ports": Array [
+                Object {
+                  "published": "6379",
+                  "target": 6379,
+                },
+              ],
+            },
+          },
         }
       `)
     })
