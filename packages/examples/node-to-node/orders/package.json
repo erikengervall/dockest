@@ -8,6 +8,6 @@
     "docker:run": "docker container run --rm -p 1338:1338 -t orders"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   }
 }
