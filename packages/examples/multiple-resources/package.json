@@ -10,7 +10,7 @@
   "dependencies": {
     "ioredis": "^4.14.0",
     "kafkajs": "^1.10.0",
-    "knex": "^0.20.8",
+    "knex": "^2.4.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.21.3",
