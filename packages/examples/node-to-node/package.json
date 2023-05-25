@@ -5,17 +5,21 @@
   "scripts": {
     "dev:examples:link": "yarn link dockest",
     "dev:examples:unlink": "yarn unlink dockest",
-    "test:examples": "node_modules/.bin/ts-node ./dockest"
+    "test:examples": "node_modules/.bin/ts-node ./dockest",
+    "prepare": "yarn run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.3",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
     "dockest": "file:../../dockest",
     "jest": "^25.1.0",
-    "ts-jest": "^25.0.0",
+    "ts-jest": "^25.3.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
-  }
+  },
+  "snyk": true
 }
