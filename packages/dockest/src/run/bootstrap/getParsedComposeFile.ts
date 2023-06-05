@@ -10,26 +10,12 @@ const PortBinding = io.type({
   target: io.number,
 })
 
-const PortBindingFromString = new io.Type(
-  'PortBindingFromComposeString',
-  PortBinding.is,
-  (input: string, context) => {
-    const match = input.match(/(\d*):(\d*)\/\w*/)
-    return match
-      ? io.success({
-          target: parseInt(match[2], 10),
-          published: parseInt(match[1], 10),
-        })
-      : io.failure(input, context, 'String did not match expected format.')
-  },
-  identity,
-)
 const PortBindingFromComposeFile = new io.Type(
   'PortBindingFromComposeFile',
   PortBinding.is,
-  (input, context) =>
-    pipe(
-      io.string.is(input) ? PortBindingFromString.validate(input, context) : PortBinding.validate(input, context),
+  (input, context) => {
+    return pipe(
+      PortBinding.validate(input, context),
       Either.fold(
         err =>
           io.failure(
@@ -45,7 +31,8 @@ const PortBindingFromComposeFile = new io.Type(
           ),
         binding => io.success(binding),
       ),
-    ),
+    )
+  },
   identity,
 )
 
