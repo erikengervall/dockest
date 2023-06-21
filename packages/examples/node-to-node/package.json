@@ -14,7 +14,7 @@
     "@types/jest": "^24.9.1",
     "dockest": "file:../../dockest",
     "jest": "^25.1.0",
-    "ts-jest": "^25.0.0",
+    "ts-jest": "^26.0.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   }
