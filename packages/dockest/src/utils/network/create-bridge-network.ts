@@ -6,5 +6,5 @@ export const createBridgeNetwork = async () => {
                     --driver bridge \
                     ${BRIDGE_NETWORK_NAME}`;
 
-  await execaWrapper(command);
+  execaWrapper(command);
 };

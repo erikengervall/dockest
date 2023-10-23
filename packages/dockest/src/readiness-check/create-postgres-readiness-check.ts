@@ -36,7 +36,7 @@ const postgresReadinessCheck =
                       -U ${config.POSTGRES_USER} \
                       -c 'select 1'"`;
 
-    await execaWrapper(command, { runner: args.runner });
+    execaWrapper(command, { runner: args.runner });
   };
 
 export const createPostgresReadinessCheck = (args?: { config?: ConfigMapper; retryCount?: number }): ReadinessCheck =>

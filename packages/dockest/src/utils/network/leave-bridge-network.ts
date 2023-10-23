@@ -6,5 +6,5 @@ export const leaveBridgeNetwork = async ({ containerId }: { containerId: string 
                     ${BRIDGE_NETWORK_NAME} \
                     ${containerId}`;
 
-  await execaWrapper(command);
+  execaWrapper(command);
 };

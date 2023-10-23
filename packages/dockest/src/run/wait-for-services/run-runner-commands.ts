@@ -8,6 +8,6 @@ export const runRunnerCommands = async ({ runner, runner: { commands } }: { runn
     if (typeof command === 'function') {
       command = command(runner.containerId);
     }
-    await execaWrapper(command, { runner, logPrefix: LOG_PREFIX, logStdout: true });
+    execaWrapper(command, { runner, logPrefix: LOG_PREFIX, logStdout: true });
   }
 };

@@ -13,7 +13,7 @@ const webReadinessCheck =
     const command = `docker exec ${args.runner.containerId} \
                           sh -c "wget --quiet --tries=1 --spider http://localhost:${port}/.well-known/healthcheck"`;
 
-    await execaWrapper(command, { runner: args.runner });
+    execaWrapper(command, { runner: args.runner });
   };
 
 export const createWebReadinessCheck = (args?: { port?: PortConfig; retryCount?: number }): ReadinessCheck =>

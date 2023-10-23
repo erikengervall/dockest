@@ -23,5 +23,5 @@ export const dockerComposeUp = async ({
                     --detach \
                     ${serviceName}`;
 
-  await execaWrapper(command);
+  execaWrapper(command);
 };

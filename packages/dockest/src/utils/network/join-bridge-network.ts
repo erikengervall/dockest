@@ -7,5 +7,5 @@ export const joinBridgeNetwork = async ({ containerId, alias }: { containerId: s
                     ${`--alias ${alias}`} \
                     ${containerId}`;
 
-  await execaWrapper(command);
+  execaWrapper(command);
 };
