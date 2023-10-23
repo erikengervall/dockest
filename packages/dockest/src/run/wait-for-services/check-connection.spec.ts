@@ -12,66 +12,66 @@ jest.mock('rxjs/operators', () => {
 const acquireConnection: AcquireConnectionFunctionType = () => Promise.resolve();
 const checkConnection = createCheckConnection({ acquireConnection });
 
-it('fails when the die event is emitted', async done => {
-  const dockerEventStream$ = new ReplaySubject();
-  dockerEventStream$.next({ action: 'die' });
-  const runner = createRunner({ dockerEventStream$ } as any);
-
-  checkConnection({ runner })
-    .then(() => done.fail('Should have thrown an error.'))
-    .catch(err => {
-      expect(err.message).toEqual('Container unexpectedly died.');
-      done();
+describe('happy', () => {
+  it('succeeds with zero port checks', async () => {
+    const dockerEventStream$ = new ReplaySubject() as any;
+    const runner = createRunner({
+      dockerEventStream$,
+      dockerComposeFileService: { image: 'node:10-alpine', ports: [] },
     });
-});
 
-it('fails when the kill event is emitted', async done => {
-  const dockerEventStream$ = new ReplaySubject();
-  dockerEventStream$.next({ action: 'kill' });
-  const runner = createRunner({ dockerEventStream$ } as any);
+    const result = await checkConnection({ runner });
 
-  checkConnection({ runner })
-    .then(() => done.fail('Should have thrown an error.'))
-    .catch(err => {
-      expect(err.message).toEqual('Container unexpectedly died.');
-      done();
-    });
-});
-
-it('succeeds with zero port checks', async () => {
-  const dockerEventStream$ = new ReplaySubject() as any;
-  const runner = createRunner({
-    dockerEventStream$,
-    dockerComposeFileService: { image: 'node:10-alpine', ports: [] },
+    expect(result).toEqual(undefined);
   });
 
-  const result = await checkConnection({ runner });
+  it('succeeds when the port check is successfull', async () => {
+    const runner = createRunner({});
 
-  expect(result).toEqual(undefined);
+    const result = await checkConnection({ runner });
+
+    expect(result).toEqual(undefined);
+  });
 });
 
-it('succeeds when the port check is successfull', async () => {
-  const runner = createRunner({});
+describe('errors', () => {
+  it('fails when the die event is emitted', async () => {
+    const dockerEventStream$ = new ReplaySubject();
+    dockerEventStream$.next({ action: 'die' });
+    const runner = createRunner({ dockerEventStream$ } as any);
 
-  const result = await checkConnection({ runner });
+    try {
+      await checkConnection({ runner });
+      expect(true).toEqual('Should have thrown an error.');
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[DockestError: Container unexpectedly died.]`);
+    }
+  });
 
-  expect(result).toEqual(undefined);
-});
+  it('fails when the kill event is emitted', async () => {
+    const dockerEventStream$ = new ReplaySubject();
+    dockerEventStream$.next({ action: 'kill' });
+    const runner = createRunner({ dockerEventStream$ } as any);
 
-it('fails when acquire connection times out', async done => {
-  const acquireConnection: AcquireConnectionFunctionType = () => Promise.reject(new Error('Timeout'));
-  const checkConnection = createCheckConnection({ acquireConnection });
+    try {
+      await checkConnection({ runner });
+      expect(true).toEqual('Should have thrown an error.');
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[DockestError: Container unexpectedly died.]`);
+    }
+  });
 
-  const runner = createRunner({});
+  it('fails when acquire connection times out', async () => {
+    const acquireConnection: AcquireConnectionFunctionType = () => Promise.reject(new Error('Timeout'));
+    const checkConnection = createCheckConnection({ acquireConnection });
 
-  await checkConnection({
-    runner,
-  })
-    .then(() => {
-      done.fail('Should have thrown an error.');
-    })
-    .catch(err => {
-      expect(err.message).toEqual('[Check Connection] Timed out');
-      done();
-    });
+    const runner = createRunner({});
+
+    try {
+      await checkConnection({ runner });
+      expect(true).toEqual('Should have thrown an error.');
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[DockestError: [Check Connection] Timed out]`);
+    }
+  });
 });
