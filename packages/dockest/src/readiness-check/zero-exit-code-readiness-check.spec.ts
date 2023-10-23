@@ -1,5 +1,5 @@
-import { ReplaySubject, from, Observable } from 'rxjs';
-import { zeroExitCodeReadinessCheck } from './zeroExitCodeReadinessCheck';
+import { Observable, ReplaySubject, from } from 'rxjs';
+import { zeroExitCodeReadinessCheck } from './zero-exit-code-readiness-check';
 import { createRunner } from '../test-utils';
 
 const toPromise = <T = any>(input: Promise<T> | Observable<T>): Promise<T> => from(input).toPromise();

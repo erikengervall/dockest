@@ -1,11 +1,11 @@
-import { configureLogger } from './configureLogger';
-import { getParsedComposeFile } from './getParsedComposeFile';
-import { mergeComposeFiles } from './mergeComposeFiles';
-import { setupExitHandler } from './setupExitHandler';
-import { transformDockestServicesToRunners } from './transformDockestServicesToRunners';
-import { writeComposeFile } from './writeComposeFile';
-import { createDockerEventEmitter } from './createDockerEventEmitter';
-import { getComposeFilesWithVersion } from './getComposeFilesWithVersion';
+import { configureLogger } from './configure-logger';
+import { createDockerEventEmitter } from './create-docker-event-emitter';
+import { getComposeFilesWithVersion } from './get-compose-files-with-version';
+import { getParsedComposeFile } from './get-parsed-compose-file';
+import { mergeComposeFiles } from './merge-compose-files';
+import { setupExitHandler } from './setup-exit-handler';
+import { transformDockestServicesToRunners } from './transform-dockest-services-to-runners';
+import { writeComposeFile } from './write-compose-file';
 import { DockestConfig, DockestService } from '../../@types';
 
 export const bootstrap = async ({

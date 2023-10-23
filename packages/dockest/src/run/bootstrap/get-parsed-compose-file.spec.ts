@@ -1,4 +1,4 @@
-import { getParsedComposeFile } from './getParsedComposeFile';
+import { getParsedComposeFile } from './get-parsed-compose-file';
 
 const COMPOSE_FILE = `
 version: '3.8'

@@ -1,10 +1,10 @@
 import toposort from 'toposort';
-import { checkConnection } from './checkConnection';
-import { dockerComposeUp } from './dockerComposeUp';
-import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux';
-import { resolveContainerId } from './resolveContainerId';
-import { runReadinessCheck } from './runReadinessCheck';
-import { runRunnerCommands } from './runRunnerCommands';
+import { checkConnection } from './check-connection';
+import { dockerComposeUp } from './docker-compose-up';
+import { fixRunnerHostAccessOnLinux } from './fix-runner-host-access-on-linux';
+import { resolveContainerId } from './resolve-container-id';
+import { runReadinessCheck } from './run-readiness-check';
+import { runRunnerCommands } from './run-runner-commands';
 import { DockestConfig, Runner } from '../../@types';
 import { DOCKEST_HOST_ADDRESS } from '../../constants';
 import { DockestError } from '../../errors';

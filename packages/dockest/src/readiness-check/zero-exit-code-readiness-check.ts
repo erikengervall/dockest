@@ -2,7 +2,7 @@ import { race } from 'rxjs';
 import { filter, map, mapTo, take } from 'rxjs/operators';
 import { ReadinessCheck } from '../@types';
 import { DockestError } from '../errors';
-import { isDieEvent, isKillEvent } from '../run/bootstrap/createDockerEventEmitter';
+import { isDieEvent, isKillEvent } from '../run/bootstrap/create-docker-event-emitter';
 
 /**
  * A readiness check that succeeds when the service exits with the exit code 0.

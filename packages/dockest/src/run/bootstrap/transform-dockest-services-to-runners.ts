@@ -1,5 +1,5 @@
-import { DockerEventEmitter } from './createDockerEventEmitter';
-import { createDockerServiceEventStream } from './createDockerServiceEventStream';
+import { DockerEventEmitter } from './create-docker-event-emitter';
+import { createDockerServiceEventStream } from './create-docker-service-event-stream';
 import { DockerComposeFile, DockestConfig, DockestService, Runner, RunnersObj } from '../../@types';
 import { ConfigurationError } from '../../errors';
 import { Logger } from '../../logger';

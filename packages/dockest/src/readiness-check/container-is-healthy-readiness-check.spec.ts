@@ -1,5 +1,5 @@
-import { ReplaySubject, from, Observable } from 'rxjs';
-import { containerIsHealthyReadinessCheck } from './containerIsHealthyReadinessCheck';
+import { Observable, ReplaySubject, from } from 'rxjs';
+import { containerIsHealthyReadinessCheck } from './container-is-healthy-readiness-check';
 import { createRunner } from '../test-utils';
 
 const toPromise = <T = any>(input: Promise<T> | Observable<T>): Promise<T> => from(input).toPromise();

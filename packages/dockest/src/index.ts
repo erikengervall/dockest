@@ -3,11 +3,11 @@ import { MINIMUM_JEST_VERSION } from './constants';
 import { BaseError, ConfigurationError } from './errors';
 import { Logger } from './logger';
 import { bootstrap } from './run/bootstrap';
-import { debugMode } from './run/debugMode';
+import { debugMode } from './run/debug-mode';
 import { createLogWriter } from './run/log-writer';
-import { runJest } from './run/runJest';
+import { runJest } from './run/run-jest';
 import { teardown } from './run/teardown';
-import { waitForServices } from './run/waitForServices';
+import { waitForServices } from './run/wait-for-services';
 import { setGlobalCustomZodErrorMap } from './utils/custom-zod-error-map';
 import { getOpts } from './utils/get-opts';
 

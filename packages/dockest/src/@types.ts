@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Logger } from './logger';
-import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter';
-import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream';
+import { DockerEventEmitter } from './run/bootstrap/create-docker-event-emitter';
+import { DockerServiceEventStream } from './run/bootstrap/create-docker-service-event-stream';
 import { LogWriterModeType } from './run/log-writer';
 
 type ContainerId = string;

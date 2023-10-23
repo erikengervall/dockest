@@ -1,6 +1,6 @@
 import { fromEventPattern, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
-import { DockerEventEmitter, DockerEventType } from './createDockerEventEmitter';
+import { DockerEventEmitter, DockerEventType } from './create-docker-event-emitter';
 
 export type DockerServiceEventStream = Observable<DockerEventType>;
 

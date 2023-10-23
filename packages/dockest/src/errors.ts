@@ -1,5 +1,5 @@
-import { Runner, DockestConfig } from './@types';
-import { DockerEventType } from './run/bootstrap/createDockerEventEmitter';
+import { DockestConfig, Runner } from './@types';
+import { DockerEventType } from './run/bootstrap/create-docker-event-emitter';
 
 export interface Payload {
   runner?: Runner;

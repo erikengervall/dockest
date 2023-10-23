@@ -1,5 +1,5 @@
 import { ReplaySubject } from 'rxjs';
-import { createCheckConnection, AcquireConnectionFunctionType } from './checkConnection';
+import { AcquireConnectionFunctionType, createCheckConnection } from './check-connection';
 import { createRunner } from '../../test-utils';
 
 // mock delays to tick immediately

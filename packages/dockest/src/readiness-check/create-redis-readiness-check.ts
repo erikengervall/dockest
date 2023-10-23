@@ -1,5 +1,5 @@
-import { withNoStop } from './withNoStop';
-import { withRetry } from './withRetry';
+import { withNoStop } from './with-no-stop';
+import { withRetry } from './with-retry';
 import { ReadinessCheck, Runner } from '../@types';
 import { execaWrapper } from '../utils/execa-wrapper';
 

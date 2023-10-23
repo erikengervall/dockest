@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events';
 import { waitForServices } from '.';
-import { checkConnection } from './checkConnection';
-import { runReadinessCheck } from './runReadinessCheck';
 // import { fixRunnerHostAccessOnLinux } from './fixRunnerHostAccessOnLinux'
-import { dockerComposeUp } from './dockerComposeUp';
-import { resolveContainerId } from './resolveContainerId';
-import { runRunnerCommands } from './runRunnerCommands';
+import { checkConnection } from './check-connection';
+import { dockerComposeUp } from './docker-compose-up';
+import { resolveContainerId } from './resolve-container-id';
+import { runReadinessCheck } from './run-readiness-check';
+import { runRunnerCommands } from './run-runner-commands';
 import { sleepWithLog } from '../..';
 import { createRunner } from '../../test-utils';
 import { getOpts } from '../../utils/get-opts';

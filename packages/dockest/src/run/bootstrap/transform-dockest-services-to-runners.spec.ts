@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
-import { transformDockestServicesToRunners } from './transformDockestServicesToRunners';
-import { DockestService, DockerComposeFile } from '../../@types';
+import { transformDockestServicesToRunners } from './transform-dockest-services-to-runners';
+import { DockerComposeFile, DockestService } from '../../@types';
 
 const serviceName = 'service1';
 const dockerComposeFile: DockerComposeFile = {

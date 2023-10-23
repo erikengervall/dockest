@@ -1,4 +1,4 @@
-import { getComposeFilesWithVersion } from './getComposeFilesWithVersion';
+import { getComposeFilesWithVersion } from './get-compose-files-with-version';
 import { DOCKER_COMPOSE_FILE } from '../../test-utils';
 
 const nodeProcess: any = { cwd: () => __dirname };

@@ -1,4 +1,4 @@
-import { runReadinessCheck } from './runReadinessCheck';
+import { runReadinessCheck } from './run-readiness-check';
 import { createRunner } from '../../test-utils';
 
 it('fails in case the readiness rejects', async done => {

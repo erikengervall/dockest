@@ -1,4 +1,4 @@
-import { mergeComposeFiles } from './mergeComposeFiles';
+import { mergeComposeFiles } from './merge-compose-files';
 
 const nodeProcess: any = { cwd: () => __dirname };
 
