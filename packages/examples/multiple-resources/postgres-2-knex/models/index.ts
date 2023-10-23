@@ -1,6 +1,6 @@
-import Knex from 'knex'
+import Knex from 'knex';
 
-const knexConfig = require('../../knexfile.js') // eslint-disable-line @typescript-eslint/no-var-requires
+const knexConfig = require('../../knexfile.js'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 export const knex = Knex({
   client: knexConfig.client,
@@ -11,4 +11,4 @@ export const knex = Knex({
     database: knexConfig.connection.database,
     port: knexConfig.connection.port,
   },
-})
+});

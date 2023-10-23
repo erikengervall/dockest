@@ -1,6 +1,6 @@
-import { db } from './models'
+import { db } from './models';
 
-const { seedUser } = require('./data.json') // eslint-disable-line @typescript-eslint/no-var-requires
+const { seedUser } = require('./data.json'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 const getFirstEntry = async () =>
   db.UserModel.findOne({
@@ -8,12 +8,12 @@ const getFirstEntry = async () =>
       email: seedUser.email,
     },
     returning: true,
-  })
+  });
 
 export const app = async () => {
-  const firstEntry = await getFirstEntry()
+  const firstEntry = await getFirstEntry();
 
   return {
     firstEntry,
-  }
-}
+  };
+};

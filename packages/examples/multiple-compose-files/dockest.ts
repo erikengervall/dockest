@@ -1,12 +1,12 @@
-import { Dockest, logLevel } from 'dockest'
-import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check'
+import { Dockest, logLevel } from 'dockest';
+import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check';
 
 const dockest = new Dockest({
   composeFile: ['docker-compose-redis.yml', 'docker-compose-postgres.yml'],
   dumpErrors: true,
   jestLib: require('jest'),
   logLevel: logLevel.DEBUG,
-})
+});
 
 dockest.run([
   {
@@ -24,4 +24,4 @@ dockest.run([
     serviceName: 'multiple_compose_files_redis',
     readinessCheck: createRedisReadinessCheck(),
   },
-])
+]);

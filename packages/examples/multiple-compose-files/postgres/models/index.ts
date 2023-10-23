@@ -1,12 +1,12 @@
-import Sequelize from 'sequelize'
+import Sequelize from 'sequelize';
 
-const postgresConfig = require('../config/postgresConfig') // eslint-disable-line @typescript-eslint/no-var-requires
+const postgresConfig = require('../config/postgresConfig'); // eslint-disable-line @typescript-eslint/no-var-requires
 
-const config = postgresConfig.test
+const config = postgresConfig.test;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-const sequelize = new Sequelize(config)
+const sequelize = new Sequelize(config);
 
 const UserModel = sequelize.define(
   'User',
@@ -16,10 +16,10 @@ const UserModel = sequelize.define(
     email: Sequelize.STRING,
   },
   {},
-)
+);
 
 export const db = {
   sequelize,
   Sequelize,
   UserModel,
-}
+};

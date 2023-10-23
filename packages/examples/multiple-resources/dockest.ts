@@ -1,5 +1,5 @@
-import { Dockest, logLevel, sleepWithLog } from 'dockest'
-import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check'
+import { Dockest, logLevel, sleepWithLog } from 'dockest';
+import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check';
 
 const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
@@ -12,7 +12,7 @@ const { run } = new Dockest({
     updateSnapshot: true,
   },
   logLevel: logLevel.DEBUG,
-})
+});
 
 run([
   {
@@ -48,4 +48,4 @@ run([
     ],
     readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
   },
-])
+]);

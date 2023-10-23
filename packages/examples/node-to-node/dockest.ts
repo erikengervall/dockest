@@ -1,11 +1,11 @@
-import { Dockest, logLevel, sleepWithLog } from 'dockest'
+import { Dockest, logLevel, sleepWithLog } from 'dockest';
 
 const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
   dumpErrors: true,
   jestLib: require('jest'),
   logLevel: logLevel.DEBUG,
-})
+});
 
 run([
   {
@@ -19,4 +19,4 @@ run([
       },
     ],
   },
-])
+]);
