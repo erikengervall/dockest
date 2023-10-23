@@ -99,7 +99,14 @@ export const createCheckConnection = ({
     ),
     of(...ports.map(selectPortMapping)).pipe(
       // concatMap -> run checks for each port in sequence
-      concatMap(({ [portKey]: port }) => checkPortConnection({ runner, host, port, acquireConnection })),
+      concatMap(({ [portKey]: port }) =>
+        checkPortConnection({
+          runner,
+          host,
+          port,
+          acquireConnection,
+        }),
+      ),
       // we do not care about the single elements, we only want this stream to complete without errors.
       ignoreElements(),
     ),

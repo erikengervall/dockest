@@ -71,8 +71,8 @@ test('can collect aggregated logs', async () => {
   writer.register('foo', '1')
   await new Promise(res => setImmediate(res))
   expect(resultMap).toMatchInlineSnapshot(`
-    Object {
-      "dockest.log": Object {
+    {
+      "dockest.log": {
         "text": "mock text from foo
     ",
       },
@@ -89,8 +89,8 @@ test('can collect individual logs', async () => {
   writer.register('foo', '1')
   await new Promise(res => setImmediate(res))
   expect(resultMap).toMatchInlineSnapshot(`
-    Object {
-      "foo.dockest.log": Object {
+    {
+      "foo.dockest.log": {
         "text": "mock text from foo
     ",
       },
@@ -108,12 +108,12 @@ test('can collect individual and aggregated logs', async () => {
 
   await new Promise(res => setImmediate(res))
   expect(resultMap).toMatchInlineSnapshot(`
-    Object {
-      "dockest.log": Object {
+    {
+      "dockest.log": {
         "text": "mock text from foo
     ",
       },
-      "foo.dockest.log": Object {
+      "foo.dockest.log": {
         "text": "mock text from foo
     ",
       },
@@ -132,17 +132,17 @@ test('can collect individual and aggregated logs from multiple services', async 
 
   await new Promise(res => setImmediate(res))
   expect(resultMap).toMatchInlineSnapshot(`
-    Object {
-      "bar.dockest.log": Object {
+    {
+      "bar.dockest.log": {
         "text": "mock text from bar
     ",
       },
-      "dockest.log": Object {
+      "dockest.log": {
         "text": "mock text from foo
     mock text from bar
     ",
       },
-      "foo.dockest.log": Object {
+      "foo.dockest.log": {
         "text": "mock text from foo
     ",
       },

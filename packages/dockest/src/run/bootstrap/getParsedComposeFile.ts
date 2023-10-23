@@ -9,13 +9,19 @@ const PortBinding = io.type({
   published: io.number,
   target: io.number,
 })
+type PortBinding = io.TypeOf<typeof PortBinding>
+
+const PortBindingInput = io.type({
+  published: io.union([io.number, io.string]),
+  target: io.union([io.number, io.string]),
+})
 
 const PortBindingFromComposeFile = new io.Type(
   'PortBindingFromComposeFile',
   PortBinding.is,
   (input, context) => {
-    return pipe(
-      PortBinding.validate(input, context),
+    const result = pipe(
+      PortBindingInput.validate(input, context),
       Either.fold(
         err =>
           io.failure(
@@ -27,11 +33,17 @@ const PortBindingFromComposeFile = new io.Type(
                 .filter(err => err.message)
                 .map(err => `- ${err.message}`)
                 .join('\n') +
-              'Please report this issue on the dockest issue tracker: https://github.com/erikengervall/dockest/issues',
+              'Are you using the Long Port Format (https://docs.docker.com/compose/compose-file/compose-file-v3/#long-syntax-1)? If you are and are still experiencing issues, please report this issue on the dockest issue tracker: https://github.com/erikengervall/dockest/issues',
           ),
-        binding => io.success(binding),
+        binding =>
+          io.success({
+            published: Number(binding.published),
+            target: Number(binding.target),
+          }),
       ),
     )
+
+    return result
   },
   identity,
 )

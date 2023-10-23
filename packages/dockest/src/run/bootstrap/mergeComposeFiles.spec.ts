@@ -9,7 +9,7 @@ const nodeProcess: any = { cwd: () => __dirname }
 
 /** compose-file.yml
  version: '3.8'
- 
+
  services:
    redis:
      image: redis:5.0.3-alpine
@@ -49,11 +49,21 @@ describe('mergeComposeFiles', () => {
     it('should work for single compose file', async () => {
       const { mergedComposeFiles } = await mergeComposeFiles('mergeComposeFiles.spec.yml', nodeProcess)
 
-      expect(mergedComposeFiles).toContain('redis:')
-      expect(mergedComposeFiles).toContain('image: redis:5.0.3-alpine')
-      expect(mergedComposeFiles).toContain('ports:')
-      expect(mergedComposeFiles).toContain('published: 6379')
-      expect(mergedComposeFiles).toContain('target: 6379')
+      expect(mergedComposeFiles).toMatchInlineSnapshot(`
+        "name: bootstrap
+        services:
+          redis:
+            image: redis:5.0.3-alpine
+            networks:
+              default: null
+            ports:
+            - target: 6379
+              published: "6379"
+              protocol: tcp
+        networks:
+          default:
+            name: bootstrap_default"
+      `)
     })
 
     it('should work for multiple compose files', async () => {
@@ -61,19 +71,33 @@ describe('mergeComposeFiles', () => {
         ['mergeComposeFiles.spec.yml', 'mergeComposeFiles2.spec.yml'],
         nodeProcess,
       )
-      expect(mergedComposeFiles).toContain('postgres:')
-      expect(mergedComposeFiles).toContain(`environment:
-      POSTGRES_DB: nobueno
-      POSTGRES_PASSWORD: is
-      POSTGRES_USER: ramda`)
-      expect(mergedComposeFiles).toContain('image: postgres:9.6-alpine')
-      expect(mergedComposeFiles).toContain('published: 5433')
-      expect(mergedComposeFiles).toContain('target: 5432')
-
-      expect(mergedComposeFiles).toContain('redis:')
-      expect(mergedComposeFiles).toContain('image: redis:5.0.3-alpine')
-      expect(mergedComposeFiles).toContain('published: 6379')
-      expect(mergedComposeFiles).toContain('target: 6379')
+      expect(mergedComposeFiles).toMatchInlineSnapshot(`
+        "name: bootstrap
+        services:
+          postgres:
+            environment:
+              POSTGRES_DB: nobueno
+              POSTGRES_PASSWORD: is
+              POSTGRES_USER: ramda
+            image: postgres:9.6-alpine
+            networks:
+              default: null
+            ports:
+            - target: 5432
+              published: "5433"
+              protocol: tcp
+          redis:
+            image: redis:5.0.3-alpine
+            networks:
+              default: null
+            ports:
+            - target: 6379
+              published: "6379"
+              protocol: tcp
+        networks:
+          default:
+            name: bootstrap_default"
+      `)
     })
   })
 

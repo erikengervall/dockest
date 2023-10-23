@@ -22,14 +22,14 @@ describe('transformDockestServicesToRunners', () => {
       })
 
       expect(runners).toMatchInlineSnapshot(`
-        Object {
-          "service1": Object {
-            "commands": Array [],
+        {
+          "service1": {
+            "commands": [],
             "containerId": "",
-            "dependsOn": Array [],
-            "dockerComposeFileService": Object {
-              "ports": Array [
-                Object {
+            "dependsOn": [],
+            "dockerComposeFileService": {
+              "ports": [
+                {
                   "published": 3000,
                   "target": 3000,
                 },

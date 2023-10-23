@@ -8,9 +8,9 @@ describe('getOpts', () => {
         perfStart: expect.any(Number),
       },
       `
-      Object {
+      {
         "composeFile": "docker-compose.yml",
-        "composeOpts": Object {
+        "composeOpts": {
           "alwaysRecreateDeps": false,
           "build": false,
           "forceRecreate": false,
@@ -20,9 +20,9 @@ describe('getOpts', () => {
           "noRecreate": false,
           "quietPull": false,
         },
-        "containerLogs": Object {
+        "containerLogs": {
           "logPath": "./",
-          "modes": Array [
+          "modes": [
             "aggregate",
           ],
           "serviceNameFilter": undefined,
@@ -31,16 +31,15 @@ describe('getOpts', () => {
         "dumpErrors": false,
         "exitHandler": [Function],
         "hostname": "host.docker.internal",
-        "jestLib": Object {
+        "jestLib": {
           "SearchSource": [Function],
-          "TestScheduler": [Function],
-          "TestWatcher": [Function],
+          "createTestScheduler": [Function],
           "getVersion": [Function],
           "run": [Function],
           "runCLI": [Function],
         },
-        "jestOpts": Object {
-          "projects": Array [
+        "jestOpts": {
+          "projects": [
             ".",
           ],
           "runInBand": true,

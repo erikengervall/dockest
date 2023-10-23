@@ -12,12 +12,12 @@ describe('getComposeFilesWithVersion', () => {
     )
 
     expect(dockerComposeFileWithVersion).toMatchInlineSnapshot(`
-      Object {
-        "services": Object {
-          "redis": Object {
+      {
+        "services": {
+          "redis": {
             "image": "redis:5.0.3-alpine",
-            "ports": Array [
-              Object {
+            "ports": [
+              {
                 "published": 6379,
                 "target": 6379,
               },
@@ -37,20 +37,20 @@ describe('getComposeFilesWithVersion', () => {
     )
 
     expect(dockerComposeFileWithVersion).toMatchInlineSnapshot(`
-Object {
-  "services": Object {
-    "redis": Object {
-      "image": "redis:5.0.3-alpine",
-      "ports": Array [
-        Object {
-          "published": 6379,
-          "target": 6379,
+      {
+        "services": {
+          "redis": {
+            "image": "redis:5.0.3-alpine",
+            "ports": [
+              {
+                "published": 6379,
+                "target": 6379,
+              },
+            ],
+          },
         },
-      ],
-    },
-  },
-  "version": "3.9",
-}
-`)
+        "version": "3.9",
+      }
+    `)
   })
 })

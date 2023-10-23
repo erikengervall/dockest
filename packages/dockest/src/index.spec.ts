@@ -4,10 +4,10 @@ describe('index', () => {
   describe('happy', () => {
     it('should match expected interface', () => {
       expect(allTheStuff).toMatchInlineSnapshot(`
-        Object {
+        {
           "Dockest": [Function],
           "execa": [Function],
-          "logLevel": Object {
+          "logLevel": {
             "DEBUG": 4,
             "ERROR": 1,
             "INFO": 3,
