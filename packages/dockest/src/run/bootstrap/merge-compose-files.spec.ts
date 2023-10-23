@@ -47,7 +47,7 @@ networks:
 describe('mergeComposeFiles', () => {
   describe('happy', () => {
     it('should work for single compose file', async () => {
-      const { mergedComposeFiles } = await mergeComposeFiles('mergeComposeFiles.spec.yml', nodeProcess);
+      const { mergedComposeFiles } = await mergeComposeFiles('merge-compose-files.spec.yml', nodeProcess);
 
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
         "name: bootstrap
@@ -68,7 +68,7 @@ describe('mergeComposeFiles', () => {
 
     it('should work for multiple compose files', async () => {
       const { mergedComposeFiles } = await mergeComposeFiles(
-        ['mergeComposeFiles.spec.yml', 'mergeComposeFiles2.spec.yml'],
+        ['merge-compose-files.spec.yml', 'merge-compose-files-2.spec.yml'],
         nodeProcess,
       );
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
