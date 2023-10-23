@@ -34,7 +34,7 @@
     "prepublishOnly": "yarn build:publish",
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
-    "clean": "node_modules/.bin/rimraf dist",
+    "clean": "rm -rf dist",
     "build": "node_modules/.bin/tsc",
     "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json",
     "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"

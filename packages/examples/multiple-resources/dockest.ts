@@ -6,7 +6,9 @@ const { run } = new Dockest({
   dumpErrors: true,
   exitHandler: (errorPayload) =>
     // eslint-disable-next-line no-console
-    console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
+    console.log(`❌❌❌ An error occurred
+${JSON.stringify(errorPayload, null, 2)}
+❌❌❌`),
   jestLib: require('jest'),
   jestOpts: {
     updateSnapshot: true,

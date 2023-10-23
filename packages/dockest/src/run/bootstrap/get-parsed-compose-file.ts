@@ -1,5 +1,7 @@
 import { safeLoad } from 'js-yaml';
 import { z } from 'zod';
+import { DockestError } from '../../errors';
+import { formatZodError } from '../../utils/format-zod-error';
 
 const StringNumber = z.union([z.number(), z.string()]).transform((port) => {
   if (typeof port === 'string') {
@@ -23,7 +25,7 @@ const Service = z.object({
 type Service = z.infer<typeof Service>;
 
 const ComposeFile = z.object({
-  version: z.string(),
+  version: z.string().optional(),
   services: z.record(Service),
 });
 type ComposeFile = z.infer<typeof ComposeFile>;
@@ -32,9 +34,14 @@ export function getParsedComposeFile(mergedComposeFiles: string): {
   dockerComposeFile: ComposeFile;
 } {
   const loadedMergedComposeFiles = safeLoad(mergedComposeFiles);
-  const parsedMergedComposeFiles = ComposeFile.parse(loadedMergedComposeFiles);
+  const parsedMergedComposeFiles = ComposeFile.safeParse(loadedMergedComposeFiles);
+
+  if (!parsedMergedComposeFiles.success) {
+    console.error(formatZodError(parsedMergedComposeFiles.error, 'ComposeFile'));
+    throw new DockestError('Invalid Composefile');
+  }
 
   return {
-    dockerComposeFile: parsedMergedComposeFiles,
+    dockerComposeFile: parsedMergedComposeFiles.data,
   };
 }

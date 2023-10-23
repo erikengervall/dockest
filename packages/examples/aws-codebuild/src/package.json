@@ -7,7 +7,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "clean": "node_modules/.bin/rimraf ./dockest.tgz ./yarn.lock",
+    "clean": "rm -rf ./dockest.tgz ./yarn.lock",
     "dev:examples:link": "yarn link dockest",
     "dev:examples:unlink": "yarn unlink dockest",
     "test:codebuild:buildspec": "node_modules/.bin/ts-node dockest"
@@ -25,7 +25,6 @@
     "jest": "^24.9.0",
     "js-yaml": "^3.13.1",
     "node-fetch": "2.6.0",
-    "rimraf": "^3.0.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
