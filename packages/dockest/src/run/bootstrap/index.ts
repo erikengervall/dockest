@@ -9,37 +9,32 @@ import { writeComposeFile } from './write-compose-file';
 import { DockestConfig, DockestService } from '../../@types';
 
 export const bootstrap = async ({
-  config,
+  config: { composeFile, mutables, perfStart, runMode, dumpErrors, exitHandler },
   dockestServices,
 }: {
   config: DockestConfig;
   dockestServices: DockestService[];
 }) => {
-  setupExitHandler({
-    dumpErrors: config.dumpErrors,
-    exitHandler: config.exitHandler,
-    mutables: config.mutables,
-    perfStart: config.perfStart,
-  });
+  setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart });
 
-  const { mergedComposeFiles } = await mergeComposeFiles(config.composeFile);
+  const { mergedComposeFiles } = await mergeComposeFiles(composeFile);
 
   const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles);
 
-  const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(config.composeFile, dockerComposeFile);
+  const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(composeFile, dockerComposeFile);
 
   const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFileWithVersion);
 
   const dockerEventEmitter = createDockerEventEmitter(composeFilePath);
 
-  config.mutables.runners = transformDockestServicesToRunners({
+  mutables.runners = transformDockestServicesToRunners({
     dockerComposeFile: dockerComposeFileWithVersion,
     dockestServices,
-    runMode: config.runMode,
+    runMode,
     dockerEventEmitter,
   });
 
-  config.mutables.dockerEventEmitter = dockerEventEmitter;
+  mutables.dockerEventEmitter = dockerEventEmitter;
 
-  configureLogger(config.mutables.runners);
+  configureLogger(mutables.runners);
 };

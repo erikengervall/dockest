@@ -48,7 +48,7 @@ export class Dockest {
 
     await waitForServices({ config: this.config, logWriter });
 
-    await debugMode({ config: this.config });
+    await debugMode({ debug: this.config.debug, mutables: this.config.mutables });
 
     const { success } = await runJest({
       jestLib: this.config.jestLib,

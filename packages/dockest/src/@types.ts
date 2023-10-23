@@ -59,9 +59,6 @@ export interface DockestService {
   readinessCheck?: ReadinessCheck;
 }
 
-/**
- * Mutables are variables that are mutated during the execution of dockest.
- */
 export interface MutablesConfig {
   /** Jest has finished executing and has returned a result */
   jestRanWithResult: boolean;
