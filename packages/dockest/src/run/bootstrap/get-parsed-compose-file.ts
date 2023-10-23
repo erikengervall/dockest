@@ -26,7 +26,7 @@ type Environment = z.infer<typeof Environment>;
 const Service = z
   .object({
     environment: Environment.optional(),
-    image: z.string(),
+    image: z.string().optional(),
     ports: z.array(Port),
   })
   .passthrough();
