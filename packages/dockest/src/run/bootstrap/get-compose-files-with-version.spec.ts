@@ -6,7 +6,7 @@ const nodeProcess: any = { cwd: () => __dirname };
 describe('getComposeFilesWithVersion', () => {
   it('should inject version into the mergedComposeFiles if "docker compose config" trimmed version', () => {
     const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(
-      'mergeComposeFiles.spec.yml',
+      'merge-compose-files.spec.yml',
       { ...DOCKER_COMPOSE_FILE, version: undefined },
       nodeProcess,
     );
@@ -31,7 +31,7 @@ describe('getComposeFilesWithVersion', () => {
 
   it('should not inject version into the mergedComposeFiles it wasnt trimmed', () => {
     const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(
-      'mergeComposeFiles.spec.yml',
+      'merge-compose-files.spec.yml',
       { ...DOCKER_COMPOSE_FILE, version: '3.9' },
       nodeProcess,
     );

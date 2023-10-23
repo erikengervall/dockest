@@ -8,9 +8,9 @@ import { runRunnerCommands } from './run-runner-commands';
 import { DockestConfig, Runner } from '../../@types';
 import { DOCKEST_HOST_ADDRESS } from '../../constants';
 import { DockestError } from '../../errors';
-import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists';
-import { createBridgeNetwork } from '../../utils/network/createBridgeNetwork';
-import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork';
+import { bridgeNetworkExists } from '../../utils/network/bridge-network-exists';
+import { createBridgeNetwork } from '../../utils/network/create-bridge-network';
+import { joinBridgeNetwork } from '../../utils/network/join-bridge-network';
 import { LogWriter } from '../log-writer';
 
 const LOG_PREFIX = '[Setup]';

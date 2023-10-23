@@ -2,8 +2,8 @@ import { LogWriter } from './log-writer';
 import { DockestConfig } from '../@types';
 import { DockestError } from '../errors';
 import { Logger } from '../logger';
-import { leaveBridgeNetwork } from '../utils/network/leaveBridgeNetwork';
-import { removeBridgeNetwork } from '../utils/network/removeBridgeNetwork';
+import { leaveBridgeNetwork } from '../utils/network/leave-bridge-network';
+import { removeBridgeNetwork } from '../utils/network/remove-bridge-network';
 import { teardownSingle } from '../utils/teardown-single';
 
 export const teardown = async ({

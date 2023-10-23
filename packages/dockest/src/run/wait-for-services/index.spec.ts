@@ -9,21 +9,21 @@ import { runRunnerCommands } from './run-runner-commands';
 import { sleepWithLog } from '../..';
 import { createRunner } from '../../test-utils';
 import { getOpts } from '../../utils/get-opts';
-import { bridgeNetworkExists } from '../../utils/network/bridgeNetworkExists';
-import { createBridgeNetwork } from '../../utils/network/createBridgeNetwork';
-import { joinBridgeNetwork } from '../../utils/network/joinBridgeNetwork';
+import { bridgeNetworkExists } from '../../utils/network/bridge-network-exists';
+import { createBridgeNetwork } from '../../utils/network/create-bridge-network';
+import { joinBridgeNetwork } from '../../utils/network/join-bridge-network';
 import { LogWriter } from '../log-writer';
 
-jest.mock('./checkConnection');
-jest.mock('./runReadinessCheck');
+jest.mock('./check-connection');
+jest.mock('./run-readiness-check');
 // jest.mock('./fixRunnerHostAccessOnLinux')
-jest.mock('./resolveContainerId');
-jest.mock('./runRunnerCommands');
-jest.mock('./dockerComposeUp');
-jest.mock('../../utils/network/joinBridgeNetwork');
-jest.mock('../../utils/sleepWithLog');
-jest.mock('../../utils/network/bridgeNetworkExists');
-jest.mock('../../utils/network/createBridgeNetwork');
+jest.mock('./resolve-container-id');
+jest.mock('./run-runner-commands');
+jest.mock('./docker-compose-up');
+jest.mock('../../utils/network/join-bridge-network');
+jest.mock('../../utils/sleep-with-log');
+jest.mock('../../utils/network/bridge-network-exists');
+jest.mock('../../utils/network/create-bridge-network');
 
 const { composeOpts, hostname, runInBand } = getOpts();
 
