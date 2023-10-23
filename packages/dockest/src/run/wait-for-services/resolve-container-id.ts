@@ -6,8 +6,8 @@ import { DockestError } from '../../errors';
 const LOG_PREFIX = '[Resolve Container Id]';
 const DEFAULT_TIMEOUT = 30;
 
-export const resolveContainerId = async ({ runner }: { runner: Runner }) =>
-  race(
+export const resolveContainerId = async ({ runner }: { runner: Runner }) => {
+  return race(
     runner.dockerEventStream$.pipe(
       first((event) => event.action === 'start'),
       tap(({ id: containerId }) => {
@@ -27,3 +27,4 @@ export const resolveContainerId = async ({ runner }: { runner: Runner }) =>
   )
     .pipe(take(1))
     .toPromise();
+};

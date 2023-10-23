@@ -18,6 +18,7 @@ const defaultConfigMapper: ConfigMapper = (runner) => runner.dockerComposeFileSe
 const postgresReadinessCheck =
   (configMapper: ConfigMapper): ReadinessCheck =>
   async (args) => {
+    console.error('wtf man');
     const config = await (typeof configMapper === 'function' ? configMapper(args.runner) : configMapper);
 
     if (!config?.POSTGRES_DB) {
@@ -39,9 +40,10 @@ const postgresReadinessCheck =
     execaWrapper(command, { runner: args.runner });
   };
 
-export const createPostgresReadinessCheck = (args?: { config?: ConfigMapper; retryCount?: number }): ReadinessCheck =>
-  withNoStop(
+export const createPostgresReadinessCheck = (args?: { config?: ConfigMapper; retryCount?: number }): ReadinessCheck => {
+  return withNoStop(
     withRetry(postgresReadinessCheck(args?.config ?? defaultConfigMapper), {
       retryCount: args?.retryCount ?? 30,
     }),
   );
+};

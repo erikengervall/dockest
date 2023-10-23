@@ -1,6 +1,6 @@
+import { execaWrapper } from './execa-wrapper';
 import { Runner } from '../@types';
 import { DockestError } from '../errors';
-import { execaWrapper } from './execa-wrapper';
 
 const stopContainerById = async ({ runner, runner: { containerId } }: { runner: Runner }) => {
   const command = `docker stop ${containerId}`;
