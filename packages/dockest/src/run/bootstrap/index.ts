@@ -25,7 +25,7 @@ export const bootstrap = async ({
   mutables: DockestConfig['mutables'];
   perfStart: DockestConfig['perfStart'];
 }) => {
-  await setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart });
+  setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart });
 
   const { mergedComposeFiles } = await mergeComposeFiles(composeFile);
 

@@ -16,7 +16,7 @@ export interface ErrorPayload {
 
 const LOG_PREFIX = '[Exit Handler]';
 
-export const setupExitHandler = async ({
+export const setupExitHandler = ({
   dumpErrors,
   exitHandler: customExitHandler,
   mutables,
@@ -27,7 +27,7 @@ export const setupExitHandler = async ({
   exitHandler: DockestConfig['exitHandler'];
   mutables: DockestConfig['mutables'];
   perfStart: DockestConfig['perfStart'];
-}) => {
+}): void => {
   let exitInProgress = false;
 
   const exitHandler = async (errorPayload: ErrorPayload) => {
