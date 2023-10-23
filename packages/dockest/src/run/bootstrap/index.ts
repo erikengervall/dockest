@@ -9,21 +9,11 @@ import { writeComposeFile } from './write-compose-file';
 import { DockestConfig, DockestService } from '../../@types';
 
 export const bootstrap = async ({
-  composeFile,
+  config: { composeFile, mutables, perfStart, runMode, dumpErrors, exitHandler },
   dockestServices,
-  dumpErrors,
-  exitHandler,
-  runMode,
-  mutables,
-  perfStart,
 }: {
-  composeFile: DockestConfig['composeFile'];
+  config: DockestConfig;
   dockestServices: DockestService[];
-  dumpErrors: DockestConfig['dumpErrors'];
-  exitHandler: DockestConfig['exitHandler'];
-  runMode: DockestConfig['runMode'];
-  mutables: DockestConfig['mutables'];
-  perfStart: DockestConfig['perfStart'];
 }) => {
   setupExitHandler({ dumpErrors, exitHandler, mutables, perfStart });
 

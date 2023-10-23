@@ -16,20 +16,10 @@ import { LogWriter } from '../log-writer';
 const LOG_PREFIX = '[Setup]';
 
 export const waitForServices = async ({
-  composeOpts,
-  hostname,
-  runMode,
-  mutables,
-  runInBand,
-  skipCheckConnection,
+  config: { composeOpts, hostname, runMode, mutables, runInBand, skipCheckConnection },
   logWriter,
 }: {
-  composeOpts: DockestConfig['composeOpts'];
-  hostname: DockestConfig['hostname'];
-  runMode: DockestConfig['runMode'];
-  mutables: DockestConfig['mutables'];
-  runInBand: DockestConfig['runInBand'];
-  skipCheckConnection: DockestConfig['skipCheckConnection'];
+  config: DockestConfig;
   logWriter: LogWriter;
 }) => {
   const waitForRunner = async ({ runner, runner: { isBridgeNetworkMode, serviceName } }: { runner: Runner }) => {

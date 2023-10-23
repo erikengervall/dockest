@@ -7,17 +7,16 @@ import { removeBridgeNetwork } from '../utils/network/remove-bridge-network';
 import { teardownSingle } from '../utils/teardown-single';
 
 export const teardown = async ({
-  hostname,
-  runMode,
-  mutables: { runnerLookupMap, dockerEventEmitter, teardownOrder },
-  perfStart,
+  config: {
+    hostname,
+    runMode,
+    mutables: { runnerLookupMap, dockerEventEmitter, teardownOrder },
+    perfStart,
+  },
   logWriter,
 }: {
-  hostname: DockestConfig['hostname'];
-  runMode: DockestConfig['runMode'];
-  mutables: DockestConfig['mutables'];
-  perfStart: DockestConfig['perfStart'];
   logWriter: LogWriter;
+  config: DockestConfig;
 }) => {
   if (teardownOrder) {
     for (const serviceName of teardownOrder) {

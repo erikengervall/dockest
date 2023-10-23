@@ -44,44 +44,19 @@ export class Dockest {
       logPath: this.config.containerLogs.logPath,
     });
 
-    const {
-      composeFile,
-      composeOpts,
-      debug,
-      dumpErrors,
-      exitHandler,
-      hostname,
-      runMode,
-      jestLib,
-      jestOpts,
-      mutables,
-      perfStart,
-      runInBand,
-      skipCheckConnection,
-    } = this.config;
+    await bootstrap({ config: this.config, dockestServices });
 
-    await bootstrap({
-      composeFile,
-      dockestServices,
-      dumpErrors,
-      exitHandler,
-      runMode,
-      mutables,
-      perfStart,
+    await waitForServices({ config: this.config, logWriter });
+
+    await debugMode({ debug: this.config.debug, mutables: this.config.mutables });
+
+    const { success } = await runJest({
+      jestLib: this.config.jestLib,
+      jestOpts: this.config.jestOpts,
+      mutables: this.config.mutables,
     });
 
-    await waitForServices({
-      composeOpts,
-      mutables,
-      hostname,
-      runMode,
-      runInBand,
-      skipCheckConnection,
-      logWriter,
-    });
-    await debugMode({ debug, mutables });
-    const { success } = await runJest({ jestLib, jestOpts, mutables });
-    await teardown({ hostname, runMode, mutables, perfStart, logWriter });
+    await teardown({ config: this.config, logWriter });
 
     success ? process.exit(0) : process.exit(1);
   };
