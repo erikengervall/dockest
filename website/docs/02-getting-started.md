@@ -21,11 +21,11 @@ Let's create a small example and see it in action!
 We begin by creating a function `cache.ts` that uses a Redis store to cache an arbitrary number:
 
 ```ts
-export const cacheKey = 'arbitraryNumberKey'
+export const cacheKey = 'arbitraryNumberKey';
 
 export const setCache = (redisClient: Redis, arbitraryNumber: number) => {
-  redisClient.set(cacheKey, arbitraryNumber)
-}
+  redisClient.set(cacheKey, arbitraryNumber);
+};
 ```
 
 ### Create unit test
@@ -33,22 +33,22 @@ export const setCache = (redisClient: Redis, arbitraryNumber: number) => {
 Then, create a test file `cache.spec.ts` to test the caching functionality:
 
 ```ts
-import Redis from 'ioredis' // ... or client of choice
-import { cacheKey, setCache } from './cache'
+import Redis from 'ioredis'; // ... or client of choice
+import { cacheKey, setCache } from './cache';
 
 const redisClient = new Redis({
   host: 'localhost',
   port: 6379, // Match with configuration in docker-compose.yml
-})
+});
 
 it('should cache an arbitrary number', async () => {
-  const arbitraryNumber = 5
+  const arbitraryNumber = 5;
 
-  await setCache(redisClient, arbitraryNumber)
+  await setCache(redisClient, arbitraryNumber);
 
-  const cachedValue = await redisClient.get(cacheKey)
-  expect(cachedValue).toEqual(arbitraryNumber)
-})
+  const cachedValue = await redisClient.get(cacheKey);
+  expect(cachedValue).toEqual(arbitraryNumber);
+});
 ```
 
 ### Configure Dockest
@@ -78,18 +78,18 @@ services:
 ```ts
 // dockest.ts
 
-import { Dockest } from 'dockest'
+import { Dockest } from 'dockest';
 
-const dockest = new Dockest()
+const dockest = new Dockest();
 
 // Specify the services from the Compose file that should be included in the integration test
 const dockestServices = [
   {
     serviceName: 'myRedis', // Must match a service in the Compose file
   },
-]
+];
 
-dockest.run(dockestServices)
+dockest.run(dockestServices);
 ```
 
 ### Configure scripts

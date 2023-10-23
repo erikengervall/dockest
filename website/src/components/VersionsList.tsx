@@ -1,11 +1,10 @@
-import Link from '@docusaurus/Link'
-import React from 'react'
+import Link from '@docusaurus/Link';
 
-import styles from './VersionsList.module.css'
+import styles from './VersionsList.module.css';
 
 interface Version {
-  version: string
-  href: string
+  version: string;
+  href: string;
 }
 
 const VERSIONS: Version[] = [
@@ -23,7 +22,7 @@ const VERSIONS: Version[] = [
     href:
       'https://github.com/erikengervall/dockest/tree/94bac6f7d11588909fb42d8ce3ebbb3eccc3c49c/website/versioned_docs/version-1.0.4',
   },
-]
+];
 
 export function VersionsList() {
   return (
@@ -37,8 +36,8 @@ export function VersionsList() {
               {version.version}
             </Link>
           </div>
-        )
+        );
       })}
     </section>
-  )
+  );
 }

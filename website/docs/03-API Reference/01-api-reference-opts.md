@@ -5,9 +5,9 @@ sidebar_label: DockestOpts
 ---
 
 ```ts
-import { Dockest } from 'dockest'
+import { Dockest } from 'dockest';
 
-const { run } = new Dockest(opts)
+const { run } = new Dockest(opts);
 ```
 
 ## DockestOpts

@@ -4,16 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import clsx from 'clsx'
-import React from 'react'
+import clsx from 'clsx';
 
-import styles from './HomepageFeatures.module.css'
+import styles from './HomepageFeatures.module.css';
 
 type FeatureItem = {
-  title: string
-  image: string
-  description: JSX.Element
-}
+  title: string;
+  image: string;
+  description: JSX.Element;
+};
 
 const FeatureList: FeatureItem[] = [
   {
@@ -31,7 +30,7 @@ const FeatureList: FeatureItem[] = [
     image: '/img/undraw_Developer_activity_re_39tg.svg',
     description: <>Dockest utilizes Docker Compose, the very same tool most developers use during development</>,
   },
-]
+];
 
 function Feature({ title, image, description }: FeatureItem) {
   return (
@@ -44,7 +43,7 @@ function Feature({ title, image, description }: FeatureItem) {
         <p>{description}</p>
       </div>
     </div>
-  )
+  );
 }
 
 export default function HomepageFeatures(): JSX.Element {
@@ -58,5 +57,5 @@ export default function HomepageFeatures(): JSX.Element {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -5,9 +5,9 @@ sidebar_label: Run
 ---
 
 ```ts
-import { Dockest } from 'dockest'
+import { Dockest } from 'dockest';
 
-const { run } = new Dockest()
+const { run } = new Dockest();
 
 const dockestServices = [
   {
@@ -20,9 +20,9 @@ const dockestServices = [
     ],
     readinessCheck: () => Promise.resolve(),
   },
-]
+];
 
-run(dockestServices)
+run(dockestServices);
 ```
 
 # DockestService
@@ -64,7 +64,7 @@ const dockestServices = [
       },
     ],
   },
-]
+];
 ```
 
 will ensure that `service1` starts up and is fully responsive before even attempting to start `service2`.
@@ -111,7 +111,7 @@ const dockestServices = [
       // implement your readinessCheck...
     },
   },
-]
+];
 ```
 
 `readinessCheck` structure:
@@ -148,9 +148,9 @@ services:
 
 ```ts
 // dockest.ts
-import { Dockest } from 'dockest'
+import { Dockest } from 'dockest';
 
-const { run } = new Dockest()
+const { run } = new Dockest();
 
 run([
   {
@@ -162,7 +162,7 @@ run([
       },
     }) => postgres({ POSTGRES_DB, POSTGRES_USER }),
   },
-])
+]);
 ```
 
 ### `defaultReadinessChecks.redis`
@@ -184,16 +184,16 @@ services:
 
 ```ts
 // dockest.ts
-import { Dockest } from 'dockest'
+import { Dockest } from 'dockest';
 
-const { run } = new Dockest()
+const { run } = new Dockest();
 
 run([
   {
     serviceName: 'redis', // must match (1)
     readinessCheck: ({ defaultReadinessChecks: { redis } }) => redis(),
   },
-])
+]);
 ```
 
 ### `defaultReadinessChecks.web` [WIP]
@@ -204,14 +204,14 @@ The exact use case should be fleshed out.
 
 ```ts
 // dockest.ts
-import { Dockest } from 'dockest'
+import { Dockest } from 'dockest';
 
-const { run } = new Dockest()
+const { run } = new Dockest();
 
 run([
   {
     serviceName: 'web', // must match (1)
     readinessCheck: async ({ defaultReadinessChecks: { web } }) => web(),
   },
-])
+]);
 ```
