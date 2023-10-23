@@ -15,17 +15,11 @@ import { LogWriter } from '../log-writer';
 
 const LOG_PREFIX = '[Setup]';
 
-export const waitForServices = async ({
-  config: { composeOpts, hostname, runMode, mutables, runInBand, skipCheckConnection },
-  logWriter,
-}: {
-  config: DockestConfig;
-  logWriter: LogWriter;
-}) => {
+export const waitForServices = async ({ config, logWriter }: { config: DockestConfig; logWriter: LogWriter }) => {
   const waitForRunner = async ({ runner, runner: { isBridgeNetworkMode, serviceName } }: { runner: Runner }) => {
     runner.logger.debug(`${LOG_PREFIX} Initiating...`);
 
-    await dockerComposeUp({ composeOpts, serviceName });
+    await dockerComposeUp({ composeOpts: config.composeOpts, serviceName });
     await resolveContainerId({ runner });
 
     logWriter.register(runner.serviceName, runner.containerId);
@@ -38,7 +32,7 @@ export const waitForServices = async ({
       await fixRunnerHostAccessOnLinux(runner);
     }
 
-    if (skipCheckConnection) {
+    if (config.skipCheckConnection) {
       runner.logger.debug(`${LOG_PREFIX} Skip connection check.`);
     } else {
       await checkConnection({ runner });
@@ -49,21 +43,21 @@ export const waitForServices = async ({
     runner.logger.info(`${LOG_PREFIX} Success`, { success: true, endingNewLines: 1 });
   };
 
-  if (runMode === 'docker-injected-host-socket') {
+  if (config.runMode === 'docker-injected-host-socket') {
     if (!(await bridgeNetworkExists())) {
       await createBridgeNetwork();
     }
 
-    await joinBridgeNetwork({ containerId: hostname, alias: DOCKEST_HOST_ADDRESS });
+    await joinBridgeNetwork({ containerId: config.hostname, alias: DOCKEST_HOST_ADDRESS });
   }
 
   const dependencyGraph: Array<[string, string | undefined]> = [];
 
   const walkRunner = (runner: Runner) => {
-    if (mutables.runnerLookupMap.has(runner.serviceName)) {
+    if (config.mutables.runnerLookupMap.has(runner.serviceName)) {
       return;
     }
-    mutables.runnerLookupMap.set(runner.serviceName, runner);
+    config.mutables.runnerLookupMap.set(runner.serviceName, runner);
 
     if (runner.dependsOn.length === 0) {
       dependencyGraph.push([runner.serviceName, undefined]);
@@ -75,24 +69,24 @@ export const waitForServices = async ({
     }
   };
 
-  for (const runner of Object.values(mutables.runners)) {
+  for (const runner of Object.values(config.mutables.runners)) {
     walkRunner(runner);
   }
 
-  if (runInBand) {
+  if (config.runInBand) {
     const ordered: Array<string> = toposort(dependencyGraph).filter((value) => value !== undefined);
 
     const teardownOrder = ordered.slice(0).reverse();
-    mutables.teardownOrder = teardownOrder;
+    config.mutables.teardownOrder = teardownOrder;
 
     for (const serviceName of ordered) {
-      const runner = mutables.runnerLookupMap.get(serviceName);
+      const runner = config.mutables.runnerLookupMap.get(serviceName);
       if (!runner) {
         throw new DockestError('Unexpected error. Runner could not be found.');
       }
       await waitForRunner({ runner });
     }
   } else {
-    await Promise.all(Array.from(mutables.runnerLookupMap.values()).map((runner) => waitForRunner({ runner })));
+    await Promise.all(Array.from(config.mutables.runnerLookupMap.values()).map((runner) => waitForRunner({ runner })));
   }
 };

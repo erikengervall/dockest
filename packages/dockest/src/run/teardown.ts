@@ -6,39 +6,28 @@ import { leaveBridgeNetwork } from '../utils/network/leave-bridge-network';
 import { removeBridgeNetwork } from '../utils/network/remove-bridge-network';
 import { teardownSingle } from '../utils/teardown-single';
 
-export const teardown = async ({
-  config: {
-    hostname,
-    runMode,
-    mutables: { runnerLookupMap, dockerEventEmitter, teardownOrder },
-    perfStart,
-  },
-  logWriter,
-}: {
-  logWriter: LogWriter;
-  config: DockestConfig;
-}) => {
-  if (teardownOrder) {
-    for (const serviceName of teardownOrder) {
-      const runner = runnerLookupMap.get(serviceName);
+export const teardown = async ({ config, logWriter }: { logWriter: LogWriter; config: DockestConfig }) => {
+  if (config.mutables.teardownOrder) {
+    for (const serviceName of config.mutables.teardownOrder) {
+      const runner = config.mutables.runnerLookupMap.get(serviceName);
       if (!runner) {
         throw new DockestError('Could not find service in lookup map.');
       }
       await teardownSingle({ runner });
     }
   } else {
-    for (const runner of runnerLookupMap.values()) {
+    for (const runner of config.mutables.runnerLookupMap.values()) {
       await teardownSingle({ runner });
     }
   }
 
-  if (runMode === 'docker-injected-host-socket') {
-    await leaveBridgeNetwork({ containerId: hostname });
+  if (config.runMode === 'docker-injected-host-socket') {
+    await leaveBridgeNetwork({ containerId: config.hostname });
     await removeBridgeNetwork();
   }
 
-  dockerEventEmitter.destroy();
+  config.mutables.dockerEventEmitter.destroy();
   await logWriter.destroy();
 
-  Logger.measurePerformance(perfStart);
+  Logger.measurePerformance(config.perfStart);
 };
