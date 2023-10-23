@@ -123,40 +123,6 @@ describe('mergeComposeFiles', () => {
           },
         ],
       });
-
-      // services: {
-      //   postgres: expect.objectContaining({
-      //     environment: {
-      //       POSTGRES_DB: 'nobueno',
-      //       POSTGRES_PASSWORD: 'is',
-      //       POSTGRES_USER: 'ramda',
-      //     },
-      //     image: 'postgres:9.6-alpine',
-      //     networks: {
-      //       default: null,
-      //     },
-      //     ports: [
-      //       {
-      //         protocol: 'tcp',
-      //         published: '5433',
-      //         target: 5432,
-      //       },
-      //     ],
-      //   }),
-      //   redis: expect.objectContaining({
-      //     image: 'redis:5.0.3-alpine',
-      //     networks: {
-      //       default: null,
-      //     },
-      //     ports: [
-      //       {
-      //         protocol: 'tcp',
-      //         published: '6379',
-      //         target: 6379,
-      //       },
-      //     ],
-      //   }),
-      // },
     });
   });
 
