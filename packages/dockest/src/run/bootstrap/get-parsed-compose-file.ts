@@ -44,7 +44,7 @@ export function getParsedComposeFile(mergedComposeFiles: string): {
   dockerComposeFile: ComposeFile;
 } {
   const loadedMergedComposeFiles = safeLoad(mergedComposeFiles);
-  const parsedMergedComposeFiles = ComposeFile.passthrough().safeParse(loadedMergedComposeFiles);
+  const parsedMergedComposeFiles = ComposeFile.safeParse(loadedMergedComposeFiles);
 
   if (!parsedMergedComposeFiles.success) {
     throw new DockestError(`Invalid Composefile
