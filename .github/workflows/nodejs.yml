@@ -24,21 +24,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          legacy: true # will also install in PATH as `docker-compose`
         with:
           node-version: 18.x
       - name: Print context 🎉
         env:
           GH_REF: ${{ github.ref }}
-        run: |
-          echo "GH_REF: ${GH_REF}"
-          echo "docker-compose version: $(docker-compose version)"
-          echo "docker version: $(docker version)"
       - name: Install Compose
         uses: ndeloof/install-compose-action@v0.0.1
         with:
-          version: v2.1.0 # defaults to 'latest'
           legacy: true # will also install in PATH as `docker-compose`
-      - run: |
+        run: |
+          echo "GH_REF: ${GH_REF}"
           echo "docker-compose version: $(docker-compose version)"
           echo "docker version: $(docker version)"
 
@@ -51,6 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          legacy: true # will also install in PATH as `docker-compose`
         with:
           node-version: 18.x
       - run: yarn prep
@@ -65,6 +69,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          legacy: true # will also install in PATH as `docker-compose`
         with:
           node-version: 18.x
           registry-url: https://registry.npmjs.org/
@@ -80,6 +88,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          legacy: true # will also install in PATH as `docker-compose`
         with:
           node-version: 18.x
           registry-url: https://registry.npmjs.org/
@@ -97,6 +109,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          legacy: true # will also install in PATH as `docker-compose`
         with:
           node-version: 18.x
           registry-url: https://registry.npmjs.org/
@@ -121,6 +137,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
+        with:
+          legacy: true # will also install in PATH as `docker-compose`
         with:
           node-version: 18.x
           registry-url: https://registry.npmjs.org/
