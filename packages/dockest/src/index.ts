@@ -1,20 +1,20 @@
-import { BaseError, ConfigurationError } from './Errors'
+import { DockestConfig, DockestOpts, DockestService } from './@types'
+import { BaseError, ConfigurationError } from './_errors'
+import { Logger } from './_logger'
+import { MINIMUM_JEST_VERSION } from './constants'
 import { bootstrap } from './run/bootstrap'
 import { debugMode } from './run/debugMode'
-import { DockestConfig, DockestOpts, DockestService } from './@types'
-import { getOpts } from './utils/getOpts'
-import { Logger } from './Logger'
-import { MINIMUM_JEST_VERSION } from './constants'
+import { createLogWriter } from './run/log-writer'
 import { runJest } from './run/runJest'
 import { teardown } from './run/teardown'
 import { waitForServices } from './run/waitForServices'
-import { createLogWriter } from './run/log-writer'
+import { getOpts } from './utils/getOpts'
 
-export { execaWrapper as execa } from './utils/execaWrapper'
+export { DockestService } from './@types'
 export { LOG_LEVEL as logLevel } from './constants'
+export { execaWrapper as execa } from './utils/execaWrapper'
 export { sleep } from './utils/sleep'
 export { sleepWithLog } from './utils/sleepWithLog'
-export { DockestService } from './@types'
 
 export class Dockest {
   private config: DockestConfig

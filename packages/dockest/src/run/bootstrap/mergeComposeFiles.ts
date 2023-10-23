@@ -1,6 +1,6 @@
 import path from 'path'
 import { DockestConfig } from '../../@types'
-import { DockestError } from '../../Errors'
+import { DockestError } from '../../_errors'
 import { execaWrapper } from '../../utils/execaWrapper'
 
 export async function mergeComposeFiles(composeFile: DockestConfig['composeFile'], nodeProcess = process) {

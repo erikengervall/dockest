@@ -1,7 +1,7 @@
 import execa, { SyncOptions } from 'execa' // eslint-disable-line import/default
 import { trim } from './trim'
-import { Logger } from '../Logger'
 import { Runner } from '../@types'
+import { Logger } from '../_logger'
 
 interface Opts {
   runner?: Runner

@@ -1,10 +1,10 @@
 import { LogWriter } from './log-writer'
 import { DockestConfig } from '../@types'
+import { DockestError } from '../_errors'
+import { Logger } from '../_logger'
 import { leaveBridgeNetwork } from '../utils/network/leaveBridgeNetwork'
-import { Logger } from '../Logger'
 import { removeBridgeNetwork } from '../utils/network/removeBridgeNetwork'
 import { teardownSingle } from '../utils/teardownSingle'
-import { DockestError } from '../Errors'
 
 export const teardown = async ({
   hostname,

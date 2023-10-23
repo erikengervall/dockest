@@ -1,5 +1,5 @@
 import { DockestConfig } from '../@types'
-import { Logger } from '../Logger'
+import { Logger } from '../_logger'
 import { sleep } from '../utils/sleep'
 
 export const debugMode = async ({

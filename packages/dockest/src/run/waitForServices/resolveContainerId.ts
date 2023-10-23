@@ -1,7 +1,7 @@
 import { interval, race } from 'rxjs'
-import { take, tap, first, map, skipWhile } from 'rxjs/operators'
+import { first, map, skipWhile, take, tap } from 'rxjs/operators'
 import { Runner } from '../../@types'
-import { DockestError } from '../../Errors'
+import { DockestError } from '../../_errors'
 
 const LOG_PREFIX = '[Resolve Container Id]'
 const DEFAULT_TIMEOUT = 30

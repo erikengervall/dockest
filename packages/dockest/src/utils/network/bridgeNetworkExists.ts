@@ -1,6 +1,6 @@
+import { Logger } from '../../_logger'
 import { BRIDGE_NETWORK_NAME } from '../../constants'
 import { execaWrapper } from '../execaWrapper'
-import { Logger } from '../../Logger'
 
 export const bridgeNetworkExists = async () => {
   const command = `docker network ls \

@@ -1,8 +1,8 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
 import { execaWrapper } from './execaWrapper'
-import { Logger } from '../Logger'
 import { TestRunModeType } from '../@types'
-import { DockestError } from '../Errors'
+import { DockestError } from '../_errors'
+import { Logger } from '../_logger'
 
 export const getRunMode = (): TestRunModeType => {
   let mode: TestRunModeType | null = null
