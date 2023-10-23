@@ -4,49 +4,47 @@ import { createRunner } from '../test-utils';
 
 const toPromise = <T = any>(input: Promise<T> | Observable<T>): Promise<T> => from(input).toPromise();
 
-it('fails when a non "0" die event is emitted', async done => {
-  const dockerEventsStream$ = new ReplaySubject();
-  const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
+describe('happy', () => {
+  it('succeeds when a "0" die event is emitted', async () => {
+    const dockerEventsStream$ = new ReplaySubject();
+    const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
 
-  dockerEventsStream$.next({ service: runner.serviceName, action: 'die', attributes: { exitCode: '1' } });
+    dockerEventsStream$.next({ service: runner.serviceName, action: 'die', attributes: { exitCode: '0' } });
 
-  await toPromise(zeroExitCodeReadinessCheck({ runner }))
-    .then(() => {
-      done.fail('Should throw.');
-    })
-    .catch(err => {
-      expect(err.message).toMatchInlineSnapshot(`"Container exited with the wrong exit code '1'."`);
-      done();
-    });
+    try {
+      await toPromise(zeroExitCodeReadinessCheck({ runner }));
+    } catch (error) {
+      expect(true).toBe("Shouldn't throw.");
+    }
+  });
 });
 
-it('succeeds when a "0" die event is emitted', async done => {
-  const dockerEventsStream$ = new ReplaySubject();
-  const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
+describe('sad', () => {
+  it('fails when a non "0" die event is emitted', async () => {
+    const dockerEventsStream$ = new ReplaySubject();
+    const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
 
-  dockerEventsStream$.next({ service: runner.serviceName, action: 'die', attributes: { exitCode: '0' } });
+    dockerEventsStream$.next({ service: runner.serviceName, action: 'die', attributes: { exitCode: '1' } });
 
-  await toPromise(zeroExitCodeReadinessCheck({ runner }))
-    .then(() => {
-      done();
-    })
-    .catch(err => {
-      done.fail(err);
-    });
-});
+    try {
+      await toPromise(zeroExitCodeReadinessCheck({ runner }));
+      expect(true).toBe('Should throw.');
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[DockestError: Container exited with the wrong exit code '1'.]`);
+    }
+  });
 
-it('fails when a kill event is emitted', async done => {
-  const dockerEventsStream$ = new ReplaySubject();
-  const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
+  it('fails when a kill event is emitted', async () => {
+    const dockerEventsStream$ = new ReplaySubject();
+    const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
 
-  dockerEventsStream$.next({ service: runner.serviceName, action: 'kill' });
+    dockerEventsStream$.next({ service: runner.serviceName, action: 'kill' });
 
-  await toPromise(zeroExitCodeReadinessCheck({ runner }))
-    .then(() => {
-      done.fail('Should throw.');
-    })
-    .catch(err => {
-      expect(err.message).toMatchInlineSnapshot(`"Received kill event."`);
-      done();
-    });
+    try {
+      await toPromise(zeroExitCodeReadinessCheck({ runner }));
+      expect(true).toBe('Should throw.');
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[DockestError: Received kill event.]`);
+    }
+  });
 });

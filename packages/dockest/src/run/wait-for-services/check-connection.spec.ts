@@ -34,7 +34,7 @@ describe('happy', () => {
   });
 });
 
-describe('errors', () => {
+describe('sad', () => {
   it('fails when the die event is emitted', async () => {
     const dockerEventStream$ = new ReplaySubject();
     dockerEventStream$.next({ action: 'die' });
@@ -42,7 +42,7 @@ describe('errors', () => {
 
     try {
       await checkConnection({ runner });
-      expect(true).toEqual('Should have thrown an error.');
+      expect(true).toEqual('Should throw.');
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`[DockestError: Container unexpectedly died.]`);
     }
@@ -55,7 +55,7 @@ describe('errors', () => {
 
     try {
       await checkConnection({ runner });
-      expect(true).toEqual('Should have thrown an error.');
+      expect(true).toEqual('Should throw.');
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`[DockestError: Container unexpectedly died.]`);
     }
@@ -69,7 +69,7 @@ describe('errors', () => {
 
     try {
       await checkConnection({ runner });
-      expect(true).toEqual('Should have thrown an error.');
+      expect(true).toEqual('Should throw.');
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`[DockestError: [Check Connection] Timed out]`);
     }
