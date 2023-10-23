@@ -36,8 +36,10 @@ multi-container Docker applications.
 - [Introduction](#introduction)
 - [Basic usage](#basic-usage)
 - [Development](#development)
-- [Acknowledgements](#acknowledgements)
 - [API Reference](#api-reference)
+- [Versioned Documentation](#versioned-documentation)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 # Introduction
 
