@@ -1,6 +1,6 @@
 import http from 'http';
-import fetch from 'node-fetch';
 import { getHostAddress, getServiceAddress } from 'dockest/test-helper';
+import fetch from 'node-fetch';
 
 const TARGET_HOST = getServiceAddress('docker_in_docker_website', 9000);
 
@@ -18,7 +18,7 @@ afterEach(async () => {
           reject(err);
           return;
         }
-        resolve();
+        resolve(undefined);
       });
     });
   }
@@ -34,7 +34,7 @@ test('can send a request to the container and it can send a request to us', asyn
       })
       .listen(PORT, () => {
         console.log(`Serving on http://${HOSTNAME}:${PORT}`); // eslint-disable-line no-console
-        resolve();
+        resolve(undefined);
       });
   });
 
