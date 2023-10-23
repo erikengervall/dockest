@@ -51,7 +51,6 @@ describe('mergeComposeFiles', () => {
       const { mergedComposeFiles } = await mergeComposeFiles('merge-compose-files.spec.yml', nodeProcess);
 
       expect(safeLoad(mergedComposeFiles)).toMatchObject({
-        name: 'bootstrap',
         networks: {
           default: {
             name: 'bootstrap_default',
@@ -63,15 +62,16 @@ describe('mergeComposeFiles', () => {
             networks: {
               default: null,
             },
-            ports: expect.arrayContaining([
-              expect.objectContaining({
+            ports: [
+              {
                 protocol: 'tcp',
                 published: '6379',
                 target: 6379,
-              }),
-            ]),
+              },
+            ],
           },
         },
+        name: 'bootstrap',
       });
     });
 
@@ -99,26 +99,26 @@ describe('mergeComposeFiles', () => {
             networks: {
               default: null,
             },
-            ports: expect.arrayContaining([
-              expect.objectContaining({
+            ports: [
+              {
                 protocol: 'tcp',
                 published: '5433',
                 target: 5432,
-              }),
-            ]),
+              },
+            ],
           },
           redis: {
             image: 'redis:5.0.3-alpine',
             networks: {
               default: null,
             },
-            ports: expect.arrayContaining([
-              expect.objectContaining({
+            ports: [
+              {
                 protocol: 'tcp',
                 published: '6379',
                 target: 6379,
-              }),
-            ]),
+              },
+            ],
           },
         },
       });
