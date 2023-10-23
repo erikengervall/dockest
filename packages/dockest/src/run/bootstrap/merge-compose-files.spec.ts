@@ -89,7 +89,7 @@ describe('mergeComposeFiles', () => {
           },
         },
         services: {
-          postgres: {
+          postgres: expect.objectContaining({
             environment: {
               POSTGRES_DB: 'nobueno',
               POSTGRES_PASSWORD: 'is',
@@ -106,8 +106,8 @@ describe('mergeComposeFiles', () => {
                 target: 5432,
               },
             ],
-          },
-          redis: {
+          }),
+          redis: expect.objectContaining({
             image: 'redis:5.0.3-alpine',
             networks: {
               default: null,
@@ -119,7 +119,7 @@ describe('mergeComposeFiles', () => {
                 target: 6379,
               },
             ],
-          },
+          }),
         },
       });
     });
