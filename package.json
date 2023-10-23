@@ -49,15 +49,4 @@
     "prettier-eslint": "^9.0.1",
     "rimraf": "^3.0.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "yarn lint",
-      "git add"
-    ]
-  }
 }
