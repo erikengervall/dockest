@@ -21,7 +21,8 @@ This test should also pass when not being run inside a container.
 
 ## Development
 
-Dockest must be bundeled as a .tgz and put inside this folder, because the CodeBuild container cannot resolve the parent directories (check `codebuild_prebuild.sh`).
+Dockest must be bundeled as a .tgz and put inside this folder, because the CodeBuild container cannot resolve the parent
+directories (check `codebuild_prebuild.sh`).
 
 # Exposed ports
 

@@ -14,6 +14,6 @@ const dbConfig = {
   seeds: {
     directory: './postgres-2-knex/seeders',
   },
-}
+};
 
-module.exports = dbConfig
+module.exports = dbConfig;

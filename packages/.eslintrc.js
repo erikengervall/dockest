@@ -35,4 +35,4 @@ module.exports = {
     'import/order': ['error', { groups: ['builtin', 'external', 'index', 'sibling', 'parent', 'internal'] }],
     'import/newline-after-import': ['error', { count: 1 }],
   },
-}
+};
