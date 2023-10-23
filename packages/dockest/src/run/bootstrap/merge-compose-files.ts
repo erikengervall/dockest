@@ -16,7 +16,11 @@ export async function mergeComposeFiles(composeFile: DockestConfig['composeFile'
     'docker-compose',
   )} config`;
 
-  const { stderr, exitCode, stdout: mergedComposeFiles } = execaWrapper(dockerComposeConfigCommand, {
+  const {
+    stderr,
+    exitCode,
+    stdout: mergedComposeFiles,
+  } = execaWrapper(dockerComposeConfigCommand, {
     execaOpts: { reject: false },
     logStdout: true,
   });

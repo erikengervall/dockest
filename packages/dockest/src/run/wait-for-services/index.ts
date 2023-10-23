@@ -90,7 +90,7 @@ export const waitForServices = async ({
   }
 
   if (runInBand) {
-    const ordered: Array<string> = toposort(dependencyGraph).filter(value => value !== undefined);
+    const ordered: Array<string> = toposort(dependencyGraph).filter((value) => value !== undefined);
 
     const teardownOrder = ordered.slice(0).reverse();
     mutables.teardownOrder = teardownOrder;
@@ -103,6 +103,6 @@ export const waitForServices = async ({
       await waitForRunner({ runner });
     }
   } else {
-    await Promise.all(Array.from(mutables.runnerLookupMap.values()).map(runner => waitForRunner({ runner })));
+    await Promise.all(Array.from(mutables.runnerLookupMap.values()).map((runner) => waitForRunner({ runner })));
   }
 };

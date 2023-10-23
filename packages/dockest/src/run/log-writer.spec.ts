@@ -19,11 +19,9 @@ jest.mock('execa', () => {
 
     const serviceName = args.slice(0).pop() as string;
 
-    const result = new Promise<void>(resolve => resolve());
+    const result = new Promise<void>((resolve) => resolve());
     const stdout = Readable.from([`mock text from ${serviceName}\n`]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    result.stdout = stdout;
+    (result as any).stdout = stdout;
     return result;
   };
 });
@@ -69,7 +67,7 @@ test('can collect aggregated logs', async () => {
   });
 
   writer.register('foo', '1');
-  await new Promise(res => setImmediate(res));
+  await new Promise((res) => setImmediate(res));
   expect(resultMap).toMatchInlineSnapshot(`
     {
       "dockest.log": {
@@ -87,7 +85,7 @@ test('can collect individual logs', async () => {
   });
 
   writer.register('foo', '1');
-  await new Promise(res => setImmediate(res));
+  await new Promise((res) => setImmediate(res));
   expect(resultMap).toMatchInlineSnapshot(`
     {
       "foo.dockest.log": {
@@ -106,7 +104,7 @@ test('can collect individual and aggregated logs', async () => {
 
   writer.register('foo', '1');
 
-  await new Promise(res => setImmediate(res));
+  await new Promise((res) => setImmediate(res));
   expect(resultMap).toMatchInlineSnapshot(`
     {
       "dockest.log": {
@@ -130,7 +128,7 @@ test('can collect individual and aggregated logs from multiple services', async 
   writer.register('foo', '1');
   writer.register('bar', '2');
 
-  await new Promise(res => setImmediate(res));
+  await new Promise((res) => setImmediate(res));
   expect(resultMap).toMatchInlineSnapshot(`
     {
       "bar.dockest.log": {

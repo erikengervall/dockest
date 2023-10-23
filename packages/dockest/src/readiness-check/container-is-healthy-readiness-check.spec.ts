@@ -5,7 +5,7 @@ import { createRunner } from '../test-utils';
 const toPromise = <T = any>(input: Promise<T> | Observable<T>): Promise<T> => from(input).toPromise();
 
 describe('containerIsHealthyReadinessCheck', () => {
-  it('fails when the die event is emitted', done => {
+  it('fails when the die event is emitted', (done) => {
     const dockerEventsStream$ = new ReplaySubject();
     const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
 
@@ -15,13 +15,13 @@ describe('containerIsHealthyReadinessCheck', () => {
       .then(() => {
         done.fail('Should throw.');
       })
-      .catch(err => {
+      .catch((err) => {
         expect(err.message).toEqual('Container unexpectedly died.');
         done();
       });
   });
 
-  it('fails when the kill event is emitted', done => {
+  it('fails when the kill event is emitted', (done) => {
     const dockerEventsStream$ = new ReplaySubject();
     const runner = createRunner({ dockerEventStream$: dockerEventsStream$ as any });
     dockerEventsStream$.next({ service: runner.serviceName, action: 'die' });
@@ -30,7 +30,7 @@ describe('containerIsHealthyReadinessCheck', () => {
       .then(() => {
         done.fail('Should throw.');
       })
-      .catch(err => {
+      .catch((err) => {
         expect(err.message).toEqual('Container unexpectedly died.');
         done();
       });
@@ -48,18 +48,18 @@ describe('containerIsHealthyReadinessCheck', () => {
     expect(result).toEqual(undefined);
   });
 
-  it('does not resolve in case a unhealthy event is emitted', done => {
+  it('does not resolve in case a unhealthy event is emitted', (done) => {
     const dockerEventStream$ = new ReplaySubject();
     const runner = createRunner({ dockerEventStream$: dockerEventStream$ as any });
 
     let healthCheckDidResolve = false;
 
     toPromise(containerIsHealthyReadinessCheck({ runner }))
-      .then(result => {
+      .then((result) => {
         expect(result).toEqual(undefined);
         healthCheckDidResolve = true;
       })
-      .catch(err => {
+      .catch((err) => {
         done.fail(err);
       });
 
@@ -69,7 +69,7 @@ describe('containerIsHealthyReadinessCheck', () => {
       attributes: { healthStatus: 'unhealthy' },
     });
 
-    runner.dockerEventStream$.subscribe(event => {
+    runner.dockerEventStream$.subscribe((event) => {
       if (event.action === 'health_status') {
         if (event.attributes.healthStatus === 'unhealthy') {
           expect(healthCheckDidResolve).toEqual(false);

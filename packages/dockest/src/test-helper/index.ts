@@ -34,7 +34,7 @@ export const resolveServiceAddress = (serviceName: string, targetPort: number | 
     throw new DockestError(`Service "${serviceName}" does not exist`);
   }
 
-  const portBinding = service.ports.map(selectPortMapping).find(portBinding => portBinding.target === targetPort);
+  const portBinding = service.ports.map(selectPortMapping).find((portBinding) => portBinding.target === targetPort);
   if (!portBinding) {
     throw new DockestError(`Service "${serviceName}" has no target port ${portBinding}`);
   }

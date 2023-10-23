@@ -9,17 +9,17 @@ const DEFAULT_TIMEOUT = 30;
 export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) =>
   race(
     dockerEventStream$.pipe(
-      first(event => event.action === 'start'),
+      first((event) => event.action === 'start'),
       tap(({ id: containerId }) => {
         logger.info(`${LOG_PREFIX} Success (${containerId})`, { success: true });
         runner.containerId = containerId;
       }),
     ),
     interval(1000).pipe(
-      tap(i => {
+      tap((i) => {
         runner.logger.info(`Still waiting for start event... Timeout in ${DEFAULT_TIMEOUT - i}s`);
       }),
-      skipWhile(i => i < DEFAULT_TIMEOUT),
+      skipWhile((i) => i < DEFAULT_TIMEOUT),
       map(() => {
         throw new DockestError('Timed out', { runner });
       }),

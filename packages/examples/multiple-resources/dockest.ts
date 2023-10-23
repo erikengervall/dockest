@@ -4,7 +4,7 @@ import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest
 const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
   dumpErrors: true,
-  exitHandler: errorPayload =>
+  exitHandler: (errorPayload) =>
     // eslint-disable-next-line no-console
     console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
   jestLib: require('jest'),
@@ -22,7 +22,7 @@ run([
       'sequelize db:migrate',
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
-      containerId => `echo "The container id is ${containerId}"`,
+      (containerId) => `echo "The container id is ${containerId}"`,
     ],
     readinessCheck: createPostgresReadinessCheck(),
   },

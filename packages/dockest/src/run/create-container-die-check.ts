@@ -16,7 +16,7 @@ export const createContainerDieCheck = ({ runner }: { runner: Runner }) => {
 
   const containerDies$ = dockerEventStream$.pipe(
     takeUntil(stop$),
-    first(event => event.action === 'die'),
+    first((event) => event.action === 'die'),
   );
 
   return {

@@ -1,7 +1,7 @@
 import { safeLoad } from 'js-yaml';
 import { z } from 'zod';
 
-const StringNumber = z.union([z.number(), z.string()]).transform(port => {
+const StringNumber = z.union([z.number(), z.string()]).transform((port) => {
   if (typeof port === 'string') {
     return parseInt(port, 10);
   }
@@ -28,9 +28,7 @@ const ComposeFile = z.object({
 });
 type ComposeFile = z.infer<typeof ComposeFile>;
 
-export function getParsedComposeFile(
-  mergedComposeFiles: string,
-): {
+export function getParsedComposeFile(mergedComposeFiles: string): {
   dockerComposeFile: ComposeFile;
 } {
   const loadedMergedComposeFiles = safeLoad(mergedComposeFiles);

@@ -102,17 +102,17 @@ export const setupExitHandler = async ({
   process.stdin.resume(); // FIXME: causes "Jest has detected the following 1 open handle potentially keeping Jest from exiting:"
 
   // do something when app is closing
-  process.on('exit', async code => exitHandler({ trap: 'exit', code }));
+  process.on('exit', async (code) => exitHandler({ trap: 'exit', code }));
 
   // catches ctrl+c event
-  process.on('SIGINT', async signal => exitHandler({ trap: 'SIGINT', signal }));
+  process.on('SIGINT', async (signal) => exitHandler({ trap: 'SIGINT', signal }));
 
   // catches "kill pid" (for example: nodemon restart)
   process.on('SIGUSR1', async () => exitHandler({ trap: 'SIGUSR1' }));
   process.on('SIGUSR2', async () => exitHandler({ trap: 'SIGUSR2' }));
 
   // catches uncaught exceptions
-  process.on('uncaughtException', async error => exitHandler({ trap: 'uncaughtException', error }));
+  process.on('uncaughtException', async (error) => exitHandler({ trap: 'uncaughtException', error }));
 
   // catches unhandled promise rejections
   process.on('unhandledRejection', async (reason, promise) =>

@@ -48,7 +48,7 @@ const checkPortConnection = ({
     mergeMap(({ host, port }) => from(acquireConnection({ host, port }))),
 
     // retry if check errors
-    retryWhen(errors => {
+    retryWhen((errors) => {
       let retries = 0;
 
       return errors.pipe(
@@ -68,49 +68,47 @@ const checkPortConnection = ({
     }),
   );
 
-export const createCheckConnection = ({
-  acquireConnection,
-}: {
-  acquireConnection: AcquireConnectionFunctionType;
-}) => async ({
-  runner,
-  runner: {
-    dockerComposeFileService: { ports },
-    host: runnerHost,
-    isBridgeNetworkMode,
-    dockerEventStream$,
-  },
-}: {
-  runner: Runner;
-}) => {
-  const host = runnerHost || 'localhost';
-  const portKey = isBridgeNetworkMode ? 'target' : 'published';
-  if (!ports || ports.length === 0) {
-    runner.logger.debug(`${LOG_PREFIX} Skip connection check as there are no ports exposed.`);
-    return;
-  }
+export const createCheckConnection =
+  ({ acquireConnection }: { acquireConnection: AcquireConnectionFunctionType }) =>
+  async ({
+    runner,
+    runner: {
+      dockerComposeFileService: { ports },
+      host: runnerHost,
+      isBridgeNetworkMode,
+      dockerEventStream$,
+    },
+  }: {
+    runner: Runner;
+  }) => {
+    const host = runnerHost || 'localhost';
+    const portKey = isBridgeNetworkMode ? 'target' : 'published';
+    if (!ports || ports.length === 0) {
+      runner.logger.debug(`${LOG_PREFIX} Skip connection check as there are no ports exposed.`);
+      return;
+    }
 
-  return race(
-    dockerEventStream$.pipe(
-      skipWhile(ev => ev.action !== 'die' && ev.action !== 'kill'),
-      map(event => {
-        throw new DockestError('Container unexpectedly died.', { event });
-      }),
-    ),
-    of(...ports.map(selectPortMapping)).pipe(
-      // concatMap -> run checks for each port in sequence
-      concatMap(({ [portKey]: port }) =>
-        checkPortConnection({
-          runner,
-          host,
-          port,
-          acquireConnection,
+    return race(
+      dockerEventStream$.pipe(
+        skipWhile((ev) => ev.action !== 'die' && ev.action !== 'kill'),
+        map((event) => {
+          throw new DockestError('Container unexpectedly died.', { event });
         }),
       ),
-      // we do not care about the single elements, we only want this stream to complete without errors.
-      ignoreElements(),
-    ),
-  ).toPromise();
-};
+      of(...ports.map(selectPortMapping)).pipe(
+        // concatMap -> run checks for each port in sequence
+        concatMap(({ [portKey]: port }) =>
+          checkPortConnection({
+            runner,
+            host,
+            port,
+            acquireConnection,
+          }),
+        ),
+        // we do not care about the single elements, we only want this stream to complete without errors.
+        ignoreElements(),
+      ),
+    ).toPromise();
+  };
 
 export const checkConnection = createCheckConnection({ acquireConnection });

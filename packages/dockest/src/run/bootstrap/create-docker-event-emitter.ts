@@ -9,7 +9,10 @@ const parseJsonSafe = (data: string) => {
   }
 };
 
-export interface DockerComposeEventInterface<TActionName extends string, TAdditionalAttributes extends {} = {}> {
+export interface DockerComposeEventInterface<
+  TActionName extends string,
+  TAdditionalAttributes extends Record<string, unknown> = Record<string, unknown>,
+> {
   time: string;
   type: 'container';
   action: TActionName;
@@ -75,11 +78,8 @@ export const createDockerEventEmitter = (composeFilePath: string): DockerEventEm
   // without this line only the first data event is fired (in some undefinable cases)
   childProcess.then(() => undefined);
 
-  childProcess.stdout.addListener('data', chunk => {
-    const lines: string[] = chunk
-      .toString()
-      .split(`\n`)
-      .filter(Boolean);
+  childProcess.stdout.addListener('data', (chunk) => {
+    const lines: string[] = chunk.toString().split(`\n`).filter(Boolean);
 
     for (const line of lines) {
       const data: UnknownDockerComposeEvent = parseJsonSafe(line);

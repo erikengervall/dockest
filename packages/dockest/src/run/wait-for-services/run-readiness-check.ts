@@ -8,7 +8,7 @@ export const runReadinessCheck = async ({ runner }: { runner: Runner }) =>
   of(runner.readinessCheck)
     .pipe(
       tap(() => runner.logger.debug(`${LOG_PREFIX} Starting`)),
-      mergeMap(readinessCheck =>
+      mergeMap((readinessCheck) =>
         from(
           readinessCheck({
             runner,

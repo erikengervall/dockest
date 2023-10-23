@@ -43,7 +43,7 @@ export const createLogWriter = ({
     if (!stream) {
       stream = createWriteStream(join(logPath, `${serviceName}.dockest.log`));
       writeStreamMap.set(serviceName, stream);
-      stream.on('error', error => {
+      stream.on('error', (error) => {
         throw new DockestError('Unexpected error thrown for stream\n\n.' + String(error), { error });
       });
     }

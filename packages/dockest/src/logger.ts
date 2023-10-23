@@ -1,5 +1,5 @@
 import readline from 'readline';
-import { yellowBright, redBright, greenBright } from 'chalk';
+import { greenBright, redBright, yellowBright } from 'chalk';
 import { LOG_LEVEL } from './constants';
 
 interface LoggerPayload {
@@ -43,13 +43,13 @@ export class Logger {
 
   public static error: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.ERROR) {
-      console.error(...getLogArgs(message, payload).map(logArg => redBright(logArg))); // eslint-disable-line no-console
+      console.error(...getLogArgs(message, payload).map((logArg) => redBright(logArg))); // eslint-disable-line no-console
     }
   };
 
   public static warn: LogMethod = (message, payload = {}) => {
     if (Logger.logLevel >= LOG_LEVEL.WARN) {
-      console.warn(...getLogArgs(message, payload).map(logArg => yellowBright(logArg))); // eslint-disable-line no-console
+      console.warn(...getLogArgs(message, payload).map((logArg) => yellowBright(logArg))); // eslint-disable-line no-console
     }
   };
 
@@ -66,9 +66,7 @@ export class Logger {
   };
 
   public static replacePrevLine = ({ message, isLast = false }: { message: string; isLast?: boolean }) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    readline.cursorTo(process.stdout, 0, null);
+    readline.cursorTo(process.stdout, 0, undefined);
     process.stdout.write(message);
 
     if (isLast) {

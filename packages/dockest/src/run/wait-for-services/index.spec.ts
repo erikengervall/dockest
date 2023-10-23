@@ -65,19 +65,19 @@ describe('waitForServices', () => {
       );
 
       expect(resolveContainerId).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(resolveContainerId).toHaveBeenCalledWith({ runner }));
 
       expect(joinBridgeNetwork).not.toHaveBeenCalled();
       // expect(fixRunnerHostAccessOnLinux).not.toHaveBeenCalled() // This'll bork in GitHub Actions due to different running environment
 
       expect(checkConnection).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(checkConnection).toHaveBeenCalledWith({ runner }));
 
       expect(runReadinessCheck).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }));
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }));
 
       // waitForServices
       expect(bridgeNetworkExists).not.toHaveBeenCalled();
@@ -118,19 +118,19 @@ describe('waitForServices', () => {
       );
 
       expect(resolveContainerId).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(resolveContainerId).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(resolveContainerId).toHaveBeenCalledWith({ runner }));
 
       expect(joinBridgeNetwork).not.toHaveBeenCalled();
       // expect(fixRunnerHostAccessOnLinux).not.toHaveBeenCalled() // This'll bork in GitHub Actions due to different running environment
 
       expect(checkConnection).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(checkConnection).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(checkConnection).toHaveBeenCalledWith({ runner }));
 
       expect(runReadinessCheck).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(runReadinessCheck).toHaveBeenCalledWith({ runner }));
 
       expect(runRunnerCommands).toHaveBeenCalledTimes(3);
-      Object.values(runners).forEach(runner => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }));
+      Object.values(runners).forEach((runner) => expect(runRunnerCommands).toHaveBeenCalledWith({ runner }));
 
       // waitForServices
       expect(bridgeNetworkExists).not.toHaveBeenCalled();

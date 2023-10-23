@@ -7,11 +7,11 @@ import { isDieEvent, isKillEvent } from '../run/bootstrap/create-docker-event-em
 /**
  * A readiness check that succeeds when the service exits with the exit code 0.
  */
-export const zeroExitCodeReadinessCheck: ReadinessCheck = args =>
+export const zeroExitCodeReadinessCheck: ReadinessCheck = (args) =>
   race(
     args.runner.dockerEventStream$.pipe(
       filter(isDieEvent),
-      map(event => {
+      map((event) => {
         if (event.attributes.exitCode !== '0') {
           throw new DockestError(`Container exited with the wrong exit code '${event.attributes.exitCode}'.`, {
             runner: args.runner,
@@ -26,7 +26,7 @@ export const zeroExitCodeReadinessCheck: ReadinessCheck = args =>
     ),
     args.runner.dockerEventStream$.pipe(
       filter(isKillEvent),
-      map(event => {
+      map((event) => {
         throw new DockestError(`Received kill event.`, {
           runner: args.runner,
           event,

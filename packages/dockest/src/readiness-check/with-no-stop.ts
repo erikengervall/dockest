@@ -7,13 +7,15 @@ import { isDieEvent, isKillEvent } from '../run/bootstrap/create-docker-event-em
 /**
  * The wrapped readiness check will fail if the container dies or gets killed.
  */
-export const withNoStop = (input: ReadinessCheck): ReadinessCheck => args =>
-  race(
-    from(input(args)),
-    args.runner.dockerEventStream$.pipe(
-      filter(event => isDieEvent(event) || isKillEvent(event)),
-      map(event => {
-        throw new DockestError('Container unexpectedly died.', { runner: args.runner, event });
-      }),
-    ),
-  );
+export const withNoStop =
+  (input: ReadinessCheck): ReadinessCheck =>
+  (args) =>
+    race(
+      from(input(args)),
+      args.runner.dockerEventStream$.pipe(
+        filter((event) => isDieEvent(event) || isKillEvent(event)),
+        map((event) => {
+          throw new DockestError('Container unexpectedly died.', { runner: args.runner, event });
+        }),
+      ),
+    );

@@ -9,10 +9,10 @@ export const createDockerServiceEventStream = (
   eventEmitter: DockerEventEmitter,
 ): DockerServiceEventStream =>
   fromEventPattern<DockerEventType>(
-    handler => {
+    (handler) => {
       eventEmitter.addListener(serviceName, handler);
     },
-    handler => {
+    (handler) => {
       eventEmitter.removeListener(serviceName, handler);
     },
   )

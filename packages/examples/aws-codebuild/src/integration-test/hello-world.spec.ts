@@ -13,7 +13,7 @@ let server: http.Server;
 afterEach(async () => {
   if (server) {
     await new Promise((resolve, reject) => {
-      server.close(err => {
+      server.close((err) => {
         if (err) {
           reject(err);
           return;
@@ -24,8 +24,8 @@ afterEach(async () => {
   }
 });
 
-test('can send a request to the container and it can send a request to us', async done => {
-  await new Promise(resolve => {
+test('can send a request to the container and it can send a request to us', async (done) => {
+  await new Promise((resolve) => {
     server = http
       .createServer((_req, res) => {
         res.write('Hello World!');
@@ -41,7 +41,7 @@ test('can send a request to the container and it can send a request to us', asyn
   const res = await fetch(`http://${TARGET_HOST}`, {
     method: 'post',
     body: `http://${HOSTNAME}:${PORT}`,
-  }).then(res => res.text());
+  }).then((res) => res.text());
 
   expect(res).toEqual('OK.');
 });

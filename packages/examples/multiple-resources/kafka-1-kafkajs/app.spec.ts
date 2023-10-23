@@ -1,6 +1,6 @@
 import { app } from './app';
 
-const sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
 jest.setTimeout(1000 * 60);
 
@@ -62,7 +62,7 @@ describe('kafka-1-kafkajs', () => {
 
     await waitForEventConsumption(
       messages.length,
-      opts => {
+      (opts) => {
         consumer.on(
           consumer.events.END_BATCH_PROCESS,
           ({ payload: { batchSize } }: { payload: { batchSize: number } }) => {
@@ -77,10 +77,10 @@ describe('kafka-1-kafkajs', () => {
 
     expect(mockProductionCallback).toHaveBeenCalledWith({
       acks: 1,
-      messages: messages.map(message => ({ key, value: message })),
+      messages: messages.map((message) => ({ key, value: message })),
       topic: 'dockesttopic',
     });
-    messages.forEach(message => {
+    messages.forEach((message) => {
       expect(mockConsumptionCallback).toHaveBeenCalledWith({
         messageHeaders: {},
         messageKey: key,
