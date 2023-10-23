@@ -1,6 +1,6 @@
-import { ReplaySubject } from 'rxjs'
-import { DockerComposeFile, DockestService, Runner } from './@types'
-import { Logger } from './logger'
+import { ReplaySubject } from 'rxjs';
+import { DockerComposeFile, DockestService, Runner } from './@types';
+import { Logger } from './logger';
 
 export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   commands: [],
@@ -12,11 +12,11 @@ export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   readinessCheck: () => Promise.resolve(),
   serviceName: 'node',
   ...(overrides || {}),
-})
+});
 
 export const DOCKEST_SERVICE: DockestService = {
   serviceName: 'redis',
-}
+};
 
 export const DOCKER_COMPOSE_FILE: DockerComposeFile = {
   version: '3.8',
@@ -31,4 +31,4 @@ export const DOCKER_COMPOSE_FILE: DockerComposeFile = {
       ],
     },
   },
-}
+};

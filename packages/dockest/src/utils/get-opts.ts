@@ -1,8 +1,8 @@
-import { EventEmitter } from 'events'
-import { getRunMode } from './get-run-mode'
-import { DockestConfig, DockestOpts } from '../@types'
-import { DEFAULT_HOST_NAME, LOG_LEVEL } from '../constants'
-import { LogWriterModeType } from '../run/log-writer'
+import { EventEmitter } from 'events';
+import { getRunMode } from './get-run-mode';
+import { DockestConfig, DockestOpts } from '../@types';
+import { DEFAULT_HOST_NAME, LOG_LEVEL } from '../constants';
+import { LogWriterModeType } from '../run/log-writer';
 
 export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
   const {
@@ -26,7 +26,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     logLevel = LOG_LEVEL.INFO,
     runInBand = true,
     containerLogs: { serviceNameFilter = undefined, modes = ['aggregate'] as LogWriterModeType[], logPath = './' } = {},
-  } = opts
+  } = opts;
 
   return {
     composeFile,
@@ -67,5 +67,5 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
       serviceNameFilter,
       logPath,
     },
-  }
-}
+  };
+};

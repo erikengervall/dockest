@@ -1,8 +1,8 @@
-import { fromEventPattern, Observable } from 'rxjs'
-import { shareReplay } from 'rxjs/operators'
-import { DockerEventEmitter, DockerEventType } from './createDockerEventEmitter'
+import { fromEventPattern, Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
+import { DockerEventEmitter, DockerEventType } from './createDockerEventEmitter';
 
-export type DockerServiceEventStream = Observable<DockerEventType>
+export type DockerServiceEventStream = Observable<DockerEventType>;
 
 export const createDockerServiceEventStream = (
   serviceName: string,
@@ -10,11 +10,11 @@ export const createDockerServiceEventStream = (
 ): DockerServiceEventStream =>
   fromEventPattern<DockerEventType>(
     handler => {
-      eventEmitter.addListener(serviceName, handler)
+      eventEmitter.addListener(serviceName, handler);
     },
     handler => {
-      eventEmitter.removeListener(serviceName, handler)
+      eventEmitter.removeListener(serviceName, handler);
     },
   )
     // Every new subscriber should receive access to all previous emitted events, because of this we use shareReplay.
-    .pipe(shareReplay())
+    .pipe(shareReplay());

@@ -1,11 +1,11 @@
-import isDocker from 'is-docker' // eslint-disable-line import/default
-import { execaWrapper } from './execa-wrapper'
-import { TestRunModeType } from '../@types'
-import { DockestError } from '../errors'
-import { Logger } from '../logger'
+import isDocker from 'is-docker'; // eslint-disable-line import/default
+import { execaWrapper } from './execa-wrapper';
+import { TestRunModeType } from '../@types';
+import { DockestError } from '../errors';
+import { Logger } from '../logger';
 
 export const getRunMode = (): TestRunModeType => {
-  let mode: TestRunModeType | null = null
+  let mode: TestRunModeType | null = null;
 
   if (isDocker()) {
     const { stdout: result } = execaWrapper(`
@@ -21,19 +21,19 @@ export const getRunMode = (): TestRunModeType => {
           echo "no-socket"; \\
         fi \\
       '
-    `)
+    `);
     if (result === 'local-socket') {
-      mode = 'docker-local-socket'
+      mode = 'docker-local-socket';
     } else if (result === 'injected-socket') {
-      mode = 'docker-injected-host-socket'
+      mode = 'docker-injected-host-socket';
     } else {
-      throw new DockestError(`Resolved invalid mode: '${result}'.`)
+      throw new DockestError(`Resolved invalid mode: '${result}'.`);
     }
   } else {
-    mode = 'host'
+    mode = 'host';
   }
 
-  Logger.debug(`Run dockest in '${mode}' mode.`)
+  Logger.debug(`Run dockest in '${mode}' mode.`);
 
-  return mode
-}
+  return mode;
+};

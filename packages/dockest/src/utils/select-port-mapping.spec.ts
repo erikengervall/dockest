@@ -1,4 +1,4 @@
-import { selectPortMapping } from './select-port-mapping'
+import { selectPortMapping } from './select-port-mapping';
 
 describe('selectPortMapping', () => {
   it.each([
@@ -7,8 +7,8 @@ describe('selectPortMapping', () => {
     ['12:20', { target: 20, published: 12 }],
     ['90:1000', { target: 1000, published: 90 }],
   ])('can parse the string format', (input, expected) => {
-    expect(selectPortMapping(input)).toEqual(expected)
-  })
+    expect(selectPortMapping(input)).toEqual(expected);
+  });
 
   it.each([
     [
@@ -24,6 +24,6 @@ describe('selectPortMapping', () => {
       { target: 3333, published: 3333 },
     ],
   ])('passes through the object format', (input, expected) => {
-    expect(selectPortMapping(input)).toEqual(expected)
-  })
-})
+    expect(selectPortMapping(input)).toEqual(expected);
+  });
+});

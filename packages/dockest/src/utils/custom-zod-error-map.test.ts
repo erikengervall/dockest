@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
-import {
-  customZodErrorMap,
-  resetGlobalCustomZodErrorMap,
-  setGlobalCustomZodErrorMap,
-} from './custom-zod-error-map';
+import { customZodErrorMap, resetGlobalCustomZodErrorMap, setGlobalCustomZodErrorMap } from './custom-zod-error-map';
 
 const Person = z.object({
   name: z.string(),
@@ -13,8 +9,7 @@ const Person = z.object({
 describe('customZodErrorMap', () => {
   it('should set the custom zod error map', () => {
     // with default error map
-    expect(() => Person.parse({ name: 123 }))
-      .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 })).toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",
@@ -30,8 +25,7 @@ describe('customZodErrorMap', () => {
 
     // with custom error map
     setGlobalCustomZodErrorMap();
-    expect(() => Person.parse({ name: 123 }))
-      .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 })).toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",
@@ -47,8 +41,7 @@ describe('customZodErrorMap', () => {
 
     // reset -> back to default error map
     resetGlobalCustomZodErrorMap();
-    expect(() => Person.parse({ name: 123 }))
-      .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 })).toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",
@@ -64,8 +57,7 @@ describe('customZodErrorMap', () => {
 
     // with custom error map (without data)
     setGlobalCustomZodErrorMap({ appendInputData: false });
-    expect(() => Person.parse({ name: 123 }))
-      .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 })).toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",
@@ -81,8 +73,7 @@ describe('customZodErrorMap', () => {
 
     // reset -> back to default error map
     resetGlobalCustomZodErrorMap();
-    expect(() => Person.parse({ name: 123 }))
-      .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 })).toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",
@@ -97,12 +88,8 @@ describe('customZodErrorMap', () => {
     `);
 
     // with custom error map (with data)
-    expect(() =>
-      Person.parse(
-        { name: 123 },
-        { errorMap: customZodErrorMap({ appendInputData: true }) },
-      ),
-    ).toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 }, { errorMap: customZodErrorMap({ appendInputData: true }) }))
+      .toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",
@@ -117,8 +104,7 @@ describe('customZodErrorMap', () => {
     `);
 
     // the custom error map should not be set globally
-    expect(() => Person.parse({ name: 123 }))
-      .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => Person.parse({ name: 123 })).toThrowErrorMatchingInlineSnapshot(`
       "[
         {
           "code": "invalid_type",

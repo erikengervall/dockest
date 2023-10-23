@@ -1,6 +1,6 @@
-import { mergeComposeFiles } from './mergeComposeFiles'
+import { mergeComposeFiles } from './mergeComposeFiles';
 
-const nodeProcess: any = { cwd: () => __dirname }
+const nodeProcess: any = { cwd: () => __dirname };
 
 /**
  * Some notes on the recent V2 docker-compose config update and how it affects Dockest
@@ -47,7 +47,7 @@ networks:
 describe('mergeComposeFiles', () => {
   describe('happy', () => {
     it('should work for single compose file', async () => {
-      const { mergedComposeFiles } = await mergeComposeFiles('mergeComposeFiles.spec.yml', nodeProcess)
+      const { mergedComposeFiles } = await mergeComposeFiles('mergeComposeFiles.spec.yml', nodeProcess);
 
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
         "name: bootstrap
@@ -63,14 +63,14 @@ describe('mergeComposeFiles', () => {
         networks:
           default:
             name: bootstrap_default"
-      `)
-    })
+      `);
+    });
 
     it('should work for multiple compose files', async () => {
       const { mergedComposeFiles } = await mergeComposeFiles(
         ['mergeComposeFiles.spec.yml', 'mergeComposeFiles2.spec.yml'],
         nodeProcess,
-      )
+      );
       expect(mergedComposeFiles).toMatchInlineSnapshot(`
         "name: bootstrap
         services:
@@ -97,15 +97,15 @@ describe('mergeComposeFiles', () => {
         networks:
           default:
             name: bootstrap_default"
-      `)
-    })
-  })
+      `);
+    });
+  });
 
   describe('sad', () => {
     it('should throw if invalid name of compose file', async () => {
-      const promise = mergeComposeFiles('this-file-does-not-exist.yml', nodeProcess)
+      const promise = mergeComposeFiles('this-file-does-not-exist.yml', nodeProcess);
 
-      await expect(promise).rejects.toThrow('Invalid Compose file(s)')
-    })
-  })
-})
+      await expect(promise).rejects.toThrow('Invalid Compose file(s)');
+    });
+  });
+});

@@ -1,6 +1,6 @@
-import { take, mapTo, filter } from 'rxjs/operators'
-import { withNoStop } from './withNoStop'
-import { ReadinessCheck } from '../@types'
+import { take, mapTo, filter } from 'rxjs/operators';
+import { withNoStop } from './withNoStop';
+import { ReadinessCheck } from '../@types';
 
 export const containerIsHealthyReadinessCheck: ReadinessCheck = withNoStop(({ runner }) =>
   runner.dockerEventStream$.pipe(
@@ -8,4 +8,4 @@ export const containerIsHealthyReadinessCheck: ReadinessCheck = withNoStop(({ ru
     mapTo(undefined),
     take(1),
   ),
-)
+);

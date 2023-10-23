@@ -1,4 +1,4 @@
-import * as allTheStuff from './index'
+import * as allTheStuff from './index';
 
 describe('index', () => {
   describe('happy', () => {
@@ -17,11 +17,11 @@ describe('index', () => {
           "sleep": [Function],
           "sleepWithLog": [Function],
         }
-      `)
-    })
+      `);
+    });
 
     it('should be able to instantiate Dockest without options', () => {
-      new allTheStuff.Dockest()
-    })
-  })
-})
+      new allTheStuff.Dockest();
+    });
+  });
+});

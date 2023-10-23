@@ -1,5 +1,5 @@
-import { ZodError } from 'zod'
-import { fromZodError } from 'zod-validation-error'
+import { ZodError } from 'zod';
+import { fromZodError } from 'zod-validation-error';
 
 /**
  * Format a ZodError into a string with a newline per issue
@@ -21,8 +21,8 @@ export function formatZodError(
     prefixSeparator: '',
     unionSeparator: '\n',
     maxIssuesInMessage: 100,
-  })
+  });
 
   return `[${name} for "${modelName}"]
-${message}`
+${message}`;
 }

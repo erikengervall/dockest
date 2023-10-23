@@ -1,8 +1,8 @@
-import { of, from } from 'rxjs'
-import { mergeMap, tap } from 'rxjs/operators'
-import { Runner } from '../../@types'
+import { of, from } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
+import { Runner } from '../../@types';
 
-const LOG_PREFIX = '[Run ReadinessCheck]'
+const LOG_PREFIX = '[Run ReadinessCheck]';
 
 export const runReadinessCheck = async ({ runner }: { runner: Runner }) =>
   of(runner.readinessCheck)
@@ -16,7 +16,7 @@ export const runReadinessCheck = async ({ runner }: { runner: Runner }) =>
         ),
       ),
       tap(() => {
-        runner.logger.info(`${LOG_PREFIX} Success`, { success: true })
+        runner.logger.info(`${LOG_PREFIX} Success`, { success: true });
       }),
     )
-    .toPromise()
+    .toPromise();

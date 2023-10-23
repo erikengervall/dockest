@@ -1,4 +1,4 @@
-import { getOpts } from './get-opts'
+import { getOpts } from './get-opts';
 
 describe('getOpts', () => {
   it('should snapshot default opts', () => {
@@ -52,6 +52,6 @@ describe('getOpts', () => {
         "skipCheckConnection": false,
       }
     `,
-    )
-  })
-})
+    );
+  });
+});

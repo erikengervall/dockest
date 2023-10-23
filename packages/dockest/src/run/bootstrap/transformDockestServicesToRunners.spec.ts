@@ -1,15 +1,15 @@
-import { EventEmitter } from 'events'
-import { transformDockestServicesToRunners } from './transformDockestServicesToRunners'
-import { DockestService, DockerComposeFile } from '../../@types'
+import { EventEmitter } from 'events';
+import { transformDockestServicesToRunners } from './transformDockestServicesToRunners';
+import { DockestService, DockerComposeFile } from '../../@types';
 
-const serviceName = 'service1'
+const serviceName = 'service1';
 const dockerComposeFile: DockerComposeFile = {
   version: '3.8',
   services: {
     [serviceName]: { ports: [{ published: 3000, target: 3000 }] },
   },
-}
-const dockestServices: DockestService[] = [{ serviceName: serviceName }]
+};
+const dockestServices: DockestService[] = [{ serviceName: serviceName }];
 
 describe('transformDockestServicesToRunners', () => {
   describe('happy', () => {
@@ -19,7 +19,7 @@ describe('transformDockestServicesToRunners', () => {
         dockestServices,
         runMode: 'host',
         dockerEventEmitter: new EventEmitter() as any,
-      })
+      });
 
       expect(runners).toMatchInlineSnapshot(`
         {
@@ -56,14 +56,14 @@ describe('transformDockestServicesToRunners', () => {
             "serviceName": "service1",
           },
         }
-      `)
-    })
-  })
+      `);
+    });
+  });
 
   describe('sad', () => {
     it(`should throw if serviceName can't be found in Compose file`, () => {
-      const invalidServiceName = 'does-not-match--should-throw'
-      const dockestServices: DockestService[] = [{ serviceName: invalidServiceName }]
+      const invalidServiceName = 'does-not-match--should-throw';
+      const dockestServices: DockestService[] = [{ serviceName: invalidServiceName }];
 
       expect(() =>
         transformDockestServicesToRunners({
@@ -74,7 +74,7 @@ describe('transformDockestServicesToRunners', () => {
         }),
       ).toThrow(
         `Unable to find compose service "${invalidServiceName}", make sure that the serviceName corresponds with your Compose File's service`,
-      )
-    })
-  })
-})
+      );
+    });
+  });
+});

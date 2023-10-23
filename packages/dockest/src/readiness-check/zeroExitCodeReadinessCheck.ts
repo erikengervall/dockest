@@ -1,8 +1,8 @@
-import { race } from 'rxjs'
-import { filter, map, mapTo, take } from 'rxjs/operators'
-import { ReadinessCheck } from '../@types'
-import { DockestError } from '../errors'
-import { isDieEvent, isKillEvent } from '../run/bootstrap/createDockerEventEmitter'
+import { race } from 'rxjs';
+import { filter, map, mapTo, take } from 'rxjs/operators';
+import { ReadinessCheck } from '../@types';
+import { DockestError } from '../errors';
+import { isDieEvent, isKillEvent } from '../run/bootstrap/createDockerEventEmitter';
 
 /**
  * A readiness check that succeeds when the service exits with the exit code 0.
@@ -16,9 +16,9 @@ export const zeroExitCodeReadinessCheck: ReadinessCheck = args =>
           throw new DockestError(`Container exited with the wrong exit code '${event.attributes.exitCode}'.`, {
             runner: args.runner,
             event,
-          })
+          });
         }
-        return event
+        return event;
       }),
       mapTo(undefined),
       // complete stream (promise) after first successful health_status event was emitted.
@@ -30,7 +30,7 @@ export const zeroExitCodeReadinessCheck: ReadinessCheck = args =>
         throw new DockestError(`Received kill event.`, {
           runner: args.runner,
           event,
-        })
+        });
       }),
     ),
-  )
+  );
