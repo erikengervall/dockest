@@ -11,13 +11,13 @@
     "test:examples": "node_modules/.bin/ts-node ./dockest"
   },
   "dependencies": {
-    "ioredis": "^4.14.0",
-    "kafkajs": "^1.10.0",
-    "knex": "^0.20.8",
-    "pg": "^8.7.1",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "^5.21.3",
-    "sequelize-cli": "^5.4.0"
+    "ioredis": "4.14.0",
+    "kafkajs": "1.10.0",
+    "knex": "0.20.8",
+    "pg": "8.7.1",
+    "pg-hstore": "2.3.2",
+    "sequelize": "5.21.3",
+    "sequelize-cli": "5.4.0"
   },
   "devDependencies": {
     "@types/ioredis": "^4.14.4",

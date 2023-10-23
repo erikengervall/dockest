@@ -6,12 +6,12 @@ import { DockestError } from '../../errors';
 const LOG_PREFIX = '[Resolve Container Id]';
 const DEFAULT_TIMEOUT = 30;
 
-export const resolveContainerId = async ({ runner, runner: { logger, dockerEventStream$ } }: { runner: Runner }) =>
+export const resolveContainerId = async ({ runner }: { runner: Runner }) =>
   race(
-    dockerEventStream$.pipe(
+    runner.dockerEventStream$.pipe(
       first((event) => event.action === 'start'),
       tap(({ id: containerId }) => {
-        logger.info(`${LOG_PREFIX} Success (${containerId})`, { success: true });
+        runner.logger.info(`${LOG_PREFIX} Success (${containerId})`, { success: true });
         runner.containerId = containerId;
       }),
     ),

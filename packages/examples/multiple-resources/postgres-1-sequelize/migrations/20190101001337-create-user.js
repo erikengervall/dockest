@@ -26,6 +26,6 @@ const createUserMigration = {
       },
     }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('Users'), // eslint-disable-line @typescript-eslint/no-unused-vars
-}
+};
 
-module.exports = createUserMigration
+module.exports = createUserMigration;

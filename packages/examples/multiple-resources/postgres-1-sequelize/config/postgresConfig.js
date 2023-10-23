@@ -26,6 +26,6 @@ const postgresConfig = {
     dialect: 'postgres',
     logging: false,
   },
-}
+};
 
-module.exports = postgresConfig
+module.exports = postgresConfig;
