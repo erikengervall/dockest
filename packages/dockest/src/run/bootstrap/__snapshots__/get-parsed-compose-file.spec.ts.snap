@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getParsedComposeFile happy should throw error for old port format 1`] = `
+[DockestError: Invalid Composefile
+[ZodValidationError for "ComposeFile"]
+Expected object, received string at "services.redis_old.ports[0]"]
+`;

@@ -37,8 +37,8 @@ export function getParsedComposeFile(mergedComposeFiles: string): {
   const parsedMergedComposeFiles = ComposeFile.safeParse(loadedMergedComposeFiles);
 
   if (!parsedMergedComposeFiles.success) {
-    console.error(formatZodError(parsedMergedComposeFiles.error, 'ComposeFile'));
-    throw new DockestError('Invalid Composefile');
+    throw new DockestError(`Invalid Composefile
+${formatZodError(parsedMergedComposeFiles.error, 'ComposeFile')}`);
   }
 
   return {

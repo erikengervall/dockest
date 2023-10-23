@@ -77,22 +77,7 @@ describe('getParsedComposeFile', () => {
 
         expect(true).toEqual(false);
       } catch (error) {
-        expect((error as any).message).toMatchInlineSnapshot(`
-          "[
-            {
-              "code": "invalid_type",
-              "expected": "object",
-              "received": "string",
-              "path": [
-                "services",
-                "redis_old",
-                "ports",
-                0
-              ],
-              "message": "Expected object, received string"
-            }
-          ]"
-        `);
+        expect(error).toMatchSnapshot();
       }
     });
   });
