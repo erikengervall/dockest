@@ -6,7 +6,7 @@ export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   commands: [],
   containerId: '',
   dependsOn: [],
-  dockerComposeFileService: { image: 'node:10-alpine', ports: [{ published: 3000, target: 3000 }] },
+  dockerComposeFileService: { image: 'node:18-alpine', ports: [{ published: 3000, target: 3000 }] },
   dockerEventStream$: new ReplaySubject(),
   logger: new Logger('node'),
   readinessCheck: () => Promise.resolve(),

@@ -17,7 +17,7 @@ describe('happy', () => {
     const dockerEventStream$ = new ReplaySubject() as any;
     const runner = createRunner({
       dockerEventStream$,
-      dockerComposeFileService: { image: 'node:10-alpine', ports: [] },
+      dockerComposeFileService: { image: 'node:18-alpine', ports: [] },
     });
 
     const result = await checkConnection({ runner });
