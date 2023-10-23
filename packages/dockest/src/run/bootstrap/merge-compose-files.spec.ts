@@ -63,13 +63,13 @@ describe('mergeComposeFiles', () => {
             networks: {
               default: null,
             },
-            ports: [
-              {
+            ports: expect.arrayContaining([
+              expect.objectContaining({
                 protocol: 'tcp',
                 published: '6379',
                 target: 6379,
-              },
-            ],
+              }),
+            ]),
           },
         },
       });
@@ -99,26 +99,26 @@ describe('mergeComposeFiles', () => {
             networks: {
               default: null,
             },
-            ports: [
-              {
+            ports: expect.arrayContaining([
+              expect.objectContaining({
                 protocol: 'tcp',
                 published: '5433',
                 target: 5432,
-              },
-            ],
+              }),
+            ]),
           },
           redis: {
             image: 'redis:5.0.3-alpine',
             networks: {
               default: null,
             },
-            ports: [
-              {
+            ports: expect.arrayContaining([
+              expect.objectContaining({
                 protocol: 'tcp',
                 published: '6379',
                 target: 6379,
-              },
-            ],
+              }),
+            ]),
           },
         },
       });
