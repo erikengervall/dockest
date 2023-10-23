@@ -25,7 +25,7 @@ const createUserMigration = {
         type: Sequelize.DATE,
       },
     }),
-  down: queryInterface => queryInterface.dropTable('Users'),
-}
+  down: (queryInterface) => queryInterface.dropTable('Users'),
+};
 
-module.exports = createUserMigration
+module.exports = createUserMigration;
