@@ -61,10 +61,7 @@ export const isDieEvent = (event: DockerEventType): event is DieDockerComposeEve
 export const isKillEvent = (event: DockerEventType): event is KillDockerComposeEvent => event.action === 'kill';
 
 export const createDockerEventEmitter = (composeFilePath: string): DockerEventEmitter => {
-  const command = `docker-compose \
-                    --file ${composeFilePath} \
-                    events \
-                    --json`;
+  const command = `docker-compose --file ${composeFilePath} events --json`;
 
   const childProcess = execa(command, { shell: true, reject: false });
 
@@ -76,7 +73,9 @@ export const createDockerEventEmitter = (composeFilePath: string): DockerEventEm
   const emitter = new EventEmitter();
 
   // without this line only the first data event is fired (in some undefinable cases)
-  childProcess.then(() => undefined);
+  childProcess.then(() => {
+    return undefined;
+  });
 
   childProcess.stdout.addListener('data', (chunk) => {
     const lines: string[] = chunk.toString().split(`\n`).filter(Boolean);

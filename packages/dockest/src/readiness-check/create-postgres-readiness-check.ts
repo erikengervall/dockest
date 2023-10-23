@@ -13,13 +13,14 @@ type MaybePromise<T> = T | Promise<T>;
 
 type ConfigMapper = Config | ((dockerComposeFileService: Runner) => MaybePromise<Config>);
 
-const defaultConfigMapper: ConfigMapper = (runner) => runner.dockerComposeFileService.environment;
+const defaultConfigMapper: ConfigMapper = (runner) => {
+  return runner.dockerComposeFileService.environment;
+};
 
 const postgresReadinessCheck =
   (configMapper: ConfigMapper): ReadinessCheck =>
-  async (args) => {
-    console.error('wtf man');
-    const config = await (typeof configMapper === 'function' ? configMapper(args.runner) : configMapper);
+  async ({ runner }) => {
+    const config = await (typeof configMapper === 'function' ? configMapper(runner) : configMapper);
 
     if (!config?.POSTGRES_DB) {
       throw new Error("Value 'POSTGRES_DB' was not provided.");
@@ -30,14 +31,14 @@ const postgresReadinessCheck =
 
     const passwordEnvironmentVariable = config?.POSTGRES_PASSWORD ? `PGPASSWORD='${config.POSTGRES_PASSWORD}'` : '';
     // Ref: http://postgresguide.com/utilities/psql.html
-    const command = `docker exec ${args.runner.containerId} bash -c " \
+    const command = `docker exec ${runner.containerId} bash -c " \
                       ${passwordEnvironmentVariable} psql \
                       -h localhost \
                       -d ${config.POSTGRES_DB} \
                       -U ${config.POSTGRES_USER} \
                       -c 'select 1'"`;
 
-    execaWrapper(command, { runner: args.runner });
+    execaWrapper(command, { runner: runner });
   };
 
 export const createPostgresReadinessCheck = (args?: { config?: ConfigMapper; retryCount?: number }): ReadinessCheck => {

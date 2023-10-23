@@ -15,23 +15,30 @@ export const withRetry =
       retryCount: number;
     },
   ): ReadinessCheck =>
-  (args) =>
-    of(input).pipe(
-      tap(() => args.runner.logger.debug(`${LOG_PREFIX} Retry is enabled with ${opts.retryCount}`)),
+  (args) => {
+    return of(input).pipe(
       mergeMap((readinessCheck) => from(readinessCheck(args))),
       retryWhen((errors) => {
         let retries = 0;
 
         return errors.pipe(
-          tap(() => {
+          tap((value) => {
             retries = retries + 1;
-            args.runner.logger.debug(`${LOG_PREFIX} Timeout after ${opts.retryCount - retries} retries.`);
+            args.runner.logger.warn(`${LOG_PREFIX} Error: ${value.message}`);
+            args.runner.logger.debug(`${LOG_PREFIX} Timeout after ${
+              opts.retryCount - retries
+            } retries (Retry count set to ${opts.retryCount}).
+`);
           }),
           takeWhile(() => {
-            if (retries < opts.retryCount) return true;
+            if (retries < opts.retryCount) {
+              return true;
+            }
+
             throw new DockestError(`${LOG_PREFIX} Timed out`, { runner: args.runner });
           }),
           delay(1000),
         );
       }),
     );
+  };

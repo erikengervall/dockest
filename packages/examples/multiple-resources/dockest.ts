@@ -48,6 +48,6 @@ run([
         serviceName: 'multiple_resources_zookeeper',
       },
     ],
-    readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
+    readinessCheck: () => sleepWithLog(20, `Sleeping a bit for Kafka's sake`),
   },
 ]);

@@ -10,27 +10,28 @@ export type AcquireConnectionFunctionType = ({ host, port }: { host: string; por
 const LOG_PREFIX = '[Check Connection]';
 const RETRY_COUNT = 10;
 
-export const acquireConnection: AcquireConnectionFunctionType = ({ host, port }) =>
-  new Promise((resolve, reject) => {
+const acquireConnection: AcquireConnectionFunctionType = ({ host, port }): Promise<void> => {
+  return new Promise((resolve, reject) => {
     let connected = false;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    const netSocket = net
-      .createConnection({ host, port })
-      .on('connect', () => {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        connected = true;
-        netSocket.end();
-        resolve();
-      })
-      .on('error', () => {
-        connected = false;
-      });
+    const netSocket = net.createConnection({ host, port }).on('connect', () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      console.debug(`${host}:${port} connected ✅`);
+      connected = true;
+      netSocket.end();
+      resolve(undefined);
+    });
 
-    timeoutId = setTimeout(() => !connected && reject(new Error('Timeout while acquiring connection')), 1000);
+    timeoutId = setTimeout(() => {
+      if (!connected) {
+        reject(new Error('Timeout while acquiring connection'));
+      }
+    }, 1000);
   });
+};
 
 const checkPortConnection = ({
   host,
@@ -42,19 +43,25 @@ const checkPortConnection = ({
   port: number;
   runner: Runner;
   acquireConnection: AcquireConnectionFunctionType;
-}) =>
-  of({ host, port }).pipe(
+}) => {
+  return of({ host, port }).pipe(
     // run check
-    mergeMap(({ host, port }) => from(acquireConnection({ host, port }))),
+    mergeMap(({ host, port }) => {
+      return from(acquireConnection({ host, port }));
+    }),
 
     // retry if check errors
     retryWhen((errors) => {
       let retries = 0;
 
       return errors.pipe(
-        tap(() => {
+        tap((value) => {
           retries = retries + 1;
-          runner.logger.debug(`${LOG_PREFIX} Timeout in ${RETRY_COUNT - retries}s (${host}:${port})`);
+          runner.logger.error(`${LOG_PREFIX} Error: ${value.message}`);
+          runner.logger.debug(`${LOG_PREFIX} Timeout after ${
+            RETRY_COUNT - retries
+          } retries (Retry count set to ${RETRY_COUNT}).
+`);
         }),
         takeWhile(() => {
           if (retries < RETRY_COUNT) {
@@ -67,6 +74,7 @@ const checkPortConnection = ({
       );
     }),
   );
+};
 
 export const createCheckConnection =
   ({ acquireConnection }: { acquireConnection: AcquireConnectionFunctionType }) =>
@@ -90,21 +98,21 @@ export const createCheckConnection =
 
     return race(
       dockerEventStream$.pipe(
-        skipWhile((ev) => ev.action !== 'die' && ev.action !== 'kill'),
+        skipWhile((event) => event.action !== 'die' && event.action !== 'kill'),
         map((event) => {
           throw new DockestError('Container unexpectedly died.', { event });
         }),
       ),
       of(...ports.map(selectPortMapping)).pipe(
         // concatMap -> run checks for each port in sequence
-        concatMap(({ [portKey]: port }) =>
-          checkPortConnection({
+        concatMap(({ [portKey]: port }) => {
+          return checkPortConnection({
             runner,
             host,
             port,
             acquireConnection,
-          }),
-        ),
+          });
+        }),
         // we do not care about the single elements, we only want this stream to complete without errors.
         ignoreElements(),
       ),

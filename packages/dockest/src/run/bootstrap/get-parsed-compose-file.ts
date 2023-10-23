@@ -12,29 +12,39 @@ const StringNumber = z.union([z.number(), z.string()]).transform((port) => {
 });
 type StringNumber = z.infer<typeof StringNumber>;
 
-const Port = z.object({
-  published: StringNumber,
-  target: StringNumber,
-});
+const Port = z
+  .object({
+    published: StringNumber,
+    target: StringNumber,
+  })
+  .passthrough();
 type Port = z.infer<typeof Port>;
 
-const Service = z.object({
-  image: z.string(),
-  ports: z.array(Port),
-});
+const Environment = z.record(z.union([z.string(), z.number()]));
+type Environment = z.infer<typeof Environment>;
+
+const Service = z
+  .object({
+    environment: Environment.optional(),
+    image: z.string(),
+    ports: z.array(Port),
+  })
+  .passthrough();
 type Service = z.infer<typeof Service>;
 
-const ComposeFile = z.object({
-  version: z.string().optional(),
-  services: z.record(Service),
-});
+const ComposeFile = z
+  .object({
+    version: z.string().optional(),
+    services: z.record(Service),
+  })
+  .passthrough();
 type ComposeFile = z.infer<typeof ComposeFile>;
 
 export function getParsedComposeFile(mergedComposeFiles: string): {
   dockerComposeFile: ComposeFile;
 } {
   const loadedMergedComposeFiles = safeLoad(mergedComposeFiles);
-  const parsedMergedComposeFiles = ComposeFile.safeParse(loadedMergedComposeFiles);
+  const parsedMergedComposeFiles = ComposeFile.passthrough().safeParse(loadedMergedComposeFiles);
 
   if (!parsedMergedComposeFiles.success) {
     throw new DockestError(`Invalid Composefile
