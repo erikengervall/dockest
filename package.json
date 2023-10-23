@@ -11,6 +11,9 @@
     "type": "git",
     "url": "https://github.com/erikengervall/dockest.git"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "clean": "lerna run clean --stream && lerna clean --yes && rimraf ./node_modules && yarn cache clean && yarn && yarn prep",
     "dev:link": "lerna run dev:dockest:link --stream && lerna run dev:examples:link --stream",

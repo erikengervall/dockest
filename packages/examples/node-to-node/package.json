@@ -2,6 +2,9 @@
   "name": "@examples/node-to-node",
   "version": "3.0.1",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev:examples:link": "yarn link dockest",
     "dev:examples:unlink": "yarn unlink dockest",

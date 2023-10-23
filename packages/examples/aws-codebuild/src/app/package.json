@@ -2,6 +2,9 @@
   "name": "@examples/aws-codebuild--app",
   "version": "2.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "body-parser": "1.19.0",
     "express": "4.17.1",

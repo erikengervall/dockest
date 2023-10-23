@@ -3,6 +3,9 @@
   "version": "3.0.0-beta.1",
   "private": true,
   "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "clean": "node_modules/.bin/rimraf ./dockest.tgz ./yarn.lock",
     "dev:examples:link": "yarn link dockest",

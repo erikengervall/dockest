@@ -2,6 +2,9 @@
   "name": "@examples/aws-codebuild",
   "version": "3.0.1",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "(cd ./src && ./codebuild_prebuild.sh)",
     "test:examples": "(cd ./src && ./codebuild_test.sh)"
