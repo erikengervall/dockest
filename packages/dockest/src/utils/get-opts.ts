@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
-import { getRunMode } from './getRunMode'
-import { DockestOpts, DockestConfig } from '../@types'
-import { LOG_LEVEL, DEFAULT_HOST_NAME } from '../constants'
+import { getRunMode } from './get-run-mode'
+import { DockestConfig, DockestOpts } from '../@types'
+import { DEFAULT_HOST_NAME, LOG_LEVEL } from '../constants'
 import { LogWriterModeType } from '../run/log-writer'
 
 export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {

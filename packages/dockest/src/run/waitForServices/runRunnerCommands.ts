@@ -1,5 +1,5 @@
-import { execaWrapper } from '../../utils/execaWrapper'
 import { Runner } from '../../@types'
+import { execaWrapper } from '../../utils/execa-wrapper'
 
 const LOG_PREFIX = '[Dockest Service Commands]'
 

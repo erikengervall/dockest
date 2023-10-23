@@ -1,4 +1,4 @@
-import { execaWrapper } from './execaWrapper'
+import { execaWrapper } from './execa-wrapper'
 import { Runner } from '../@types'
 import { DockestError } from '../errors'
 

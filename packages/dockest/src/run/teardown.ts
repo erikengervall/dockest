@@ -4,7 +4,7 @@ import { DockestError } from '../errors'
 import { Logger } from '../logger'
 import { leaveBridgeNetwork } from '../utils/network/leaveBridgeNetwork'
 import { removeBridgeNetwork } from '../utils/network/removeBridgeNetwork'
-import { teardownSingle } from '../utils/teardownSingle'
+import { teardownSingle } from '../utils/teardown-single'
 
 export const teardown = async ({
   hostname,

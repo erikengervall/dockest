@@ -1,4 +1,4 @@
-import { selectPortMapping } from './selectPortMapping'
+import { selectPortMapping } from './select-port-mapping'
 
 describe('selectPortMapping', () => {
   it.each([

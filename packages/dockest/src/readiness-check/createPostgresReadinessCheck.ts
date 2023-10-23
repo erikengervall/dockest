@@ -1,7 +1,7 @@
-import { withRetry } from './withRetry'
 import { withNoStop } from './withNoStop'
-import { Runner, ReadinessCheck } from '../@types'
-import { execaWrapper } from '../utils/execaWrapper'
+import { withRetry } from './withRetry'
+import { ReadinessCheck, Runner } from '../@types'
+import { execaWrapper } from '../utils/execa-wrapper'
 
 type Config = {
   POSTGRES_DB: string

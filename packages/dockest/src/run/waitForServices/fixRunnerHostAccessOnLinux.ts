@@ -1,6 +1,6 @@
-import { DEFAULT_HOST_NAME } from '../../constants'
-import { execaWrapper } from '../../utils/execaWrapper'
 import { Runner } from '../../@types'
+import { DEFAULT_HOST_NAME } from '../../constants'
+import { execaWrapper } from '../../utils/execa-wrapper'
 
 export const fixRunnerHostAccessOnLinux = async ({ containerId, logger }: Runner) => {
   const command = `docker exec ${containerId} \

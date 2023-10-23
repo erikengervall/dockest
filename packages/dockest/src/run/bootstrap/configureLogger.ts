@@ -1,5 +1,5 @@
-import { hashCode } from '../../utils/hashCode'
 import { DockestConfig } from '../../@types'
+import { hashCode } from '../../utils/hash-code'
 
 const LOG_SYMBOLS: readonly string[] = [
   '🐉 ',

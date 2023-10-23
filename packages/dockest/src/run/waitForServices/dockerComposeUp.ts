@@ -1,6 +1,6 @@
 import { DockestConfig } from '../../@types'
-import { execaWrapper } from '../../utils/execaWrapper'
 import { GENERATED_COMPOSE_FILE_PATH } from '../../constants'
+import { execaWrapper } from '../../utils/execa-wrapper'
 
 export const dockerComposeUp = async ({
   composeOpts: { alwaysRecreateDeps, build, forceRecreate, noBuild, noColor, noDeps, noRecreate, quietPull },

@@ -8,13 +8,13 @@ import { createLogWriter } from './run/log-writer'
 import { runJest } from './run/runJest'
 import { teardown } from './run/teardown'
 import { waitForServices } from './run/waitForServices'
-import { getOpts } from './utils/getOpts'
+import { getOpts } from './utils/get-opts'
 
 export { DockestService } from './@types'
 export { LOG_LEVEL as logLevel } from './constants'
-export { execaWrapper as execa } from './utils/execaWrapper'
+export { execaWrapper as execa } from './utils/execa-wrapper'
 export { sleep } from './utils/sleep'
-export { sleepWithLog } from './utils/sleepWithLog'
+export { sleepWithLog } from './utils/sleep-with-log'
 
 export class Dockest {
   private config: DockestConfig

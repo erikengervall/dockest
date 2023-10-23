@@ -1,5 +1,5 @@
 import isDocker from 'is-docker' // eslint-disable-line import/default
-import { execaWrapper } from './execaWrapper'
+import { execaWrapper } from './execa-wrapper'
 import { TestRunModeType } from '../@types'
 import { DockestError } from '../errors'
 import { Logger } from '../logger'

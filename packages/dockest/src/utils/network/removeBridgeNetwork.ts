@@ -1,5 +1,5 @@
 import { BRIDGE_NETWORK_NAME } from '../../constants'
-import { execaWrapper } from '../execaWrapper'
+import { execaWrapper } from '../execa-wrapper'
 
 export const removeBridgeNetwork = async () => {
   const command = `docker network rm \

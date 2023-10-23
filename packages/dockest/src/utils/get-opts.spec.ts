@@ -1,4 +1,4 @@
-import { getOpts } from './getOpts'
+import { getOpts } from './get-opts'
 
 describe('getOpts', () => {
   it('should snapshot default opts', () => {

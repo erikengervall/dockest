@@ -1,7 +1,7 @@
 import { withNoStop } from './withNoStop'
 import { withRetry } from './withRetry'
 import { ReadinessCheck, Runner } from '../@types'
-import { execaWrapper } from '../utils/execaWrapper'
+import { execaWrapper } from '../utils/execa-wrapper'
 
 type PortConfig = number | ((runner: Runner) => MaybePromise<number>)
 type MaybePromise<T> = T | Promise<T>

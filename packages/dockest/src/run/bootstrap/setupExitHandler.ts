@@ -3,7 +3,7 @@ import fs from 'fs'
 import { DockestConfig } from '../../@types'
 import { BaseError } from '../../errors'
 import { Logger } from '../../logger'
-import { teardownSingle } from '../../utils/teardownSingle'
+import { teardownSingle } from '../../utils/teardown-single'
 
 export interface ErrorPayload {
   trap: string

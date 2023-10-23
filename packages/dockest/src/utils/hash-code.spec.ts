@@ -1,4 +1,4 @@
-import { hashCode } from './hashCode'
+import { hashCode } from './hash-code'
 
 describe('hashCode', () => {
   describe('happy', () => {

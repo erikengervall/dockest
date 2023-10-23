@@ -1,6 +1,6 @@
 import { BRIDGE_NETWORK_NAME } from '../../constants'
 import { Logger } from '../../logger'
-import { execaWrapper } from '../execaWrapper'
+import { execaWrapper } from '../execa-wrapper'
 
 export const bridgeNetworkExists = async () => {
   const command = `docker network ls \

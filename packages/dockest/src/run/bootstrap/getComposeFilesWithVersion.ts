@@ -15,7 +15,9 @@ export function getComposeFilesWithVersion(
   dockerComposeFile: Omit<DockerComposeFile, 'version'> & { version?: string },
   /** @testable */
   nodeProcess = process,
-): { dockerComposeFileWithVersion: DockerComposeFile } {
+): {
+  dockerComposeFileWithVersion: DockerComposeFile
+} {
   let versionNumber: string | number | undefined = dockerComposeFile.version
 
   if (!versionNumber) {

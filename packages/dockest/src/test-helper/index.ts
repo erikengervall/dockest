@@ -1,8 +1,8 @@
 import { DockerComposeFile, TestRunModeType } from '../@types'
 import { DEFAULT_HOST_NAME, DOCKEST_ATTACH_TO_PROCESS, DOCKEST_HOST_ADDRESS } from '../constants'
 import { DockestError } from '../errors'
-import { getRunMode as _getRunMode } from '../utils/getRunMode'
-import { selectPortMapping } from '../utils/selectPortMapping'
+import { getRunMode as _getRunMode } from '../utils/get-run-mode'
+import { selectPortMapping } from '../utils/select-port-mapping'
 
 let runMode: TestRunModeType | null = null
 
