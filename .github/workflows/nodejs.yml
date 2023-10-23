@@ -31,6 +31,8 @@ jobs:
           GH_REF: ${{ github.ref }}
         run: |
           echo "GH_REF: ${GH_REF}"
+          echo "docker-compose version: $(docker-compose version)"
+          echo "docker version: $(docker version)"
 
   ####### Lint
   lint:
