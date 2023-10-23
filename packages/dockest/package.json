@@ -44,7 +44,9 @@
     "is-docker": "^2.0.0",
     "js-yaml": "^3.13.1",
     "rxjs": "^6.5.4",
-    "toposort": "^2.0.2"
+    "toposort": "^2.0.2",
+    "zod": "^3.22.4",
+    "zod-validation-error": "^2.0.0"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",

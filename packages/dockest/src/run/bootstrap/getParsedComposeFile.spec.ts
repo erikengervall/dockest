@@ -78,7 +78,7 @@ describe('getParsedComposeFile', () => {
         expect(true).toEqual(false)
       } catch (error) {
         expect((error as any).message).toMatchInlineSnapshot(`
-          "Invalid schema. 
+          "Invalid schema.
           - Could not decode the port mappings. This is most likely related to a breaking change in the docker-compose format.
           Received: "6379:1337"
           Are you using the Long Port Format (https://docs.docker.com/compose/compose-file/compose-file-v3/#long-syntax-1)? If you are and are still experiencing issues, please report this issue on the dockest issue tracker: https://github.com/erikengervall/dockest/issues"
