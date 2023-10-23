@@ -33,7 +33,7 @@
     "lint": "eslint \"./packages/**/*.ts\"",
     "test": "yarn test:unit && yarn test:examples",
     "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
-    "test:examples": "lerna run test:examples --stream --ignore @examples/aws-codebuild",
+    "test:examples": "lerna run test:examples --stream --ignore @examples/aws-codebuild @examples/docker-in-docker",
     "test:unit": "lerna run test:unit --stream"
   },
   "devDependencies": {
