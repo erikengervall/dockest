@@ -1,8 +1,8 @@
 import fs from 'fs'
 
 import { DockestConfig } from '../../@types'
-import { BaseError } from '../../_errors'
-import { Logger } from '../../_logger'
+import { BaseError } from '../../errors'
+import { Logger } from '../../logger'
 import { teardownSingle } from '../../utils/teardownSingle'
 
 export interface ErrorPayload {

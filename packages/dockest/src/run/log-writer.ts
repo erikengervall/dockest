@@ -1,9 +1,9 @@
 import { createWriteStream, WriteStream } from 'fs'
 import { join } from 'path'
 import execa from 'execa' /* eslint-disable-line import/default */
-import { DockestError } from '../_errors'
-import { Logger } from '../_logger'
 import { GENERATED_COMPOSE_FILE_PATH } from '../constants'
+import { DockestError } from '../errors'
+import { Logger } from '../logger'
 
 export type LogWriterModeType = 'per-service' | 'aggregate' | 'pipe-stdout'
 

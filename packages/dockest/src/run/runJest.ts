@@ -1,5 +1,5 @@
 import { DockestConfig } from '../@types'
-import { Logger } from '../_logger'
+import { Logger } from '../logger'
 
 export const runJest = async ({
   jestLib,

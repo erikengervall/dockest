@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs'
 import path from 'path'
 import { DockerComposeFile, DockestConfig } from '../../@types'
-import { DockestError } from '../../_errors'
-import { Logger } from '../../_logger'
+import { DockestError } from '../../errors'
+import { Logger } from '../../logger'
 
 const DOCKEST_COMPOSE_FILE_VERSION = 3.8
 const VERSION_REG_EXP = /version: .?(\d\.\d|\d).?/

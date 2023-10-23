@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { Logger } from './_logger'
+import { Logger } from './logger'
 import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
 import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
 import { LogWriterModeType } from './run/log-writer'

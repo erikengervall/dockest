@@ -1,5 +1,5 @@
 import { sleep } from './sleep'
-import { Logger } from '../_logger'
+import { Logger } from '../logger'
 
 export const sleepWithLog = async (seconds = 30, reason = 'Sleeping...') => {
   for (let progress = 1; progress <= seconds; progress++) {

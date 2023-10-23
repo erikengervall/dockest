@@ -1,6 +1,6 @@
 import { ReplaySubject } from 'rxjs'
 import { DockerComposeFile, DockestService, Runner } from './@types'
-import { Logger } from './_logger'
+import { Logger } from './logger'
 
 export const createRunner = (overrides?: Partial<Runner>): Runner => ({
   commands: [],

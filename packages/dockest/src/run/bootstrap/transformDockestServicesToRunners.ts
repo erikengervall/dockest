@@ -1,8 +1,8 @@
 import { DockerEventEmitter } from './createDockerEventEmitter'
 import { createDockerServiceEventStream } from './createDockerServiceEventStream'
 import { DockerComposeFile, DockestConfig, DockestService, Runner, RunnersObj } from '../../@types'
-import { ConfigurationError } from '../../_errors'
-import { Logger } from '../../_logger'
+import { ConfigurationError } from '../../errors'
+import { Logger } from '../../logger'
 
 export const transformDockestServicesToRunners = ({
   dockerComposeFile,

@@ -2,7 +2,7 @@ import net from 'net'
 import { from, of, race } from 'rxjs'
 import { concatMap, delay, ignoreElements, map, mergeMap, retryWhen, skipWhile, takeWhile, tap } from 'rxjs/operators'
 import { Runner } from '../../@types'
-import { DockestError } from '../../_errors'
+import { DockestError } from '../../errors'
 import { selectPortMapping } from '../../utils/selectPortMapping'
 
 export type AcquireConnectionFunctionType = ({ host, port }: { host: string; port: number }) => Promise<void>

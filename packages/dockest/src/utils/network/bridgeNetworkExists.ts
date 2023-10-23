@@ -1,5 +1,5 @@
-import { Logger } from '../../_logger'
 import { BRIDGE_NETWORK_NAME } from '../../constants'
+import { Logger } from '../../logger'
 import { execaWrapper } from '../execaWrapper'
 
 export const bridgeNetworkExists = async () => {

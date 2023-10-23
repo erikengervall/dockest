@@ -1,7 +1,7 @@
 import { from, of } from 'rxjs'
 import { delay, mergeMap, retryWhen, takeWhile, tap } from 'rxjs/operators'
 import { ReadinessCheck } from '../@types'
-import { DockestError } from '../_errors'
+import { DockestError } from '../errors'
 
 const LOG_PREFIX = '[Readiness Retry]'
 

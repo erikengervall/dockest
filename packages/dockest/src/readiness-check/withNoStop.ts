@@ -1,7 +1,7 @@
 import { from, race } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { ReadinessCheck } from '../@types'
-import { DockestError } from '../_errors'
+import { DockestError } from '../errors'
 import { isDieEvent, isKillEvent } from '../run/bootstrap/createDockerEventEmitter'
 
 /**
