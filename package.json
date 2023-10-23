@@ -11,8 +11,11 @@
     "type": "git",
     "url": "https://github.com/erikengervall/dockest.git"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "clean": "lerna run clean --stream && lerna clean --yes && rimraf ./node_modules && yarn cache clean && yarn && yarn prep",
+    "clean": "lerna run clean --stream && lerna clean --yes && rm -rf ./node_modules && yarn cache clean && yarn && yarn prep",
     "dev:link": "lerna run dev:dockest:link --stream && lerna run dev:examples:link --stream",
     "dev:link:list": "ls -la ~/.config/yarn/link/@examples",
     "dev:unlink": "lerna run dev:examples:unlink --stream && lerna run dev:dockest:unlink --stream",
@@ -30,34 +33,19 @@
     "lint": "eslint \"./packages/**/*.ts\"",
     "test": "yarn test:unit && yarn test:examples",
     "test:concurrent": "yarn test:unit && lerna run test:examples --stream --concurrency 10",
-    "test:examples": "lerna run test:examples --stream --ignore @examples/aws-codebuild",
+    "test:examples": "lerna run test:examples --stream --ignore @examples/aws-codebuild --ignore @examples/docker-in-docker",
     "test:unit": "lerna run test:unit --stream"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.19.2",
-    "@typescript-eslint/parser": "^2.19.2",
-    "concurrently": "^5.1.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-no-only-tests": "^2.4.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^4.2.2",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-no-only-tests": "^3.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "lerna": "^3.20.2",
-    "lint-staged": ">=10.0.7",
-    "prettier": "^1.19.1",
-    "prettier-eslint": "^9.0.1",
-    "rimraf": "^3.0.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "yarn lint",
-      "git add"
-    ]
+    "prettier": "^3.0.3",
+    "prettier-eslint": "^16.1.1"
   }
 }

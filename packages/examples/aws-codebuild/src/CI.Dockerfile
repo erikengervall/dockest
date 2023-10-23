@@ -1,4 +1,4 @@
-FROM node:14-slim
+FROM node:18-slim
 
 LABEL author="Laurin Quast <laurinquast@googlemail.com>"
 

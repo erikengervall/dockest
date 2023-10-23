@@ -2,6 +2,9 @@
   "name": "@examples/node-to-node--users",
   "version": "3.0.0-beta.1",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node ./index",
     "docker:build": "docker build --no-cache -t users .",

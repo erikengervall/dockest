@@ -22,15 +22,21 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
         with:
-          node-version: 12.x
+          legacy: true # will also install in PATH as `docker-compose`
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
       - name: Print context 🎉
         env:
           GH_REF: ${{ github.ref }}
         run: |
           echo "GH_REF: ${GH_REF}"
+          echo "docker-compose version: $(docker-compose version)"
+          echo "docker version: $(docker version)"
 
   ####### Lint
   lint:
@@ -39,10 +45,14 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
         with:
-          node-version: 12.x
+          legacy: true # will also install in PATH as `docker-compose`
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
       - run: yarn prep
       - run: yarn lint
 
@@ -52,15 +62,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
         with:
-          node-version: ${{ matrix.node-version }}
+          legacy: true # will also install in PATH as `docker-compose`
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: https://registry.npmjs.org/
       - run: yarn prep
       - run: yarn test:unit
 
@@ -70,15 +81,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
         with:
-          node-version: ${{ matrix.node-version }}
+          legacy: true # will also install in PATH as `docker-compose`
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: https://registry.npmjs.org/
       - run: yarn prep
       - run: yarn test:examples --concurrency 2
 
@@ -91,10 +103,14 @@ jobs:
     if: startsWith(github.ref, 'refs/heads/master')
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
         with:
-          node-version: 12.x
+          legacy: true # will also install in PATH as `docker-compose`
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
           registry-url: https://registry.npmjs.org/
       - name: yarn publish next
         env:
@@ -115,10 +131,14 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Install Compose
+        uses: ndeloof/install-compose-action@v0.0.1
         with:
-          node-version: 12.x
+          legacy: true # will also install in PATH as `docker-compose`
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
           registry-url: https://registry.npmjs.org/
       - name: yarn publish
         env:

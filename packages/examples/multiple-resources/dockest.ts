@@ -1,18 +1,20 @@
-import { Dockest, logLevel, sleepWithLog } from 'dockest'
-import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check'
+import { Dockest, logLevel, sleepWithLog } from 'dockest';
+import { createPostgresReadinessCheck, createRedisReadinessCheck } from 'dockest/readiness-check';
 
 const { run } = new Dockest({
   composeFile: 'docker-compose.yml',
   dumpErrors: true,
-  exitHandler: errorPayload =>
+  exitHandler: (errorPayload) =>
     // eslint-disable-next-line no-console
-    console.log(`\nHello <<${JSON.stringify(errorPayload, null, 2)}>>, nice to meet you 👋🏼\n`),
+    console.log(`❌❌❌ An error occurred
+${JSON.stringify(errorPayload, null, 2)}
+❌❌❌`),
   jestLib: require('jest'),
   jestOpts: {
     updateSnapshot: true,
   },
   logLevel: logLevel.DEBUG,
-})
+});
 
 run([
   {
@@ -22,7 +24,7 @@ run([
       'sequelize db:migrate',
       'sequelize db:seed:undo:all',
       'sequelize db:seed --seed 20190101001337-demo-user',
-      containerId => `echo "The container id is ${containerId}"`,
+      (containerId) => `echo "The container id is ${containerId}"`,
     ],
     readinessCheck: createPostgresReadinessCheck(),
   },
@@ -46,6 +48,6 @@ run([
         serviceName: 'multiple_resources_zookeeper',
       },
     ],
-    readinessCheck: () => sleepWithLog(10, `Sleeping a bit for Kafka's sake`),
+    readinessCheck: () => sleepWithLog(20, `Sleeping a bit for Kafka's sake`),
   },
-])
+]);

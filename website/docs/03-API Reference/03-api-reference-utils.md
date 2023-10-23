@@ -9,9 +9,9 @@ sidebar_label: Utils
 Helper constant for DockestOpts
 
 ```ts
-import { logLevel } from 'dockest'
+import { logLevel } from 'dockest';
 
-console.log(logLevel)
+console.log(logLevel);
 
 // {
 //   NOTHING: 0,
@@ -27,13 +27,13 @@ console.log(logLevel)
 Sleeps for X **milliseconds**.
 
 ```ts
-import { sleep } from 'dockest'
+import { sleep } from 'dockest';
 
 const program = async () => {
-  await sleep(1337)
-}
+  await sleep(1337);
+};
 
-program()
+program();
 ```
 
 ## `sleepWithLog` function
@@ -41,13 +41,13 @@ program()
 Sleeps for X **seconds**, printing a message each second with the progress.
 
 ```ts
-import { sleepWithLog } from 'dockest'
+import { sleepWithLog } from 'dockest';
 
 const program = async () => {
-  await sleepWithLog(13, 'sleeping is cool')
-}
+  await sleepWithLog(13, 'sleeping is cool');
+};
 
-program()
+program();
 ```
 
 ## `execa` function
@@ -55,20 +55,20 @@ program()
 Exposes the internal wrapper of the `execa` library.
 
 ```ts
-import { execa } from 'dockest'
+import { execa } from 'dockest';
 
 const opts = {
   logPrefix,
   logStdout,
   execaOpts,
   runner,
-}
+};
 
 const program = async () => {
-  await execa(`echo "hello :wave:"`, opts)
-}
+  await execa(`echo "hello :wave:"`, opts);
+};
 
-program()
+program();
 ```
 
 `opts` structure:

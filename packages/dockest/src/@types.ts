@@ -1,86 +1,85 @@
-import { Observable } from 'rxjs'
-import { Logger } from './Logger'
-import { DockerEventEmitter } from './run/bootstrap/createDockerEventEmitter'
-import { DockerServiceEventStream } from './run/bootstrap/createDockerServiceEventStream'
-import { LogWriterModeType } from './run/log-writer'
+import { Observable } from 'rxjs';
+import { Logger } from './logger';
+import { DockerEventEmitter } from './run/bootstrap/create-docker-event-emitter';
+import { DockerServiceEventStream } from './run/bootstrap/create-docker-service-event-stream';
+import { LogWriterModeType } from './run/log-writer';
 
-type ContainerId = string
-type ServiceName = string
+type ContainerId = string;
+type ServiceName = string;
 
 export interface ReadinessCheck {
-  (args: { runner: Runner }): Promise<any> | Observable<any>
+  (args: { runner: Runner }): Promise<any> | Observable<any>;
 }
 
 export interface Runner {
-  commands: Commands
-  containerId: ContainerId
-  dependsOn: Runner[]
-  dockerComposeFileService: DockerComposeFileService
-  dockerEventStream$: DockerServiceEventStream
-  logger: Logger
-  readinessCheck: ReadinessCheck
-  serviceName: ServiceName
-  host?: string
-  isBridgeNetworkMode?: boolean
+  commands: Commands;
+  containerId: ContainerId;
+  dependsOn: Runner[];
+  dockerComposeFileService: DockerComposeFileService;
+  dockerEventStream$: DockerServiceEventStream;
+  logger: Logger;
+  readinessCheck: ReadinessCheck;
+  serviceName: ServiceName;
+  host?: string;
+  isBridgeNetworkMode?: boolean;
 }
 
 export interface RunnersObj {
-  [key: string]: Runner
+  [key: string]: Runner;
 }
 
-export type DockerComposePortStringFormat = string
 export type DockerComposePortObjectFormat = {
   /** The publicly exposed port */
-  published: number
+  published: number;
   /** The port inside the container */
-  target: number
-}
+  target: number;
+};
 
-export type DockerComposePortFormat = DockerComposePortStringFormat | DockerComposePortObjectFormat
+export type DockerComposePortFormat = DockerComposePortObjectFormat;
 
 export interface DockerComposeFileService {
   /** Expose ports */
-  ports?: DockerComposePortFormat[]
-  [key: string]: any
+  ports?: DockerComposePortFormat[];
+  [key: string]: any;
 }
 
 export interface DockerComposeFile {
-  version: string
+  version: string;
   services: {
-    [key: string]: DockerComposeFileService
-  }
+    [key: string]: DockerComposeFileService;
+  };
 }
 
-export type Commands = (string | ((containerId: string) => string))[]
+export type Commands = (string | ((containerId: string) => string))[];
 
 export interface DockestService {
-  serviceName: ServiceName
-  commands?: Commands
-  dependsOn?: DockestService[]
-  readinessCheck?: ReadinessCheck
+  serviceName: ServiceName;
+  commands?: Commands;
+  dependsOn?: DockestService[];
+  readinessCheck?: ReadinessCheck;
 }
 
 export interface MutablesConfig {
   /** Jest has finished executing and has returned a result */
-  jestRanWithResult: boolean
-  runners: RunnersObj
-  dockerEventEmitter: DockerEventEmitter
-  runnerLookupMap: Map<string, Runner>
-  teardownOrder: null | Array<string>
+  jestRanWithResult: boolean;
+  runners: RunnersObj;
+  dockerEventEmitter: DockerEventEmitter;
+  runnerLookupMap: Map<string, Runner>;
+  teardownOrder: null | Array<string>;
 }
 
-type Jest = typeof import('jest')
-type JestOpts = Partial<Parameters<Jest['runCLI']>[0]>
+type Jest = typeof import('jest');
+type JestOpts = Partial<Parameters<Jest['runCLI']>[0]>;
 
 export interface DockestOpts {
-  composeFile: string | string[]
-  logLevel: number
+  composeFile: string | string[];
+  logLevel: number;
   /** Run dockest sequentially */
-  runInBand: boolean
+  runInBand: boolean;
   /** Skip port connectivity checks */
-  skipCheckConnection: boolean
+  skipCheckConnection: boolean;
 
-  jestLib: Jest
+  jestLib: Jest;
 
   containerLogs: {
     /** Method for gathering logs
@@ -88,58 +87,58 @@ export interface DockestOpts {
      * "aggregate": One log file for all services
      * "pipe-stdout": Pipe logs to stdout
      */
-    modes: LogWriterModeType[]
+    modes: LogWriterModeType[];
     /** Only collect logs for the specified services. */
-    serviceNameFilter?: string[]
+    serviceNameFilter?: string[];
     /** Where should the logs be written to? Defaults to "./" */
-    logPath: string
-  }
+    logPath: string;
+  };
 
   composeOpts: {
     /** Recreate dependent containers. Incompatible with --no-recreate. */
-    alwaysRecreateDeps: boolean
+    alwaysRecreateDeps: boolean;
     /** Build images before starting containers. */
-    build: boolean
+    build: boolean;
     /** Recreate containers even if their configuration and image haven't changed. */
-    forceRecreate: boolean
+    forceRecreate: boolean;
     /** Don't build an image, even if it's missing. */
-    noBuild: boolean
+    noBuild: boolean;
     /** Produce monochrome output. */
-    noColor: boolean
+    noColor: boolean;
     /** Don't start linked services. */
-    noDeps: boolean
+    noDeps: boolean;
     /** If containers already exist, don't recreate them. Incompatible with --force-recreate and -V. */
-    noRecreate: boolean
+    noRecreate: boolean;
     /** Pull without printing progress information. */
-    quietPull: boolean
-  }
+    quietPull: boolean;
+  };
 
-  debug?: boolean
-  dumpErrors?: boolean
-  exitHandler?: null | ((error: ErrorPayload) => any)
+  debug?: boolean;
+  dumpErrors?: boolean;
+  exitHandler?: null | ((error: ErrorPayload) => any);
 
   /** https://jestjs.io/docs/en/cli */
-  jestOpts: JestOpts
+  jestOpts: JestOpts;
 }
 
-export type TestRunModeType = 'docker-local-socket' | 'docker-injected-host-socket' | 'host'
+export type TestRunModeType = 'docker-local-socket' | 'docker-injected-host-socket' | 'host';
 
 interface InternalConfig {
-  hostname: string
-  runMode: TestRunModeType
-  perfStart: number
+  hostname: string;
+  runMode: TestRunModeType;
+  perfStart: number;
 }
 
 export interface DockestConfig extends InternalConfig, DockestOpts {
-  jestOpts: JestOpts
-  mutables: MutablesConfig
+  jestOpts: JestOpts;
+  mutables: MutablesConfig;
 }
 
 export interface ErrorPayload {
-  trap: string
-  code?: number
-  error?: Error
-  promise?: Promise<any>
-  reason?: Error | any
-  signal?: any
+  trap: string;
+  code?: number;
+  error?: Error;
+  promise?: Promise<any>;
+  reason?: Error | any;
+  signal?: any;
 }
