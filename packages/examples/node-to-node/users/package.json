@@ -11,7 +11,7 @@
     "docker:run": "docker container run --rm -p 1337:1337 -t users"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^1.6.4",
     "express": "^4.17.1"
   }
 }
