@@ -11,7 +11,7 @@
     "test:examples": "node_modules/.bin/ts-node ./dockest"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^1.6.4"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
