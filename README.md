@@ -698,9 +698,10 @@ This is a monorepo using [lerna](https://github.com/lerna/lerna), so every scrip
 2. Bump the version from the project root: `yarn lerna version <VERSION>`, e.g. `yarn lerna version 3.2.0`. Lerna bumps
    every package, commits, creates the tag `v<VERSION>` and pushes the commit and the tag (if you passed `--no-push`,
    push them with `git push --follow-tags`).
-3. CI runs lint, unit and integration tests on the tag and publishes the version to npm. The tag must match the version
-   in `packages/dockest/package.json`. A prerelease tag publishes under its identifier instead of `latest`, e.g.
-   `v3.2.0-rc.1` publishes under the `rc` dist-tag.
+3. CI runs lint, unit and integration tests on the tag and publishes the version to npm through
+   [trusted publishing](https://docs.npmjs.com/trusted-publishers), so no npm token is involved and every version
+   carries a provenance attestation. The tag must match the version in `packages/dockest/package.json`. A prerelease tag
+   publishes under its identifier instead of `latest`, e.g. `v3.2.0-rc.1` publishes under the `rc` dist-tag.
 4. If you released from a release branch, merge it into `master`.
 
 Every push to `master` also publishes a `next` build (`npm install dockest@next`).
