@@ -25,6 +25,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     jestOpts: { projects = ['.'], runInBand: runInBandJest = true } = {},
     logLevel = LOG_LEVEL.INFO,
     runInBand = true,
+    skipCheckConnection = false,
     containerLogs: { serviceNameFilter = undefined, modes = ['aggregate'] as LogWriterModeType[], logPath = './' } = {},
   } = opts;
 
@@ -63,7 +64,7 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     logLevel,
     perfStart: Date.now(),
     runInBand,
-    skipCheckConnection: false,
+    skipCheckConnection,
     containerLogs: {
       modes,
       serviceNameFilter,

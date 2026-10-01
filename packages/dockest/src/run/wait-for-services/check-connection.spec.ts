@@ -1,5 +1,10 @@
+import net from 'net';
 import { ReplaySubject } from 'rxjs';
-import { AcquireConnectionFunctionType, createCheckConnection } from './check-connection';
+import {
+  acquireConnection as acquireRealConnection,
+  AcquireConnectionFunctionType,
+  createCheckConnection,
+} from './check-connection';
 import { createRunner } from '../../test-utils';
 
 // mock delays to tick immediately
@@ -23,6 +28,15 @@ describe('happy', () => {
     const result = await checkConnection({ runner });
 
     expect(result).toEqual(undefined);
+  });
+
+  it('skips ports without a published host port', async () => {
+    const acquireConnection = jest.fn(() => Promise.resolve());
+    const runner = createRunner({ dockerComposeFileService: { image: 'node:18-alpine', ports: [{ target: 3000 }] } });
+
+    await createCheckConnection({ acquireConnection })({ runner });
+
+    expect(acquireConnection).not.toHaveBeenCalled();
   });
 
   it('succeeds when the port check is successfull', async () => {
@@ -73,5 +87,26 @@ describe('sad', () => {
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`[DockestError: [Check Connection] Timed out]`);
     }
+  });
+});
+
+describe('acquireConnection', () => {
+  it('resolves once the port accepts connections', async () => {
+    const server = net.createServer((socket) => socket.end());
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+    const { port } = server.address() as net.AddressInfo;
+
+    await expect(acquireRealConnection({ host: '127.0.0.1', port })).resolves.toBeUndefined();
+
+    await new Promise((resolve) => server.close(resolve));
+  });
+
+  it('rejects instead of throwing when the connection is refused', async () => {
+    const server = net.createServer();
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+    const { port } = server.address() as net.AddressInfo;
+    await new Promise((resolve) => server.close(resolve));
+
+    await expect(acquireRealConnection({ host: '127.0.0.1', port })).rejects.toMatchObject({ code: 'ECONNREFUSED' });
   });
 });
