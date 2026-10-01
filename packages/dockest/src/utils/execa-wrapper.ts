@@ -19,7 +19,8 @@ export const execaWrapper = (
 
   logger.debug(`${logPrefix} <${trimmedCommand}>`);
 
-  const result = execa.commandSync(trimmedCommand, {
+  // The whole command goes to the shell as one string; passing args alongside `shell: true` is deprecated (DEP0190)
+  const result = execa.sync(trimmedCommand, [], {
     shell: true,
     ...execaOpts,
   });

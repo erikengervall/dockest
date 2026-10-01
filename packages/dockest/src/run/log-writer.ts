@@ -4,6 +4,7 @@ import execa from 'execa'; /* eslint-disable-line import/default */
 import { GENERATED_COMPOSE_FILE_PATH } from '../constants';
 import { DockestError } from '../errors';
 import { Logger } from '../logger';
+import { getComposeCommand } from '../utils/get-compose-command';
 
 export type LogWriterModeType = 'per-service' | 'aggregate' | 'pipe-stdout';
 
@@ -62,7 +63,9 @@ export const createLogWriter = ({
 
     Logger.debug(`Registering log collection for ${serviceName} with containerId: ${containerId}`);
 
-    const logCollectionProcess = execa(`docker-compose`, [
+    const [composeFile, ...composeArgs] = getComposeCommand().split(' ');
+    const logCollectionProcess = execa(composeFile, [
+      ...composeArgs,
       '-f',
       GENERATED_COMPOSE_FILE_PATH,
       'logs',

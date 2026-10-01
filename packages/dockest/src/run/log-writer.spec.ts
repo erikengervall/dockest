@@ -11,6 +11,8 @@ let resultMap: {
   };
 };
 
+jest.mock('../utils/get-compose-command', () => ({ getComposeCommand: () => 'docker-compose' }));
+
 jest.mock('execa', () => {
   return (command: string, args: Array<string>) => {
     if (command !== 'docker-compose') {
