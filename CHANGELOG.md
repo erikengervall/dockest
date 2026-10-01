@@ -39,6 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Upgraded `js-yaml` to 3.15, `execa` to 5, `zod` to 3.25 and `zod-validation-error` to 3.5, clearing the
   security advisories in Dockest's runtime dependencies
 - Test suites and test utilities are no longer published in `dist`
+- Releases publish through npm trusted publishing (GitHub OIDC) with provenance attestations instead of a long-lived npm
+  token
 - `next` builds publish as `<patch + 1>-next.<run>.g<sha>` so they sort above the latest release, and prerelease
   tags publish under their own dist-tag
 

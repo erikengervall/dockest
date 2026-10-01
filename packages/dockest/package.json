@@ -27,16 +27,16 @@
   "author": "Erik Engervall <erik.engervall@gmail.com> (https://github.com/erikengervall)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/erikengervall/dockest.git"
+    "url": "git+https://github.com/erikengervall/dockest.git"
   },
   "scripts": {
     "prepublishOnly": "cp ../../README.md README.md && yarn build:publish",
     "dev:dockest:link": "yarn link",
     "dev:dockest:unlink": "yarn unlink",
     "clean": "rm -rf dist",
-    "build": "node_modules/.bin/tsc",
+    "build": "tsc",
     "build:publish": "yarn clean && yarn tsc --project tsconfig.publish.json",
-    "test:unit": "node_modules/.bin/jest . --forceExit --detectOpenHandles"
+    "test:unit": "jest . --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "chalk": "^3.0.0",
