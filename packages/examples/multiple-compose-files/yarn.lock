@@ -1400,7 +1400,7 @@ diff@^4.0.1:
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 "dockest@file:../../dockest":
-  version "3.1.0"
+  version "3.2.0"
   dependencies:
     chalk "^3.0.0"
     execa "^5.1.1"
