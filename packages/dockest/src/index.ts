@@ -8,7 +8,6 @@ import { createLogWriter } from './run/log-writer';
 import { runJest } from './run/run-jest';
 import { teardown } from './run/teardown';
 import { waitForServices } from './run/wait-for-services';
-import { setGlobalCustomZodErrorMap } from './utils/custom-zod-error-map';
 import { getOpts } from './utils/get-opts';
 
 export { DockestService } from './@types';
@@ -16,8 +15,6 @@ export { LOG_LEVEL as logLevel } from './constants';
 export { execaWrapper as execa } from './utils/execa-wrapper';
 export { sleep } from './utils/sleep';
 export { sleepWithLog } from './utils/sleep-with-log';
-
-setGlobalCustomZodErrorMap();
 
 export class Dockest {
   private config: DockestConfig;

@@ -3,7 +3,6 @@ import { from, of, race } from 'rxjs';
 import { concatMap, delay, ignoreElements, map, mergeMap, retryWhen, skipWhile, takeWhile, tap } from 'rxjs/operators';
 import { Runner } from '../../@types';
 import { DockestError } from '../../errors';
-import { selectPortMapping } from '../../utils/select-port-mapping';
 
 export type AcquireConnectionFunctionType = ({ host, port }: { host: string; port: number }) => Promise<void>;
 
@@ -91,7 +90,11 @@ export const createCheckConnection =
   }) => {
     const host = runnerHost || 'localhost';
     const portKey = isBridgeNetworkMode ? 'target' : 'published';
-    if (!ports || ports.length === 0) {
+    // A port without a published host port gets a random one from Docker, which cannot be checked from here
+    const portsToCheck = (ports || [])
+      .map((portMapping) => portMapping[portKey])
+      .filter((port): port is number => typeof port === 'number');
+    if (portsToCheck.length === 0) {
       runner.logger.debug(`${LOG_PREFIX} Skip connection check as there are no ports exposed.`);
       return;
     }
@@ -103,9 +106,9 @@ export const createCheckConnection =
           throw new DockestError('Container unexpectedly died.', { event });
         }),
       ),
-      of(...ports.map(selectPortMapping)).pipe(
+      of(...portsToCheck).pipe(
         // concatMap -> run checks for each port in sequence
-        concatMap(({ [portKey]: port }) => {
+        concatMap((port) => {
           return checkPortConnection({
             runner,
             host,

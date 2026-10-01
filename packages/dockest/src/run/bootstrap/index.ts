@@ -1,6 +1,5 @@
 import { configureLogger } from './configure-logger';
 import { createDockerEventEmitter } from './create-docker-event-emitter';
-import { getComposeFilesWithVersion } from './get-compose-files-with-version';
 import { getParsedComposeFile } from './get-parsed-compose-file';
 import { mergeComposeFiles } from './merge-compose-files';
 import { setupExitHandler } from './setup-exit-handler';
@@ -31,14 +30,12 @@ export const bootstrap = async ({
 
   const { dockerComposeFile } = getParsedComposeFile(mergedComposeFiles);
 
-  const { dockerComposeFileWithVersion } = getComposeFilesWithVersion(composeFile, dockerComposeFile);
-
-  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFileWithVersion);
+  const composeFilePath = writeComposeFile(mergedComposeFiles, dockerComposeFile);
 
   const dockerEventEmitter = createDockerEventEmitter(composeFilePath);
 
   mutables.runners = transformDockestServicesToRunners({
-    dockerComposeFile: dockerComposeFileWithVersion,
+    dockerComposeFile,
     dockestServices,
     runMode,
     dockerEventEmitter,

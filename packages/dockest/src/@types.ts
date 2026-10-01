@@ -28,14 +28,12 @@ export interface RunnersObj {
   [key: string]: Runner;
 }
 
-export type DockerComposePortObjectFormat = {
-  /** The publicly exposed port */
-  published: number;
+export type DockerComposePortFormat = {
+  /** The publicly exposed port. Absent when Docker assigns the host port. */
+  published?: number;
   /** The port inside the container */
   target: number;
 };
-
-export type DockerComposePortFormat = DockerComposePortObjectFormat;
 
 export interface DockerComposeFileService {
   /** Expose ports */
@@ -44,7 +42,10 @@ export interface DockerComposeFileService {
 }
 
 export interface DockerComposeFile {
-  version: string;
+  /** The Compose project name */
+  name?: string;
+  /** Obsolete in the Compose Specification */
+  version?: string;
   services: {
     [key: string]: DockerComposeFileService;
   };
