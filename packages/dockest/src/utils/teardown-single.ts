@@ -1,24 +1,39 @@
 import { execaWrapper } from './execa-wrapper';
+import { getComposeCommand } from './get-compose-command';
+import { shellQuote } from './shell-quote';
 import { Runner } from '../@types';
-import { DockestError } from '../errors';
+import { GENERATED_COMPOSE_FILE_PATH } from '../constants';
 
-const stopContainerById = async ({ runner, runner: { containerId } }: { runner: Runner }) => {
-  const command = `docker stop ${containerId}`;
+/**
+ * The container can exist without Dockest having seen its start event, e.g. when startup timed out
+ */
+const findContainerIds = ({ serviceName }: Runner): string[] => {
+  const { stdout } = execaWrapper(
+    `${getComposeCommand()} -f ${shellQuote(GENERATED_COMPOSE_FILE_PATH)} ps --all --quiet ${serviceName}`,
+    { execaOpts: { reject: false } },
+  );
 
-  execaWrapper(command, { runner, logPrefix: '[Stop Container]', logStdout: true });
+  return stdout.split('\n').filter(Boolean);
 };
 
-const removeContainerById = async ({ runner, runner: { containerId } }: { runner: Runner }) => {
-  const command = `docker rm ${containerId} --volumes`;
+/**
+ * Stop and remove the runner's container. Best effort: a failure is logged, never thrown, so the remaining
+ * runners are still torn down.
+ */
+export const teardownSingle = ({ runner }: { runner: Runner }): void => {
+  const containerIds = runner.containerId ? [runner.containerId] : findContainerIds(runner);
 
-  execaWrapper(command, { runner, logPrefix: '[Remove Container]', logStdout: true });
-};
-
-export const teardownSingle = async ({ runner, runner: { containerId, serviceName } }: { runner: Runner }) => {
-  if (!containerId) {
-    throw new DockestError(`Invalid containerId (${containerId}) for service (${serviceName})`, { runner });
+  if (containerIds.length === 0) {
+    runner.logger.debug('[Teardown] No container to remove');
+    return;
   }
 
-  await stopContainerById({ runner });
-  await removeContainerById({ runner });
+  for (const containerId of containerIds) {
+    try {
+      execaWrapper(`docker stop ${containerId}`, { runner, logPrefix: '[Stop Container]', logStdout: true });
+      execaWrapper(`docker rm ${containerId} --volumes`, { runner, logPrefix: '[Remove Container]', logStdout: true });
+    } catch (error) {
+      runner.logger.warn(`[Teardown] Failed to remove container ${containerId}: ${(error as Error).message}`);
+    }
+  }
 };

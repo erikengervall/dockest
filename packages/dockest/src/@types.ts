@@ -67,6 +67,8 @@ export interface MutablesConfig {
   dockerEventEmitter: DockerEventEmitter;
   runnerLookupMap: Map<string, Runner>;
   teardownOrder: null | Array<string>;
+  /** The Compose project name, used to remove the networks Compose created */
+  composeProjectName: null | string;
 }
 
 type Jest = typeof import('jest');

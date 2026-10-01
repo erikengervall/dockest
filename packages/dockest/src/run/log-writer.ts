@@ -93,11 +93,11 @@ export const createLogWriter = ({
     logCollectionProcess.then(() => undefined);
   };
 
-  const destroy = async () => {
-    for (const stream of writeStreamMap.values()) {
-      stream.end();
-    }
-  };
+  /** Resolves once every log file is flushed, so exiting right after does not truncate the logs */
+  const destroy = () =>
+    Promise.all(
+      Array.from(writeStreamMap.values()).map((stream) => new Promise<void>((resolve) => stream.end(() => resolve()))),
+    ).then(() => undefined);
 
   return {
     register,

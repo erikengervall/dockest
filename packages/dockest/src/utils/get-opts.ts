@@ -46,7 +46,9 @@ export const getOpts = (opts: Partial<DockestOpts> = {}): DockestConfig => {
     mutables: {
       jestRanWithResult: false,
       runners: {},
-      dockerEventEmitter: new EventEmitter() as any,
+      // Replaced in bootstrap; a no-op `destroy` keeps a teardown before then safe
+      dockerEventEmitter: Object.assign(new EventEmitter(), { destroy: () => undefined }),
+      composeProjectName: null,
       teardownOrder: null,
       runnerLookupMap: new Map(),
     },
