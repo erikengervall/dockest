@@ -90,9 +90,14 @@ export const setupExitHandler = ({
     }
 
     if (customExitHandler && typeof customExitHandler === 'function') {
-      const customExitHandlerResult = customExitHandler(errorPayload);
-      if (!isProcessExiting) {
-        await customExitHandlerResult;
+      // A failing custom handler must not keep the services from being torn down
+      try {
+        const customExitHandlerResult = customExitHandler(errorPayload);
+        if (!isProcessExiting) {
+          await customExitHandlerResult;
+        }
+      } catch (customExitHandlerError) {
+        Logger.error(`${LOG_PREFIX} exitHandler threw: ${(customExitHandlerError as Error).message}`);
       }
     }
 

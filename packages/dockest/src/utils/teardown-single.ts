@@ -8,12 +8,12 @@ import { GENERATED_COMPOSE_FILE_PATH } from '../constants';
  * The container can exist without Dockest having seen its start event, e.g. when startup timed out
  */
 const findContainerIds = ({ serviceName }: Runner): string[] => {
-  const { stdout } = execaWrapper(
+  const { exitCode, stdout } = execaWrapper(
     `${getComposeCommand()} -f ${shellQuote(GENERATED_COMPOSE_FILE_PATH)} ps --all --quiet ${serviceName}`,
     { execaOpts: { reject: false } },
   );
 
-  return stdout.split('\n').filter(Boolean);
+  return exitCode === 0 ? stdout.split('\n').filter(Boolean) : [];
 };
 
 /**
@@ -21,7 +21,12 @@ const findContainerIds = ({ serviceName }: Runner): string[] => {
  * runners are still torn down.
  */
 export const teardownSingle = ({ runner }: { runner: Runner }): void => {
-  const containerIds = runner.containerId ? [runner.containerId] : findContainerIds(runner);
+  // A service Dockest never started may still have a container of the user's own, which must be left alone
+  const containerIds = runner.containerId
+    ? [runner.containerId]
+    : runner.isStartRequested
+    ? findContainerIds(runner)
+    : [];
 
   if (containerIds.length === 0) {
     runner.logger.debug('[Teardown] No container to remove');

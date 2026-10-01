@@ -22,6 +22,8 @@ export interface Runner {
   serviceName: ServiceName;
   host?: string;
   isBridgeNetworkMode?: boolean;
+  /** Dockest has run `docker compose up` for this service */
+  isStartRequested?: boolean;
 }
 
 export interface RunnersObj {

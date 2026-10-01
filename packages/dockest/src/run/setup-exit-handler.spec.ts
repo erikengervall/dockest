@@ -99,6 +99,17 @@ describe('setupExitHandler', () => {
     expect(order).toEqual(['custom', 'teardown']);
   });
 
+  it('should still tear down when the custom exit handler throws', async () => {
+    await setup({
+      exitHandler: async () => {
+        throw new Error('handler bug');
+      },
+    })({ trap: 'run', reason: new DockestError('failed') });
+
+    expect(teardown).toHaveBeenCalledTimes(1);
+    expect(processExit).toHaveBeenCalledWith(1);
+  });
+
   it('should log the message of a plain error instead of {}', async () => {
     await setup()({ trap: 'uncaughtException', error: new Error('kaboom') });
 
