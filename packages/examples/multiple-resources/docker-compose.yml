@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   multiple_resources_postgres1sequelize:
     image: postgres:9.6-alpine
