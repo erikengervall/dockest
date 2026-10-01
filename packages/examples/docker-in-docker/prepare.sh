@@ -5,5 +5,5 @@ cd ../../dockest
 yarn pack --filename ../examples/docker-in-docker/src/dockest.tgz
 cd ../examples/docker-in-docker/src
 
-yarn cache clean
+yarn cache clean dockest
 yarn install --no-lockfile

@@ -22,20 +22,20 @@ export interface Runner {
   serviceName: ServiceName;
   host?: string;
   isBridgeNetworkMode?: boolean;
+  /** Dockest has run `docker compose up` for this service */
+  isStartRequested?: boolean;
 }
 
 export interface RunnersObj {
   [key: string]: Runner;
 }
 
-export type DockerComposePortObjectFormat = {
-  /** The publicly exposed port */
-  published: number;
+export type DockerComposePortFormat = {
+  /** The publicly exposed port. Absent when Docker assigns the host port. */
+  published?: number;
   /** The port inside the container */
   target: number;
 };
-
-export type DockerComposePortFormat = DockerComposePortObjectFormat;
 
 export interface DockerComposeFileService {
   /** Expose ports */
@@ -44,7 +44,10 @@ export interface DockerComposeFileService {
 }
 
 export interface DockerComposeFile {
-  version: string;
+  /** The Compose project name */
+  name?: string;
+  /** Obsolete in the Compose Specification */
+  version?: string;
   services: {
     [key: string]: DockerComposeFileService;
   };
@@ -66,6 +69,8 @@ export interface MutablesConfig {
   dockerEventEmitter: DockerEventEmitter;
   runnerLookupMap: Map<string, Runner>;
   teardownOrder: null | Array<string>;
+  /** The Compose project name, used to remove the networks Compose created */
+  composeProjectName: null | string;
 }
 
 type Jest = typeof import('jest');

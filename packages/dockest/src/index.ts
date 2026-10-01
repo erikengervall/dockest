@@ -6,9 +6,9 @@ import { bootstrap } from './run/bootstrap';
 import { debugMode } from './run/debug-mode';
 import { createLogWriter } from './run/log-writer';
 import { runJest } from './run/run-jest';
+import { setupExitHandler } from './run/setup-exit-handler';
 import { teardown } from './run/teardown';
 import { waitForServices } from './run/wait-for-services';
-import { setGlobalCustomZodErrorMap } from './utils/custom-zod-error-map';
 import { getOpts } from './utils/get-opts';
 
 export { DockestService } from './@types';
@@ -16,8 +16,6 @@ export { LOG_LEVEL as logLevel } from './constants';
 export { execaWrapper as execa } from './utils/execa-wrapper';
 export { sleep } from './utils/sleep';
 export { sleepWithLog } from './utils/sleep-with-log';
-
-setGlobalCustomZodErrorMap();
 
 export class Dockest {
   private config: DockestConfig;
@@ -28,7 +26,8 @@ export class Dockest {
     Logger.logLevel = this.config.logLevel;
     BaseError.DockestConfig = this.config;
 
-    if (this.config.jestLib.getVersion() < MINIMUM_JEST_VERSION) {
+    const jestMajorVersion = parseInt(this.config.jestLib.getVersion(), 10);
+    if (jestMajorVersion < parseInt(MINIMUM_JEST_VERSION, 10)) {
       throw new ConfigurationError(
         `Outdated Jest version (${this.config.jestLib.getVersion()}). Upgrade to at least ${MINIMUM_JEST_VERSION}`,
       );
@@ -60,28 +59,37 @@ export class Dockest {
       skipCheckConnection,
     } = this.config;
 
-    await bootstrap({
-      composeFile,
-      dockestServices,
+    const teardownServices = () => teardown({ hostname, runMode, mutables, perfStart, logWriter });
+
+    const handleExit = setupExitHandler({
       dumpErrors,
       exitHandler,
-      runMode,
       mutables,
       perfStart,
+      teardown: teardownServices,
     });
 
-    await waitForServices({
-      composeOpts,
-      mutables,
-      hostname,
-      runMode,
-      runInBand,
-      skipCheckConnection,
-      logWriter,
-    });
-    await debugMode({ debug, mutables });
-    const { success } = await runJest({ jestLib, jestOpts, mutables });
-    await teardown({ hostname, runMode, mutables, perfStart, logWriter });
+    let success: boolean;
+    try {
+      await bootstrap({ composeFile, dockestServices, runMode, mutables });
+      await waitForServices({
+        composeOpts,
+        mutables,
+        hostname,
+        runMode,
+        runInBand,
+        skipCheckConnection,
+        logWriter,
+      });
+      await debugMode({ debug, mutables });
+      ({ success } = await runJest({ jestLib, jestOpts, mutables }));
+    } catch (reason) {
+      // Tear down even when the caller catches the rejection, so no containers are left behind
+      await handleExit({ trap: 'run', reason });
+      return;
+    }
+
+    await teardownServices();
 
     success ? process.exit(0) : process.exit(1);
   };

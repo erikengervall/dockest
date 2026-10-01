@@ -27,6 +27,30 @@ services:
       - 6379:1337
 `;
 
+/** What `docker compose config` (Compose v2+) emits: no `version`, a `name`, and quoted published ports */
+const COMPOSE_V2_CONFIG_OUTPUT = `
+name: example
+services:
+  noports:
+    image: redis:7-alpine
+  ephemeral:
+    image: redis:7-alpine
+    ports:
+      - mode: ingress
+        target: 6379
+        protocol: tcp
+  short:
+    image: redis:7-alpine
+    environment:
+      EMPTY: null
+      FLAG: "true"
+    ports:
+      - mode: ingress
+        target: 6379
+        published: "6380"
+        protocol: tcp
+`;
+
 describe('getParsedComposeFile', () => {
   describe('happy', () => {
     it('should work', () => {
@@ -69,6 +93,19 @@ describe('getParsedComposeFile', () => {
           "version": "3.8",
         }
       `);
+    });
+
+    it('should accept Compose v2 config output', () => {
+      const { dockerComposeFile } = getParsedComposeFile(COMPOSE_V2_CONFIG_OUTPUT);
+
+      expect(dockerComposeFile.name).toEqual('example');
+      expect(dockerComposeFile.version).toBeUndefined();
+      expect(dockerComposeFile.services.noports.ports).toBeUndefined();
+      expect(dockerComposeFile.services.ephemeral.ports).toEqual([{ mode: 'ingress', target: 6379, protocol: 'tcp' }]);
+      expect(dockerComposeFile.services.short.ports).toEqual([
+        { mode: 'ingress', target: 6379, published: 6380, protocol: 'tcp' },
+      ]);
+      expect(dockerComposeFile.services.short.environment).toEqual({ EMPTY: null, FLAG: 'true' });
     });
 
     it('should throw error for old port format', () => {

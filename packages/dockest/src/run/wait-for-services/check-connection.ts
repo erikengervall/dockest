@@ -3,33 +3,35 @@ import { from, of, race } from 'rxjs';
 import { concatMap, delay, ignoreElements, map, mergeMap, retryWhen, skipWhile, takeWhile, tap } from 'rxjs/operators';
 import { Runner } from '../../@types';
 import { DockestError } from '../../errors';
-import { selectPortMapping } from '../../utils/select-port-mapping';
 
 export type AcquireConnectionFunctionType = ({ host, port }: { host: string; port: number }) => Promise<void>;
 
 const LOG_PREFIX = '[Check Connection]';
 const RETRY_COUNT = 10;
 
-const acquireConnection: AcquireConnectionFunctionType = ({ host, port }): Promise<void> => {
+const CONNECTION_TIMEOUT_MS = 1000;
+
+export const acquireConnection: AcquireConnectionFunctionType = ({ host, port }): Promise<void> => {
   return new Promise((resolve, reject) => {
-    let connected = false;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const netSocket = net.createConnection({ host, port });
 
-    const netSocket = net.createConnection({ host, port }).on('connect', () => {
-      if (timeoutId) {
+    const timeoutId = setTimeout(() => {
+      netSocket.destroy();
+      reject(new Error('Timeout while acquiring connection'));
+    }, CONNECTION_TIMEOUT_MS);
+
+    netSocket
+      .once('connect', () => {
         clearTimeout(timeoutId);
-      }
-      console.debug(`${host}:${port} connected ✅`);
-      connected = true;
-      netSocket.end();
-      resolve(undefined);
-    });
-
-    timeoutId = setTimeout(() => {
-      if (!connected) {
-        reject(new Error('Timeout while acquiring connection'));
-      }
-    }, 1000);
+        netSocket.end();
+        resolve();
+      })
+      // Without a listener, a refused connection is an uncaught exception instead of a retry
+      .once('error', (error) => {
+        clearTimeout(timeoutId);
+        netSocket.destroy();
+        reject(error);
+      });
   });
 };
 
@@ -49,6 +51,7 @@ const checkPortConnection = ({
     mergeMap(({ host, port }) => {
       return from(acquireConnection({ host, port }));
     }),
+    tap(() => runner.logger.debug(`${LOG_PREFIX} ${host}:${port} connected`)),
 
     // retry if check errors
     retryWhen((errors) => {
@@ -57,11 +60,9 @@ const checkPortConnection = ({
       return errors.pipe(
         tap((value) => {
           retries = retries + 1;
-          runner.logger.error(`${LOG_PREFIX} Error: ${value.message}`);
-          runner.logger.debug(`${LOG_PREFIX} Timeout after ${
-            RETRY_COUNT - retries
-          } retries (Retry count set to ${RETRY_COUNT}).
-`);
+          runner.logger.warn(
+            `${LOG_PREFIX} ${host}:${port} not reachable (attempt ${retries}/${RETRY_COUNT}): ${value.message}`,
+          );
         }),
         takeWhile(() => {
           if (retries < RETRY_COUNT) {
@@ -91,7 +92,11 @@ export const createCheckConnection =
   }) => {
     const host = runnerHost || 'localhost';
     const portKey = isBridgeNetworkMode ? 'target' : 'published';
-    if (!ports || ports.length === 0) {
+    // A port without a published host port gets a random one from Docker, which cannot be checked from here
+    const portsToCheck = (ports || [])
+      .map((portMapping) => portMapping[portKey])
+      .filter((port): port is number => typeof port === 'number');
+    if (portsToCheck.length === 0) {
       runner.logger.debug(`${LOG_PREFIX} Skip connection check as there are no ports exposed.`);
       return;
     }
@@ -103,9 +108,9 @@ export const createCheckConnection =
           throw new DockestError('Container unexpectedly died.', { event });
         }),
       ),
-      of(...ports.map(selectPortMapping)).pipe(
+      of(...portsToCheck).pipe(
         // concatMap -> run checks for each port in sequence
-        concatMap(({ [portKey]: port }) => {
+        concatMap((port) => {
           return checkPortConnection({
             runner,
             host,

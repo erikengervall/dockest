@@ -2,7 +2,6 @@ import { DockerComposeFile, TestRunModeType } from '../@types';
 import { DEFAULT_HOST_NAME, DOCKEST_ATTACH_TO_PROCESS, DOCKEST_HOST_ADDRESS } from '../constants';
 import { DockestError } from '../errors';
 import { getRunMode as _getRunMode } from '../utils/get-run-mode';
-import { selectPortMapping } from '../utils/select-port-mapping';
 
 let runMode: TestRunModeType | null = null;
 
@@ -30,17 +29,23 @@ export const getHostAddress = () => {
 
 export const resolveServiceAddress = (serviceName: string, targetPort: number | string) => {
   const service = config.services[serviceName];
-  if (!service || !service.ports) {
+  if (!service) {
     throw new DockestError(`Service "${serviceName}" does not exist`);
   }
 
-  const portBinding = service.ports.map(selectPortMapping).find((portBinding) => portBinding.target === targetPort);
+  const portBinding = (service.ports || []).find((portBinding) => portBinding.target === Number(targetPort));
   if (!portBinding) {
-    throw new DockestError(`Service "${serviceName}" has no target port ${portBinding}`);
+    throw new DockestError(`Service "${serviceName}" has no target port ${targetPort}`);
   }
 
   if (getRunMode() === 'docker-injected-host-socket') {
     return { host: serviceName, port: portBinding.target };
+  }
+
+  if (portBinding.published === undefined) {
+    throw new DockestError(
+      `Service "${serviceName}" does not publish target port ${targetPort} on a fixed host port. Set \`published\` in the Compose file.`,
+    );
   }
 
   return { host: 'localhost', port: portBinding.published };

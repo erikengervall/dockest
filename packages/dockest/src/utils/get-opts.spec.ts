@@ -54,4 +54,8 @@ describe('getOpts', () => {
     `,
     );
   });
+
+  it('should pass skipCheckConnection through', () => {
+    expect(getOpts({ skipCheckConnection: true }).skipCheckConnection).toEqual(true);
+  });
 });

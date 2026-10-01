@@ -83,6 +83,14 @@ describe('mergeComposeFiles', () => {
       // });
     });
 
+    it('should accept an absolute path', async () => {
+      const { mergedComposeFiles } = await mergeComposeFiles(`${__dirname}/merge-compose-files.spec.yml`, {
+        cwd: () => '/somewhere/else',
+      } as any);
+
+      expect(safeLoad(mergedComposeFiles)).toMatchObject({ services: { redis: expect.any(Object) } });
+    });
+
     it('should work for multiple compose files', async () => {
       const { mergedComposeFiles } = await mergeComposeFiles(
         ['merge-compose-files.spec.yml', 'merge-compose-files-2.spec.yml'],

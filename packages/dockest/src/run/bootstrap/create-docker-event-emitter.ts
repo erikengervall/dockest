@@ -1,5 +1,8 @@
 import { EventEmitter } from 'events';
 import execa from 'execa'; /* eslint-disable-line import/default */
+import { createLineSplitter } from '../../utils/create-line-splitter';
+import { getComposeCommand } from '../../utils/get-compose-command';
+import { shellQuote } from '../../utils/shell-quote';
 
 const parseJsonSafe = (data: string) => {
   try {
@@ -61,7 +64,7 @@ export const isDieEvent = (event: DockerEventType): event is DieDockerComposeEve
 export const isKillEvent = (event: DockerEventType): event is KillDockerComposeEvent => event.action === 'kill';
 
 export const createDockerEventEmitter = (composeFilePath: string): DockerEventEmitter => {
-  const command = `docker-compose --file ${composeFilePath} events --json`;
+  const command = `${getComposeCommand()} --file ${shellQuote(composeFilePath)} events --json`;
 
   const childProcess = execa(command, { shell: true, reject: false });
 
@@ -77,12 +80,12 @@ export const createDockerEventEmitter = (composeFilePath: string): DockerEventEm
     return undefined;
   });
 
-  childProcess.stdout.addListener('data', (chunk) => {
-    const lines: string[] = chunk.toString().split(`\n`).filter(Boolean);
+  const splitLines = createLineSplitter();
 
-    for (const line of lines) {
+  childProcess.stdout.addListener('data', (chunk) => {
+    for (const line of splitLines(chunk)) {
       const data: UnknownDockerComposeEvent = parseJsonSafe(line);
-      if (!data) return;
+      if (!data) continue;
 
       // convert health status to friendlier format
       if (data.action.startsWith('health_status: ')) {

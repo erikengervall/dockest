@@ -35,6 +35,7 @@ export const waitForServices = async ({
   const waitForRunner = async ({ runner, runner: { isBridgeNetworkMode, serviceName } }: { runner: Runner }) => {
     runner.logger.debug(`${LOG_PREFIX} Initiating...`);
 
+    runner.isStartRequested = true;
     await dockerComposeUp({ composeOpts, serviceName });
     await resolveContainerId({ runner });
 

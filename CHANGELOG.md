@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - Unreleased
+
+### Fixed
+
+- Containers are torn down when a run fails, is interrupted or crashes. The exit handler iterated a runner list that
+  was always empty, so a failed startup, an uncaught error or Ctrl+C left every container running
+  [#236](https://github.com/erikengervall/dockest/issues/236), [#141](https://github.com/erikengervall/dockest/issues/141)
+- `SIGTERM` (sent when a CI job is cancelled) tears down the containers; the process exits with 128 + the signal number
+- A failure inside `Dockest.run` tears down the containers even when the caller catches the rejection
+- A custom `exitHandler` that throws no longer keeps the containers from being torn down
+- Compose files without the obsolete `version` key are accepted. `docker compose config` drops the key, so Dockest
+  failed with "Unable to find required field 'version'" for files written to the current Compose Specification
+- Services without `ports` are accepted again (a 3.1.0 regression)
+  [#143](https://github.com/erikengervall/dockest/issues/143)
+- Ports without a published host port (`- "6379"`) and environment variables declared without a value are accepted
+- Absolute `composeFile` paths and paths containing spaces work
+- A refused connection during the port check is retried instead of crashing the run
+- Docker events split across output chunks are no longer dropped, which surfaced as a 30 second start timeout
+- `skipCheckConnection` is honored; it was hardcoded to `false`
+- `resolveServiceAddress` and `getServiceAddress` accept a string target port
+  [#300](https://github.com/erikengervall/dockest/issues/300) and name the missing port in their error
+- The networks Compose creates for the project are removed on teardown; every run left one behind
+- Container log files are flushed before the process exits
+- Errors in the exit handler log and `dockest-error.json` are serialized instead of printed as `{}`
+- The Jest version check compares major versions numerically
+
+### Changed
+
+- The `docker compose` plugin is preferred; the standalone `docker-compose` binary is the fallback
+- `jest` is a peer dependency (`>=20.0.0`). Dockest always required it at runtime
+- Dockest no longer replaces the global zod error map when it is imported
+- Upgraded `js-yaml` to 3.15, `execa` to 5, `zod` to 3.25 and `zod-validation-error` to 3.5, clearing the
+  security advisories in Dockest's runtime dependencies
+- Test suites and test utilities are no longer published in `dist`
+- `next` builds publish as `<patch + 1>-next.<run>.g<sha>` so they sort above the latest release, and prerelease
+  tags publish under their own dist-tag
+
+## [3.1.0] - 2023-10-23
+
+### Changed
+
+- **Breaking:** Only the long port syntax is supported in the parsed Compose output
+  [#362](https://github.com/erikengervall/dockest/pull/362)
+- **Breaking:** Requires Node.js 18 or later
+- **Breaking:** Source files were renamed to kebab-case, which breaks deep imports such as `dockest/dist/...`
+- Replaced `io-ts` and `fp-ts` with `zod` and `zod-validation-error` for Compose file validation; validation
+  errors read differently
+- A published port may be a string or a number [#378](https://github.com/erikengervall/dockest/issues/378)
+- Moved the docs into the README and removed the website [#386](https://github.com/erikengervall/dockest/pull/386)
+- Upgraded to TypeScript 5 and Jest 29
+
+### Known issues
+
+- Services without `ports` fail validation (fixed in 3.2.0)
+
 ## [3.0.1] - 2022-02-02
 
 ### Fixed
