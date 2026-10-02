@@ -1,4 +1,5 @@
 import toposort from 'toposort';
+import { assertServiceNotRunning } from './assert-service-not-running';
 import { checkConnection } from './check-connection';
 import { dockerComposeUp } from './docker-compose-up';
 import { fixRunnerHostAccessOnLinux } from './fix-runner-host-access-on-linux';
@@ -34,6 +35,8 @@ export const waitForServices = async ({
 }) => {
   const waitForRunner = async ({ runner, runner: { isBridgeNetworkMode, serviceName } }: { runner: Runner }) => {
     runner.logger.debug(`${LOG_PREFIX} Initiating...`);
+
+    assertServiceNotRunning({ runner, composeProjectName: mutables.composeProjectName });
 
     runner.isStartRequested = true;
     await dockerComposeUp({ composeOpts, serviceName });

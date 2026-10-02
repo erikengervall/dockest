@@ -14,6 +14,7 @@ import { createBridgeNetwork } from '../../utils/network/create-bridge-network';
 import { joinBridgeNetwork } from '../../utils/network/join-bridge-network';
 import { LogWriter } from '../log-writer';
 
+jest.mock('./assert-service-not-running');
 jest.mock('./check-connection');
 jest.mock('./run-readiness-check');
 // jest.mock('./fixRunnerHostAccessOnLinux')

@@ -5,7 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.2.0] - Unreleased
+## [Unreleased]
+
+### Added
+
+- `getServiceEnvironmentVariable` in `dockest/test-helper` reads an environment variable set on a service in the Compose
+  file [#165](https://github.com/erikengervall/dockest/issues/165)
+
+### Fixed
+
+- A service whose container is already running fails right away with a message naming the service and the container,
+  instead of timing out after 30 seconds waiting for a start event
+  [#142](https://github.com/erikengervall/dockest/issues/142)
+
+## [3.2.0] - 2026-10-01
 
 ### Fixed
 

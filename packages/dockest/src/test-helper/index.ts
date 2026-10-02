@@ -27,11 +27,16 @@ export const getHostAddress = () => {
   return DOCKEST_HOST_ADDRESS;
 };
 
-export const resolveServiceAddress = (serviceName: string, targetPort: number | string) => {
+const getService = (serviceName: string) => {
   const service = config.services[serviceName];
   if (!service) {
     throw new DockestError(`Service "${serviceName}" does not exist`);
   }
+  return service;
+};
+
+export const resolveServiceAddress = (serviceName: string, targetPort: number | string) => {
+  const service = getService(serviceName);
 
   const portBinding = (service.ports || []).find((portBinding) => portBinding.target === Number(targetPort));
   if (!portBinding) {
@@ -54,4 +59,13 @@ export const resolveServiceAddress = (serviceName: string, targetPort: number | 
 export const getServiceAddress = (serviceName: string, targetPort: number | string) => {
   const record = resolveServiceAddress(serviceName, targetPort);
   return `${record.host}:${record.port}`;
+};
+
+/** The value of an environment variable set on a service in the Compose file */
+export const getServiceEnvironmentVariable = (serviceName: string, variableName: string): string => {
+  const value = (getService(serviceName).environment || {})[variableName];
+  if (value === undefined || value === null) {
+    throw new DockestError(`Service "${serviceName}" has no value for environment variable "${variableName}"`);
+  }
+  return String(value);
 };
