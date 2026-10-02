@@ -257,6 +257,9 @@ from the working directory.
 Each option forwards the matching flag to `docker compose up`, see
 [Docker's docs](https://docs.docker.com/reference/cli/docker/compose/up/).
 
+Dockest waits for each container to start, so a service whose container is already running (left over from an earlier
+run, or started by hand) fails right away. Stop it first, for example with `docker compose down`.
+
 #### `DockestOpts.containerLogs`
 
 | property          | description                            | type                                                | default         |
@@ -309,6 +312,19 @@ omitted, Dockest requires `jest`, which resolves to the Jest your project instal
 Options passed to Jest's `runCLI`, i.e. Jest's [CLI options](https://jestjs.io/docs/cli) in camelCase. Merged over the
 defaults `{ projects: ['.'], runInBand: true }`. Jest runs test files in parallel by default; Dockest defaults Jest's
 `runInBand` to `true` so tests sharing the same services don't race each other. This may lead to longer runtimes.
+
+To run a subset of tests, pass Jest's filters through. For example, forwarding the arguments of `node dockest.js users`
+to Jest:
+
+```ts
+const [testPathPattern] = process.argv.slice(2);
+
+const dockest = new Dockest({
+  jestOpts: { testPathPattern, testNamePattern: process.env.TEST_NAME },
+});
+```
+
+Jest 30 renamed `testPathPattern` to `testPathPatterns`, which takes an array.
 
 #### `DockestOpts.logLevel`
 
@@ -554,14 +570,20 @@ const mysqlReadinessCheck = withNoStop(
 
 ## Test helper
 
-`dockest/test-helper` resolves service addresses from inside your tests. It reads the configuration Dockest attaches to
-the process, so importing it outside a Dockest run throws.
+`dockest/test-helper` resolves service addresses and environment variables from inside your tests. It reads the
+configuration Dockest attaches to the process, so importing it outside a Dockest run throws.
 
 ```ts
-import { getHostAddress, getServiceAddress, resolveServiceAddress } from 'dockest/test-helper';
+import {
+  getHostAddress,
+  getServiceAddress,
+  getServiceEnvironmentVariable,
+  resolveServiceAddress,
+} from 'dockest/test-helper';
 
 const { host, port } = resolveServiceAddress('postgres', 5432); // e.g. { host: 'localhost', port: 5432 }
 const redisAddress = getServiceAddress('redis', '6379'); // e.g. 'localhost:6379'
+const queueName = getServiceEnvironmentVariable('worker', 'QUEUE_NAME'); // e.g. 'jobs'
 ```
 
 ### `resolveServiceAddress(serviceName, targetPort)`
@@ -574,6 +596,12 @@ no fixed host port, e.g. `- '6379'`.
 ### `getServiceAddress(serviceName, targetPort)`
 
 Same as `resolveServiceAddress`, formatted as `"host:port"`.
+
+### `getServiceEnvironmentVariable(serviceName, variableName)`
+
+The value of an environment variable set on the service in the Compose file, as a string. It throws if the service
+doesn't exist or the variable has no value, including one declared without a value (`- QUEUE_NAME`) that isn't set in
+the environment Compose runs in.
 
 ### `getHostAddress()`
 
